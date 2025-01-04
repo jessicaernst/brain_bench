@@ -2,6 +2,7 @@ import 'package:brain_bench/core/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// static Functions for Textstyles because they are not dependent on any instance and it is needed to get the context for the color switch between light and dark mode
 abstract class TextStyles {
   static TextStyle loginSignUpTitle(BuildContext context) {
     return GoogleFonts.urbanist(
