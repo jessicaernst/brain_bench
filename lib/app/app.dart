@@ -39,11 +39,26 @@ class TestHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(
-          AppLocalizations.of(context)!.appTitle,
-          style: TextStyles.brainBenchLogo(context).copyWith(
-            color: BrainBenchColors.logoGold,
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.appTitle,
+                style: TextStyles.brainBenchLogo(context),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {},
+                child: Text(
+                  'Test Button',
+                  style: TextStyles.buttonLabel(context),
+                ),
+              ),
+            ],
           ),
         ),
       ),

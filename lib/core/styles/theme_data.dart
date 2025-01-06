@@ -26,6 +26,16 @@ final ThemeData darkTheme = ThemeData(
   primaryColor: BrainBenchColors.flutterSky,
   scaffoldBackgroundColor: BrainBenchColors
       .deepDive, // Note: accentColor is deprecated, consider using colorScheme
+  buttonTheme: const ButtonThemeData(
+    buttonColor: BrainBenchColors.flutterSky,
+    textTheme: ButtonTextTheme.primary,
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      foregroundColor: BrainBenchColors.deepDive,
+      backgroundColor: BrainBenchColors.flutterSky,
+    ),
+  ),
   colorScheme: const ColorScheme.dark(
     surface: BrainBenchColors.deepDive,
     secondary: BrainBenchColors.flutterSky,
