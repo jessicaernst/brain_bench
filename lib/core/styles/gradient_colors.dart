@@ -35,12 +35,12 @@ abstract class BrainBenchGradients {
   );
 
   // Glass Gradients
-  static const LinearGradient glass = LinearGradient(
+  static final LinearGradient glass = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      Color.fromARGB(102, 255, 255, 255), // 40% opacity white
-      Color.fromARGB(26, 255, 255, 255), // 10% opacity white
+      BrainBenchColors.white40, // 40% opacity white
+      BrainBenchColors.white10, // 10% opacity white
     ],
   );
 

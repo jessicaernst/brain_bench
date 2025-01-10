@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 abstract class BrainBenchColors {
   // Solid Colors
   static const Color deepDive = Color.fromARGB(255, 4, 30, 60);
@@ -42,4 +44,8 @@ abstract class BrainBenchColors {
   static final Color flutterSky40 = flutterSky.withAlpha((0.4 * 255).toInt());
   static final Color flutterSky30 = flutterSky.withAlpha((0.3 * 255).toInt());
   static final Color flutterSky10 = flutterSky.withAlpha((0.1 * 255).toInt());
+
+  // white opacity
+  static final Color white40 = Colors.white.withAlpha((0.4 * 255).toInt());
+  static final Color white10 = Colors.white.withAlpha((0.1 * 255).toInt());
 }
