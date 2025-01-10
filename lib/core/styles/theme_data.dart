@@ -1,3 +1,4 @@
+import 'package:brain_bench/core/styles/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'colors.dart';
 
@@ -5,6 +6,7 @@ final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   primaryColor: BrainBenchColors.blueprintBlue,
   scaffoldBackgroundColor: BrainBenchColors.cloudCanvas,
+  textTheme: BrainBenchTextTheme.textTheme(Brightness.light),
   buttonTheme: const ButtonThemeData(
     buttonColor: BrainBenchColors.blueprintBlue,
     textTheme: ButtonTextTheme.primary,
@@ -24,8 +26,8 @@ final ThemeData lightTheme = ThemeData(
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: BrainBenchColors.flutterSky,
-  scaffoldBackgroundColor: BrainBenchColors
-      .deepDive, // Note: accentColor is deprecated, consider using colorScheme
+  scaffoldBackgroundColor: BrainBenchColors.deepDive,
+  textTheme: BrainBenchTextTheme.textTheme(Brightness.dark),
   buttonTheme: const ButtonThemeData(
     buttonColor: BrainBenchColors.flutterSky,
     textTheme: ButtonTextTheme.primary,

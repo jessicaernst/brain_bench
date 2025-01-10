@@ -1,5 +1,3 @@
-import 'package:brain_bench/core/styles/colors.dart';
-import 'package:brain_bench/core/styles/text_styles.dart';
 import 'package:brain_bench/core/styles/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -48,14 +46,14 @@ class TestHomeScreen extends StatelessWidget {
             children: [
               Text(
                 AppLocalizations.of(context)!.appTitle,
-                style: TextStyles.brainBenchLogo(context),
+                style: Theme.of(context).textTheme.displayMedium,
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {},
                 child: Text(
                   'Test Button',
-                  style: TextStyles.buttonLabel(context),
+                  style: Theme.of(context).textTheme.labelLarge,
                 ),
               ),
             ],
