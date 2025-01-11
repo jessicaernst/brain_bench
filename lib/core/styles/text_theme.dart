@@ -2,7 +2,7 @@ import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/core/styles/text_styles.dart';
 import 'package:flutter/material.dart';
 
-class BrainBenchTextTheme {
+abstract class BrainBenchTextTheme {
   static TextTheme textTheme(Brightness brightness) {
     return TextTheme(
       displayLarge: BrainBenchTextStyles.loginSignUpTitle(),
