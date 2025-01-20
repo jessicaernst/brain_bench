@@ -3,7 +3,7 @@ import 'package:brain_bench/core/styles/text_styles.dart';
 import 'package:flutter/material.dart';
 
 abstract class BrainBenchTextTheme {
-  static TextTheme textTheme(Brightness brightness) {
+  static TextTheme textTheme({required Brightness brightness}) {
     return TextTheme(
       displayLarge: BrainBenchTextStyles.loginSignUpTitle(),
       displayMedium: BrainBenchTextStyles.brainBenchLogo(),

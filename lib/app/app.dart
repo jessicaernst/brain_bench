@@ -21,8 +21,8 @@ class BrainBenchApp extends StatelessWidget {
       ],
       onGenerateTitle: (BuildContext context) =>
           AppLocalizations.of(context)!.appTitle,
-      theme: lightTheme,
-      darkTheme: darkTheme,
+      theme: getLightTheme(),
+      darkTheme: getDarkTheme(),
       themeMode: ThemeMode.system,
       home: const TestHomeScreen(),
     );
