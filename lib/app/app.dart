@@ -24,6 +24,7 @@ class BrainBenchApp extends StatelessWidget {
       theme: getLightTheme(),
       darkTheme: getDarkTheme(),
       themeMode: ThemeMode.system,
+      debugShowCheckedModeBanner: false,
       home: const TestHomeScreen(),
     );
   }
