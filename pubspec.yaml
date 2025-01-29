@@ -108,3 +108,15 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/app_icons/evo1.png"
+
+flutter_native_splash:
+  color: "#FFFFF9"
+  color_dark: "#041E3C"
+  image: "assets/images/DashLogo.png"
+  android: true
+  ios: true
