@@ -24,7 +24,6 @@ Future<void> main() async {
   // Remove the splash screen after initialization
   FlutterNativeSplash.remove();
 
-  // Run the application
   runApp(
     const ProviderScope(
       child: BrainBenchApp(),

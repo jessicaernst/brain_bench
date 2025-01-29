@@ -107,7 +107,7 @@ class GradientDesignBtn extends StatelessWidget {
   final Gradient? overlayGradient;
   final double? strokeWidth;
   final List<BoxShadow>? shadows;
-  final bool isActive; // Flag to determine the button state (active/inactive)
+  final bool isActive;
 
   // Calculates the dynamic width based on the title and padding.
   double _calculateWidth(BuildContext context, BoxConstraints constraints) {
