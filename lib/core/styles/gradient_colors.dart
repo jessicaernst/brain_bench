@@ -34,6 +34,17 @@ abstract class BrainBenchGradients {
     ],
   );
 
+  static final LinearGradient inactiveDashGradient = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      BrainBenchColors.codeBreeze.withAlpha((0.5 * 255).toInt()),
+      BrainBenchColors.flutterSky.withAlpha((0.5 * 255).toInt()),
+      BrainBenchColors.blueprintBlue.withAlpha((0.5 * 255).toInt()),
+      BrainBenchColors.deepDive70.withAlpha((0.5 * 255).toInt()),
+    ],
+  );
+
   // Glass Gradients
   static final LinearGradient glass = LinearGradient(
     begin: Alignment.topLeft,
@@ -87,6 +98,27 @@ abstract class BrainBenchGradients {
       BrainBenchColors.deepDive,
       BrainBenchColors.flutterSky40,
       BrainBenchColors.flutterSky10,
+    ],
+  );
+
+  static final LinearGradient btnStrokeGradient = LinearGradient(
+    colors: [
+      Colors.white.withAlpha((0.6 * 255).toInt()),
+      Colors.white.withAlpha((0.0 * 255).toInt()),
+      Colors.white.withAlpha((0.0 * 255).toInt()),
+      Colors.white.withAlpha((1.0 * 255).toInt()),
+    ],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+    stops: const [0.0, 0.19, 0.83, 1.0],
+  );
+
+  static final LinearGradient btnOverlayGradient = LinearGradient(
+    colors: [
+      Colors.white.withAlpha(
+        (0.3 * 255).toInt(),
+      ),
+      Colors.transparent,
     ],
   );
 }

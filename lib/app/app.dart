@@ -1,4 +1,6 @@
 import 'package:brain_bench/core/styles/theme_data.dart';
+import 'package:brain_bench/core/widgets/lightmode_btn.dart';
+import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -9,6 +11,7 @@ class BrainBenchApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Brain Bench',
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -45,17 +48,22 @@ class TestHomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              Text(
+              Align(
+                alignment: Alignment.centerRight,
+                child: Assets.images.dashLogo.image(
+                  width: 350,
+                  height: 350,
+                ),
+              ),
+              /* Text(
                 AppLocalizations.of(context)!.appTitle,
                 style: Theme.of(context).textTheme.displayMedium,
-              ),
+              ), */
               const SizedBox(height: 20),
-              ElevatedButton(
+              LightmodeBtn(
+                title: 'test',
                 onPressed: () {},
-                child: Text(
-                  'Test Button',
-                  style: Theme.of(context).textTheme.labelLarge,
-                ),
+                //isActive: false,
               ),
             ],
           ),

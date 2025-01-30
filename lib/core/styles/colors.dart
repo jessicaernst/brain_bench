@@ -12,20 +12,35 @@ abstract class BrainBenchColors {
   static const Color btnStroke = Color.fromARGB(255, 255, 255, 255);
 
   // Correct Answer Glass
-  static const Color correctAnswerGlass = Color.fromARGB(102, 9, 204, 232);
-  static const Color correctAnswerGlassLight = Color.fromARGB(26, 9, 204, 232);
+  static const Color correctAnswerGlass = Color.fromARGB(255, 9, 204, 232);
+  static const Color correctAnswerGlassLight = Color.fromARGB(255, 9, 204, 232);
+  final Color correctAnswerGlass40 =
+      correctAnswerGlass.withAlpha((0.4 * 255).toInt());
+  final Color correctAnswerGlass10 =
+      correctAnswerGlassLight.withAlpha((0.1 * 255).toInt());
 
-  // Dark Mode Glass
-  static const Color darkModeGlass = Color.fromARGB(102, 93, 200, 248);
-  static const Color darkModeGlassLight = Color.fromARGB(26, 93, 200, 248);
+// Dark Mode Glass
+  static const Color darkModeGlass = Color.fromARGB(255, 93, 200, 248);
+  static const Color darkModeGlassLight = Color.fromARGB(255, 93, 200, 248);
+  final Color darkModeGlass40 = darkModeGlass.withAlpha((0.4 * 255).toInt());
+  final Color darkModeGlass10 =
+      darkModeGlassLight.withAlpha((0.1 * 255).toInt());
 
-  // Light Mode Glass
-  static const Color lightModeGlass = Color.fromARGB(102, 101, 160, 212);
-  static const Color lightModeGlassLight = Color.fromARGB(26, 101, 160, 212);
+// Light Mode Glass
+  static const Color lightModeGlass = Color.fromARGB(255, 101, 160, 212);
+  static const Color lightModeGlassLight = Color.fromARGB(255, 101, 160, 212);
+  final Color lightModeGlass40 = lightModeGlass.withAlpha((0.4 * 255).toInt());
+  final Color lightModeGlass10 =
+      lightModeGlassLight.withAlpha((0.1 * 255).toInt());
 
-  // False Question Glass
-  static const Color falseQuestionGlass = Color.fromARGB(102, 236, 87, 211);
-  static const Color falseQuestionGlassLight = Color.fromARGB(26, 236, 87, 207);
+// False Question Glass
+  static const Color falseQuestionGlass = Color.fromARGB(255, 236, 87, 211);
+  static const Color falseQuestionGlassLight =
+      Color.fromARGB(255, 236, 87, 207);
+  final Color falseQuestionGlass40 =
+      falseQuestionGlass.withAlpha((0.4 * 255).toInt());
+  final Color falseQuestionGlass10 =
+      falseQuestionGlassLight.withAlpha((0.1 * 255).toInt());
 
   // Opacities for Deep Dive
   static final Color deepDive70 = deepDive.withAlpha((0.7 * 255).toInt());
