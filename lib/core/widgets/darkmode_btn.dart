@@ -2,8 +2,8 @@ import 'package:brain_bench/core/styles/gradient_colors.dart';
 import 'package:brain_bench/core/widgets/gradient_design_btn.dart';
 import 'package:flutter/material.dart';
 
-class LightmodeBtn extends StatelessWidget {
-  const LightmodeBtn({
+class DarkmodeBtn extends StatelessWidget {
+  const DarkmodeBtn({
     super.key,
     required this.title,
     required this.onPressed,
@@ -19,6 +19,7 @@ class LightmodeBtn extends StatelessWidget {
     return GradientDesignBtn(
       isActive: isActive,
       enableBlur: true,
+      blurSigma: 15,
       padding: const EdgeInsets.symmetric(horizontal: 48),
       title: Text(
         title,
