@@ -25,8 +25,6 @@ class BrainBenchApp extends StatelessWidget {
           AppLocalizations.of(context)!.appTitle,
       theme: getLightTheme(),
       darkTheme: getDarkTheme(),
-      themeMode: ThemeMode.system,
-      debugShowCheckedModeBanner: false,
       home: const CategoriesPage(),
     );
   }

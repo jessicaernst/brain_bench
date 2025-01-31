@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<void> main() async {
   // Setup logging for the application
-  setupLogging();
+  LoggerUtil.setupLogging();
 
   // Ensure that widget binding is initialized
   final WidgetsBinding widgetsBinding =
