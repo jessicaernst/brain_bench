@@ -11,6 +11,9 @@ import 'database_repository.dart';
 
 final Logger _logger = Logger('MockDatabaseRepository');
 
+// Define a mock user ID (since the User model does not exist)
+const String _mockUserId = 'mock-user-1234';
+
 class MockDatabaseRepository implements DatabaseRepository {
   final String resultsPath = 'lib/data/data_source/results.json';
 
@@ -139,19 +142,18 @@ class MockDatabaseRepository implements DatabaseRepository {
       // Decode the string into a JSON list
       final List<dynamic> jsonData = json.decode(jsonString);
 
-      // Convert each JSON entry to a Result object using `Result.fromJson`
+      // Use the mock user ID to filter results
       return jsonData
-          .where((e) => e['userId'] == userId) // Filter by userId
+          .where((e) => e['userId'] == _mockUserId)
           .map((e) => Result.fromJson(e as Map<String, dynamic>))
           .toList();
     } catch (e) {
-      // Handle errors in reading or parsing
       _logger.severe('Error reading results: $e');
       return [];
     }
   }
 
-// Save Result
+  // Save Result - Always Assign the Mock User ID
   @override
   Future<void> saveResult(Result result) async {
     try {
@@ -162,20 +164,18 @@ class MockDatabaseRepository implements DatabaseRepository {
       if (file.existsSync()) {
         // Read the file content
         final String jsonString = await file.readAsString();
-
-        // Decode JSON content into a list
         jsonData = json.decode(jsonString);
       }
 
-      // Convert the new Result object to JSON using `.toJson()`
-      jsonData.add(result.toJson());
+      // Convert the new Result object to JSON
+      final newResult = result.copyWith(userId: _mockUserId).toJson();
+      jsonData.add(newResult);
 
       // Write updated JSON data back to the file
       await file.writeAsString(jsonEncode(jsonData), flush: true);
 
       _logger.info('Result successfully saved!');
     } catch (e) {
-      // Handle errors in the save operation
       _logger.severe('Error saving result: $e');
     }
   }
