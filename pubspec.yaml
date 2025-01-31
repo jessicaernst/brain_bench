@@ -48,6 +48,7 @@ dependencies:
   hooks_riverpod: ^2.6.1
   flutter_native_splash: ^2.4.4
   uuid: ^4.5.1
+  flutter_svg: ^2.0.17
 
 
 dev_dependencies:
@@ -84,6 +85,7 @@ flutter:
     - assets/app_icons/
     - assets/images/
     - assets/backgrounds/
+    - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -123,3 +125,9 @@ flutter_native_splash:
   android: true
   ios: true
   android_gravity: "center"
+
+flutter_gen:
+  output: lib/gen/
+
+  integrations:
+    flutter_svg: true
