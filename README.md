@@ -2,12 +2,16 @@
 
 An Flutter knowledge check and learning App
 
-## TechStack:
+## Packages used:
 
 - Riverpod with code gen
 - Freezed
 - Hooks
 - Localizations
+- intl
+- logging
+- fluttergen
+- svg
 
 
 
