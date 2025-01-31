@@ -8,11 +8,13 @@ class DarkmodeBtn extends StatelessWidget {
     required this.title,
     required this.onPressed,
     this.isActive = true,
+    this.padding = const EdgeInsets.symmetric(horizontal: 48),
   });
 
   final String title;
   final VoidCallback onPressed;
   final bool isActive;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +22,14 @@ class DarkmodeBtn extends StatelessWidget {
       isActive: isActive,
       enableBlur: true,
       blurSigma: 15,
-      padding: const EdgeInsets.symmetric(horizontal: 48),
+      padding: padding,
       title: Text(
         title,
         style: TextTheme.of(context).labelLarge,
       ),
       activeGradient: BrainBenchGradients.dashGradient,
       inactiveGradient: BrainBenchGradients.inactiveDashGradient,
-      overlayGradient: BrainBenchGradients.btnOverlayGradient,
+      overlayGradient: BrainBenchGradients.btnOverlayGradientDark,
       strokeGradient: BrainBenchGradients.btnStrokeGradient,
       borderRadius: 30,
       height: 35,

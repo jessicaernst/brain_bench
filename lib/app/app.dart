@@ -1,4 +1,5 @@
 import 'package:brain_bench/core/styles/theme_data.dart';
+import 'package:brain_bench/core/widgets/darkmode_btn.dart';
 import 'package:brain_bench/core/widgets/lightmode_btn.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,12 @@ class TestHomeScreen extends StatelessWidget {
               ), */
               const SizedBox(height: 20),
               LightmodeBtn(
+                title: 'test',
+                onPressed: () {},
+                //isActive: false,
+              ),
+              const SizedBox(height: 20),
+              DarkmodeBtn(
                 title: 'test',
                 onPressed: () {},
                 //isActive: false,

@@ -8,18 +8,20 @@ class LightmodeBtn extends StatelessWidget {
     required this.title,
     required this.onPressed,
     this.isActive = true,
+    this.padding = const EdgeInsets.symmetric(horizontal: 48),
   });
 
   final String title;
   final VoidCallback onPressed;
   final bool isActive;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
     return GradientDesignBtn(
       isActive: isActive,
       enableBlur: true,
-      padding: const EdgeInsets.symmetric(horizontal: 48),
+      padding: padding,
       title: Text(
         title,
         style: TextTheme.of(context).labelLarge,

@@ -103,7 +103,7 @@ abstract class BrainBenchGradients {
 
   static final LinearGradient btnStrokeGradient = LinearGradient(
     colors: [
-      Colors.white.withAlpha((0.6 * 255).toInt()),
+      Colors.white.withAlpha((0.3 * 255).toInt()),
       Colors.white.withAlpha((0.0 * 255).toInt()),
       Colors.white.withAlpha((0.0 * 255).toInt()),
       Colors.white.withAlpha((1.0 * 255).toInt()),
@@ -117,6 +117,15 @@ abstract class BrainBenchGradients {
     colors: [
       Colors.white.withAlpha(
         (0.3 * 255).toInt(),
+      ),
+      Colors.transparent,
+    ],
+  );
+
+  static final LinearGradient btnOverlayGradientDark = LinearGradient(
+    colors: [
+      Colors.white.withAlpha(
+        (0.4 * 255).toInt(),
       ),
       Colors.transparent,
     ],
