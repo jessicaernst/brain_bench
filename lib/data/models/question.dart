@@ -1,6 +1,6 @@
-import 'package:brain_bench/data/models/answer.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
+import 'answer.dart';
 
 part 'question.freezed.dart';
 part 'question.g.dart';
@@ -12,26 +12,32 @@ class Question with _$Question {
   factory Question({
     required String id,
     required String topicId,
-    required String question,
+    required String questionEn,
+    required String questionDe,
     required QuestionType type,
     required List<Answer> answers,
-    String? explanation,
+    String? explanationEn,
+    String? explanationDe,
   }) = _Question;
 
   factory Question.create({
     required String topicId,
-    required String question,
+    required String questionEn,
+    required String questionDe,
     required QuestionType type,
     required List<Answer> answers,
-    String? explanation,
+    String? explanationEn,
+    String? explanationDe,
   }) {
     return Question(
       id: const Uuid().v4(),
       topicId: topicId,
-      question: question,
+      questionEn: questionEn,
+      questionDe: questionDe,
       type: type,
       answers: answers,
-      explanation: explanation,
+      explanationEn: explanationEn,
+      explanationDe: explanationDe,
     );
   }
 

@@ -1,0 +1,602 @@
+[
+    {
+        "id": "e013e9de-844e-46ed-b4f3-58015602fcfc",
+        "textEn": "exit",
+        "textDe": "exit",
+        "isCorrect": false
+    },
+    {
+        "id": "8fcaa512-dbe0-42c3-b8b0-b012103f6d30",
+        "textEn": "break",
+        "textDe": "break",
+        "isCorrect": false
+    },
+    {
+        "id": "9733d531-e016-4910-aa43-df9cd12b7919",
+        "textEn": "continue",
+        "textDe": "continue",
+        "isCorrect": false
+    },
+    {
+        "id": "5c7fb767-715f-4e11-b487-430e4218cbb2",
+        "textEn": "stop",
+        "textDe": "stop",
+        "isCorrect": false
+    },
+    {
+        "id": "354ef179-b414-43d3-b252-38523de74a62",
+        "textEn": "dynamic",
+        "textDe": "dynamic",
+        "isCorrect": false
+    },
+    {
+        "id": "a7e3c650-5cbf-4198-a30b-488df60b4373",
+        "textEn": "String",
+        "textDe": "String",
+        "isCorrect": false
+    },
+    {
+        "id": "dbd0963e-14e4-4ff7-adbe-a82da77ef389",
+        "textEn": "Object",
+        "textDe": "Object",
+        "isCorrect": false
+    },
+    {
+        "id": "22afc8ad-a64d-4087-8d3d-636d2c62d867",
+        "textEn": "var",
+        "textDe": "var",
+        "isCorrect": false
+    },
+    {
+        "id": "e42164e7-2bf3-43a2-b900-e7b6a0a1065f",
+        "textEn": "double",
+        "textDe": "double",
+        "isCorrect": false
+    },
+    {
+        "id": "7e4025f4-87dc-4250-a113-2203a26dfa6f",
+        "textEn": "int",
+        "textDe": "int",
+        "isCorrect": false
+    },
+    {
+        "id": "f29594b8-e18b-4c43-a460-c2d8ec0e4e3f",
+        "textEn": "bool",
+        "textDe": "bool",
+        "isCorrect": false
+    },
+    {
+        "id": "f2e5556d-f463-40bc-9a25-979a6d5754ce",
+        "textEn": "num",
+        "textDe": "num",
+        "isCorrect": false
+    },
+    {
+        "id": "57f5a4a3-ae2d-4a9d-b91b-8c44cae6dfb6",
+        "textEn": "num",
+        "textDe": "num",
+        "isCorrect": false
+    },
+    {
+        "id": "19c23df4-21de-482c-99f3-b5aae1bf959f",
+        "textEn": "int",
+        "textDe": "int",
+        "isCorrect": false
+    },
+    {
+        "id": "95aa454a-2ea1-4ecc-b9b4-10c89f9d841a",
+        "textEn": "double",
+        "textDe": "double",
+        "isCorrect": false
+    },
+    {
+        "id": "a0e5bd19-141c-4862-a7cd-6af412aa436a",
+        "textEn": "dynamic",
+        "textDe": "dynamic",
+        "isCorrect": false
+    },
+    {
+        "id": "8331ec98-1245-4ba2-8f37-493401f3e419",
+        "textEn": "while",
+        "textDe": "while",
+        "isCorrect": false
+    },
+    {
+        "id": "c944a61c-4ae6-44b2-81f0-73869310f36a",
+        "textEn": "for",
+        "textDe": "for",
+        "isCorrect": false
+    },
+    {
+        "id": "03941be4-aab0-4d49-8d0b-8ba493313c14",
+        "textEn": "do-while",
+        "textDe": "do-while",
+        "isCorrect": false
+    },
+    {
+        "id": "8b9ca395-e709-4bb1-bb8b-478539f9bf7a",
+        "textEn": "foreach",
+        "textDe": "foreach",
+        "isCorrect": false
+    },
+    {
+        "id": "0a7cc7dc-5cfe-4bd3-b3ab-cee2eae3dfa6",
+        "textEn": "continue",
+        "textDe": "continue",
+        "isCorrect": false
+    },
+    {
+        "id": "edbe2ec4-a414-40c5-b007-76b1f17e1916",
+        "textEn": "stop",
+        "textDe": "stop",
+        "isCorrect": false
+    },
+    {
+        "id": "e28c90bd-a2c3-47fb-a243-ca4f897c83b2",
+        "textEn": "break",
+        "textDe": "break",
+        "isCorrect": false
+    },
+    {
+        "id": "5bf19e20-20d8-443e-8d9e-bd4f758a6408",
+        "textEn": "exit",
+        "textDe": "exit",
+        "isCorrect": false
+    },
+    {
+        "id": "de7605a0-b512-4b63-888e-ab583bd3d3b0",
+        "textEn": "Map",
+        "textDe": "Map",
+        "isCorrect": false
+    },
+    {
+        "id": "7f3504c7-36a7-460a-9ade-89997bf816f3",
+        "textEn": "List",
+        "textDe": "List",
+        "isCorrect": false
+    },
+    {
+        "id": "2ef76d78-6d71-4ec0-9503-61511abea03a",
+        "textEn": "Set",
+        "textDe": "Set",
+        "isCorrect": false
+    },
+    {
+        "id": "de4d2c1d-4594-43ed-9adf-57500ca6bb11",
+        "textEn": "Array",
+        "textDe": "Array",
+        "isCorrect": false
+    },
+    {
+        "id": "e82307e8-732d-459a-8de6-a693b70da679",
+        "textEn": "map.insert(key, value)",
+        "textDe": "map.insert(key, value)",
+        "isCorrect": false
+    },
+    {
+        "id": "086c1ef7-8d64-4cc7-ae6f-8df5adb79d71",
+        "textEn": "map.add(key, value)",
+        "textDe": "map.add(key, value)",
+        "isCorrect": false
+    },
+    {
+        "id": "c8b67c48-b091-41cf-bfc1-7801d2c840e4",
+        "textEn": "map[key] = value",
+        "textDe": "map[key] = value",
+        "isCorrect": false
+    },
+    {
+        "id": "11c3ff6e-380b-4ff0-812c-17910298788e",
+        "textEn": "map.put(key, value)",
+        "textDe": "map.put(key, value)",
+        "isCorrect": false
+    },
+    {
+        "id": "9535d89a-424f-4958-85ff-21bff93d8dfc",
+        "textEn": ":",
+        "textDe": ":",
+        "isCorrect": false
+    },
+    {
+        "id": "128c344e-ae59-4598-964c-036b2a175092",
+        "textEn": "[]",
+        "textDe": "[]",
+        "isCorrect": false
+    },
+    {
+        "id": "c9743e2b-ef96-4dc7-97d1-bb4f97b2952a",
+        "textEn": "{}",
+        "textDe": "{}",
+        "isCorrect": false
+    },
+    {
+        "id": "915bcc4b-d08d-4a74-9a81-f553627f3971",
+        "textEn": "()",
+        "textDe": "()",
+        "isCorrect": false
+    },
+    {
+        "id": "80010cc2-8c3c-4a82-9df6-c2d5c6573692",
+        "textEn": "list.push(element)",
+        "textDe": "list.push(element)",
+        "isCorrect": false
+    },
+    {
+        "id": "79cff6cf-b846-4138-a214-78c3d8de4303",
+        "textEn": "list.add(element)",
+        "textDe": "list.add(element)",
+        "isCorrect": false
+    },
+    {
+        "id": "4fa7fa6d-cd2f-4379-8bae-0da5a3a36fbf",
+        "textEn": "list.append(element)",
+        "textDe": "list.append(element)",
+        "isCorrect": false
+    },
+    {
+        "id": "804e003d-efcc-4c0a-bb60-d27114ac5796",
+        "textEn": "list.insert(element)",
+        "textDe": "list.insert(element)",
+        "isCorrect": false
+    },
+    {
+        "id": "7349bb32-627b-43a1-90fa-846b5c6473f3",
+        "textEn": "list[3]",
+        "textDe": "list[3]",
+        "isCorrect": false
+    },
+    {
+        "id": "a4881be1-4a84-4427-b8fd-d6faa0d56125",
+        "textEn": "list.get(2)",
+        "textDe": "list.get(2)",
+        "isCorrect": false
+    },
+    {
+        "id": "37bd552d-1ed1-459c-b34e-12496cb91890",
+        "textEn": "list[2]",
+        "textDe": "list[2]",
+        "isCorrect": false
+    },
+    {
+        "id": "fc240772-0b22-439e-8758-fdeff5e4ce34",
+        "textEn": "list.get(3)",
+        "textDe": "list.get(3)",
+        "isCorrect": false
+    },
+    {
+        "id": "05825ede-f3ef-4e65-b725-a94e6856ea14",
+        "textEn": "list.length()",
+        "textDe": "list.length()",
+        "isCorrect": false
+    },
+    {
+        "id": "e3e21b50-5941-465a-ba43-bce525714f86",
+        "textEn": "list.size",
+        "textDe": "list.size",
+        "isCorrect": false
+    },
+    {
+        "id": "01c5d4c6-32f8-42bf-8087-b08398e6aa6a",
+        "textEn": "list.length",
+        "textDe": "list.length",
+        "isCorrect": false
+    },
+    {
+        "id": "29a5cc92-8aef-4250-8d19-9c1f8458d0ce",
+        "textEn": "list.count()",
+        "textDe": "list.count()",
+        "isCorrect": false
+    },
+    {
+        "id": "844417df-61ce-40ec-b2c0-a00029b76d0b",
+        "textEn": "public",
+        "textDe": "public",
+        "isCorrect": false
+    },
+    {
+        "id": "742e3e64-43cd-4b0a-b845-fa28793ca8f8",
+        "textEn": "private",
+        "textDe": "private",
+        "isCorrect": false
+    },
+    {
+        "id": "85d65f17-1ae5-48dd-ad7a-cf83b809e29b",
+        "textEn": "protected",
+        "textDe": "protected",
+        "isCorrect": false
+    },
+    {
+        "id": "1a556719-e05c-423a-ae25-5b0f50b405cf",
+        "textEn": "Default is public",
+        "textDe": "Default ist öffentlich",
+        "isCorrect": false
+    },
+    {
+        "id": "7f6c3911-d817-45c8-8bc9-e8257145baae",
+        "textEn": "constructor()",
+        "textDe": "constructor()",
+        "isCorrect": false
+    },
+    {
+        "id": "57b0777f-722a-4c0b-b69e-04a8edb0fcd6",
+        "textEn": "className()",
+        "textDe": "className()",
+        "isCorrect": false
+    },
+    {
+        "id": "77e1efa9-7a2d-4bed-8b87-b9b414a2404d",
+        "textEn": "Dart does not use constructors",
+        "textDe": "Dart verwendet keine Konstruktoren",
+        "isCorrect": false
+    },
+    {
+        "id": "eca60add-3d40-4ea0-b013-0a0efd74b262",
+        "textEn": "build()",
+        "textDe": "build()",
+        "isCorrect": false
+    },
+    {
+        "id": "4bc2bc1a-057d-4041-b882-407bd67eecd7",
+        "textEn": "Using `private` before",
+        "textDe": "Mit `private` davor",
+        "isCorrect": false
+    },
+    {
+        "id": "e03b6085-d3a2-495b-9c46-5e53b5b7983d",
+        "textEn": "Using `@private` annotation",
+        "textDe": "Mit `@private` Annotation",
+        "isCorrect": false
+    },
+    {
+        "id": "2b0e1e78-8f31-4702-ab00-8782eeb76020",
+        "textEn": "Using an underscore (_) before",
+        "textDe": "Mit einem Unterstrich (_) davor",
+        "isCorrect": false
+    },
+    {
+        "id": "97930e69-ed0e-41f6-925f-91efef152644",
+        "textEn": "Using `#` before",
+        "textDe": "Mit `#` davor",
+        "isCorrect": false
+    },
+    {
+        "id": "8c3f4f1b-b9a0-453c-88ca-2c50becdf5b6",
+        "textEn": "extend",
+        "textDe": "extend",
+        "isCorrect": false
+    },
+    {
+        "id": "7aac55e6-7f65-4476-83df-466f13694bbc",
+        "textEn": "inherits",
+        "textDe": "inherits",
+        "isCorrect": false
+    },
+    {
+        "id": "ca835428-677f-418c-b05d-99f26030f5a3",
+        "textEn": "implements",
+        "textDe": "implements",
+        "isCorrect": false
+    },
+    {
+        "id": "77418898-3f54-4196-8ba0-315467c18513",
+        "textEn": "superclass",
+        "textDe": "superclass",
+        "isCorrect": false
+    },
+    {
+        "id": "dbb3dc56-6035-44a3-967c-03be6035f169",
+        "textEn": "mixin",
+        "textDe": "mixin",
+        "isCorrect": false
+    },
+    {
+        "id": "555c092f-0d60-4f78-a5c1-a38332cde7ac",
+        "textEn": "with",
+        "textDe": "with",
+        "isCorrect": false
+    },
+    {
+        "id": "7e5b1e6b-ec86-4d71-abc6-da7a5cbd1951",
+        "textEn": "implements",
+        "textDe": "implements",
+        "isCorrect": false
+    },
+    {
+        "id": "36dcb50f-9305-4dbc-8d43-df2b83973bd6",
+        "textEn": "extends",
+        "textDe": "extends",
+        "isCorrect": false
+    },
+    {
+        "id": "7ae7cef9-1bcb-4b33-9dae-550b5eff3ce7",
+        "textEn": "this()",
+        "textDe": "this()",
+        "isCorrect": false
+    },
+    {
+        "id": "dbbd616b-37a7-4b55-b78d-137ed0f06275",
+        "textEn": "base()",
+        "textDe": "base()",
+        "isCorrect": false
+    },
+    {
+        "id": "6182f5b4-2a21-4ba4-9c10-5d9804f8fcec",
+        "textEn": "super()",
+        "textDe": "super()",
+        "isCorrect": false
+    },
+    {
+        "id": "dff94760-dde4-4966-8138-9116ef4ebab9",
+        "textEn": "parent()",
+        "textDe": "parent()",
+        "isCorrect": false
+    },
+    {
+        "id": "851b2110-615d-486f-bf82-d9bf6cf8497b",
+        "textEn": "Using `abstract class`",
+        "textDe": "Mit `abstract class`",
+        "isCorrect": false
+    },
+    {
+        "id": "145614a2-078b-4fa1-85f9-19d11f14b53a",
+        "textEn": "Using `interface class`",
+        "textDe": "Mit `interface class`",
+        "isCorrect": false
+    },
+    {
+        "id": "9d51529c-dd8e-46a6-b291-143f42f89475",
+        "textEn": "Using `virtual class`",
+        "textDe": "Mit `virtual class`",
+        "isCorrect": false
+    },
+    {
+        "id": "95bc813e-6078-4c7d-87ce-f56ce509edba",
+        "textEn": "Using `abstract` annotation",
+        "textDe": "Mit `abstract` Annotation",
+        "isCorrect": false
+    },
+    {
+        "id": "a4fef12d-c1e5-4815-9fb5-310b42018583",
+        "textEn": "The method is overloaded",
+        "textDe": "Die Methode wird überladen",
+        "isCorrect": false
+    },
+    {
+        "id": "dbb20aad-69e6-493f-8cea-44e60402c779",
+        "textEn": "The method is overridden",
+        "textDe": "Die Methode wird überschrieben",
+        "isCorrect": false
+    },
+    {
+        "id": "01a2cfb6-ada4-480e-b642-c849b2906103",
+        "textEn": "Dart does not allow this",
+        "textDe": "Dart erlaubt das nicht",
+        "isCorrect": false
+    },
+    {
+        "id": "e7b8b04c-f785-41c4-b2e8-e949bc546aec",
+        "textEn": "Both methods exist in parallel",
+        "textDe": "Beide Methoden existieren parallel",
+        "isCorrect": false
+    },
+    {
+        "id": "69ead0ed-b062-42c4-8f0d-4876b64d0dd7",
+        "textEn": "`implements` is used for interfaces, `extends` for inheritance",
+        "textDe": "`implements` wird für Schnittstellen verwendet, `extends` für Vererbung",
+        "isCorrect": false
+    },
+    {
+        "id": "e8b363d6-b628-48cb-936f-899cce64656e",
+        "textEn": "`implements` is faster than `extends`",
+        "textDe": "`implements` ist schneller als `extends`",
+        "isCorrect": false
+    },
+    {
+        "id": "28cf1249-fc89-440b-955b-78c35a4030b4",
+        "textEn": "`implements` does not allow method overriding",
+        "textDe": "`implements` erlaubt keine Methodenüberschreibung",
+        "isCorrect": false
+    },
+    {
+        "id": "cf1eb40a-f311-4716-a4eb-f6aafa711505",
+        "textEn": "There is no difference",
+        "textDe": "Es gibt keinen Unterschied",
+        "isCorrect": false
+    },
+    {
+        "id": "2014444d-e1d0-4cc8-9aa5-674f032cb459",
+        "textEn": "Using `factory` keyword",
+        "textDe": "Mit `factory`-Schlüsselwort",
+        "isCorrect": false
+    },
+    {
+        "id": "015c8521-72be-40ed-bc52-1c4bade65dd8",
+        "textEn": "Using `static` keyword",
+        "textDe": "Mit `static`-Schlüsselwort",
+        "isCorrect": false
+    },
+    {
+        "id": "dc19611f-211a-4204-a882-8008007dc0be",
+        "textEn": "Using a constructor",
+        "textDe": "Mit einem Konstruktor",
+        "isCorrect": false
+    },
+    {
+        "id": "49eb2ba9-6500-41ce-9929-24bb765d9c79",
+        "textEn": "Dart does not support factory methods",
+        "textDe": "Dart unterstützt keine Factory-Methoden",
+        "isCorrect": false
+    },
+    {
+        "id": "aaa11111-bbbb-cccc-dddd-eeeeffff0001",
+        "textEn": "Encapsulation",
+        "textDe": "Kapselung",
+        "isCorrect": true
+    },
+    {
+        "id": "aaa11111-bbbb-cccc-dddd-eeeeffff0002",
+        "textEn": "Inheritance",
+        "textDe": "Vererbung",
+        "isCorrect": true
+    },
+    {
+        "id": "aaa11111-bbbb-cccc-dddd-eeeeffff0003",
+        "textEn": "Polymorphism",
+        "textDe": "Polymorphismus",
+        "isCorrect": true
+    },
+    {
+        "id": "aaa11111-bbbb-cccc-dddd-eeeeffff0004",
+        "textEn": "Asynchronous Programming",
+        "textDe": "Asynchrones Programmieren",
+        "isCorrect": false
+    },
+    {
+        "id": "bbb11111-cccc-dddd-eeee-ffff00001111",
+        "textEn": "public",
+        "textDe": "public",
+        "isCorrect": false
+    },
+    {
+        "id": "bbb11111-cccc-dddd-eeee-ffff00002222",
+        "textEn": "private (_underscore)",
+        "textDe": "privat (_Unterstrich)",
+        "isCorrect": true
+    },
+    {
+        "id": "bbb11111-cccc-dddd-eeee-ffff00003333",
+        "textEn": "protected",
+        "textDe": "protected",
+        "isCorrect": false
+    },
+    {
+        "id": "bbb11111-cccc-dddd-eeee-ffff00004444",
+        "textEn": "internal",
+        "textDe": "internal",
+        "isCorrect": false
+    },
+    {
+        "id": "ccc11111-dddd-eeee-ffff-000011112222",
+        "textEn": "for",
+        "textDe": "for",
+        "isCorrect": true
+    },
+    {
+        "id": "ccc11111-dddd-eeee-ffff-000022223333",
+        "textEn": "while",
+        "textDe": "while",
+        "isCorrect": true
+    },
+    {
+        "id": "ccc11111-dddd-eeee-ffff-000033334444",
+        "textEn": "foreach",
+        "textDe": "foreach",
+        "isCorrect": true
+    },
+    {
+        "id": "ccc11111-dddd-eeee-ffff-000044445555",
+        "textEn": "loop",
+        "textDe": "loop",
+        "isCorrect": false
+    }
+]
