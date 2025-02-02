@@ -21,6 +21,7 @@ class LightmodeBtn extends StatelessWidget {
     return GradientDesignBtn(
       isActive: isActive,
       enableBlur: true,
+      blurSigma: 5,
       padding: padding,
       title: Text(
         title,

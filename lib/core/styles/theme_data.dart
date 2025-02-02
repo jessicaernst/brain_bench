@@ -4,7 +4,7 @@ import 'colors.dart';
 
 ThemeData getLightTheme({Brightness brightness = Brightness.light}) {
   return ThemeData(
-    brightness: Brightness.light,
+    brightness: brightness,
     primaryColor: BrainBenchColors.blueprintBlue,
     scaffoldBackgroundColor: BrainBenchColors.cloudCanvas,
     textTheme: BrainBenchTextTheme.textTheme(brightness: brightness),
@@ -22,12 +22,24 @@ ThemeData getLightTheme({Brightness brightness = Brightness.light}) {
       surface: BrainBenchColors.cloudCanvas,
       secondary: BrainBenchColors.blueprintBlue,
     ).copyWith(surface: BrainBenchColors.cloudCanvas),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: BrainBenchColors.cloudCanvas,
+      selectedItemColor: BrainBenchColors.blueprintBlue,
+      unselectedItemColor: BrainBenchColors.blueprintBlue.withAlpha(150),
+      selectedLabelStyle: const TextStyle(
+        color: BrainBenchColors.blueprintBlue,
+        fontWeight: FontWeight.bold,
+      ),
+      unselectedLabelStyle: TextStyle(
+        color: BrainBenchColors.blueprintBlue.withAlpha(150),
+      ),
+    ),
   );
 }
 
 ThemeData getDarkTheme({Brightness brightness = Brightness.dark}) {
   return ThemeData(
-    brightness: Brightness.dark,
+    brightness: brightness,
     primaryColor: BrainBenchColors.flutterSky,
     scaffoldBackgroundColor: BrainBenchColors.deepDive,
     textTheme: BrainBenchTextTheme.textTheme(brightness: brightness),
@@ -44,8 +56,20 @@ ThemeData getDarkTheme({Brightness brightness = Brightness.dark}) {
     colorScheme: const ColorScheme.dark(
       surface: BrainBenchColors.deepDive,
       secondary: BrainBenchColors.flutterSky,
-    )
-        .copyWith(secondary: BrainBenchColors.flutterSky)
-        .copyWith(surface: BrainBenchColors.deepDive),
+    ).copyWith(
+      surface: BrainBenchColors.deepDive,
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: BrainBenchColors.deepDive,
+      selectedItemColor: BrainBenchColors.flutterSky,
+      unselectedItemColor: BrainBenchColors.flutterSky.withAlpha(150),
+      selectedLabelStyle: const TextStyle(
+        color: BrainBenchColors.flutterSky,
+        fontWeight: FontWeight.bold,
+      ),
+      unselectedLabelStyle: TextStyle(
+        color: BrainBenchColors.flutterSky.withAlpha(150),
+      ),
+    ),
   );
 }

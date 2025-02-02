@@ -1,5 +1,5 @@
 import 'package:brain_bench/core/styles/theme_data.dart';
-import 'package:brain_bench/presentation/categories/screens/categories_page.dart';
+import 'package:brain_bench/presentation/tabs/screens/tabs_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -25,7 +25,7 @@ class BrainBenchApp extends StatelessWidget {
           AppLocalizations.of(context)!.appTitle,
       theme: getLightTheme(),
       darkTheme: getDarkTheme(),
-      home: const CategoriesPage(),
+      home: const TabsPage(),
     );
   }
 }
