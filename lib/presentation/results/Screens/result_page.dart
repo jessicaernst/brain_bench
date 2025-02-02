@@ -1,13 +1,10 @@
-import 'package:brain_bench/core/widgets/darkmode_btn.dart';
-import 'package:brain_bench/core/widgets/lightmode_btn.dart';
+import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CategoriesPage extends ConsumerWidget {
-  const CategoriesPage({
-    super.key,
-  });
+class ResultPage extends ConsumerWidget {
+  const ResultPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,7 +13,7 @@ class CategoriesPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          localizations.appBarTitleCategories,
+          localizations.appBarTitleQuizResult,
           style: TextTheme.of(context).headlineSmall,
         ),
       ),
@@ -27,16 +24,17 @@ class CategoriesPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              LightmodeBtn(
-                title: 'test',
-                onPressed: () {},
-                //isActive: false,
+              Align(
+                alignment: Alignment.centerRight,
+                child: Assets.images.dashLogo.image(
+                  width: 350,
+                  height: 350,
+                ),
               ),
               const SizedBox(height: 20),
-              DarkmodeBtn(
-                title: 'test',
-                onPressed: () {},
-                //isActive: false,
+              Text(
+                'Results coming soon . . .',
+                style: TextTheme.of(context).displaySmall,
               ),
             ],
           ),

@@ -15,5 +15,17 @@
     "bottomNavigationResults": "Results",
     "@bottomNavigationResults": {
         "description": "The title of the results page in the bottom navigation bar"
+    },
+    "appBarTitleHome": "BrainBench",
+    "@appBarTitleHome": {
+        "description": "The title of the home page in the app bar"
+    },
+    "appBarTitleCategories": "Categories",
+    "@appBarTitleCategories": {
+        "description": "The title of the categories page in the app bar"
+    },
+    "appBarTitleQuizResult": "Results",
+    "@appBarTitleQuizResult": {
+        "description": "The title of the quiz result page in the app bar"
     }
 }

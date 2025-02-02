@@ -80,8 +80,11 @@ class $AssetsImagesGen {
   AssetGenImage get dashLogoSmaller =>
       const AssetGenImage('assets/images/DashLogoSmaller.png');
 
+  /// File path: assets/images/sadHam.png
+  AssetGenImage get sadHam => const AssetGenImage('assets/images/sadHam.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [dashLogo, dashLogoSmaller];
+  List<AssetGenImage> get values => [dashLogo, dashLogoSmaller, sadHam];
 }
 
 class Assets {

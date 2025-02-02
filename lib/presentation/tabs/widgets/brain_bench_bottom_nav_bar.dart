@@ -24,7 +24,7 @@ class BrainBenchBottomNavBar extends StatelessWidget {
       width: 24,
       height: 24,
       colorFilter: ColorFilter.mode(
-        color ?? Colors.white,
+        color ?? Colors.grey,
         BlendMode.srcIn,
       ),
     );
@@ -41,17 +41,17 @@ class BrainBenchBottomNavBar extends StatelessWidget {
       currentIndex: currentIndex,
       onTap: onTabSelected,
       items: [
-        /* BottomNavigationBarItem(
-            activeIcon: _buildSvgIcon(
-              icon: Assets.icons.homeFilled.svg,
-              color: selectedColor,
-            ),
-            icon: _buildSvgIcon(
-              icon: Assets.icons.homeOutlined.svg,
-              color: unselectedColor,
-            ),
-            label: localizations.bottomNavigationHome,
-          ), */
+        BottomNavigationBarItem(
+          activeIcon: _buildSvgIcon(
+            icon: Assets.icons.homeFilled.svg,
+            color: selectedColor,
+          ),
+          icon: _buildSvgIcon(
+            icon: Assets.icons.homeOutlined.svg,
+            color: unselectedColor,
+          ),
+          label: localizations.bottomNavigationHome,
+        ),
         BottomNavigationBarItem(
           activeIcon: _buildSvgIcon(
             icon: Assets.icons.quizFilled.svg,
