@@ -1,5 +1,6 @@
 import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TabsPage extends StatefulWidget {
   const TabsPage({super.key});
@@ -34,6 +35,7 @@ class _TabsPageState extends State<TabsPage> {
     final theme = BottomNavigationBarTheme.of(context);
     final selectedColor = theme.selectedItemColor;
     final unselectedColor = theme.unselectedItemColor;
+    final AppLocalizations localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
@@ -44,7 +46,7 @@ class _TabsPageState extends State<TabsPage> {
           });
         },
         items: [
-          BottomNavigationBarItem(
+          /* BottomNavigationBarItem(
             activeIcon: _buildSvgIcon(
               icon: Assets.icons.homeFilled.svg,
               color: selectedColor,
@@ -53,8 +55,8 @@ class _TabsPageState extends State<TabsPage> {
               icon: Assets.icons.homeOutlined.svg,
               color: unselectedColor,
             ),
-            label: 'Home',
-          ),
+            label: localizations.bottomNavigationHome,
+          ), */
           BottomNavigationBarItem(
             activeIcon: _buildSvgIcon(
               icon: Assets.icons.quizFilled.svg,
@@ -64,7 +66,7 @@ class _TabsPageState extends State<TabsPage> {
               icon: Assets.icons.quizOutlined.svg,
               color: unselectedColor,
             ),
-            label: 'Quiz',
+            label: localizations.bottomNavigationQuiz,
           ),
           BottomNavigationBarItem(
             activeIcon: _buildSvgIcon(
@@ -75,7 +77,7 @@ class _TabsPageState extends State<TabsPage> {
               icon: Assets.icons.resultOulined.svg,
               color: unselectedColor,
             ),
-            label: 'Result',
+            label: localizations.bottomNavigationResults,
           ),
         ],
       ),

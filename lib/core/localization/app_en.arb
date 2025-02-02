@@ -3,5 +3,17 @@
     "appTitle": "BrainBench",
     "@appTitle": {
         "description": "The title of the application"
+    },
+    "bottomNavigationHome": "Home",
+    "@bottomNavigationHome": {
+        "description": "The title of the home page in the bottom navigation bar"
+    },
+    "bottomNavigationQuiz": "Quiz",
+    "@bottomNavigationQuiz": {
+        "description": "The title of the quiz page in the bottom navigation bar"
+    },
+    "bottomNavigationResults": "Results",
+    "@bottomNavigationResults": {
+        "description": "The title of the results page in the bottom navigation bar"
     }
 }
