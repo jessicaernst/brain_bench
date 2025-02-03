@@ -9,15 +9,23 @@ part of 'category.dart';
 _$CategoryImpl _$$CategoryImplFromJson(Map<String, dynamic> json) =>
     _$CategoryImpl(
       id: json['id'] as String,
-      name: json['name'] as String,
-      subtitle: json['subtitle'] as String,
-      description: json['description'] as String,
+      nameEn: json['nameEn'] as String,
+      nameDe: json['nameDe'] as String,
+      subtitleEn: json['subtitleEn'] as String,
+      subtitleDe: json['subtitleDe'] as String,
+      descriptionEn: json['descriptionEn'] as String,
+      descriptionDe: json['descriptionDe'] as String,
+      progress: (json['progress'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$CategoryImplToJson(_$CategoryImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'name': instance.name,
-      'subtitle': instance.subtitle,
-      'description': instance.description,
+      'nameEn': instance.nameEn,
+      'nameDe': instance.nameDe,
+      'subtitleEn': instance.subtitleEn,
+      'subtitleDe': instance.subtitleDe,
+      'descriptionEn': instance.descriptionEn,
+      'descriptionDe': instance.descriptionDe,
+      'progress': instance.progress,
     };

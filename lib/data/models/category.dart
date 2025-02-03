@@ -9,29 +9,37 @@ class Category with _$Category {
   // The main factory constructor for the `Category` class.
   // This is used to create a `Category` object by providing all the required fields.
   factory Category({
-    required String id, // The unique identifier for the category.
-    required String name, // The name of the category.
-    required String
-        subtitle, // A subtitle providing additional information about the category.
-    required String description, // A detailed description of the category.
+    required String id,
+    required String nameEn,
+    required String nameDe,
+    required String subtitleEn,
+    required String subtitleDe,
+    required String descriptionEn,
+    required String descriptionDe,
+    required double progress,
   }) = _Category;
 
   // A custom factory constructor named `create`, designed to generate a `Category` object
   // with an automatically generated unique ID (UUID).
   factory Category.create({
-    required String name, // The name of the category to be passed in.
-    required String subtitle, // The subtitle to describe the category further.
-    required String
-        description, // A detailed description of what the category is about.
+    required String nameEn, // The name of the category to be passed in.
+    required String nameDe,
+    required String subtitleEn,
+    required String subtitleDe,
+    required String descriptionEn,
+    required String descriptionDe,
+    required double progress,
   }) {
     // Here we generate a new UUID for the category's ID.
     return Category(
-      id: const Uuid().v4(), // Generates a unique identifier for this category.
-      name: name, // Passes the given name to the main factory constructor.
-      subtitle:
-          subtitle, // Passes the given subtitle to the main factory constructor.
-      description:
-          description, // Passes the given description to the main factory constructor.
+      id: const Uuid().v4(),
+      nameEn: nameEn,
+      nameDe: nameDe,
+      subtitleEn: subtitleEn,
+      subtitleDe: subtitleDe,
+      descriptionEn: descriptionEn,
+      descriptionDe: descriptionDe,
+      progress: progress,
     );
   }
 

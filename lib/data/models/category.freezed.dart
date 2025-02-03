@@ -20,13 +20,14 @@ Category _$CategoryFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Category {
-  String get id =>
-      throw _privateConstructorUsedError; // The unique identifier for the category.
-  String get name =>
-      throw _privateConstructorUsedError; // The name of the category.
-  String get subtitle =>
-      throw _privateConstructorUsedError; // A subtitle providing additional information about the category.
-  String get description => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
+  String get nameEn => throw _privateConstructorUsedError;
+  String get nameDe => throw _privateConstructorUsedError;
+  String get subtitleEn => throw _privateConstructorUsedError;
+  String get subtitleDe => throw _privateConstructorUsedError;
+  String get descriptionEn => throw _privateConstructorUsedError;
+  String get descriptionDe => throw _privateConstructorUsedError;
+  double get progress => throw _privateConstructorUsedError;
 
   /// Serializes this Category to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,7 +44,15 @@ abstract class $CategoryCopyWith<$Res> {
   factory $CategoryCopyWith(Category value, $Res Function(Category) then) =
       _$CategoryCopyWithImpl<$Res, Category>;
   @useResult
-  $Res call({String id, String name, String subtitle, String description});
+  $Res call(
+      {String id,
+      String nameEn,
+      String nameDe,
+      String subtitleEn,
+      String subtitleDe,
+      String descriptionEn,
+      String descriptionDe,
+      double progress});
 }
 
 /// @nodoc
@@ -62,27 +71,47 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
-    Object? subtitle = null,
-    Object? description = null,
+    Object? nameEn = null,
+    Object? nameDe = null,
+    Object? subtitleEn = null,
+    Object? subtitleDe = null,
+    Object? descriptionEn = null,
+    Object? descriptionDe = null,
+    Object? progress = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      nameEn: null == nameEn
+          ? _value.nameEn
+          : nameEn // ignore: cast_nullable_to_non_nullable
               as String,
-      subtitle: null == subtitle
-          ? _value.subtitle
-          : subtitle // ignore: cast_nullable_to_non_nullable
+      nameDe: null == nameDe
+          ? _value.nameDe
+          : nameDe // ignore: cast_nullable_to_non_nullable
               as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
+      subtitleEn: null == subtitleEn
+          ? _value.subtitleEn
+          : subtitleEn // ignore: cast_nullable_to_non_nullable
               as String,
+      subtitleDe: null == subtitleDe
+          ? _value.subtitleDe
+          : subtitleDe // ignore: cast_nullable_to_non_nullable
+              as String,
+      descriptionEn: null == descriptionEn
+          ? _value.descriptionEn
+          : descriptionEn // ignore: cast_nullable_to_non_nullable
+              as String,
+      descriptionDe: null == descriptionDe
+          ? _value.descriptionDe
+          : descriptionDe // ignore: cast_nullable_to_non_nullable
+              as String,
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -95,7 +124,15 @@ abstract class _$$CategoryImplCopyWith<$Res>
       __$$CategoryImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, String subtitle, String description});
+  $Res call(
+      {String id,
+      String nameEn,
+      String nameDe,
+      String subtitleEn,
+      String subtitleDe,
+      String descriptionEn,
+      String descriptionDe,
+      double progress});
 }
 
 /// @nodoc
@@ -112,27 +149,47 @@ class __$$CategoryImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
-    Object? subtitle = null,
-    Object? description = null,
+    Object? nameEn = null,
+    Object? nameDe = null,
+    Object? subtitleEn = null,
+    Object? subtitleDe = null,
+    Object? descriptionEn = null,
+    Object? descriptionDe = null,
+    Object? progress = null,
   }) {
     return _then(_$CategoryImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      nameEn: null == nameEn
+          ? _value.nameEn
+          : nameEn // ignore: cast_nullable_to_non_nullable
               as String,
-      subtitle: null == subtitle
-          ? _value.subtitle
-          : subtitle // ignore: cast_nullable_to_non_nullable
+      nameDe: null == nameDe
+          ? _value.nameDe
+          : nameDe // ignore: cast_nullable_to_non_nullable
               as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
+      subtitleEn: null == subtitleEn
+          ? _value.subtitleEn
+          : subtitleEn // ignore: cast_nullable_to_non_nullable
               as String,
+      subtitleDe: null == subtitleDe
+          ? _value.subtitleDe
+          : subtitleDe // ignore: cast_nullable_to_non_nullable
+              as String,
+      descriptionEn: null == descriptionEn
+          ? _value.descriptionEn
+          : descriptionEn // ignore: cast_nullable_to_non_nullable
+              as String,
+      descriptionDe: null == descriptionDe
+          ? _value.descriptionDe
+          : descriptionDe // ignore: cast_nullable_to_non_nullable
+              as String,
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -142,28 +199,37 @@ class __$$CategoryImplCopyWithImpl<$Res>
 class _$CategoryImpl implements _Category {
   _$CategoryImpl(
       {required this.id,
-      required this.name,
-      required this.subtitle,
-      required this.description});
+      required this.nameEn,
+      required this.nameDe,
+      required this.subtitleEn,
+      required this.subtitleDe,
+      required this.descriptionEn,
+      required this.descriptionDe,
+      required this.progress});
 
   factory _$CategoryImpl.fromJson(Map<String, dynamic> json) =>
       _$$CategoryImplFromJson(json);
 
   @override
   final String id;
-// The unique identifier for the category.
   @override
-  final String name;
-// The name of the category.
+  final String nameEn;
   @override
-  final String subtitle;
-// A subtitle providing additional information about the category.
+  final String nameDe;
   @override
-  final String description;
+  final String subtitleEn;
+  @override
+  final String subtitleDe;
+  @override
+  final String descriptionEn;
+  @override
+  final String descriptionDe;
+  @override
+  final double progress;
 
   @override
   String toString() {
-    return 'Category(id: $id, name: $name, subtitle: $subtitle, description: $description)';
+    return 'Category(id: $id, nameEn: $nameEn, nameDe: $nameDe, subtitleEn: $subtitleEn, subtitleDe: $subtitleDe, descriptionEn: $descriptionEn, descriptionDe: $descriptionDe, progress: $progress)';
   }
 
   @override
@@ -172,16 +238,24 @@ class _$CategoryImpl implements _Category {
         (other.runtimeType == runtimeType &&
             other is _$CategoryImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.subtitle, subtitle) ||
-                other.subtitle == subtitle) &&
-            (identical(other.description, description) ||
-                other.description == description));
+            (identical(other.nameEn, nameEn) || other.nameEn == nameEn) &&
+            (identical(other.nameDe, nameDe) || other.nameDe == nameDe) &&
+            (identical(other.subtitleEn, subtitleEn) ||
+                other.subtitleEn == subtitleEn) &&
+            (identical(other.subtitleDe, subtitleDe) ||
+                other.subtitleDe == subtitleDe) &&
+            (identical(other.descriptionEn, descriptionEn) ||
+                other.descriptionEn == descriptionEn) &&
+            (identical(other.descriptionDe, descriptionDe) ||
+                other.descriptionDe == descriptionDe) &&
+            (identical(other.progress, progress) ||
+                other.progress == progress));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, subtitle, description);
+  int get hashCode => Object.hash(runtimeType, id, nameEn, nameDe, subtitleEn,
+      subtitleDe, descriptionEn, descriptionDe, progress);
 
   /// Create a copy of Category
   /// with the given fields replaced by the non-null parameter values.
@@ -202,22 +276,33 @@ class _$CategoryImpl implements _Category {
 abstract class _Category implements Category {
   factory _Category(
       {required final String id,
-      required final String name,
-      required final String subtitle,
-      required final String description}) = _$CategoryImpl;
+      required final String nameEn,
+      required final String nameDe,
+      required final String subtitleEn,
+      required final String subtitleDe,
+      required final String descriptionEn,
+      required final String descriptionDe,
+      required final double progress}) = _$CategoryImpl;
 
   factory _Category.fromJson(Map<String, dynamic> json) =
       _$CategoryImpl.fromJson;
 
   @override
-  String get id; // The unique identifier for the category.
+  String get id;
   @override
-  String get name; // The name of the category.
+  String get nameEn;
   @override
-  String
-      get subtitle; // A subtitle providing additional information about the category.
+  String get nameDe;
   @override
-  String get description;
+  String get subtitleEn;
+  @override
+  String get subtitleDe;
+  @override
+  String get descriptionEn;
+  @override
+  String get descriptionDe;
+  @override
+  double get progress;
 
   /// Create a copy of Category
   /// with the given fields replaced by the non-null parameter values.

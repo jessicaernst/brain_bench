@@ -12,6 +12,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart' as _svg;
 import 'package:vector_graphics/vector_graphics.dart' as _vg;
 
+class $LibGen {
+  const $LibGen();
+
+  /// Directory path: lib/data
+  $LibDataGen get data => const $LibDataGen();
+}
+
 class $AssetsAppIconsGen {
   const $AssetsAppIconsGen();
 
@@ -116,12 +123,42 @@ class $AssetsImagesGen {
       ];
 }
 
+class $LibDataGen {
+  const $LibDataGen();
+
+  /// Directory path: lib/data/data_source
+  $LibDataDataSourceGen get dataSource => const $LibDataDataSourceGen();
+}
+
+class $LibDataDataSourceGen {
+  const $LibDataDataSourceGen();
+
+  /// File path: lib/data/data_source/answers.json
+  String get answers => 'lib/data/data_source/answers.json';
+
+  /// File path: lib/data/data_source/category.json
+  String get category => 'lib/data/data_source/category.json';
+
+  /// File path: lib/data/data_source/questions.json
+  String get questions => 'lib/data/data_source/questions.json';
+
+  /// File path: lib/data/data_source/results.json
+  String get results => 'lib/data/data_source/results.json';
+
+  /// File path: lib/data/data_source/topics.json
+  String get topics => 'lib/data/data_source/topics.json';
+
+  /// List of all assets
+  List<String> get values => [answers, category, questions, results, topics];
+}
+
 class Assets {
   Assets._();
 
   static const $AssetsAppIconsGen appIcons = $AssetsAppIconsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $LibGen lib = $LibGen();
 }
 
 class AssetGenImage {

@@ -7,7 +7,7 @@ class DarkmodeBtn extends StatelessWidget {
     super.key,
     required this.title,
     required this.onPressed,
-    this.isActive = true,
+    required this.isActive,
     this.padding = const EdgeInsets.symmetric(horizontal: 48),
   });
 

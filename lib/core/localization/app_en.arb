@@ -27,5 +27,9 @@
     "appBarTitleQuizResult": "Results",
     "@appBarTitleQuizResult": {
         "description": "The title of the quiz result page in the app bar"
+    },
+    "chooseCategoryBtnLbl": "Choose Category",
+    "@chooseCategoryBtnLbl": {
+        "description": "The label of the button to choose a category"
     }
 }

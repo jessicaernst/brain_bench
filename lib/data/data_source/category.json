@@ -1,11 +1,42 @@
 [
     {
+        "id": "1a2b3c4d-ecosystem-001",
+        "nameEn": "Ecosystem",
+        "nameDe": "Ökosystem",
+        "subtitleEn": "Mindset, Agile, and Mobile App Development",
+        "subtitleDe": "Mindset, Agile und Mobile App Entwicklung",
+        "descriptionEn": "Explore the foundations of agile project management, mindset for software teams, and a broad understanding of the mobile app development ecosystem.",
+        "descriptionDe": "Erkunde die Grundlagen des agilen Projektmanagements, das Mindset für Software-Teams und ein breites Verständnis des Ökosystems der Mobile-App-Entwicklung.",
+        "progress": 0.9
+    },
+    {
+        "id": "2b3c4d5e-design-002",
+        "nameEn": "Design",
+        "nameDe": "Design",
+        "subtitleEn": "Master UI/UX design principles",
+        "subtitleDe": "Beherrsche die Grundlagen von UI/UX-Design",
+        "descriptionEn": "Learn how to create intuitive, visually appealing, and user-friendly designs for mobile and web applications. Topics include color theory, typography, and responsive design.",
+        "descriptionDe": "Lerne, wie du intuitive, ansprechende und benutzerfreundliche Designs für mobile und Web-Anwendungen erstellst. Themen sind Farbtheorie, Typografie und responsives Design.",
+        "progress": 0.75
+    },
+    {
         "id": "f711e799-3ebe-46d3-9d78-722e2d024cec",
         "nameEn": "Coding",
         "nameDe": "Programmierung",
         "subtitleEn": "Learn coding fundamentals with Dart",
         "subtitleDe": "Lerne die Grundlagen der Programmierung mit Dart",
         "descriptionEn": "Topics covering Dart programming and OOP basics.",
-        "descriptionDe": "Themen rund um Dart-Programmierung und OOP-Grundlagen."
+        "descriptionDe": "Themen rund um Dart-Programmierung und OOP-Grundlagen.",
+        "progress": 0.5
+    },
+    {
+        "id": "3c4d5e6f-flutter-003",
+        "nameEn": "Flutter",
+        "nameDe": "Flutter",
+        "subtitleEn": "Build beautiful native apps with Flutter",
+        "subtitleDe": "Erstelle schöne native Apps mit Flutter",
+        "descriptionEn": "Learn to develop cross-platform mobile apps using Flutter. Topics include state management, widgets, animations, and responsive design.",
+        "descriptionDe": "Lerne, plattformübergreifende mobile Apps mit Flutter zu entwickeln. Themen sind State Management, Widgets, Animationen und responsives Design.",
+        "progress": 0.4
     }
 ]

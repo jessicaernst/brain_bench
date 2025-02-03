@@ -16,6 +16,10 @@ const String _mockUserId = 'mock-user-1234';
 
 class MockDatabaseRepository implements DatabaseRepository {
   final String resultsPath = 'lib/data/data_source/results.json';
+  final String categoriesPath = 'lib/data/data_source/category.json';
+  final String topicsPath = 'lib/data/data_source/topics.json';
+  final String questionsPath = 'lib/data/data_source/questions.json';
+  final String answersPath = 'lib/data/data_source/answers.json';
 
   static final MockDatabaseRepository _instance =
       MockDatabaseRepository._internal();
@@ -29,26 +33,27 @@ class MockDatabaseRepository implements DatabaseRepository {
   // read Categories
   @override
   Future<List<Category>> getCategories(String languageCode) async {
-    final String jsonString =
-        await rootBundle.loadString('data/mock_database/category.json');
+    final String jsonString = await rootBundle.loadString(categoriesPath);
     final List<dynamic> jsonData = json.decode(jsonString);
 
-    return jsonData.map((e) {
-      return Category(
-        id: e['id'],
-        name: languageCode == 'de' ? e['nameDe'] : e['nameEn'],
-        subtitle: languageCode == 'de' ? e['subtitleDe'] : e['subtitleEn'],
-        description:
-            languageCode == 'de' ? e['descriptionDe'] : e['descriptionEn'],
-      );
-    }).toList();
+    return jsonData
+        .map((e) => Category(
+              id: e['id'],
+              nameEn: e['nameEn'],
+              nameDe: e['nameDe'],
+              subtitleEn: e['subtitleEn'],
+              subtitleDe: e['subtitleDe'],
+              descriptionEn: e['descriptionEn'],
+              descriptionDe: e['descriptionDe'],
+              progress: (e['progress'] as num?)?.toDouble() ?? 0.0,
+            ))
+        .toList();
   }
 
   // read Topics
   @override
   Future<List<Topic>> getTopics(String categoryId, String languageCode) async {
-    final String jsonString =
-        await rootBundle.loadString('data/mock_database/topics.json');
+    final String jsonString = await rootBundle.loadString(topicsPath);
     final List<dynamic> jsonData = json.decode(jsonString);
 
     return jsonData.where((e) => e['categoryId'] == categoryId).map((e) {
@@ -68,11 +73,10 @@ class MockDatabaseRepository implements DatabaseRepository {
   Future<List<Question>> getQuestions(
       String topicId, String languageCode) async {
     final String questionJsonString =
-        await rootBundle.loadString('data/mock_database/questions.json');
+        await rootBundle.loadString(questionsPath);
     final List<dynamic> questionJsonData = json.decode(questionJsonString);
 
-    final String answerJsonString =
-        await rootBundle.loadString('data/mock_database/answers.json');
+    final String answerJsonString = await rootBundle.loadString(answersPath);
     final List<dynamic> answerJsonData = json.decode(answerJsonString);
 
     final Map<String, Answer> answersMap = {
@@ -109,8 +113,7 @@ class MockDatabaseRepository implements DatabaseRepository {
   @override
   Future<List<Answer>> getAnswers(
       List<String> answerIds, String languageCode) async {
-    final String jsonString =
-        await rootBundle.loadString('data/mock_database/answers.json');
+    final String jsonString = await rootBundle.loadString(answersPath);
     final List<dynamic> jsonData = json.decode(jsonString);
 
     return jsonData
