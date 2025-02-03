@@ -23,8 +23,8 @@ class BrainBenchApp extends StatelessWidget {
       ],
       onGenerateTitle: (BuildContext context) =>
           AppLocalizations.of(context)!.appTitle,
-      theme: getLightTheme(),
-      darkTheme: getDarkTheme(),
+      theme: BrainBenchTheme.lightTheme,
+      darkTheme: BrainBenchTheme.darkTheme,
       initialRoute: '/',
       onGenerateRoute: RouteGenerator.generateRoute,
     );
