@@ -1,5 +1,6 @@
 import 'package:brain_bench/core/widgets/darkmode_btn.dart';
 import 'package:brain_bench/core/widgets/lightmode_btn.dart';
+import 'package:brain_bench/presentation/categories/widgets/progress_evolution_image_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -26,13 +27,17 @@ class CategoriesPage extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
+            spacing: 20,
             children: [
+              const ProgessEvolutionImageView(
+                size: 100,
+                progress: 0.24,
+              ),
               LightmodeBtn(
                 title: 'test',
                 onPressed: () {},
                 //isActive: false,
               ),
-              const SizedBox(height: 20),
               DarkmodeBtn(
                 title: 'test',
                 onPressed: () {},

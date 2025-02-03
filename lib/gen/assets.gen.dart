@@ -80,25 +80,25 @@ class $AssetsImagesGen {
   AssetGenImage get dashLogoSmaller =>
       const AssetGenImage('assets/images/DashLogoSmaller.png');
 
-  /// File path: assets/images/Evolution 2.png
-  AssetGenImage get evolution2 =>
-      const AssetGenImage('assets/images/Evolution 2.png');
-
-  /// File path: assets/images/Evolution 3.png
-  AssetGenImage get evolution3 =>
-      const AssetGenImage('assets/images/Evolution 3.png');
-
-  /// File path: assets/images/Evolution 4.png
-  AssetGenImage get evolution4 =>
-      const AssetGenImage('assets/images/Evolution 4.png');
-
-  /// File path: assets/images/Evolution Expert.png
-  AssetGenImage get evolutionExpert =>
-      const AssetGenImage('assets/images/Evolution Expert.png');
-
   /// File path: assets/images/Evolution1.png
   AssetGenImage get evolution1 =>
       const AssetGenImage('assets/images/Evolution1.png');
+
+  /// File path: assets/images/Evolution2.png
+  AssetGenImage get evolution2 =>
+      const AssetGenImage('assets/images/Evolution2.png');
+
+  /// File path: assets/images/Evolution3.png
+  AssetGenImage get evolution3 =>
+      const AssetGenImage('assets/images/Evolution3.png');
+
+  /// File path: assets/images/Evolution4.png
+  AssetGenImage get evolution4 =>
+      const AssetGenImage('assets/images/Evolution4.png');
+
+  /// File path: assets/images/EvolutionExpert.png
+  AssetGenImage get evolutionExpert =>
+      const AssetGenImage('assets/images/EvolutionExpert.png');
 
   /// File path: assets/images/sadHam.png
   AssetGenImage get sadHam => const AssetGenImage('assets/images/sadHam.png');
@@ -107,11 +107,11 @@ class $AssetsImagesGen {
   List<AssetGenImage> get values => [
         dashLogo,
         dashLogoSmaller,
+        evolution1,
         evolution2,
         evolution3,
         evolution4,
         evolutionExpert,
-        evolution1,
         sadHam
       ];
 }
