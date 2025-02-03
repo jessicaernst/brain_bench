@@ -1,7 +1,6 @@
 import 'package:brain_bench/business_logic/categories/categories_provider.dart';
-import 'package:brain_bench/core/widgets/darkmode_btn.dart';
-import 'package:brain_bench/core/widgets/lightmode_btn.dart';
 import 'package:brain_bench/data/models/category.dart';
+import 'package:brain_bench/presentation/categories/widgets/category_button.dart';
 import 'package:brain_bench/presentation/categories/widgets/category_row_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,6 +27,13 @@ class CategoriesPage extends ConsumerWidget {
         ref.read(categoryViewModelProvider(languageCode).notifier);
 
     final bool isCategorySelected = categoryNotifier.isCategorySelected();
+
+    void navigateToCategoryDetails(BuildContext context) {
+      logger.info('Category selected');
+      ref
+          .read(categoryViewModelProvider(languageCode).notifier)
+          .navigateToCategoryDetails(context);
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -77,29 +83,12 @@ class CategoriesPage extends ConsumerWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: isDarkMode
-                      ? LightmodeBtn(
-                          title: localizations.chooseCategoryBtnLbl,
-                          onPressed: isCategorySelected
-                              ? () {
-                                  logger.info('Category selected');
-                                }
-                              : () {
-                                  logger.info('Button inactive');
-                                },
-                          isActive: isCategorySelected,
-                        )
-                      : DarkmodeBtn(
-                          title: localizations.chooseCategoryBtnLbl,
-                          onPressed: isCategorySelected
-                              ? () {
-                                  logger.info('Category selected');
-                                }
-                              : () {
-                                  logger.info('Button inactive');
-                                },
-                          isActive: isCategorySelected,
-                        ),
+                  child: CategoryButton(
+                    title: localizations.chooseCategoryBtnLbl,
+                    isActive: isCategorySelected,
+                    isDarkMode: isDarkMode,
+                    onPressed: () => navigateToCategoryDetails(context),
+                  ),
                 ),
               ],
             );

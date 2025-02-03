@@ -1,5 +1,7 @@
+import 'package:brain_bench/data/models/category.dart';
 import 'package:brain_bench/navigation/routes/not_found_page.dart';
 import 'package:brain_bench/presentation/categories/screens/categories_page.dart';
+import 'package:brain_bench/presentation/categories/screens/category_details_page.dart';
 import 'package:brain_bench/presentation/home/screens/home_page.dart';
 import 'package:brain_bench/presentation/results/Screens/result_page.dart';
 import 'package:brain_bench/navigation/tabs/screens/tabs_page.dart';
@@ -14,6 +16,14 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const HomePage());
       case '/categories':
         return MaterialPageRoute(builder: (_) => const CategoriesPage());
+      case '/categories/details':
+        return MaterialPageRoute(
+          builder: (context) {
+            final category = settings.arguments as Category?;
+            return CategoryDetailsPage(category: category);
+          },
+          settings: settings,
+        );
       case '/results':
         return MaterialPageRoute(builder: (_) => const ResultPage());
       default:
