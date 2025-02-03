@@ -27,7 +27,7 @@
         "subtitleDe": "Lerne die Grundlagen der Programmierung mit Dart",
         "descriptionEn": "Topics covering Dart programming and OOP basics.",
         "descriptionDe": "Themen rund um Dart-Programmierung und OOP-Grundlagen.",
-        "progress": 0.5
+        "progress": 1.0
     },
     {
         "id": "3c4d5e6f-flutter-003",
@@ -37,6 +37,6 @@
         "subtitleDe": "Erstelle schöne native Apps mit Flutter",
         "descriptionEn": "Learn to develop cross-platform mobile apps using Flutter. Topics include state management, widgets, animations, and responsive design.",
         "descriptionDe": "Lerne, plattformübergreifende mobile Apps mit Flutter zu entwickeln. Themen sind State Management, Widgets, Animationen und responsives Design.",
-        "progress": 0.4
+        "progress": 0.3
     }
 ]

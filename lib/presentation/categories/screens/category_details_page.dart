@@ -18,7 +18,6 @@ class CategoryDetailsPage extends ConsumerWidget {
     final String languageCode = Localizations.localeOf(context).languageCode;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    final category = ModalRoute.of(context)?.settings.arguments as Category?;
     if (category == null) {
       return Scaffold(
         appBar: AppBar(
@@ -36,11 +35,12 @@ class CategoryDetailsPage extends ConsumerWidget {
     }
 
     final String name =
-        languageCode == 'de' ? category.nameDe : category.nameEn;
-    final String description =
-        languageCode == 'de' ? category.descriptionDe : category.descriptionEn;
+        languageCode == 'de' ? category!.nameDe : category!.nameEn;
+    final String description = languageCode == 'de'
+        ? category!.descriptionDe
+        : category!.descriptionEn;
     final String subtitle =
-        languageCode == 'de' ? category.subtitleDe : category.subtitleEn;
+        languageCode == 'de' ? category!.subtitleDe : category!.subtitleEn;
 
     return PopScope(
       onPopInvokedWithResult: (popAction, result) {
@@ -60,7 +60,7 @@ class CategoryDetailsPage extends ConsumerWidget {
             children: [
               const SizedBox(height: 24),
               ProgessEvolutionImageView(
-                progress: category.progress,
+                progress: category!.progress,
                 size: 200,
               ),
               const SizedBox(height: 48),
@@ -82,12 +82,7 @@ class CategoryDetailsPage extends ConsumerWidget {
                   title: 'Ok',
                   isActive: true,
                   isDarkMode: isDarkMode,
-                  onPressed: () {
-                    ref
-                        .read(selectedCategoryNotifierProvider.notifier)
-                        .selectCategory(null);
-                    Navigator.pop(context);
-                  },
+                  onPressed: () {},
                 ),
               ),
             ],

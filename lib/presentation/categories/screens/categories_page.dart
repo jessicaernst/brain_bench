@@ -42,14 +42,21 @@ class CategoriesPage extends ConsumerWidget {
 
         if (selectedCategory != null) {
           logger.info('Navigating to category details: ${selectedCategory.id}');
-          Navigator.pushNamed(
-            context,
+          Navigator.of(context).pushNamed(
             '/categories/details',
             arguments: selectedCategory,
           );
         } else {
-          logger.info('No category selected for navigation.');
+          logger.warning('No category selected for navigation.');
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please select a category first.')),
+          );
         }
+      } else {
+        logger.warning('Categories data not loaded yet.');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Categories are still loading.')),
+        );
       }
     }
 
