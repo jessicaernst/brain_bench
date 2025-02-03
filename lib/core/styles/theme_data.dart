@@ -18,6 +18,14 @@ class BrainBenchTheme {
             backgroundColor: BrainBenchColors.blueprintBlue,
           ),
         ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: BrainBenchColors.deepDive,
+            textStyle:
+                BrainBenchTextTheme.textTheme(brightness: Brightness.light)
+                    .labelLarge,
+          ),
+        ),
         colorScheme: const ColorScheme.light(
           surface: BrainBenchColors.cloudCanvas,
           secondary: BrainBenchColors.blueprintBlue,
@@ -49,6 +57,14 @@ class BrainBenchTheme {
           style: ElevatedButton.styleFrom(
             foregroundColor: BrainBenchColors.deepDive,
             backgroundColor: BrainBenchColors.flutterSky,
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: BrainBenchColors.cloudCanvas,
+            textStyle:
+                BrainBenchTextTheme.textTheme(brightness: Brightness.dark)
+                    .labelLarge,
           ),
         ),
         colorScheme: const ColorScheme.dark(
