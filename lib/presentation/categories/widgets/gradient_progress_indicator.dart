@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 class GradientProgressIndicator extends StatelessWidget {
   const GradientProgressIndicator({
@@ -59,7 +60,7 @@ class _GradientProgressPainter extends CustomPainter {
     final double radius = (size.width - strokeWidth) / 2;
 
     // Calculate the sweep angle for the progress.
-    final double sweepAngle = 2 * 3.141592653589793 * progress;
+    final double sweepAngle = 2 * math.pi * progress;
 
     // Draw the progress arc.
     canvas.drawArc(
