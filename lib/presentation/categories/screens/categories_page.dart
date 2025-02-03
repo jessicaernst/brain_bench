@@ -1,5 +1,6 @@
 import 'package:brain_bench/business_logic/categories/categories_provider.dart';
 import 'package:brain_bench/data/models/category.dart';
+import 'package:brain_bench/data/providers/category_providers.dart';
 import 'package:brain_bench/presentation/categories/widgets/category_button.dart';
 import 'package:brain_bench/presentation/categories/widgets/category_row_view.dart';
 import 'package:flutter/material.dart';
@@ -21,18 +22,35 @@ class CategoriesPage extends ConsumerWidget {
     final String languageCode = Localizations.localeOf(context).languageCode;
     logger.info('CategoriesPage initialized with languageCode: $languageCode');
 
-    final AsyncValue<List<Category>> categoryViewModel =
-        ref.watch(categoryViewModelProvider(languageCode));
-    final categoryNotifier =
-        ref.read(categoryViewModelProvider(languageCode).notifier);
+    final AsyncValue<List<Category>> categoriesAsync =
+        ref.watch(categoriesProvider(languageCode));
 
-    final bool isCategorySelected = categoryNotifier.isCategorySelected();
+    final categoryNotifier =
+        ref.read(selectedCategoryNotifierProvider.notifier);
+    final String? selectedCategoryId =
+        ref.watch(selectedCategoryNotifierProvider);
 
     void navigateToCategoryDetails(BuildContext context) {
-      logger.info('Category selected');
-      ref
-          .read(categoryViewModelProvider(languageCode).notifier)
-          .navigateToCategoryDetails(context);
+      if (categoriesAsync is AsyncData<List<Category>>) {
+        final categories = categoriesAsync.value;
+        final selectedCategory = categories
+                .where((category) => category.id == selectedCategoryId)
+                .isNotEmpty
+            ? categories
+                .firstWhere((category) => category.id == selectedCategoryId)
+            : null;
+
+        if (selectedCategory != null) {
+          logger.info('Navigating to category details: ${selectedCategory.id}');
+          Navigator.pushNamed(
+            context,
+            '/categories/details',
+            arguments: selectedCategory,
+          );
+        } else {
+          logger.info('No category selected for navigation.');
+        }
+      }
     }
 
     return Scaffold(
@@ -43,7 +61,7 @@ class CategoriesPage extends ConsumerWidget {
         ),
       ),
       body: SafeArea(
-        child: categoryViewModel.when(
+        child: categoriesAsync.when(
           data: (categories) {
             logger.info('Received ${categories.length} categories');
 
@@ -56,9 +74,7 @@ class CategoriesPage extends ConsumerWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: categories.map((category) {
-                        final isSelected = categoryNotifier
-                                .isCategorySelected() &&
-                            categoryNotifier.selectedCategoryId == category.id;
+                        final isSelected = selectedCategoryId == category.id;
                         final categoryName = languageCode == 'de'
                             ? category.nameDe
                             : category.nameEn;
@@ -85,7 +101,7 @@ class CategoriesPage extends ConsumerWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: CategoryButton(
                     title: localizations.chooseCategoryBtnLbl,
-                    isActive: isCategorySelected,
+                    isActive: selectedCategoryId != null,
                     isDarkMode: isDarkMode,
                     onPressed: () => navigateToCategoryDetails(context),
                   ),

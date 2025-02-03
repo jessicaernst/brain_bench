@@ -6,7 +6,7 @@ part of 'categories_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$categoryViewModelHash() => r'fbb2a488378d7b0e5efbec7b149e51f456f03c22';
+String _$buildHash() => r'da3c00e9c90c468cb8c007bd2c83229a359a825a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,36 +29,27 @@ class _SystemHash {
   }
 }
 
-abstract class _$CategoryViewModel
-    extends BuildlessAutoDisposeAsyncNotifier<List<Category>> {
-  late final String languageCode;
+/// See also [build].
+@ProviderFor(build)
+const buildProvider = BuildFamily();
 
-  FutureOr<List<Category>> build(
-    String languageCode,
-  );
-}
+/// See also [build].
+class BuildFamily extends Family<AsyncValue<List<Category>>> {
+  /// See also [build].
+  const BuildFamily();
 
-/// See also [CategoryViewModel].
-@ProviderFor(CategoryViewModel)
-const categoryViewModelProvider = CategoryViewModelFamily();
-
-/// See also [CategoryViewModel].
-class CategoryViewModelFamily extends Family<AsyncValue<List<Category>>> {
-  /// See also [CategoryViewModel].
-  const CategoryViewModelFamily();
-
-  /// See also [CategoryViewModel].
-  CategoryViewModelProvider call(
+  /// See also [build].
+  BuildProvider call(
     String languageCode,
   ) {
-    return CategoryViewModelProvider(
+    return BuildProvider(
       languageCode,
     );
   }
 
   @override
-  CategoryViewModelProvider getProviderOverride(
-    covariant CategoryViewModelProvider provider,
+  BuildProvider getProviderOverride(
+    covariant BuildProvider provider,
   ) {
     return call(
       provider.languageCode,
@@ -77,30 +68,31 @@ class CategoryViewModelFamily extends Family<AsyncValue<List<Category>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'categoryViewModelProvider';
+  String? get name => r'buildProvider';
 }
 
-/// See also [CategoryViewModel].
-class CategoryViewModelProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    CategoryViewModel, List<Category>> {
-  /// See also [CategoryViewModel].
-  CategoryViewModelProvider(
+/// See also [build].
+class BuildProvider extends AutoDisposeFutureProvider<List<Category>> {
+  /// See also [build].
+  BuildProvider(
     String languageCode,
   ) : this._internal(
-          () => CategoryViewModel()..languageCode = languageCode,
-          from: categoryViewModelProvider,
-          name: r'categoryViewModelProvider',
+          (ref) => build(
+            ref as BuildRef,
+            languageCode,
+          ),
+          from: buildProvider,
+          name: r'buildProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$categoryViewModelHash,
-          dependencies: CategoryViewModelFamily._dependencies,
-          allTransitiveDependencies:
-              CategoryViewModelFamily._allTransitiveDependencies,
+                  : _$buildHash,
+          dependencies: BuildFamily._dependencies,
+          allTransitiveDependencies: BuildFamily._allTransitiveDependencies,
           languageCode: languageCode,
         );
 
-  CategoryViewModelProvider._internal(
+  BuildProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -113,20 +105,13 @@ class CategoryViewModelProvider extends AutoDisposeAsyncNotifierProviderImpl<
   final String languageCode;
 
   @override
-  FutureOr<List<Category>> runNotifierBuild(
-    covariant CategoryViewModel notifier,
+  Override overrideWith(
+    FutureOr<List<Category>> Function(BuildRef provider) create,
   ) {
-    return notifier.build(
-      languageCode,
-    );
-  }
-
-  @override
-  Override overrideWith(CategoryViewModel Function() create) {
     return ProviderOverride(
       origin: this,
-      override: CategoryViewModelProvider._internal(
-        () => create()..languageCode = languageCode,
+      override: BuildProvider._internal(
+        (ref) => create(ref as BuildRef),
         from: from,
         name: null,
         dependencies: null,
@@ -138,15 +123,13 @@ class CategoryViewModelProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<CategoryViewModel, List<Category>>
-      createElement() {
-    return _CategoryViewModelProviderElement(this);
+  AutoDisposeFutureProviderElement<List<Category>> createElement() {
+    return _BuildProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is CategoryViewModelProvider &&
-        other.languageCode == languageCode;
+    return other is BuildProvider && other.languageCode == languageCode;
   }
 
   @override
@@ -160,19 +143,35 @@ class CategoryViewModelProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin CategoryViewModelRef
-    on AutoDisposeAsyncNotifierProviderRef<List<Category>> {
+mixin BuildRef on AutoDisposeFutureProviderRef<List<Category>> {
   /// The parameter `languageCode` of this provider.
   String get languageCode;
 }
 
-class _CategoryViewModelProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<CategoryViewModel,
-        List<Category>> with CategoryViewModelRef {
-  _CategoryViewModelProviderElement(super.provider);
+class _BuildProviderElement
+    extends AutoDisposeFutureProviderElement<List<Category>> with BuildRef {
+  _BuildProviderElement(super.provider);
 
   @override
-  String get languageCode => (origin as CategoryViewModelProvider).languageCode;
+  String get languageCode => (origin as BuildProvider).languageCode;
 }
+
+String _$selectedCategoryNotifierHash() =>
+    r'4a4fd2be30cf33489c04a0f5fffc0ffcc4caa646';
+
+/// See also [SelectedCategoryNotifier].
+@ProviderFor(SelectedCategoryNotifier)
+final selectedCategoryNotifierProvider =
+    AutoDisposeNotifierProvider<SelectedCategoryNotifier, String?>.internal(
+  SelectedCategoryNotifier.new,
+  name: r'selectedCategoryNotifierProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$selectedCategoryNotifierHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$SelectedCategoryNotifier = AutoDisposeNotifier<String?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
