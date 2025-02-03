@@ -28,27 +28,25 @@ class CategoryRowView extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => onSelectedChanged(!isSelected),
-      child: IntrinsicHeight(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          spacing: 24,
-          children: [
-            ProgessEvolutionImageView(
-              progress: progress,
-            ),
-            Text(
-              categoryTitle,
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: isSelected
-                        ? selectedColor
-                        : Theme.of(context).textTheme.bodyMedium?.color,
-                  ),
-              textAlign: TextAlign.start,
-            ),
-          ],
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        spacing: 24,
+        children: [
+          ProgessEvolutionImageView(
+            progress: progress,
+          ),
+          Text(
+            categoryTitle,
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  color: isSelected
+                      ? selectedColor
+                      : Theme.of(context).textTheme.bodyMedium?.color,
+                ),
+            textAlign: TextAlign.start,
+          ),
+        ],
       ),
     );
   }
