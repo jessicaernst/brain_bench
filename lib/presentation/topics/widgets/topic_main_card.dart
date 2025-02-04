@@ -23,7 +23,9 @@ class TopicMainCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
+          color: isDarkMode
+              ? BrainBenchColors.darkModeGlass.withAlpha((0.5 * 255).toInt())
+              : BrainBenchColors.blueprintBlue,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(

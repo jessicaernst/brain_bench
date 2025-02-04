@@ -25,7 +25,7 @@ class TopicExpandableContent extends StatelessWidget {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
       height: isExpanded ? null : 0,
-      margin: const EdgeInsets.only(top: 1),
+      //margin: const EdgeInsets.only(top: 1),
       child: Align(
         alignment: Alignment.center,
         child: ClipRRect(
@@ -38,7 +38,7 @@ class TopicExpandableContent extends StatelessWidget {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
             child: Container(
-              width: cardWidth - 24,
+              width: cardWidth - 32,
               decoration: BoxDecoration(
                 gradient: isDarkMode
                     ? BrainBenchGradients.topicCardDarkGradient

@@ -23,6 +23,7 @@ abstract class BrainBenchColors {
   static const Color darkModeGlass = Color.fromARGB(255, 93, 200, 248);
   static const Color darkModeGlassLight = Color.fromARGB(255, 93, 200, 248);
   final Color darkModeGlass40 = darkModeGlass.withAlpha((0.4 * 255).toInt());
+  final Color darkModeGlass50 = darkModeGlass.withAlpha((0.5 * 255).toInt());
   final Color darkModeGlass10 =
       darkModeGlassLight.withAlpha((0.1 * 255).toInt());
 
