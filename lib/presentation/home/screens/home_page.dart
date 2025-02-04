@@ -12,6 +12,7 @@ class HomePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           localizations.appBarTitleHome,
           style: TextTheme.of(context).displaySmall,

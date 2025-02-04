@@ -12,6 +12,7 @@ class ResultPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           localizations.appBarTitleQuizResult,
           style: TextTheme.of(context).headlineSmall,

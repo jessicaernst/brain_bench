@@ -55,6 +55,7 @@ class CategoriesPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           localizations.appBarTitleCategories,
           style: Theme.of(context).textTheme.headlineSmall,
