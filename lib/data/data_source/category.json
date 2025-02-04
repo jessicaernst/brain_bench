@@ -13,10 +13,10 @@
         "id": "2b3c4d5e-design-002",
         "nameEn": "Design",
         "nameDe": "Design",
-        "subtitleEn": "Master UI/UX design principles",
-        "subtitleDe": "Beherrsche die Grundlagen von UI/UX-Design",
-        "descriptionEn": "Learn how to create intuitive, visually appealing, and user-friendly designs for mobile and web applications. Topics include color theory, typography, and responsive design.",
-        "descriptionDe": "Lerne, wie du intuitive, ansprechende und benutzerfreundliche Designs für mobile und Web-Anwendungen erstellst. Themen sind Farbtheorie, Typografie und responsives Design.",
+        "subtitleEn": "Why design matters for developers?",
+        "subtitleDe": "Warum Design für Entwickler wichtig ist?",
+        "descriptionEn": "Mastering design as a Flutter developer empowers you to create more intuitive and visually appealing apps. Understanding key design principles enhances user experience by enabling more logical and accessible interfaces. This knowledge facilitates seamless integration of design and code, ensuring a coherent and user-friendly application. It boosts your capability to deliver on project aesthetics and functionality, significantly elevating user engagement and satisfaction.",
+        "descriptionDe": "Das Beherrschen von Design als Flutter-Entwickler befähigt dich, intuitivere und visuell ansprechendere Apps zu erstellen. Das Verständnis grundlegender Designprinzipien verbessert die Benutzererfahrung, indem es logischere und zugänglichere Benutzeroberflächen ermöglicht. Dieses Wissen erleichtert die nahtlose Integration von Design und Code und stellt sicher, dass die Anwendung kohärent und benutzerfreundlich ist. Es steigert deine Fähigkeit, sowohl die ästhetischen als auch funktionalen Anforderungen eines Projekts zu erfüllen, was die Nutzerbindung und Zufriedenheit erheblich erhöht.",
         "progress": 0.75
     },
     {

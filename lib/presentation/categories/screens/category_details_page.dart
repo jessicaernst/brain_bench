@@ -1,9 +1,12 @@
-import 'package:brain_bench/business_logic/categories/categories_provider.dart';
+import 'package:brain_bench/business_logic/categories/categories_view_model.dart';
 import 'package:brain_bench/data/models/category.dart';
 import 'package:brain_bench/presentation/categories/widgets/category_button.dart';
 import 'package:brain_bench/presentation/categories/widgets/progress_evolution_image_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
+
+Logger logger = Logger('CategoryDetailsPage');
 
 class CategoryDetailsPage extends ConsumerWidget {
   const CategoryDetailsPage({
@@ -24,7 +27,8 @@ class CategoryDetailsPage extends ConsumerWidget {
           title: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-                languageCode == 'de' ? 'Kategoriedetails' : 'Category Details'),
+              languageCode == 'de' ? 'Kategoriedetails' : 'Category Details',
+            ),
           ),
         ),
         body: Center(
@@ -47,49 +51,62 @@ class CategoryDetailsPage extends ConsumerWidget {
         languageCode == 'de' ? category!.subtitleDe : category!.subtitleEn;
 
     return PopScope(
-      onPopInvokedWithResult: (popAction, result) {
-        ref
-            .read(selectedCategoryNotifierProvider.notifier)
-            .selectCategory(null);
-      },
+      onPopInvokedWithResult: (didPop, result) =>
+          ref.read(categoriesViewModelProvider.notifier).selectCategory(null),
       child: Scaffold(
         appBar: AppBar(
           title: Text(name),
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+          elevation: 0,
+          shadowColor: Colors.transparent,
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 24),
-              ProgessEvolutionImageView(
-                progress: category!.progress,
-                size: 200,
-              ),
-              const SizedBox(height: 48),
-              Text(
-                subtitle,
-                style: Theme.of(context).textTheme.headlineLarge,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                description,
-                style: Theme.of(context).textTheme.bodyMedium,
-                textAlign: TextAlign.center,
-              ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CategoryButton(
-                  title: 'Ok',
-                  isActive: true,
-                  isDarkMode: isDarkMode,
-                  onPressed: () {},
+        body: Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          child: SafeArea(
+            child: Stack(
+              children: [
+                // Scrollable content
+                Padding(
+                  padding: const EdgeInsets.only(
+                      bottom: 80), // Leave space for the button
+                  child: ListView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.all(16.0),
+                    children: [
+                      const SizedBox(height: 24),
+                      ProgessEvolutionImageView(
+                        progress: category!.progress,
+                        size: 180,
+                      ),
+                      const SizedBox(height: 48),
+                      Text(
+                        subtitle,
+                        style: Theme.of(context).textTheme.headlineLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        description,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                // Fixed button at the bottom
+                Positioned(
+                  bottom: 16,
+                  left: 16,
+                  right: 16,
+                  child: CategoryButton(
+                    title: 'Ok',
+                    isActive: true,
+                    isDarkMode: isDarkMode,
+                    onPressed: () {},
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

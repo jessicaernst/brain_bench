@@ -42,6 +42,17 @@ class BrainBenchTheme {
             color: BrainBenchColors.blueprintBlue.withAlpha(150),
           ),
         ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: BrainBenchColors.cloudCanvas,
+          elevation: 0,
+          shadowColor: Colors.transparent,
+          titleTextStyle:
+              BrainBenchTextTheme.textTheme(brightness: Brightness.light)
+                  .headlineSmall,
+          iconTheme: const IconThemeData(
+            color: BrainBenchColors.blueprintBlue,
+          ),
+        ),
       );
 
   static ThemeData get darkTheme => ThemeData(
@@ -81,6 +92,17 @@ class BrainBenchTheme {
           ),
           unselectedLabelStyle: TextStyle(
             color: BrainBenchColors.flutterSky.withAlpha(150),
+          ),
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: BrainBenchColors.deepDive,
+          elevation: 0,
+          shadowColor: Colors.transparent,
+          titleTextStyle:
+              BrainBenchTextTheme.textTheme(brightness: Brightness.dark)
+                  .headlineSmall,
+          iconTheme: const IconThemeData(
+            color: BrainBenchColors.flutterSky,
           ),
         ),
       );

@@ -25,6 +25,7 @@ class BrainBenchApp extends StatelessWidget {
           AppLocalizations.of(context)!.appTitle,
       theme: BrainBenchTheme.lightTheme,
       darkTheme: BrainBenchTheme.darkTheme,
+      themeMode: ThemeMode.system,
       initialRoute: '/',
       onGenerateRoute: RouteGenerator.generateRoute,
     );

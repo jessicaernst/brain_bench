@@ -71,22 +71,17 @@ class CategoriesPage extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: state.categories.map((category) {
-                    final isSelected = state.selectedCategoryId == category.id;
                     final categoryName = languageCode == 'de'
                         ? category.nameDe
                         : category.nameEn;
 
                     return Padding(
+                      key: ValueKey(category.id), // Eindeutiger Schlüssel
                       padding: const EdgeInsets.only(bottom: 32),
                       child: CategoryRowView(
                         categoryId: category.id,
                         categoryTitle: categoryName,
                         progress: category.progress,
-                        isSelected: isSelected,
-                        onSelectedChanged: (bool selected) {
-                          viewModel
-                              .selectCategory(selected ? category.id : null);
-                        },
                       ),
                     );
                   }).toList(),

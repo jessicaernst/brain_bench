@@ -1,10 +1,13 @@
 import 'package:brain_bench/data/providers/category_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter/material.dart';
 import 'package:brain_bench/data/models/category.dart';
 
 part 'categories_view_model.g.dart';
+
+Logger logger = Logger('CategoriesViewModel');
 
 @riverpod
 class CategoriesViewModel extends _$CategoriesViewModel {
@@ -26,6 +29,7 @@ class CategoriesViewModel extends _$CategoriesViewModel {
 
   void selectCategory(String? categoryId) {
     state = state.copyWith(selectedCategoryId: categoryId);
+    logger.fine('Updating selectedCategoryId to: $categoryId');
   }
 
   void navigateToCategoryDetails(BuildContext context) {
@@ -77,7 +81,7 @@ class CategoriesState {
   }) {
     return CategoriesState(
       categories: categories ?? this.categories,
-      selectedCategoryId: selectedCategoryId ?? this.selectedCategoryId,
+      selectedCategoryId: selectedCategoryId,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
     );
