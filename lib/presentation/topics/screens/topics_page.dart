@@ -31,24 +31,21 @@ class TopicsPage extends ConsumerWidget {
             : BrainBenchColors.cloudCanvas,
       ),
       body: topicsAsync.when(
-        data: (topics) => Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView.builder(
-            itemCount: topics.length,
-            itemBuilder: (context, index) {
-              final topic = topics[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: TopicCard(
-                  cardId: topic.id,
-                  title: topic.name,
-                  description: topic.description,
-                  isDarkMode: isDarkMode,
-                  onPressed: () {},
-                ),
-              );
-            },
-          ),
+        data: (topics) => ListView.builder(
+          itemCount: topics.length,
+          itemBuilder: (context, index) {
+            final topic = topics[index];
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              child: TopicCard(
+                cardId: topic.id,
+                title: topic.name,
+                description: topic.description,
+                isDarkMode: isDarkMode,
+                onPressed: () {},
+              ),
+            );
+          },
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(

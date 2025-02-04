@@ -49,20 +49,21 @@ class TopicMainCard extends StatelessWidget {
           ],
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Assets.appIcons.evo4.image(
               width: 55,
               height: 55,
             ),
             const SizedBox(width: 16),
-            Text(
-              title,
-              style: Theme.of(context).textTheme.headlineMedium,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            Expanded(
+              child: Text(
+                title,
+                style: Theme.of(context).textTheme.headlineMedium,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-            const Spacer(),
+            const SizedBox(width: 24),
             AnimatedRotation(
               turns: isExpanded ? 0.5 : 0.0,
               duration: const Duration(milliseconds: 300),
