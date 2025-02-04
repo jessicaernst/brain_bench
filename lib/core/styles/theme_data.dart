@@ -44,6 +44,7 @@ class BrainBenchTheme {
         ),
         appBarTheme: AppBarTheme(
           backgroundColor: BrainBenchColors.cloudCanvas,
+          scrolledUnderElevation: 0.0,
           elevation: 0,
           shadowColor: Colors.transparent,
           titleTextStyle:
@@ -96,6 +97,7 @@ class BrainBenchTheme {
         ),
         appBarTheme: AppBarTheme(
           backgroundColor: BrainBenchColors.deepDive,
+          scrolledUnderElevation: 0.0,
           elevation: 0,
           shadowColor: Colors.transparent,
           titleTextStyle:

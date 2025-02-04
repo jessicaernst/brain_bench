@@ -1,5 +1,5 @@
 import 'package:brain_bench/business_logic/categories/categories_view_model.dart';
-import 'package:brain_bench/presentation/categories/widgets/category_button.dart';
+import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/presentation/categories/widgets/category_row_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -90,7 +90,7 @@ class CategoriesPage extends ConsumerWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: CategoryButton(
+              child: LightDarkSwitchBtn(
                 title: localizations.chooseCategoryBtnLbl,
                 isActive: state.selectedCategoryId != null,
                 isDarkMode: isDarkMode,

@@ -4,13 +4,17 @@
         "nameEn": "Dart Basics",
         "nameDe": "Dart Grundlagen",
         "descriptionEn": "Introduction to Dart programming.",
-        "descriptionDe": "Einführung in die Dart-Programmierung"
+        "descriptionDe": "Einführung in die Dart-Programmierung",
+        "categoryId": "f711e799-3ebe-46d3-9d78-722e2d024cec",
+        "progress": 0.0
     },
     {
         "id": "27556107-b9b0-4f49-b790-8b973827e24d",
         "nameEn": "OOP Basics",
         "nameDe": "OOP Grundlagen",
         "descriptionEn": "Learn Object-Oriented Programming concepts in Dart.",
-        "descriptionDe": "Grundlagen der objektorientierten Programmierung mit Dart."
+        "descriptionDe": "Grundlagen der objektorientierten Programmierung mit Dart.",
+        "categoryId": "f711e799-3ebe-46d3-9d78-722e2d024cec",
+        "progress": 0.0
     }
 ]

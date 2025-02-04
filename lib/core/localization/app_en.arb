@@ -31,5 +31,9 @@
     "chooseCategoryBtnLbl": "Choose Category",
     "@chooseCategoryBtnLbl": {
         "description": "The label of the button to choose a category"
+    },
+    "catgoryBtnLbl": "Ok",
+    "@catgoryBtnLbl": {
+        "description": "The label of the button to choose a category"
     }
 }

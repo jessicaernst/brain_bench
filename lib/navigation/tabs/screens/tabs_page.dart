@@ -5,6 +5,7 @@ import 'package:brain_bench/presentation/categories/screens/category_details_pag
 import 'package:brain_bench/presentation/home/screens/home_page.dart';
 import 'package:brain_bench/presentation/results/Screens/result_page.dart';
 import 'package:brain_bench/navigation/tabs/widgets/brain_bench_bottom_nav_bar.dart';
+import 'package:brain_bench/presentation/topics/screens/topics_page.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
@@ -93,6 +94,17 @@ class _TabsPageState extends State<TabsPage> {
         }
         return MaterialPageRoute(
           builder: (_) => CategoryDetailsPage(category: category),
+        );
+      case '/categories/details/topics':
+        final categoryId = settings.arguments as String?;
+        if (categoryId == null) {
+          logger.warning('CategoryId is null!');
+          return MaterialPageRoute(
+            builder: (_) => const NotFoundPage(),
+          );
+        }
+        return MaterialPageRoute(
+          builder: (_) => TopicsPage(categoryId: categoryId),
         );
       default:
         return MaterialPageRoute(builder: (_) => const NotFoundPage());

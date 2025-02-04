@@ -7,7 +7,7 @@
         "subtitleDe": "Mindset, Agile und Mobile App Entwicklung",
         "descriptionEn": "Explore the foundations of agile project management, mindset for software teams, and a broad understanding of the mobile app development ecosystem.",
         "descriptionDe": "Erkunde die Grundlagen des agilen Projektmanagements, das Mindset für Software-Teams und ein breites Verständnis des Ökosystems der Mobile-App-Entwicklung.",
-        "progress": 0.9
+        "progress": 1.0
     },
     {
         "id": "2b3c4d5e-design-002",
@@ -27,7 +27,7 @@
         "subtitleDe": "Lerne die Grundlagen der Programmierung mit Dart",
         "descriptionEn": "Topics covering Dart programming and OOP basics.",
         "descriptionDe": "Themen rund um Dart-Programmierung und OOP-Grundlagen.",
-        "progress": 1.0
+        "progress": 0.5
     },
     {
         "id": "3c4d5e6f-flutter-003",
@@ -37,6 +37,6 @@
         "subtitleDe": "Erstelle schöne native Apps mit Flutter",
         "descriptionEn": "Learn to develop cross-platform mobile apps using Flutter. Topics include state management, widgets, animations, and responsive design.",
         "descriptionDe": "Lerne, plattformübergreifende mobile Apps mit Flutter zu entwickeln. Themen sind State Management, Widgets, Animationen und responsives Design.",
-        "progress": 0.3
+        "progress": 0.24
     }
 ]

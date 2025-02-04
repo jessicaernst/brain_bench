@@ -2,8 +2,8 @@ import 'package:brain_bench/core/widgets/darkmode_btn.dart';
 import 'package:brain_bench/core/widgets/lightmode_btn.dart';
 import 'package:flutter/material.dart';
 
-class CategoryButton extends StatelessWidget {
-  const CategoryButton({
+class LightDarkSwitchBtn extends StatelessWidget {
+  const LightDarkSwitchBtn({
     super.key,
     required this.title,
     required this.isActive,
