@@ -21,14 +21,18 @@ class CategoryDetailsPage extends ConsumerWidget {
     if (category == null) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(
-              languageCode == 'de' ? 'Kategoriedetails' : 'Category Details'),
+          title: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+                languageCode == 'de' ? 'Kategoriedetails' : 'Category Details'),
+          ),
         ),
         body: Center(
           child: Text(
             languageCode == 'de'
                 ? 'Keine Kategorie ausgewählt. Bitte gehen Sie zurück und wählen Sie eine Kategorie aus.'
                 : 'No category selected. Please go back and select a category.',
+            textAlign: TextAlign.center,
           ),
         ),
       );
