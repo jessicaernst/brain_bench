@@ -1,5 +1,6 @@
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/core/widgets/no_data_available_view.dart';
+import 'package:brain_bench/core/widgets/progress_indicator_bar_view.dart';
 import 'package:brain_bench/data/providers/quiz/topic_providers.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -73,43 +74,6 @@ class TopicsPage extends ConsumerWidget {
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ProgressIndicatorBarView extends StatelessWidget {
-  const ProgressIndicatorBarView({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Stack(
-        children: [
-          // Hintergrund
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Container(
-              height: 10, // Höhe des Balkens
-              color: BrainBenchColors.progressIndicatorBackground,
-            ),
-          ),
-          // Fortschritt
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: FractionallySizedBox(
-              alignment: Alignment.centerLeft,
-              widthFactor: 0.5, // Fortschritt (z.B. 50%)
-              child: Container(
-                height: 10,
-                color: Theme.of(context).primaryColor,
               ),
             ),
           ),

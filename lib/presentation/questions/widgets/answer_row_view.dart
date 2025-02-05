@@ -1,4 +1,5 @@
 import 'package:brain_bench/data/models/answer.dart';
+import 'package:brain_bench/presentation/questions/widgets/round_check_mark_view.dart';
 import 'package:flutter/material.dart';
 
 class AnswerRowView extends StatelessWidget {
@@ -23,28 +24,7 @@ class AnswerRowView extends StatelessWidget {
         //mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 24,
-            height: 24,
-            margin: const EdgeInsets.only(top: 2),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Theme.of(context).primaryColor,
-                width: 2,
-              ),
-              color: isSelected
-                  ? Theme.of(context).primaryColor
-                  : Colors.transparent,
-            ),
-            child: isSelected
-                ? const Icon(
-                    Icons.check,
-                    size: 16,
-                    color: Colors.white,
-                  )
-                : null,
-          ),
+          RoundCheckMarkView(isSelected: isSelected),
           const SizedBox(width: 12),
           // Antwort-Text
           Expanded(

@@ -1,9 +1,10 @@
 import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
+import 'package:brain_bench/core/widgets/no_data_available_view.dart';
+import 'package:brain_bench/core/widgets/progress_indicator_bar_view.dart';
 import 'package:brain_bench/data/models/answer.dart';
 import 'package:brain_bench/data/providers/quiz/answer_providers.dart';
 import 'package:brain_bench/data/providers/quiz/question_providers.dart';
 import 'package:brain_bench/presentation/questions/widgets/answer_row_view.dart';
-import 'package:brain_bench/presentation/topics/screens/topics_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -49,9 +50,7 @@ class _SingleMultipleChoiceQuestionPageState
           if (questions.isEmpty) {
             _logger.warning(
                 '⚠️ No questions found for Topic ID: ${widget.topicId}');
-            return const Center(
-              child: Text('❌ No questions available.'),
-            );
+            return const NoDataAvailableView(text: '❌ No questions available.');
           }
 
           final question = questions.first;
@@ -101,7 +100,10 @@ class _SingleMultipleChoiceQuestionPageState
                           '✅ Loaded answers: ${answers.map((e) => e.text).toList()}');
 
                       return Padding(
-                        padding: const EdgeInsets.all(56.0),
+                        padding: EdgeInsets.symmetric(
+                          vertical: MediaQuery.of(context).size.height * 0.03,
+                          horizontal: MediaQuery.of(context).size.width * 0.15,
+                        ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: answers.map((answer) {
@@ -134,7 +136,7 @@ class _SingleMultipleChoiceQuestionPageState
                 const SizedBox(height: 24),
                 Center(
                   child: LightDarkSwitchBtn(
-                    title: 'Done',
+                    title: localizations.submitAnswerBtnLbl,
                     isActive: _selectedAnswerId != null,
                     isDarkMode: isDarkMode,
                     onPressed: () {

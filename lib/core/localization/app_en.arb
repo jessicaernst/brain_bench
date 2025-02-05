@@ -43,5 +43,9 @@
     "quizAppBarTitle": "Quiz",
     "@quizAppBarTitle": {
         "description": "The title of the quiz page in the app bar"
+    },
+    "submitAnswerBtnLbl": "Done",
+    "@submitAnswerBtnLbl": {
+        "description": "The label of the button to submit an answer"
     }
 }
