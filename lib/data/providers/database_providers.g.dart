@@ -7,12 +7,12 @@ part of 'database_providers.dart';
 // **************************************************************************
 
 String _$mockDatabaseRepositoryHash() =>
-    r'53b764a5fd7b27d475dc9d284708e8a9f4962087';
+    r'52ee204b43cea27d58d497dfcd5bc7e8db41b1be';
 
 /// See also [mockDatabaseRepository].
 @ProviderFor(mockDatabaseRepository)
 final mockDatabaseRepositoryProvider =
-    AutoDisposeProvider<MockDatabaseRepository>.internal(
+    AutoDisposeProvider<QuizFlowDatabaseRepository>.internal(
   mockDatabaseRepository,
   name: r'mockDatabaseRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -25,6 +25,6 @@ final mockDatabaseRepositoryProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef MockDatabaseRepositoryRef
-    = AutoDisposeProviderRef<MockDatabaseRepository>;
+    = AutoDisposeProviderRef<QuizFlowDatabaseRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

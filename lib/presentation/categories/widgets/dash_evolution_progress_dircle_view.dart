@@ -3,8 +3,8 @@ import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:brain_bench/presentation/categories/widgets/gradient_progress_indicator.dart';
 import 'package:flutter/material.dart';
 
-class ProgessEvolutionImageView extends StatelessWidget {
-  const ProgessEvolutionImageView({
+class DashEvolutionProgressCircleView extends StatelessWidget {
+  const DashEvolutionProgressCircleView({
     super.key,
     required this.progress,
     this.size = 80.0, // Default size for the widget

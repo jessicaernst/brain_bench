@@ -14,21 +14,12 @@ final Logger _logger = Logger('MockDatabaseRepository');
 // Define a mock user ID (since the User model does not exist)
 const String _mockUserId = 'mock-user-1234';
 
-class MockDatabaseRepository implements DatabaseRepository {
+class QuizFlowDatabaseRepository implements DatabaseRepository {
   final String resultsPath = 'lib/data/data_source/results.json';
   final String categoriesPath = 'lib/data/data_source/category.json';
   final String topicsPath = 'lib/data/data_source/topics.json';
   final String questionsPath = 'lib/data/data_source/questions.json';
   final String answersPath = 'lib/data/data_source/answers.json';
-
-  static final MockDatabaseRepository _instance =
-      MockDatabaseRepository._internal();
-
-  factory MockDatabaseRepository() {
-    return _instance;
-  }
-
-  MockDatabaseRepository._internal();
 
   // read Categories
   @override

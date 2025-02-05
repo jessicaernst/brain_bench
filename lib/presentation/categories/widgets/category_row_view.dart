@@ -1,6 +1,6 @@
 import 'package:brain_bench/business_logic/categories/categories_view_model.dart';
 import 'package:brain_bench/core/styles/colors.dart';
-import 'package:brain_bench/presentation/categories/widgets/progress_evolution_image_view.dart';
+import 'package:brain_bench/presentation/categories/widgets/dash_evolution_progress_dircle_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -40,7 +40,7 @@ class CategoryRowView extends HookConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         spacing: 24,
         children: [
-          ProgessEvolutionImageView(
+          DashEvolutionProgressCircleView(
             progress: progress,
           ),
           Text(

@@ -9,6 +9,8 @@ part 'categories_view_model.g.dart';
 
 Logger logger = Logger('CategoriesViewModel');
 
+// TODO: Refactoring needed Code smell: This class does too much and no navigation should be done here
+
 @riverpod
 class CategoriesViewModel extends _$CategoriesViewModel {
   @override
