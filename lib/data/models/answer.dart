@@ -8,20 +8,17 @@ part 'answer.g.dart';
 class Answer with _$Answer {
   factory Answer({
     required String id,
-    required String textEn,
-    required String textDe,
+    required String text,
     required bool isCorrect,
   }) = _Answer;
 
   factory Answer.create({
-    required String textEn,
-    required String textDe,
+    required String text,
     required bool isCorrect,
   }) {
     return Answer(
       id: const Uuid().v4(),
-      textEn: textEn,
-      textDe: textDe,
+      text: text,
       isCorrect: isCorrect,
     );
   }

@@ -9,7 +9,7 @@ import 'package:brain_bench/data/models/result.dart';
 import 'package:logging/logging.dart';
 import 'database_repository.dart';
 
-final Logger _logger = Logger('MockDatabaseRepository');
+final Logger _logger = Logger('QuizFlowDatabaseRepository');
 
 // Define a mock user ID (since the User model does not exist)
 const String _mockUserId = 'mock-user-1234';
@@ -71,51 +71,55 @@ class QuizFlowDatabaseRepository implements DatabaseRepository {
     final List<dynamic> answerJsonData = json.decode(answerJsonString);
 
     final Map<String, Answer> answersMap = {
-      for (var answer in answerJsonData)
-        answer['id']: Answer(
-          id: answer['id'],
-          textEn: answer['textEn'],
-          textDe: answer['textDe'],
-          isCorrect: answer['isCorrect'],
+      for (var e in answerJsonData)
+        e['id']: Answer(
+          id: e['id'],
+          text: languageCode == 'de' ? e['textDe'] : e['textEn'],
+          isCorrect: e['isCorrect'],
         ),
     };
 
     return questionJsonData.where((e) => e['topicId'] == topicId).map((e) {
-      final List<Answer> questionAnswers = (e['answerIds'] as List<dynamic>)
-          .map((answerId) => answersMap[answerId]!)
-          .toList();
-
       return Question(
         id: e['id'],
         topicId: e['topicId'],
-        questionEn: e['questionEn'],
-        questionDe: e['questionDe'],
+        question: languageCode == 'de' ? e['questionDe'] : e['questionEn'],
         type: QuestionType.values.firstWhere(
           (type) => type.toString().split('.').last == e['type'],
         ),
-        answers: questionAnswers,
-        explanationEn: e['explanationEn'],
-        explanationDe: e['explanationDe'],
+        answers: (e['answerIds'] as List<dynamic>)
+            .map((answerId) => answersMap[answerId]!)
+            .toList(),
+        explanation:
+            languageCode == 'de' ? e['explanationDe'] : e['explanationEn'],
       );
     }).toList();
   }
 
-  // read Answers
   @override
   Future<List<Answer>> getAnswers(
       List<String> answerIds, String languageCode) async {
+    _logger.info('getAnswers() aufgerufen für: $answerIds');
+
     final String jsonString = await rootBundle.loadString(answersPath);
     final List<dynamic> jsonData = json.decode(jsonString);
 
-    return jsonData
+    _logger
+        .info('Geladene Antwortdaten: ${jsonData.length} Antworten gefunden.');
+
+    final List<Answer> answers = jsonData
         .where((e) => answerIds.contains(e['id']))
         .map((e) => Answer(
               id: e['id'],
-              textEn: e['textEn'],
-              textDe: e['textDe'],
+              text: languageCode == 'de' ? e['textDe'] : e['textEn'],
               isCorrect: e['isCorrect'],
             ))
         .toList();
+
+    _logger.info(
+        'Gefilterte Antworten: ${answers.length} von ${answerIds.length} IDs gefunden.');
+
+    return answers;
   }
 
 // Read Results

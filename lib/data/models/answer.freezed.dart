@@ -21,8 +21,7 @@ Answer _$AnswerFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Answer {
   String get id => throw _privateConstructorUsedError;
-  String get textEn => throw _privateConstructorUsedError;
-  String get textDe => throw _privateConstructorUsedError;
+  String get text => throw _privateConstructorUsedError;
   bool get isCorrect => throw _privateConstructorUsedError;
 
   /// Serializes this Answer to a JSON map.
@@ -39,7 +38,7 @@ abstract class $AnswerCopyWith<$Res> {
   factory $AnswerCopyWith(Answer value, $Res Function(Answer) then) =
       _$AnswerCopyWithImpl<$Res, Answer>;
   @useResult
-  $Res call({String id, String textEn, String textDe, bool isCorrect});
+  $Res call({String id, String text, bool isCorrect});
 }
 
 /// @nodoc
@@ -58,8 +57,7 @@ class _$AnswerCopyWithImpl<$Res, $Val extends Answer>
   @override
   $Res call({
     Object? id = null,
-    Object? textEn = null,
-    Object? textDe = null,
+    Object? text = null,
     Object? isCorrect = null,
   }) {
     return _then(_value.copyWith(
@@ -67,13 +65,9 @@ class _$AnswerCopyWithImpl<$Res, $Val extends Answer>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      textEn: null == textEn
-          ? _value.textEn
-          : textEn // ignore: cast_nullable_to_non_nullable
-              as String,
-      textDe: null == textDe
-          ? _value.textDe
-          : textDe // ignore: cast_nullable_to_non_nullable
+      text: null == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
               as String,
       isCorrect: null == isCorrect
           ? _value.isCorrect
@@ -90,7 +84,7 @@ abstract class _$$AnswerImplCopyWith<$Res> implements $AnswerCopyWith<$Res> {
       __$$AnswerImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String textEn, String textDe, bool isCorrect});
+  $Res call({String id, String text, bool isCorrect});
 }
 
 /// @nodoc
@@ -107,8 +101,7 @@ class __$$AnswerImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? textEn = null,
-    Object? textDe = null,
+    Object? text = null,
     Object? isCorrect = null,
   }) {
     return _then(_$AnswerImpl(
@@ -116,13 +109,9 @@ class __$$AnswerImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      textEn: null == textEn
-          ? _value.textEn
-          : textEn // ignore: cast_nullable_to_non_nullable
-              as String,
-      textDe: null == textDe
-          ? _value.textDe
-          : textDe // ignore: cast_nullable_to_non_nullable
+      text: null == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
               as String,
       isCorrect: null == isCorrect
           ? _value.isCorrect
@@ -135,11 +124,7 @@ class __$$AnswerImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AnswerImpl implements _Answer {
-  _$AnswerImpl(
-      {required this.id,
-      required this.textEn,
-      required this.textDe,
-      required this.isCorrect});
+  _$AnswerImpl({required this.id, required this.text, required this.isCorrect});
 
   factory _$AnswerImpl.fromJson(Map<String, dynamic> json) =>
       _$$AnswerImplFromJson(json);
@@ -147,15 +132,13 @@ class _$AnswerImpl implements _Answer {
   @override
   final String id;
   @override
-  final String textEn;
-  @override
-  final String textDe;
+  final String text;
   @override
   final bool isCorrect;
 
   @override
   String toString() {
-    return 'Answer(id: $id, textEn: $textEn, textDe: $textDe, isCorrect: $isCorrect)';
+    return 'Answer(id: $id, text: $text, isCorrect: $isCorrect)';
   }
 
   @override
@@ -164,15 +147,14 @@ class _$AnswerImpl implements _Answer {
         (other.runtimeType == runtimeType &&
             other is _$AnswerImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.textEn, textEn) || other.textEn == textEn) &&
-            (identical(other.textDe, textDe) || other.textDe == textDe) &&
+            (identical(other.text, text) || other.text == text) &&
             (identical(other.isCorrect, isCorrect) ||
                 other.isCorrect == isCorrect));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, textEn, textDe, isCorrect);
+  int get hashCode => Object.hash(runtimeType, id, text, isCorrect);
 
   /// Create a copy of Answer
   /// with the given fields replaced by the non-null parameter values.
@@ -193,8 +175,7 @@ class _$AnswerImpl implements _Answer {
 abstract class _Answer implements Answer {
   factory _Answer(
       {required final String id,
-      required final String textEn,
-      required final String textDe,
+      required final String text,
       required final bool isCorrect}) = _$AnswerImpl;
 
   factory _Answer.fromJson(Map<String, dynamic> json) = _$AnswerImpl.fromJson;
@@ -202,9 +183,7 @@ abstract class _Answer implements Answer {
   @override
   String get id;
   @override
-  String get textEn;
-  @override
-  String get textDe;
+  String get text;
   @override
   bool get isCorrect;
 

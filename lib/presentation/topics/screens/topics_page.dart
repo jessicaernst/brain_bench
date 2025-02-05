@@ -42,7 +42,12 @@ class TopicsPage extends ConsumerWidget {
                 title: topic.name,
                 description: topic.description,
                 isDarkMode: isDarkMode,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed(
+                    '/categories/details/topics/quiz',
+                    arguments: topic.id,
+                  );
+                },
               ),
             );
           },

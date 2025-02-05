@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:brain_bench/core/styles/gradient_colors.dart';
 import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TopicExpandableContent extends StatelessWidget {
   const TopicExpandableContent({
@@ -21,6 +22,8 @@ class TopicExpandableContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(context)!;
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -61,7 +64,7 @@ class TopicExpandableContent extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     LightDarkSwitchBtn(
-                      title: 'Start',
+                      title: localizations.startQuizBtnLbl,
                       isActive: true,
                       isDarkMode: isDarkMode,
                       onPressed: onPressed,

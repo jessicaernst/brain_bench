@@ -35,5 +35,13 @@
     "catgoryBtnLbl": "Ok",
     "@catgoryBtnLbl": {
         "description": "The label of the button to choose a category"
+    },
+    "startQuizBtnLbl": "Quiz starten",
+    "@startQuizBtnLbl": {
+        "description": "The label of the button to start the quiz"
+    },
+    "quizAppBarTitle": "Quiz",
+    "@quizAppBarTitle": {
+        "description": "The title of the quiz page in the app bar"
     }
 }
