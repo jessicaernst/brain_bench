@@ -3,7 +3,7 @@ import 'package:brain_bench/navigation/routes/not_found_page.dart';
 import 'package:brain_bench/presentation/categories/screens/categories_page.dart';
 import 'package:brain_bench/presentation/categories/screens/category_details_page.dart';
 import 'package:brain_bench/presentation/home/screens/home_page.dart';
-import 'package:brain_bench/presentation/questions/single_multiple_choice_question.dart';
+import 'package:brain_bench/presentation/questions/screens/single_multiple_choice_question.dart';
 import 'package:brain_bench/presentation/results/Screens/result_page.dart';
 import 'package:brain_bench/navigation/tabs/widgets/brain_bench_bottom_nav_bar.dart';
 import 'package:brain_bench/presentation/topics/screens/topics_page.dart';

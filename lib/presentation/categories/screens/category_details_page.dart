@@ -1,4 +1,5 @@
 import 'package:brain_bench/business_logic/categories/categories_view_model.dart';
+import 'package:brain_bench/core/widgets/no_data_available_view.dart';
 import 'package:brain_bench/data/models/category.dart';
 import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/presentation/categories/widgets/dash_evolution_progress_dircle_view.dart';
@@ -33,13 +34,8 @@ class CategoryDetailsPage extends ConsumerWidget {
             ),
           ),
         ),
-        body: Center(
-          child: Text(
-            languageCode == 'de'
-                ? 'Keine Kategorie ausgewählt. Bitte gehen Sie zurück und wählen Sie eine Kategorie aus.'
-                : 'No category selected. Please go back and select a category.',
-            textAlign: TextAlign.center,
-          ),
+        body: const NoDataAvailableView(
+          text: '❌ No category selected. Please go back and select a category.',
         ),
       );
     }

@@ -62,4 +62,7 @@ abstract class BrainBenchColors {
   // white opacity
   static final Color white40 = Colors.white.withAlpha((0.4 * 255).toInt());
   static final Color white10 = Colors.white.withAlpha((0.1 * 255).toInt());
+
+  static final Color progressIndicatorBackground =
+      const Color.fromARGB(255, 120, 120, 128).withAlpha((0.16 * 255).toInt());
 }
