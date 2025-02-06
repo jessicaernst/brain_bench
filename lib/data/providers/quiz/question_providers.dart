@@ -7,6 +7,6 @@ part 'question_providers.g.dart';
 
 @riverpod
 Future<List<Question>> questions(Ref ref, String topicId, String languageCode) {
-  final repo = ref.watch(mockDatabaseRepositoryProvider);
+  final repo = ref.watch(quizMockDatabaseRepositoryProvider);
   return repo.getQuestions(topicId, languageCode);
 }

@@ -6,7 +6,7 @@ part of 'result_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$resultsHash() => r'e58dc10bbb3bb1b5860a689c7b1ff203ec1bd48c';
+String _$resultsHash() => r'9ae60e7d0f80c5f66a1e9ddc6c50ad093ae63152';
 
 /// See also [results].
 @ProviderFor(results)
@@ -23,7 +23,7 @@ final resultsProvider = AutoDisposeFutureProvider<List<Result>>.internal(
 // ignore: unused_element
 typedef ResultsRef = AutoDisposeFutureProviderRef<List<Result>>;
 String _$saveResultNotifierHash() =>
-    r'24b79caf462330146e7862165d66e432d5502291';
+    r'7c89583f590c60a777ef4b685d05963bc77b3f29';
 
 /// See also [SaveResultNotifier].
 @ProviderFor(SaveResultNotifier)

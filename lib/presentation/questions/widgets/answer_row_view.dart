@@ -20,7 +20,7 @@ class AnswerRowView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         spacing: 12,
         children: [
           RoundCheckMarkView(isSelected: selected),
@@ -30,6 +30,7 @@ class AnswerRowView extends StatelessWidget {
               style: selected
                   ? Theme.of(context).textTheme.bodyLarge
                   : Theme.of(context).textTheme.bodyMedium,
+              softWrap: true,
             ),
           ),
         ],

@@ -105,10 +105,10 @@ class _SingleMultipleChoiceQuestionPageState
                 Padding(
                   padding: EdgeInsets.symmetric(
                     vertical: MediaQuery.of(context).size.height * 0.03,
-                    horizontal: MediaQuery.of(context).size.width * 0.15,
+                    horizontal: MediaQuery.of(context).size.width * 0.10,
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                  child: ListView(
+                    shrinkWrap: true,
                     children: answers.map((answer) {
                       final isSelected = isMultipleChoice
                           ? _selectedAnswerIds.contains(answer.id)

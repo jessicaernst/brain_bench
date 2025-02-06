@@ -7,6 +7,6 @@ part 'category_providers.g.dart';
 
 @riverpod
 Future<List<Category>> categories(Ref ref, String languageCode) {
-  final repo = ref.watch(mockDatabaseRepositoryProvider);
+  final repo = ref.watch(quizMockDatabaseRepositoryProvider);
   return repo.getCategories(languageCode);
 }

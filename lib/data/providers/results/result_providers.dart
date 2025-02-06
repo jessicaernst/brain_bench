@@ -7,7 +7,7 @@ part 'result_providers.g.dart';
 
 @riverpod
 Future<List<Result>> results(Ref ref) {
-  final repo = ref.watch(mockDatabaseRepositoryProvider);
+  final repo = ref.watch(quizMockDatabaseRepositoryProvider);
   return repo.getResults('mock-user-1234'); // Mocked user ID
 }
 
@@ -17,7 +17,7 @@ class SaveResultNotifier extends _$SaveResultNotifier {
   FutureOr<void> build() {}
 
   Future<void> saveResult(Result result) async {
-    final repo = ref.read(mockDatabaseRepositoryProvider);
+    final repo = ref.read(quizMockDatabaseRepositoryProvider);
     await repo.saveResult(result);
   }
 }

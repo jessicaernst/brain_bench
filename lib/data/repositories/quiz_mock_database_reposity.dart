@@ -7,14 +7,14 @@ import 'package:brain_bench/data/models/question.dart';
 import 'package:brain_bench/data/models/answer.dart';
 import 'package:brain_bench/data/models/result.dart';
 import 'package:logging/logging.dart';
-import 'database_repository.dart';
+import 'quiz_database_repository.dart';
 
-final Logger _logger = Logger('QuizFlowDatabaseRepository');
+final Logger _logger = Logger('QuizMockDatabaseRepository');
 
 // Define a mock user ID (since the User model does not exist)
 const String _mockUserId = 'mock-user-1234';
 
-class QuizFlowDatabaseRepository implements DatabaseRepository {
+class QuizMockDatabaseRepository implements QuizDatabaseRepository {
   final String resultsPath = 'lib/data/data_source/results.json';
   final String categoriesPath = 'lib/data/data_source/category.json';
   final String topicsPath = 'lib/data/data_source/topics.json';
