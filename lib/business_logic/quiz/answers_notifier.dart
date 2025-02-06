@@ -16,7 +16,13 @@ class AnswersNotifier extends _$AnswersNotifier {
 
   /// Initialize the list of answers at the start of a quiz
   void initializeAnswers(List<Answer> initialAnswers) {
-    _logger.info('Initializing answers with ${initialAnswers.length} items.');
+    if (state.isNotEmpty) {
+      _logger
+          .info('🔹 Answers already initialized, skipping re-initialization.');
+      return; // Prevent resetting if answers are already loaded
+    }
+    _logger
+        .info('🔄 Initializing answers with ${initialAnswers.length} items.');
     state = initialAnswers;
   }
 
@@ -26,7 +32,7 @@ class AnswersNotifier extends _$AnswersNotifier {
     state = state.map((answer) {
       if (answer.id == answerId) {
         _logger.fine(
-            'Answer ${answer.id} selection changed to: ${!answer.isSelected}');
+            '𝌡 Answer ${answer.id} selection changed to: ${!answer.isSelected}');
         return answer.copyWith(isSelected: !answer.isSelected);
       }
       return answer;

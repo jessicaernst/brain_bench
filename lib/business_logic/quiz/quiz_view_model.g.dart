@@ -6,7 +6,7 @@ part of 'quiz_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$quizViewModelHash() => r'3c2e4498170f9051a37045942041aed76dedaa89';
+String _$quizViewModelHash() => r'3db775f2ca2ca8ca3a9218f5dfd7d255475d0302';
 
 /// See also [QuizViewModel].
 @ProviderFor(QuizViewModel)

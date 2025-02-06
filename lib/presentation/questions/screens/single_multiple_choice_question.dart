@@ -1,10 +1,9 @@
+import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
 import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/widgets/no_data_available_view.dart';
 import 'package:brain_bench/core/widgets/progress_indicator_bar_view.dart';
-import 'package:brain_bench/data/models/answer.dart';
 import 'package:brain_bench/data/models/question.dart';
-import 'package:brain_bench/data/providers/quiz/answer_providers.dart';
 import 'package:brain_bench/data/providers/quiz/question_providers.dart';
 import 'package:brain_bench/presentation/questions/widgets/answer_row_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,9 +34,6 @@ class _SingleMultipleChoiceQuestionPageState
   // Stores the IDs of selected answers (for multiple-choice questions)
   final Set<String> _selectedAnswerIds = {};
 
-  // List of answers for the current question
-  List<Answer> _answers = [];
-
   @override
   Widget build(BuildContext context) {
     final String languageCode = Localizations.localeOf(context).languageCode;
@@ -60,28 +56,33 @@ class _SingleMultipleChoiceQuestionPageState
       ),
       body: questionsAsync.when(
         data: (questions) {
-          // If no questions are available, show a warning message
           if (questions.isEmpty) {
             _logger.warning(
                 '⚠️ No questions found for Topic ID: ${widget.topicId}');
             return const NoDataAvailableView(text: '❌ No questions available.');
           }
 
-          // Get the first question from the list
           final question = questions.first;
           final isMultipleChoice = question.type == QuestionType.multipleChoice;
 
           _logger.info(
               '✅ First question loaded: ${question.question} (ID: ${question.id}), Type: ${question.type}');
 
-          // Extract answer IDs
           final answerIds = question.answers.map((e) => e.id).toList();
           _logger.info('📌 Answer IDs: $answerIds');
 
-          // Fetch answers asynchronously
-          final answersFuture = ref.watch(
-            answersProvider(answerIds, languageCode).future,
-          );
+          // Initialize and watch AnswersNotifier
+          final answersNotifier = ref.read(answersNotifierProvider.notifier);
+          final answers = ref.watch(answersNotifierProvider);
+
+          // Delay the initialization of answers until after the widget is built and ensures that the notifier
+          // is initialized only once.
+          if (answers.isEmpty) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _logger.info('🔄 Initializing answers in AnswersNotifier');
+              answersNotifier.initializeAnswers(question.answers);
+            });
+          }
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -100,78 +101,52 @@ class _SingleMultipleChoiceQuestionPageState
 
                 const Spacer(),
 
-                // Load answers asynchronously
-                FutureBuilder<List<Answer>>(
-                  future: answersFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      _logger.info('🔄 Answers are loading...');
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      _logger
-                          .severe('❌ Error loading answers: ${snapshot.error}');
-                      return Center(
-                        child: Text(
-                          'Error loading answers: ${snapshot.error}',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      );
-                    } else {
-                      // Store the loaded answers in the local state
-                      _answers = snapshot.data!;
-                      _logger.info(
-                          '✅ Loaded answers: ${_answers.map((e) => e.text).toList()}');
+                // Answer List
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.height * 0.03,
+                    horizontal: MediaQuery.of(context).size.width * 0.15,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: answers.map((answer) {
+                      final isSelected = isMultipleChoice
+                          ? _selectedAnswerIds.contains(answer.id)
+                          : _selectedAnswerId == answer.id;
 
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: MediaQuery.of(context).size.height * 0.03,
-                          horizontal: MediaQuery.of(context).size.width * 0.15,
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: _answers.map((answer) {
-                            // Determine if an answer is selected
-                            final isSelected = isMultipleChoice
-                                ? _selectedAnswerIds.contains(answer.id)
-                                : _selectedAnswerId == answer.id;
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            if (isMultipleChoice) {
+                              if (_selectedAnswerIds.contains(answer.id)) {
+                                _selectedAnswerIds.remove(answer.id);
+                                _logger.info(
+                                    '❌ Deselected answer: ${answer.text} (ID: ${answer.id})');
+                              } else {
+                                _selectedAnswerIds.add(answer.id);
+                                _logger.info(
+                                    '🟢 Selected answer: ${answer.text} (ID: ${answer.id})');
+                              }
+                            } else {
+                              _selectedAnswerId = _selectedAnswerId == answer.id
+                                  ? null
+                                  : answer.id;
+                              _logger.info(
+                                  '🟢 Selected answer: ${answer.text} (ID: ${answer.id})');
+                            }
+                          });
 
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  if (isMultipleChoice) {
-                                    if (_selectedAnswerIds
-                                        .contains(answer.id)) {
-                                      _selectedAnswerIds.remove(answer.id);
-                                      _logger.info(
-                                          '❌ Deselected answer: ${answer.text} (ID: ${answer.id})');
-                                    } else {
-                                      _selectedAnswerIds.add(answer.id);
-                                      _logger.info(
-                                          '🟢 Selected answer: ${answer.text} (ID: ${answer.id})');
-                                    }
-                                  } else {
-                                    _selectedAnswerId =
-                                        _selectedAnswerId == answer.id
-                                            ? null
-                                            : answer.id;
-                                    _logger.info(
-                                        '🟢 Selected answer: ${answer.text} (ID: ${answer.id})');
-                                  }
-                                });
-                              },
-                              child: AnswerRowView(
-                                selected: isSelected,
-                                answer: answer,
-                                isDarkMode: isDarkMode,
-                              ),
-                            );
-                          }).toList(),
+                          // Toggle selection in the notifier
+                          answersNotifier.toggleAnswer(answer.id);
+                        },
+                        child: AnswerRowView(
+                          selected: isSelected,
+                          answer: answer,
+                          isDarkMode: isDarkMode,
                         ),
                       );
-                    }
-                  },
+                    }).toList(),
+                  ),
                 ),
 
                 const SizedBox(height: 24),
@@ -185,7 +160,7 @@ class _SingleMultipleChoiceQuestionPageState
                         : _selectedAnswerId != null,
                     isDarkMode: isDarkMode,
                     onPressed: () {
-                      if (_answers.isNotEmpty) {
+                      if (answers.isNotEmpty) {
                         _logger.info('🟢 Submit button pressed');
                         quizViewModel.checkAnswers(ref);
                       } else {
