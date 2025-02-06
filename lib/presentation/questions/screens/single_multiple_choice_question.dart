@@ -29,8 +29,13 @@ class SingleMultipleChoiceQuestionPage extends ConsumerStatefulWidget {
 
 class _SingleMultipleChoiceQuestionPageState
     extends ConsumerState<SingleMultipleChoiceQuestionPage> {
+  // Stores the ID of the selected answer (for single-choice questions)
   String? _selectedAnswerId;
+
+  // Stores the IDs of selected answers (for multiple-choice questions)
   final Set<String> _selectedAnswerIds = {};
+
+  // List of answers for the current question
   List<Answer> _answers = [];
 
   @override
@@ -42,6 +47,10 @@ class _SingleMultipleChoiceQuestionPageState
     _logger.info(
         '📌 Loading questions for Topic ID: ${widget.topicId}, Language: $languageCode');
 
+    // Initialize the QuizViewModel
+    final quizViewModel = ref.read(quizViewModelProvider.notifier);
+
+    // Fetch questions asynchronously from DataProvider
     final questionsAsync =
         ref.watch(questionsProvider(widget.topicId, languageCode));
 
@@ -51,21 +60,25 @@ class _SingleMultipleChoiceQuestionPageState
       ),
       body: questionsAsync.when(
         data: (questions) {
+          // If no questions are available, show a warning message
           if (questions.isEmpty) {
             _logger.warning(
                 '⚠️ No questions found for Topic ID: ${widget.topicId}');
             return const NoDataAvailableView(text: '❌ No questions available.');
           }
 
+          // Get the first question from the list
           final question = questions.first;
           final isMultipleChoice = question.type == QuestionType.multipleChoice;
 
           _logger.info(
               '✅ First question loaded: ${question.question} (ID: ${question.id}), Type: ${question.type}');
 
+          // Extract answer IDs
           final answerIds = question.answers.map((e) => e.id).toList();
           _logger.info('📌 Answer IDs: $answerIds');
 
+          // Fetch answers asynchronously
           final answersFuture = ref.watch(
             answersProvider(answerIds, languageCode).future,
           );
@@ -77,12 +90,17 @@ class _SingleMultipleChoiceQuestionPageState
                 const SizedBox(height: 8),
                 const ProgressIndicatorBarView(),
                 const SizedBox(height: 24),
+
+                // Display the question text
                 Text(
                   question.question,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
+
                 const Spacer(),
+
+                // Load answers asynchronously
                 FutureBuilder<List<Answer>>(
                   future: answersFuture,
                   builder: (context, snapshot) {
@@ -101,6 +119,7 @@ class _SingleMultipleChoiceQuestionPageState
                         ),
                       );
                     } else {
+                      // Store the loaded answers in the local state
                       _answers = snapshot.data!;
                       _logger.info(
                           '✅ Loaded answers: ${_answers.map((e) => e.text).toList()}');
@@ -113,6 +132,7 @@ class _SingleMultipleChoiceQuestionPageState
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: _answers.map((answer) {
+                            // Determine if an answer is selected
                             final isSelected = isMultipleChoice
                                 ? _selectedAnswerIds.contains(answer.id)
                                 : _selectedAnswerId == answer.id;
@@ -153,7 +173,10 @@ class _SingleMultipleChoiceQuestionPageState
                     }
                   },
                 ),
+
                 const SizedBox(height: 24),
+
+                // Submit Answer Button
                 Center(
                   child: LightDarkSwitchBtn(
                     title: localizations.submitAnswerBtnLbl,
@@ -164,24 +187,27 @@ class _SingleMultipleChoiceQuestionPageState
                     onPressed: () {
                       if (_answers.isNotEmpty) {
                         _logger.info('🟢 Submit button pressed');
-                        ref
-                            .read(quizViewModelProvider.notifier)
-                            .checkAnswers(ref);
+                        quizViewModel.checkAnswers(ref);
                       } else {
                         _logger.warning('⚠️ No answers available to check.');
                       }
                     },
                   ),
                 ),
+
                 const SizedBox(height: 24),
               ],
             ),
           );
         },
+
+        // Show loading indicator while fetching questions
         loading: () {
           _logger.info('🔄 Questions are loading...');
           return const Center(child: CircularProgressIndicator());
         },
+
+        // Handle errors while fetching questions
         error: (error, stack) {
           _logger.severe('❌ Error loading questions: $error');
           return Center(
