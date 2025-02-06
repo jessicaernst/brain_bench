@@ -2,6 +2,7 @@ import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/widgets/no_data_available_view.dart';
 import 'package:brain_bench/core/widgets/progress_indicator_bar_view.dart';
 import 'package:brain_bench/data/models/answer.dart';
+import 'package:brain_bench/data/models/question.dart';
 import 'package:brain_bench/data/providers/quiz/answer_providers.dart';
 import 'package:brain_bench/data/providers/quiz/question_providers.dart';
 import 'package:brain_bench/presentation/questions/widgets/answer_row_view.dart';
@@ -28,6 +29,38 @@ class SingleMultipleChoiceQuestionPage extends ConsumerStatefulWidget {
 class _SingleMultipleChoiceQuestionPageState
     extends ConsumerState<SingleMultipleChoiceQuestionPage> {
   String? _selectedAnswerId;
+  Set<String> _selectedAnswerIds = {};
+  List<Answer> _answers = []; // Speichert die Antworten für den Button
+
+  void _checkAnswers(bool isMultipleChoice) {
+    if (isMultipleChoice) {
+      final selectedCorrect = _selectedAnswerIds.every(
+          (id) => _answers.firstWhere((answer) => answer.id == id).isCorrect);
+      final selectedIncorrect = _selectedAnswerIds.any(
+          (id) => !_answers.firstWhere((answer) => answer.id == id).isCorrect);
+
+      if (selectedCorrect && !selectedIncorrect) {
+        _logger.info('✅ All selected answers are correct.');
+      } else {
+        _logger.info('❌ Some selected answers are incorrect.');
+      }
+    } else {
+      final selectedAnswer = _answers.firstWhere(
+        (answer) => answer.id == _selectedAnswerId,
+        orElse: () => Answer(
+          id: '',
+          text: 'Dummy Answer',
+          isCorrect: false,
+        ),
+      );
+
+      if (selectedAnswer.isCorrect) {
+        _logger.info('✅ Selected answer is correct.');
+      } else {
+        _logger.info('❌ Selected answer is incorrect.');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +87,10 @@ class _SingleMultipleChoiceQuestionPageState
           }
 
           final question = questions.first;
+          final isMultipleChoice = question.type == QuestionType.multipleChoice;
+
           _logger.info(
-              '✅ First question loaded: ${question.question} (ID: ${question.id})');
+              '✅ First question loaded: ${question.question} (ID: ${question.id}), Type: ${question.type}');
 
           final answerIds = question.answers.map((e) => e.id).toList();
           _logger.info('📌 Answer IDs: $answerIds');
@@ -95,9 +130,9 @@ class _SingleMultipleChoiceQuestionPageState
                         ),
                       );
                     } else {
-                      final answers = snapshot.data!;
+                      _answers = snapshot.data!;
                       _logger.info(
-                          '✅ Loaded answers: ${answers.map((e) => e.text).toList()}');
+                          '✅ Loaded answers: ${_answers.map((e) => e.text).toList()}');
 
                       return Padding(
                         padding: EdgeInsets.symmetric(
@@ -106,23 +141,37 @@ class _SingleMultipleChoiceQuestionPageState
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
-                          children: answers.map((answer) {
+                          children: _answers.map((answer) {
+                            final isSelected = isMultipleChoice
+                                ? _selectedAnswerIds.contains(answer.id)
+                                : _selectedAnswerId == answer.id;
+
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  if (_selectedAnswerId == answer.id) {
-                                    _selectedAnswerId = null;
-                                    _logger.info(
-                                        '❌ Deselected answer: ${answer.text} (ID: ${answer.id})');
+                                  if (isMultipleChoice) {
+                                    if (_selectedAnswerIds
+                                        .contains(answer.id)) {
+                                      _selectedAnswerIds.remove(answer.id);
+                                      _logger.info(
+                                          '❌ Deselected answer: ${answer.text} (ID: ${answer.id})');
+                                    } else {
+                                      _selectedAnswerIds.add(answer.id);
+                                      _logger.info(
+                                          '🟢 Selected answer: ${answer.text} (ID: ${answer.id})');
+                                    }
                                   } else {
-                                    _selectedAnswerId = answer.id;
+                                    _selectedAnswerId =
+                                        _selectedAnswerId == answer.id
+                                            ? null
+                                            : answer.id;
                                     _logger.info(
                                         '🟢 Selected answer: ${answer.text} (ID: ${answer.id})');
                                   }
                                 });
                               },
                               child: AnswerRowView(
-                                selectedAnswerId: _selectedAnswerId,
+                                selected: isSelected,
                                 answer: answer,
                                 isDarkMode: isDarkMode,
                               ),
@@ -137,12 +186,16 @@ class _SingleMultipleChoiceQuestionPageState
                 Center(
                   child: LightDarkSwitchBtn(
                     title: localizations.submitAnswerBtnLbl,
-                    isActive: _selectedAnswerId != null,
+                    isActive: isMultipleChoice
+                        ? _selectedAnswerIds.isNotEmpty
+                        : _selectedAnswerId != null,
                     isDarkMode: isDarkMode,
                     onPressed: () {
-                      if (_selectedAnswerId != null) {
-                        _logger
-                            .info('✅ Submitted answer ID: $_selectedAnswerId');
+                      if (_answers.isNotEmpty) {
+                        _logger.info('🟢 Submit button pressed');
+                        _checkAnswers(isMultipleChoice);
+                      } else {
+                        _logger.warning('⚠️ No answers available to check.');
                       }
                     },
                   ),
