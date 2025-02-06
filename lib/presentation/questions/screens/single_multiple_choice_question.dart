@@ -1,3 +1,4 @@
+import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
 import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/widgets/no_data_available_view.dart';
 import 'package:brain_bench/core/widgets/progress_indicator_bar_view.dart';
@@ -32,36 +33,6 @@ class _SingleMultipleChoiceQuestionPageState
   final Set<String> _selectedAnswerIds = {};
   List<Answer> _answers = [];
 
-  void _checkAnswers(bool isMultipleChoice) {
-    if (isMultipleChoice) {
-      final selectedCorrect = _selectedAnswerIds.every(
-          (id) => _answers.firstWhere((answer) => answer.id == id).isCorrect);
-      final selectedIncorrect = _selectedAnswerIds.any(
-          (id) => !_answers.firstWhere((answer) => answer.id == id).isCorrect);
-
-      if (selectedCorrect && !selectedIncorrect) {
-        _logger.info('✅ All selected answers are correct.');
-      } else {
-        _logger.info('❌ Some selected answers are incorrect.');
-      }
-    } else {
-      final selectedAnswer = _answers.firstWhere(
-        (answer) => answer.id == _selectedAnswerId,
-        orElse: () => Answer(
-          id: '',
-          text: 'Dummy Answer',
-          isCorrect: false,
-        ),
-      );
-
-      if (selectedAnswer.isCorrect) {
-        _logger.info('✅ Selected answer is correct.');
-      } else {
-        _logger.info('❌ Selected answer is incorrect.');
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final String languageCode = Localizations.localeOf(context).languageCode;
@@ -95,7 +66,7 @@ class _SingleMultipleChoiceQuestionPageState
           final answerIds = question.answers.map((e) => e.id).toList();
           _logger.info('📌 Answer IDs: $answerIds');
 
-          final answersFuture = ref.read(
+          final answersFuture = ref.watch(
             answersProvider(answerIds, languageCode).future,
           );
 
@@ -103,7 +74,7 @@ class _SingleMultipleChoiceQuestionPageState
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                const SizedBox(height: 16),
+                const SizedBox(height: 8),
                 const ProgressIndicatorBarView(),
                 const SizedBox(height: 24),
                 Text(
@@ -193,7 +164,9 @@ class _SingleMultipleChoiceQuestionPageState
                     onPressed: () {
                       if (_answers.isNotEmpty) {
                         _logger.info('🟢 Submit button pressed');
-                        _checkAnswers(isMultipleChoice);
+                        ref
+                            .read(quizViewModelProvider.notifier)
+                            .checkAnswers(ref);
                       } else {
                         _logger.warning('⚠️ No answers available to check.');
                       }

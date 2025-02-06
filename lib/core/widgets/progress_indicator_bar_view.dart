@@ -16,7 +16,7 @@ class ProgressIndicatorBarView extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: Container(
-              height: 10, // Höhe des Balkens
+              height: 10,
               color: BrainBenchColors.progressIndicatorBackground,
             ),
           ),
@@ -25,7 +25,7 @@ class ProgressIndicatorBarView extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: FractionallySizedBox(
               alignment: Alignment.centerLeft,
-              widthFactor: 0.5, // Fortschritt (z.B. 50%)
+              widthFactor: 0.5,
               child: Container(
                 height: 10,
                 color: Theme.of(context).primaryColor,

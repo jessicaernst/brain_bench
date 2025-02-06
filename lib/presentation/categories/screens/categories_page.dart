@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:logging/logging.dart';
+//import 'package:logging/logging.dart';
 
-Logger logger = Logger('CategoriesPage');
+//Logger _logger = Logger('CategoriesPage');
 
 class CategoriesPage extends ConsumerWidget {
   const CategoriesPage({super.key});

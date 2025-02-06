@@ -26,6 +26,10 @@ class BrainBenchTheme {
                     .labelLarge,
           ),
         ),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: BrainBenchColors.blueprintBlue,
+          circularTrackColor: BrainBenchColors.cloudCanvas,
+        ),
         colorScheme: const ColorScheme.light(
           surface: BrainBenchColors.cloudCanvas,
           secondary: BrainBenchColors.blueprintBlue,

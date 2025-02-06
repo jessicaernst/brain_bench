@@ -1,6 +1,6 @@
 import 'package:brain_bench/core/styles/gradient_colors.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
-import 'package:brain_bench/presentation/categories/widgets/gradient_progress_indicator.dart';
+import 'package:brain_bench/core/widgets/gradient_progress_indicator.dart';
 import 'package:flutter/material.dart';
 
 class DashEvolutionProgressCircleView extends StatelessWidget {

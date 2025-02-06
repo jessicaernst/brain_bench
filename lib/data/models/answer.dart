@@ -10,6 +10,7 @@ class Answer with _$Answer {
     required String id,
     required String text,
     required bool isCorrect,
+    @Default(false) bool isSelected,
   }) = _Answer;
 
   factory Answer.create({

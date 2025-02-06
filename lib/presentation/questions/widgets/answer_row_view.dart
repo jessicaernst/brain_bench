@@ -20,9 +20,10 @@ class AnswerRowView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        spacing: 12,
         children: [
           RoundCheckMarkView(isSelected: selected),
-          const SizedBox(width: 12),
           Expanded(
             child: Text(
               answer.text,

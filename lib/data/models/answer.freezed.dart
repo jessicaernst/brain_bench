@@ -23,6 +23,7 @@ mixin _$Answer {
   String get id => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   bool get isCorrect => throw _privateConstructorUsedError;
+  bool get isSelected => throw _privateConstructorUsedError;
 
   /// Serializes this Answer to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +39,7 @@ abstract class $AnswerCopyWith<$Res> {
   factory $AnswerCopyWith(Answer value, $Res Function(Answer) then) =
       _$AnswerCopyWithImpl<$Res, Answer>;
   @useResult
-  $Res call({String id, String text, bool isCorrect});
+  $Res call({String id, String text, bool isCorrect, bool isSelected});
 }
 
 /// @nodoc
@@ -59,6 +60,7 @@ class _$AnswerCopyWithImpl<$Res, $Val extends Answer>
     Object? id = null,
     Object? text = null,
     Object? isCorrect = null,
+    Object? isSelected = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -73,6 +75,10 @@ class _$AnswerCopyWithImpl<$Res, $Val extends Answer>
           ? _value.isCorrect
           : isCorrect // ignore: cast_nullable_to_non_nullable
               as bool,
+      isSelected: null == isSelected
+          ? _value.isSelected
+          : isSelected // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -84,7 +90,7 @@ abstract class _$$AnswerImplCopyWith<$Res> implements $AnswerCopyWith<$Res> {
       __$$AnswerImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String text, bool isCorrect});
+  $Res call({String id, String text, bool isCorrect, bool isSelected});
 }
 
 /// @nodoc
@@ -103,6 +109,7 @@ class __$$AnswerImplCopyWithImpl<$Res>
     Object? id = null,
     Object? text = null,
     Object? isCorrect = null,
+    Object? isSelected = null,
   }) {
     return _then(_$AnswerImpl(
       id: null == id
@@ -117,6 +124,10 @@ class __$$AnswerImplCopyWithImpl<$Res>
           ? _value.isCorrect
           : isCorrect // ignore: cast_nullable_to_non_nullable
               as bool,
+      isSelected: null == isSelected
+          ? _value.isSelected
+          : isSelected // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -124,7 +135,11 @@ class __$$AnswerImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AnswerImpl implements _Answer {
-  _$AnswerImpl({required this.id, required this.text, required this.isCorrect});
+  _$AnswerImpl(
+      {required this.id,
+      required this.text,
+      required this.isCorrect,
+      this.isSelected = false});
 
   factory _$AnswerImpl.fromJson(Map<String, dynamic> json) =>
       _$$AnswerImplFromJson(json);
@@ -135,10 +150,13 @@ class _$AnswerImpl implements _Answer {
   final String text;
   @override
   final bool isCorrect;
+  @override
+  @JsonKey()
+  final bool isSelected;
 
   @override
   String toString() {
-    return 'Answer(id: $id, text: $text, isCorrect: $isCorrect)';
+    return 'Answer(id: $id, text: $text, isCorrect: $isCorrect, isSelected: $isSelected)';
   }
 
   @override
@@ -149,12 +167,14 @@ class _$AnswerImpl implements _Answer {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.isCorrect, isCorrect) ||
-                other.isCorrect == isCorrect));
+                other.isCorrect == isCorrect) &&
+            (identical(other.isSelected, isSelected) ||
+                other.isSelected == isSelected));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, text, isCorrect);
+  int get hashCode => Object.hash(runtimeType, id, text, isCorrect, isSelected);
 
   /// Create a copy of Answer
   /// with the given fields replaced by the non-null parameter values.
@@ -176,7 +196,8 @@ abstract class _Answer implements Answer {
   factory _Answer(
       {required final String id,
       required final String text,
-      required final bool isCorrect}) = _$AnswerImpl;
+      required final bool isCorrect,
+      final bool isSelected}) = _$AnswerImpl;
 
   factory _Answer.fromJson(Map<String, dynamic> json) = _$AnswerImpl.fromJson;
 
@@ -186,6 +207,8 @@ abstract class _Answer implements Answer {
   String get text;
   @override
   bool get isCorrect;
+  @override
+  bool get isSelected;
 
   /// Create a copy of Answer
   /// with the given fields replaced by the non-null parameter values.
