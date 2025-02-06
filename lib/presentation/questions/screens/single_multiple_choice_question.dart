@@ -29,8 +29,8 @@ class SingleMultipleChoiceQuestionPage extends ConsumerStatefulWidget {
 class _SingleMultipleChoiceQuestionPageState
     extends ConsumerState<SingleMultipleChoiceQuestionPage> {
   String? _selectedAnswerId;
-  Set<String> _selectedAnswerIds = {};
-  List<Answer> _answers = []; // Speichert die Antworten für den Button
+  final Set<String> _selectedAnswerIds = {};
+  List<Answer> _answers = [];
 
   void _checkAnswers(bool isMultipleChoice) {
     if (isMultipleChoice) {
