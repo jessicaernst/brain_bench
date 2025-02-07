@@ -10,14 +10,12 @@ class TopicCard extends ConsumerWidget {
     required this.cardId,
     required this.title,
     required this.description,
-    required this.isDarkMode,
     required this.onPressed,
   });
 
   final String cardId;
   final String title;
   final String description;
-  final bool isDarkMode;
   final VoidCallback onPressed;
 
   @override
@@ -25,6 +23,7 @@ class TopicCard extends ConsumerWidget {
     final isExpanded = ref.watch(topicCardStateProvider(cardId: cardId));
     final stateNotifier =
         ref.read(topicCardStateProvider(cardId: cardId).notifier);
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -41,7 +40,6 @@ class TopicCard extends ConsumerWidget {
             TopicExpandableContent(
               cardWidth: cardWidth,
               description: description,
-              isDarkMode: isDarkMode,
               onPressed: onPressed,
               isExpanded: isExpanded,
             ),

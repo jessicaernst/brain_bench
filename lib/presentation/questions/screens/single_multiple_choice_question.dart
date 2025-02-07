@@ -5,7 +5,7 @@ import 'package:brain_bench/core/widgets/no_data_available_view.dart';
 import 'package:brain_bench/core/widgets/progress_indicator_bar_view.dart';
 import 'package:brain_bench/data/models/question.dart';
 import 'package:brain_bench/data/providers/quiz/question_providers.dart';
-import 'package:brain_bench/presentation/questions/widgets/answer_row_view.dart';
+import 'package:brain_bench/presentation/questions/widgets/answer_list_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -28,32 +28,44 @@ class SingleMultipleChoiceQuestionPage extends ConsumerStatefulWidget {
 
 class _SingleMultipleChoiceQuestionPageState
     extends ConsumerState<SingleMultipleChoiceQuestionPage> {
-  // Stores the ID of the selected answer (for single-choice questions)
   String? _selectedAnswerId;
-
-  // Stores the IDs of selected answers (for multiple-choice questions)
   final Set<String> _selectedAnswerIds = {};
+
+  void _handleAnswerSelection(
+      String answerId, bool isMultipleChoice, AnswersNotifier answersNotifier) {
+    setState(() {
+      if (isMultipleChoice) {
+        if (_selectedAnswerIds.contains(answerId)) {
+          _selectedAnswerIds.remove(answerId);
+          _logger.info('❌ Deselected answer: $answerId');
+        } else {
+          _selectedAnswerIds.add(answerId);
+          _logger.info('🟢 Selected answer: $answerId');
+        }
+      } else {
+        _selectedAnswerId = _selectedAnswerId == answerId ? null : answerId;
+        _logger.info('🟢 Selected answer: $answerId');
+      }
+    });
+
+    // Toggle selection in the notifier
+    answersNotifier.toggleAnswer(answerId);
+  }
 
   @override
   Widget build(BuildContext context) {
     final String languageCode = Localizations.localeOf(context).languageCode;
     final AppLocalizations localizations = AppLocalizations.of(context)!;
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     _logger.info(
         '📌 Loading questions for Topic ID: ${widget.topicId}, Language: $languageCode');
 
-    // Initialize the QuizViewModel
     final quizViewModel = ref.read(quizViewModelProvider.notifier);
-
-    // Fetch questions asynchronously from DataProvider
     final questionsAsync =
         ref.watch(questionsProvider(widget.topicId, languageCode));
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Quiz'),
-      ),
+      appBar: AppBar(title: const Text('Quiz')),
       body: questionsAsync.when(
         data: (questions) {
           if (questions.isEmpty) {
@@ -68,16 +80,9 @@ class _SingleMultipleChoiceQuestionPageState
           _logger.info(
               '✅ First question loaded: ${question.question} (ID: ${question.id}), Type: ${question.type}');
 
-          final answerIds = question.answers.map((e) => e.id).toList();
-          _logger.info('📌 Answer IDs: $answerIds');
-
-          // Initialize and watch AnswersNotifier
           final answersNotifier = ref.read(answersNotifierProvider.notifier);
-          final answers = ref.watch(answersNotifierProvider);
 
-          // Delay the initialization of answers until after the widget is built and ensures that the notifier
-          // is initialized only once.
-          if (answers.isEmpty) {
+          if (ref.watch(answersNotifierProvider).isEmpty) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               _logger.info('🔄 Initializing answers in AnswersNotifier');
               answersNotifier.initializeAnswers(question.answers);
@@ -91,76 +96,29 @@ class _SingleMultipleChoiceQuestionPageState
                 const SizedBox(height: 8),
                 const ProgressIndicatorBarView(),
                 const SizedBox(height: 24),
-
-                // Display the question text
                 Text(
                   question.question,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-
                 const Spacer(),
-
-                // Answer List
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.height * 0.03,
-                    horizontal: MediaQuery.of(context).size.width * 0.10,
-                  ),
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: answers.map((answer) {
-                      final isSelected = isMultipleChoice
-                          ? _selectedAnswerIds.contains(answer.id)
-                          : _selectedAnswerId == answer.id;
-
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (isMultipleChoice) {
-                              if (_selectedAnswerIds.contains(answer.id)) {
-                                _selectedAnswerIds.remove(answer.id);
-                                _logger.info(
-                                    '❌ Deselected answer: ${answer.text} (ID: ${answer.id})');
-                              } else {
-                                _selectedAnswerIds.add(answer.id);
-                                _logger.info(
-                                    '🟢 Selected answer: ${answer.text} (ID: ${answer.id})');
-                              }
-                            } else {
-                              _selectedAnswerId = _selectedAnswerId == answer.id
-                                  ? null
-                                  : answer.id;
-                              _logger.info(
-                                  '🟢 Selected answer: ${answer.text} (ID: ${answer.id})');
-                            }
-                          });
-
-                          // Toggle selection in the notifier
-                          answersNotifier.toggleAnswer(answer.id);
-                        },
-                        child: AnswerRowView(
-                          selected: isSelected,
-                          answer: answer,
-                          isDarkMode: isDarkMode,
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                AnswerListView(
+                  question: question,
+                  isMultipleChoice: isMultipleChoice,
+                  selectedAnswerId: _selectedAnswerId,
+                  selectedAnswerIds: _selectedAnswerIds,
+                  onAnswerSelected: (answerId) => _handleAnswerSelection(
+                      answerId, isMultipleChoice, answersNotifier),
                 ),
-
                 const SizedBox(height: 24),
-
-                // Submit Answer Button
                 Center(
                   child: LightDarkSwitchBtn(
                     title: localizations.submitAnswerBtnLbl,
                     isActive: isMultipleChoice
                         ? _selectedAnswerIds.isNotEmpty
                         : _selectedAnswerId != null,
-                    isDarkMode: isDarkMode,
                     onPressed: () {
-                      if (answers.isNotEmpty) {
+                      if (ref.watch(answersNotifierProvider).isNotEmpty) {
                         _logger.info('🟢 Submit button pressed');
                         quizViewModel.checkAnswers(ref);
                       } else {
@@ -169,20 +127,15 @@ class _SingleMultipleChoiceQuestionPageState
                     },
                   ),
                 ),
-
                 const SizedBox(height: 24),
               ],
             ),
           );
         },
-
-        // Show loading indicator while fetching questions
         loading: () {
           _logger.info('🔄 Questions are loading...');
           return const Center(child: CircularProgressIndicator());
         },
-
-        // Handle errors while fetching questions
         error: (error, stack) {
           _logger.severe('❌ Error loading questions: $error');
           return Center(

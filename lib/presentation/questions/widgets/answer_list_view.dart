@@ -1,0 +1,55 @@
+import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
+import 'package:brain_bench/data/models/question.dart';
+import 'package:brain_bench/presentation/questions/widgets/answer_row_view.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class AnswerListView extends StatelessWidget {
+  const AnswerListView({
+    super.key,
+    required this.question,
+    required this.isMultipleChoice,
+    required this.selectedAnswerId,
+    required this.selectedAnswerIds,
+    required this.onAnswerSelected,
+  });
+
+  final Question question;
+  final bool isMultipleChoice;
+  final String? selectedAnswerId;
+  final Set<String> selectedAnswerIds;
+  final Function(String answerId) onAnswerSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: MediaQuery.of(context).size.height * 0.03,
+        horizontal: MediaQuery.of(context).size.width * 0.10,
+      ),
+      child: Consumer(builder: (context, ref, child) {
+        final answers = ref.watch(answersNotifierProvider);
+
+        return ListView(
+          shrinkWrap: true,
+          children: answers.map((answer) {
+            final isSelected = isMultipleChoice
+                ? selectedAnswerIds.contains(answer.id)
+                : selectedAnswerId == answer.id;
+
+            return GestureDetector(
+              onTap: () => onAnswerSelected(answer.id),
+              child: AnswerRowView(
+                selected: isSelected,
+                answer: answer,
+                isDarkMode: isDarkMode,
+              ),
+            );
+          }).toList(),
+        );
+      }),
+    );
+  }
+}

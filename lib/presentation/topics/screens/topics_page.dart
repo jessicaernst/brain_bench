@@ -1,4 +1,3 @@
-import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/core/widgets/no_data_available_view.dart';
 import 'package:brain_bench/core/widgets/progress_indicator_bar_view.dart';
 import 'package:brain_bench/data/providers/quiz/topic_providers.dart';
@@ -20,7 +19,6 @@ class TopicsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String languageCode = Localizations.localeOf(context).languageCode;
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final title = languageCode == 'de' ? 'Themen' : 'Topics';
 
     final topicsAsync = ref.watch(topicsProvider(categoryId, languageCode));
@@ -28,9 +26,6 @@ class TopicsPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        backgroundColor: isDarkMode
-            ? BrainBenchColors.deepDive
-            : BrainBenchColors.cloudCanvas,
       ),
       body: Column(
         children: [
@@ -55,7 +50,6 @@ class TopicsPage extends ConsumerWidget {
                         cardId: topic.id,
                         title: topic.name,
                         description: topic.description,
-                        isDarkMode: isDarkMode,
                         onPressed: () {
                           Navigator.of(context).pushNamed(
                             '/categories/details/topics/quiz',

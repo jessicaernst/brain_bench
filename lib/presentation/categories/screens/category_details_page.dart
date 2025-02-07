@@ -21,7 +21,6 @@ class CategoryDetailsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String languageCode = Localizations.localeOf(context).languageCode;
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final AppLocalizations localizations = AppLocalizations.of(context)!;
 
     if (category == null) {
@@ -95,7 +94,6 @@ class CategoryDetailsPage extends ConsumerWidget {
                 child: LightDarkSwitchBtn(
                   title: localizations.catgoryBtnLbl,
                   isActive: true,
-                  isDarkMode: isDarkMode,
                   onPressed: () {
                     Navigator.of(context).pushNamed(
                       '/categories/details/topics',

@@ -9,20 +9,19 @@ class TopicExpandableContent extends StatelessWidget {
     super.key,
     required this.cardWidth,
     required this.description,
-    required this.isDarkMode,
     required this.onPressed,
     required this.isExpanded,
   });
 
   final double cardWidth;
   final String description;
-  final bool isDarkMode;
   final VoidCallback onPressed;
   final bool isExpanded;
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -66,7 +65,6 @@ class TopicExpandableContent extends StatelessWidget {
                     LightDarkSwitchBtn(
                       title: localizations.startQuizBtnLbl,
                       isActive: true,
-                      isDarkMode: isDarkMode,
                       onPressed: onPressed,
                     ),
                   ],
