@@ -9,7 +9,7 @@
         "id": "8fcaa512-dbe0-42c3-b8b0-b012103f6d30",
         "textEn": "break",
         "textDe": "break",
-        "isCorrect": false
+        "isCorrect": true
     },
     {
         "id": "9733d531-e016-4910-aa43-df9cd12b7919",
@@ -27,7 +27,7 @@
         "id": "354ef179-b414-43d3-b252-38523de74a62",
         "textEn": "dynamic",
         "textDe": "dynamic",
-        "isCorrect": false
+        "isCorrect": true
     },
     {
         "id": "a7e3c650-5cbf-4198-a30b-488df60b4373",
@@ -57,7 +57,7 @@
         "id": "7e4025f4-87dc-4250-a113-2203a26dfa6f",
         "textEn": "int",
         "textDe": "int",
-        "isCorrect": false
+        "isCorrect": true
     },
     {
         "id": "f29594b8-e18b-4c43-a460-c2d8ec0e4e3f",
@@ -75,7 +75,7 @@
         "id": "57f5a4a3-ae2d-4a9d-b91b-8c44cae6dfb6",
         "textEn": "num",
         "textDe": "num",
-        "isCorrect": false
+        "isCorrect": true
     },
     {
         "id": "19c23df4-21de-482c-99f3-b5aae1bf959f",
@@ -111,7 +111,7 @@
         "id": "03941be4-aab0-4d49-8d0b-8ba493313c14",
         "textEn": "do-while",
         "textDe": "do-while",
-        "isCorrect": false
+        "isCorrect": true
     },
     {
         "id": "8b9ca395-e709-4bb1-bb8b-478539f9bf7a",
@@ -135,7 +135,7 @@
         "id": "e28c90bd-a2c3-47fb-a243-ca4f897c83b2",
         "textEn": "break",
         "textDe": "break",
-        "isCorrect": false
+        "isCorrect": true
     },
     {
         "id": "5bf19e20-20d8-443e-8d9e-bd4f758a6408",
@@ -147,7 +147,7 @@
         "id": "de7605a0-b512-4b63-888e-ab583bd3d3b0",
         "textEn": "Map",
         "textDe": "Map",
-        "isCorrect": false
+        "isCorrect": true
     },
     {
         "id": "7f3504c7-36a7-460a-9ade-89997bf816f3",
@@ -183,7 +183,7 @@
         "id": "c8b67c48-b091-41cf-bfc1-7801d2c840e4",
         "textEn": "map[key] = value",
         "textDe": "map[key] = value",
-        "isCorrect": false
+        "isCorrect": true
     },
     {
         "id": "11c3ff6e-380b-4ff0-812c-17910298788e",
@@ -201,7 +201,7 @@
         "id": "128c344e-ae59-4598-964c-036b2a175092",
         "textEn": "[]",
         "textDe": "[]",
-        "isCorrect": false
+        "isCorrect": true
     },
     {
         "id": "c9743e2b-ef96-4dc7-97d1-bb4f97b2952a",
@@ -597,6 +597,12 @@
         "id": "ccc11111-dddd-eeee-ffff-000044445555",
         "textEn": "loop",
         "textDe": "loop",
+        "isCorrect": false
+    },
+    {
+        "id": "c0b0a1d2-e3f4-5678-9012-345678901234",
+        "textEn": "BigInt",
+        "textDe": "BigInt",
         "isCorrect": false
     }
 ]
