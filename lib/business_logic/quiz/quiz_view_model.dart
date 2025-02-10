@@ -7,84 +7,68 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'quiz_view_model.g.dart';
 
-Logger _logger = Logger('QuizViewModel');
+final Logger _logger = Logger('QuizViewModel');
 
 @Riverpod(keepAlive: true)
 class QuizViewModel extends _$QuizViewModel {
   @override
   QuizState build() {
-    _logger.info(
-        'QuizViewModel initialized with initial state. This should only happen once!');
+    _logger.info('QuizViewModel initialized with initial state.');
     return QuizState.initial();
   }
 
-  /// Check the user's selected answers and provide detailed feedback
+  /// Initializes the quiz if not already initialized
+  void initializeQuizIfNeeded(List<Question> questions, WidgetRef ref) {
+    if (state.questions.isEmpty && questions.isNotEmpty) {
+      state = state.copyWith(questions: questions, currentIndex: 0);
+      ref
+          .read(answersNotifierProvider.notifier)
+          .initializeAnswers(questions.first.answers);
+      _logger.info('✅ Quiz initialized with ${questions.length} questions.');
+    }
+  }
+
+  /// Returns the quiz progress as a percentage (0.0 to 1.0)
+  double getProgress() {
+    if (state.questions.isEmpty) return 0.0;
+    return (state.currentIndex + 1) / state.questions.length;
+  }
+
+  /// Determines if there are more questions left
+  bool hasNextQuestion() => state.currentIndex + 1 < state.questions.length;
+
+  /// Moves to the next question (if available)
+  void loadNextQuestion(WidgetRef ref) {
+    if (hasNextQuestion()) {
+      state = state.copyWith(currentIndex: state.currentIndex + 1);
+      _logger.info('🔄 Loading next question: Index ${state.currentIndex}');
+      ref
+          .read(answersNotifierProvider.notifier)
+          .initializeAnswers(state.questions[state.currentIndex].answers);
+    }
+  }
+
+  /// Checks the user's selected answers and updates state accordingly
   void checkAnswers(WidgetRef ref) {
-    final answers = ref.read(answersNotifierProvider); // Get current answers
-
-    // Correct answers selected by the user
-    final correctAnswersSelected =
+    final answers = ref.read(answersNotifierProvider);
+    final correctAnswers =
         answers.where((a) => a.isSelected && a.isCorrect).toList();
-
-    // Incorrect answers selected by the user
-    final incorrectAnswersSelected =
+    final incorrectAnswers =
         answers.where((a) => a.isSelected && !a.isCorrect).toList();
-
-    // Missed correct answers (correct answers that were not selected)
     final missedCorrectAnswers =
         answers.where((a) => !a.isSelected && a.isCorrect).toList();
 
-    // Log the details
-    _logger.info(
-        '✅ Correct answers selected: ${correctAnswersSelected.map((a) => a.text).toList()}');
-    _logger.info(
-        '❌ Incorrect answers selected: ${incorrectAnswersSelected.map((a) => a.text).toList()}');
-    _logger.info(
-        '⚠️ Missed correct answers: ${missedCorrectAnswers.map((a) => a.text).toList()}');
-
-    // Update the state with detailed information
     state = state.copyWith(
-      correctAnswers: correctAnswersSelected,
-      incorrectAnswers: incorrectAnswersSelected,
+      correctAnswers: correctAnswers,
+      incorrectAnswers: incorrectAnswers,
       missedCorrectAnswers: missedCorrectAnswers,
     );
   }
 
-  /// Load the next question
-  void loadNextQuestion(WidgetRef ref) {
-    if (state.currentIndex + 1 < state.questions.length) {
-      state = state.copyWith(currentIndex: state.currentIndex + 1);
-      _logger.info('🔄 Loading next question: Index ${state.currentIndex}');
-
-      // Initialize answers for the next question
-      final answersNotifier = ref.read(answersNotifierProvider.notifier);
-      answersNotifier
-          .initializeAnswers(state.questions[state.currentIndex].answers);
-    } else {
-      _logger.info('✅ No more questions available.');
-    }
-  }
-
-  /// Set the questions for the quiz
-  void setQuestions(List<Question> questions, WidgetRef ref) {
-    state = state.copyWith(questions: questions, currentIndex: 0);
-    _logger.info('Questions initialized. Total: ${questions.length}');
-    ref
-        .read(answersNotifierProvider.notifier)
-        .initializeAnswers(questions.first.answers);
-  }
-
-  /// Reset the quiz by clearing all user selections
+  /// Resets the quiz
   void resetQuiz(WidgetRef ref) {
-    _logger.info('Resetting the quiz and clearing all selected answers.');
-
-    // Reset all answers' selections
-    ref.read(answersNotifierProvider.notifier).resetAnswers();
-
-    // Reset the quiz state to the initial state
     state = QuizState.initial();
-
-    _logger.info('Quiz state reset to initial values.');
+    ref.read(answersNotifierProvider.notifier).resetAnswers();
   }
 }
 

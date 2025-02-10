@@ -3,6 +3,7 @@ import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
 import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/widgets/no_data_available_view.dart';
 import 'package:brain_bench/core/widgets/progress_indicator_bar_view.dart';
+import 'package:brain_bench/data/models/answer.dart';
 import 'package:brain_bench/data/models/question.dart';
 import 'package:brain_bench/data/providers/quiz/question_providers.dart';
 import 'package:brain_bench/presentation/questions/widgets/answer_list_view.dart';
@@ -29,6 +30,7 @@ class SingleMultipleChoiceQuestionPage extends ConsumerStatefulWidget {
 
 class _SingleMultipleChoiceQuestionPageState
     extends ConsumerState<SingleMultipleChoiceQuestionPage> {
+  /// Displays the result bottom sheet after a question is answered
   void _showResultBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -37,7 +39,6 @@ class _SingleMultipleChoiceQuestionPageState
       builder: (ctx) {
         return Consumer(
           builder: (context, ref, child) {
-            // Watch the existing QuizViewModel state
             final quizState = ref.watch(quizViewModelProvider);
 
             _logger.info(
@@ -50,31 +51,32 @@ class _SingleMultipleChoiceQuestionPageState
               incorrectAnswers: quizState.incorrectAnswers,
               missedCorrectAnswers: quizState.missedCorrectAnswers,
               btnLbl: quizState.currentIndex + 1 < quizState.questions.length
-                  ? 'Next Question'
-                  : 'Finish',
+                  ? AppLocalizations.of(context)!.nextQuestionBtnLbl
+                  : AppLocalizations.of(context)!.finishQuizBtnLbl,
               onBtnPressed: () {
                 Navigator.pop(context);
-
-                if (quizState.currentIndex + 1 < quizState.questions.length) {
-                  ref
-                      .read(quizViewModelProvider.notifier)
-                      .loadNextQuestion(ref);
-                } else {
-                  _logger.info('Quiz completed.');
-                  ref.read(quizViewModelProvider.notifier).resetQuiz(ref);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Quiz completed!'),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-                }
+                _handleNextQuestionOrFinish(context, ref);
               },
             );
           },
         );
       },
     );
+  }
+
+  /// Handles logic to either load the next question or finish the quiz
+  void _handleNextQuestionOrFinish(BuildContext context, WidgetRef ref) {
+    final quizViewModel = ref.read(quizViewModelProvider.notifier);
+
+    if (quizViewModel.hasNextQuestion()) {
+      quizViewModel.loadNextQuestion(ref);
+    } else {
+      quizViewModel.resetQuiz(ref);
+      _logger.info('Quiz completed.');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context)!.quizCompletedMsg)),
+      );
+    }
   }
 
   @override
@@ -85,34 +87,35 @@ class _SingleMultipleChoiceQuestionPageState
     _logger.info(
         '📌 Loading questions for Topic ID: ${widget.topicId}, Language: $languageCode');
 
-    final quizViewModel = ref.read(quizViewModelProvider.notifier);
-    final questionsAsync =
+    final QuizViewModel quizViewModel =
+        ref.read(quizViewModelProvider.notifier);
+    final AsyncValue questionsAsync =
         ref.watch(questionsProvider(widget.topicId, languageCode));
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Quiz')),
+      appBar: AppBar(
+        title: Text(localizations.quizAppBarTitle),
+      ),
       body: questionsAsync.when(
         data: (questions) {
+          // Check if the list of questions is empty
           if (questions.isEmpty) {
             _logger.warning(
                 '⚠️ No questions found for Topic ID: ${widget.topicId}');
             return const NoDataAvailableView(text: '❌ No questions available.');
           }
 
+          // Initialize the quiz if it's not already set up
           Future.microtask(() {
-            if (ref.read(quizViewModelProvider).questions.isEmpty) {
-              ref
-                  .read(quizViewModelProvider.notifier)
-                  .setQuestions(questions, ref);
-              _logger.info('Questions initialized in QuizViewModel.');
-            }
+            quizViewModel.initializeQuizIfNeeded(questions, ref);
           });
 
           final quizState = ref.watch(quizViewModelProvider);
 
+          // If the questions in the QuizViewModel remain uninitialized, display an error
           if (quizState.questions.isEmpty) {
-            _logger.warning(
-                'Questions list is empty. Make sure they are initialized properly.');
+            _logger
+                .warning('⚠️ Questions list is empty. Check initialization.');
             return const Center(
               child: Text(
                 'No questions available.',
@@ -121,19 +124,26 @@ class _SingleMultipleChoiceQuestionPageState
             );
           }
 
-          final currentQuestion = quizState.questions[quizState.currentIndex];
-          final isMultipleChoice =
+          // Get the current question and its type
+          final Question currentQuestion =
+              quizState.questions[quizState.currentIndex];
+          // Determine if the current question is multiple choice
+          final bool isMultipleChoice =
               currentQuestion.type == QuestionType.multipleChoice;
 
-          final progress =
-              (quizState.currentIndex + 1) / quizState.questions.length;
+          // Get the current progress of the quiz
+          final double progress = quizViewModel.getProgress();
 
           _logger.info(
-              '✅ Current question: ${currentQuestion.question} (ID: ${currentQuestion.id}), Type: ${currentQuestion.type}, Progress: ${progress * 100}%');
+              '✅ Current question: ${currentQuestion.question} (ID: ${currentQuestion.id}), Type: ${currentQuestion.type}, Progress: ${(progress * 100).toStringAsFixed(1)}%');
 
-          final answers = ref.watch(answersNotifierProvider);
-          final answersNotifier = ref.watch(answersNotifierProvider.notifier);
+          // Get the list of answers and the answers notifier
+          final List<Answer> answers = ref.watch(answersNotifierProvider);
+          // Get the answers notifier to initialize the answers
+          final AnswersNotifier answersNotifier =
+              ref.watch(answersNotifierProvider.notifier);
 
+          // Ensure the answers are correctly initialized for the current question
           Future.microtask(() {
             _logger.info(
                 '🔄 Initializing answers for question at index ${quizState.currentIndex}');
@@ -145,9 +155,7 @@ class _SingleMultipleChoiceQuestionPageState
             child: Column(
               children: [
                 const SizedBox(height: 8),
-                ProgressIndicatorBarView(
-                  progress: progress,
-                ),
+                ProgressIndicatorBarView(progress: progress),
                 const SizedBox(height: 24),
                 Text(
                   currentQuestion.question,
@@ -165,17 +173,14 @@ class _SingleMultipleChoiceQuestionPageState
                 Center(
                   child: LightDarkSwitchBtn(
                     title: localizations.submitAnswerBtnLbl,
-                    isActive: isMultipleChoice
-                        ? answers.any((answer) => answer.isSelected)
-                        : answers.any((answer) => answer.isSelected),
+                    isActive: answers.any((answer) => answer.isSelected),
                     onPressed: () {
-                      if (answers.isNotEmpty &&
-                          answers.any((answer) => answer.isSelected)) {
+                      if (answers.any((answer) => answer.isSelected)) {
                         _logger.info('🟢 Submit button pressed');
                         quizViewModel.checkAnswers(ref);
                         _showResultBottomSheet(context);
                       } else {
-                        _logger.warning('⚠️ No answers available to check.');
+                        _logger.warning('⚠️ No answers selected.');
                       }
                     },
                   ),
@@ -194,7 +199,7 @@ class _SingleMultipleChoiceQuestionPageState
           return Center(
             child: Text(
               'Error loading questions: $error',
-              style: TextTheme.of(context).bodyMedium,
+              style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
           );

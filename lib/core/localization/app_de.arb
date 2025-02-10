@@ -47,5 +47,17 @@
     "submitAnswerBtnLbl": "Fertig",
     "@submitAnswerBtnLbl": {
         "description": "The label of the button to submit an answer"
+    },
+    "nextQuestionBtnLbl": "Nächste Frage",
+    "@nextQuestionBtnLbl": {
+        "description": "The label of the button to go to the next question"
+    },
+    "finishQuizBtnLbl": "Quiz beenden",
+    "@finishQuizBtnLbl": {
+        "description": "The label of the button to finish the quiz"
+    },
+    "quizCompletedMsg": "Quiz abgeschlossen",
+    "@quizCompletedMsg": {
+        "description": "The message displayed when the quiz is completed"
     }
 }
