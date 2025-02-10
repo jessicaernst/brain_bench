@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/data/models/answer.dart';
 import 'package:flutter/material.dart';
 
@@ -7,17 +10,19 @@ class FeedbackBottomSheetView extends StatelessWidget {
     required this.correctAnswers,
     required this.incorrectAnswers,
     required this.missedCorrectAnswers,
+    required this.btnLbl,
+    required this.onBtnPressed,
   });
 
   final List<Answer> correctAnswers;
   final List<Answer> incorrectAnswers;
   final List<Answer> missedCorrectAnswers;
+  final String btnLbl;
+  final VoidCallback onBtnPressed;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // or use a custom widget like a ResultBottomSheet widget
-      height: 400,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
@@ -60,9 +65,10 @@ class FeedbackBottomSheetView extends StatelessWidget {
 
           // You can add a button to close the BottomSheet or go to the next question
           Center(
-            child: ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Close'),
+            child: LightDarkSwitchBtn(
+              title: btnLbl,
+              isActive: true,
+              onPressed: onBtnPressed,
             ),
           ),
         ],

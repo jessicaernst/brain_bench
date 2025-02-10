@@ -8,11 +8,12 @@ part 'quiz_view_model.g.dart';
 
 Logger _logger = Logger('QuizViewModel');
 
-@riverpod
+@Riverpod(keepAlive: true)
 class QuizViewModel extends _$QuizViewModel {
   @override
   QuizState build() {
-    _logger.info('QuizViewModel initialized with initial state.');
+    _logger.info(
+        'QuizViewModel initialized with initial state. This should only happen once!');
     return QuizState.initial();
   }
 

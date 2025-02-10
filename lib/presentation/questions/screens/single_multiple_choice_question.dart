@@ -29,27 +29,29 @@ class SingleMultipleChoiceQuestionPage extends ConsumerStatefulWidget {
 
 class _SingleMultipleChoiceQuestionPageState
     extends ConsumerState<SingleMultipleChoiceQuestionPage> {
-  void _showResultBottomSheet(
-      BuildContext context, QuizViewModel quizViewModel) {
+  void _showResultBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      isDismissible: false, // prevent accidental dismissal
+      isDismissible: false,
       builder: (ctx) {
-        // Use a Consumer so that if the quiz state updates,
-        // the bottom sheet rebuilds automatically
         return Consumer(
           builder: (context, ref, child) {
-            // Get the updated quiz state
+            // Watch the existing QuizViewModel state
             final quizState = ref.watch(quizViewModelProvider);
 
-            final correctAnswers = quizState.correctAnswers;
-            final incorrectAnswers = quizState.incorrectAnswers;
-            final missedCorrectAnswers = quizState.missedCorrectAnswers;
+            _logger.info(
+                'Bottom Sheet Data: Correct: ${quizState.correctAnswers.length}, '
+                'Incorrect: ${quizState.incorrectAnswers.length}, '
+                'Missed: ${quizState.missedCorrectAnswers.length}');
 
             return FeedbackBottomSheetView(
-              correctAnswers: correctAnswers,
-              incorrectAnswers: incorrectAnswers,
-              missedCorrectAnswers: missedCorrectAnswers,
+              correctAnswers: quizState.correctAnswers,
+              incorrectAnswers: quizState.incorrectAnswers,
+              missedCorrectAnswers: quizState.missedCorrectAnswers,
+              btnLbl: 'Close',
+              onBtnPressed: () {
+                Navigator.pop(context);
+              },
             );
           },
         );
@@ -129,7 +131,7 @@ class _SingleMultipleChoiceQuestionPageState
                           answers.any((answer) => answer.isSelected)) {
                         _logger.info('🟢 Submit button pressed');
                         quizViewModel.checkAnswers(ref);
-                        _showResultBottomSheet(context, quizViewModel);
+                        _showResultBottomSheet(context);
                       } else {
                         _logger.warning('⚠️ No answers available to check.');
                       }
