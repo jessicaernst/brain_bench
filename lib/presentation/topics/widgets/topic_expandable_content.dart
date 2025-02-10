@@ -8,12 +8,14 @@ class TopicExpandableContent extends StatelessWidget {
   const TopicExpandableContent({
     super.key,
     required this.cardWidth,
+    required this.title,
     required this.description,
     required this.onPressed,
     required this.isExpanded,
   });
 
   final double cardWidth;
+  final String title;
   final String description;
   final VoidCallback onPressed;
   final bool isExpanded;
@@ -57,11 +59,17 @@ class TopicExpandableContent extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
+                      title,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
                       description,
                       style: Theme.of(context).textTheme.bodyMedium,
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 32),
                     LightDarkSwitchBtn(
                       title: localizations.startQuizBtnLbl,
                       isActive: true,

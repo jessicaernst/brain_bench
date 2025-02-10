@@ -61,6 +61,7 @@ class FeedbackBottomSheetView extends StatelessWidget {
                 onPressed: onBtnPressed,
               ),
             ),
+            const SizedBox(height: 16),
           ],
         ),
       ),

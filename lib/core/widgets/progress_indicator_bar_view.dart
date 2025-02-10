@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 class ProgressIndicatorBarView extends StatelessWidget {
   const ProgressIndicatorBarView({
     super.key,
+    required this.progress,
   });
+
+  final double progress;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class ProgressIndicatorBarView extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: FractionallySizedBox(
               alignment: Alignment.centerLeft,
-              widthFactor: 0.5,
+              widthFactor: progress,
               child: Container(
                 height: 10,
                 color: Theme.of(context).primaryColor,

@@ -61,6 +61,13 @@ class _SingleMultipleChoiceQuestionPageState
                       .loadNextQuestion(ref);
                 } else {
                   _logger.info('Quiz completed.');
+                  ref.read(quizViewModelProvider.notifier).resetQuiz(ref);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Quiz completed!'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
                 }
               },
             );
@@ -118,8 +125,11 @@ class _SingleMultipleChoiceQuestionPageState
           final isMultipleChoice =
               currentQuestion.type == QuestionType.multipleChoice;
 
+          final progress =
+              (quizState.currentIndex + 1) / quizState.questions.length;
+
           _logger.info(
-              '✅ First question loaded: ${currentQuestion.question} (ID: ${currentQuestion.id}), Type: ${currentQuestion.type}');
+              '✅ Current question: ${currentQuestion.question} (ID: ${currentQuestion.id}), Type: ${currentQuestion.type}, Progress: ${progress * 100}%');
 
           final answers = ref.watch(answersNotifierProvider);
           final answersNotifier = ref.watch(answersNotifierProvider.notifier);
@@ -135,7 +145,9 @@ class _SingleMultipleChoiceQuestionPageState
             child: Column(
               children: [
                 const SizedBox(height: 8),
-                const ProgressIndicatorBarView(),
+                ProgressIndicatorBarView(
+                  progress: progress,
+                ),
                 const SizedBox(height: 24),
                 Text(
                   currentQuestion.question,

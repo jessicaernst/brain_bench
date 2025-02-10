@@ -3,14 +3,13 @@ import 'package:brain_bench/navigation/routes/not_found_page.dart';
 import 'package:brain_bench/presentation/categories/screens/categories_page.dart';
 import 'package:brain_bench/presentation/categories/screens/category_details_page.dart';
 import 'package:brain_bench/presentation/home/screens/home_page.dart';
-import 'package:brain_bench/presentation/questions/screens/single_multiple_choice_question.dart';
 import 'package:brain_bench/presentation/results/Screens/result_page.dart';
 import 'package:brain_bench/navigation/tabs/widgets/brain_bench_bottom_nav_bar.dart';
 import 'package:brain_bench/presentation/topics/screens/topics_page.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-Logger logger = Logger('TabsPage');
+final Logger logger = Logger('TabsPage');
 
 class TabsPage extends StatefulWidget {
   const TabsPage({super.key});
@@ -21,6 +20,7 @@ class TabsPage extends StatefulWidget {
 
 class _TabsPageState extends State<TabsPage> {
   int _selectedIndex = 0;
+  bool _hideBottomNavBar = false;
 
   final List<GlobalKey<NavigatorState>> _navigatorKeys = [
     GlobalKey<NavigatorState>(),
@@ -107,17 +107,6 @@ class _TabsPageState extends State<TabsPage> {
         return MaterialPageRoute(
           builder: (_) => TopicsPage(categoryId: categoryId),
         );
-      case '/categories/details/topics/quiz':
-        final topicId = settings.arguments as String?;
-        if (topicId == null) {
-          logger.warning('TopicId is null!');
-          return MaterialPageRoute(
-            builder: (_) => const NotFoundPage(),
-          );
-        }
-        return MaterialPageRoute(
-          builder: (_) => SingleMultipleChoiceQuestionPage(topicId: topicId),
-        );
       default:
         return MaterialPageRoute(builder: (_) => const NotFoundPage());
     }
@@ -132,6 +121,18 @@ class _TabsPageState extends State<TabsPage> {
     }
   }
 
+  void navigateToQuiz(String topicId) {
+    setState(() {
+      _hideBottomNavBar = true;
+    });
+
+    Navigator.of(context).pushNamed('/quiz', arguments: topicId).then((_) {
+      setState(() {
+        _hideBottomNavBar = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,10 +145,12 @@ class _TabsPageState extends State<TabsPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BrainBenchBottomNavBar(
-        currentIndex: _selectedIndex,
-        onTabSelected: _onTabSelected,
-      ),
+      bottomNavigationBar: _hideBottomNavBar
+          ? null
+          : BrainBenchBottomNavBar(
+              currentIndex: _selectedIndex,
+              onTabSelected: _onTabSelected,
+            ),
     );
   }
 }

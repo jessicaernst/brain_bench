@@ -75,7 +75,7 @@ class QuizViewModel extends _$QuizViewModel {
   }
 
   /// Reset the quiz by clearing all user selections
-  void resetQuiz(Ref ref) {
+  void resetQuiz(WidgetRef ref) {
     _logger.info('Resetting the quiz and clearing all selected answers.');
 
     // Reset all answers' selections

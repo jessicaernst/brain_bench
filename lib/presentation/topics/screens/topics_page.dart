@@ -29,7 +29,9 @@ class TopicsPage extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          const ProgressIndicatorBarView(),
+          const ProgressIndicatorBarView(
+            progress: 0.5,
+          ),
           Expanded(
             child: topicsAsync.when(
               data: (topics) {
@@ -51,8 +53,8 @@ class TopicsPage extends ConsumerWidget {
                         title: topic.name,
                         description: topic.description,
                         onPressed: () {
-                          Navigator.of(context).pushNamed(
-                            '/categories/details/topics/quiz',
+                          Navigator.of(context, rootNavigator: true).pushNamed(
+                            '/quiz',
                             arguments: topic.id,
                           );
                         },

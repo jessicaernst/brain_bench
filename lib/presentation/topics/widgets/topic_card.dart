@@ -42,6 +42,7 @@ class TopicCard extends ConsumerWidget {
               description: description,
               onPressed: onPressed,
               isExpanded: isExpanded,
+              title: title,
             ),
           ],
         );
