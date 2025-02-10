@@ -54,4 +54,19 @@ class AnswersNotifier extends _$AnswersNotifier {
     _logger.info('Retrieved ${selected.length} selected answers.');
     return selected;
   }
+
+  // Toggle the `isSelected` state of a specific answer by its ID
+  void toggleAnswerSelection(String answerId, bool isMultipleChoice) {
+    state = state.map((answer) {
+      if (isMultipleChoice) {
+        return answer.id == answerId
+            ? answer.copyWith(isSelected: !answer.isSelected)
+            : answer;
+      } else {
+        return answer.copyWith(isSelected: answer.id == answerId);
+      }
+    }).toList();
+
+    _logger.info('🔄 Answer selection updated for ID: $answerId');
+  }
 }

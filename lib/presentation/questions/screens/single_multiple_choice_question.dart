@@ -6,6 +6,7 @@ import 'package:brain_bench/core/widgets/progress_indicator_bar_view.dart';
 import 'package:brain_bench/data/models/question.dart';
 import 'package:brain_bench/data/providers/quiz/question_providers.dart';
 import 'package:brain_bench/presentation/questions/widgets/answer_list_view.dart';
+import 'package:brain_bench/presentation/questions/widgets/feedback_bottom_sheet_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -28,28 +29,32 @@ class SingleMultipleChoiceQuestionPage extends ConsumerStatefulWidget {
 
 class _SingleMultipleChoiceQuestionPageState
     extends ConsumerState<SingleMultipleChoiceQuestionPage> {
-  String? _selectedAnswerId;
-  final Set<String> _selectedAnswerIds = {};
+  void _showResultBottomSheet(
+      BuildContext context, QuizViewModel quizViewModel) {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: false, // prevent accidental dismissal
+      builder: (ctx) {
+        // Use a Consumer so that if the quiz state updates,
+        // the bottom sheet rebuilds automatically
+        return Consumer(
+          builder: (context, ref, child) {
+            // Get the updated quiz state
+            final quizState = ref.watch(quizViewModelProvider);
 
-  void _handleAnswerSelection(
-      String answerId, bool isMultipleChoice, AnswersNotifier answersNotifier) {
-    setState(() {
-      if (isMultipleChoice) {
-        if (_selectedAnswerIds.contains(answerId)) {
-          _selectedAnswerIds.remove(answerId);
-          _logger.info('❌ Deselected answer: $answerId');
-        } else {
-          _selectedAnswerIds.add(answerId);
-          _logger.info('🟢 Selected answer: $answerId');
-        }
-      } else {
-        _selectedAnswerId = _selectedAnswerId == answerId ? null : answerId;
-        _logger.info('🟢 Selected answer: $answerId');
-      }
-    });
+            final correctAnswers = quizState.correctAnswers;
+            final incorrectAnswers = quizState.incorrectAnswers;
+            final missedCorrectAnswers = quizState.missedCorrectAnswers;
 
-    // Toggle selection in the notifier
-    answersNotifier.toggleAnswer(answerId);
+            return FeedbackBottomSheetView(
+              correctAnswers: correctAnswers,
+              incorrectAnswers: incorrectAnswers,
+              missedCorrectAnswers: missedCorrectAnswers,
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -80,14 +85,18 @@ class _SingleMultipleChoiceQuestionPageState
           _logger.info(
               '✅ First question loaded: ${question.question} (ID: ${question.id}), Type: ${question.type}');
 
-          final answersNotifier = ref.read(answersNotifierProvider.notifier);
+          final answers = ref.watch(answersNotifierProvider);
+          final answersNotifier = ref.watch(answersNotifierProvider.notifier);
 
-          if (ref.watch(answersNotifierProvider).isEmpty) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
+          Future.microtask(() {
+            final answers = ref.read(answersNotifierProvider);
+            if (answers.isEmpty) {
               _logger.info('🔄 Initializing answers in AnswersNotifier');
-              answersNotifier.initializeAnswers(question.answers);
-            });
-          }
+              ref
+                  .read(answersNotifierProvider.notifier)
+                  .initializeAnswers(question.answers);
+            }
+          });
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -105,22 +114,24 @@ class _SingleMultipleChoiceQuestionPageState
                 AnswerListView(
                   question: question,
                   isMultipleChoice: isMultipleChoice,
-                  selectedAnswerId: _selectedAnswerId,
-                  selectedAnswerIds: _selectedAnswerIds,
-                  onAnswerSelected: (answerId) => _handleAnswerSelection(
-                      answerId, isMultipleChoice, answersNotifier),
+                  onAnswerSelected: (answerId) => answersNotifier
+                      .toggleAnswerSelection(answerId, isMultipleChoice),
                 ),
                 const SizedBox(height: 24),
                 Center(
                   child: LightDarkSwitchBtn(
                     title: localizations.submitAnswerBtnLbl,
                     isActive: isMultipleChoice
-                        ? _selectedAnswerIds.isNotEmpty
-                        : _selectedAnswerId != null,
+                        ? answers.any((answer) => answer
+                            .isSelected) // Prüft, ob mindestens eine Antwort ausgewählt ist
+                        : answers.any((answer) =>
+                            answer.isSelected), // Gilt auch für Single Choice
                     onPressed: () {
-                      if (ref.watch(answersNotifierProvider).isNotEmpty) {
+                      if (answers.isNotEmpty &&
+                          answers.any((answer) => answer.isSelected)) {
                         _logger.info('🟢 Submit button pressed');
                         quizViewModel.checkAnswers(ref);
+                        _showResultBottomSheet(context, quizViewModel);
                       } else {
                         _logger.warning('⚠️ No answers available to check.');
                       }
@@ -141,7 +152,7 @@ class _SingleMultipleChoiceQuestionPageState
           return Center(
             child: Text(
               'Error loading questions: $error',
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: TextTheme.of(context).bodyMedium,
               textAlign: TextAlign.center,
             ),
           );

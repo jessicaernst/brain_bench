@@ -9,15 +9,11 @@ class AnswerListView extends StatelessWidget {
     super.key,
     required this.question,
     required this.isMultipleChoice,
-    required this.selectedAnswerId,
-    required this.selectedAnswerIds,
     required this.onAnswerSelected,
   });
 
   final Question question;
   final bool isMultipleChoice;
-  final String? selectedAnswerId;
-  final Set<String> selectedAnswerIds;
   final Function(String answerId) onAnswerSelected;
 
   @override
@@ -30,14 +26,13 @@ class AnswerListView extends StatelessWidget {
         horizontal: MediaQuery.of(context).size.width * 0.10,
       ),
       child: Consumer(builder: (context, ref, child) {
-        final answers = ref.watch(answersNotifierProvider);
+        final answers = ref
+            .watch(answersNotifierProvider); // UI wird automatisch aktualisiert
 
         return ListView(
           shrinkWrap: true,
           children: answers.map((answer) {
-            final isSelected = isMultipleChoice
-                ? selectedAnswerIds.contains(answer.id)
-                : selectedAnswerId == answer.id;
+            final isSelected = answer.isSelected; // Direkt aus Riverpod-State
 
             return GestureDetector(
               onTap: () => onAnswerSelected(answer.id),
