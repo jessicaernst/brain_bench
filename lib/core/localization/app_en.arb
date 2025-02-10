@@ -59,5 +59,21 @@
     "quizCompletedMsg": "Quiz Completed",
     "@quizCompletedMsg": {
         "description": "The message displayed when the quiz is completed"
+    },
+    "feedBackBottomSheetTitle": "Results",
+    "@feedBackBottomSheetTitle": {
+        "description": "The title of the bottom sheet that displays the quiz results"
+    },
+    "feedbackBSheetCorrectAnswers": "✅ Correct Answers:",
+    "@feedbackBSheetCorrectAnswers": {
+        "description": "The label for the correct answers in the quiz results bottom sheet"
+    },
+    "feedbackBSheetWrongAnswers": "❌ Incorrect Answers:",
+    "@feedbackBSheetWrongAnswers": {
+        "description": "The label for the incorrect answers in the quiz results bottom sheet"
+    },
+    "feedbackBSheetMissedCorrectAnswers": "⚠️ Missed Correct Answers:",
+    "@feedbackBSheetMissedCorrectAnswers": {
+        "description": "The label for the missed correct answers in the quiz results bottom sheet"
     }
 }

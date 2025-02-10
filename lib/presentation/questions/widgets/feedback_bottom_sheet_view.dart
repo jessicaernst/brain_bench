@@ -1,6 +1,7 @@
 import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/data/models/answer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FeedbackBottomSheetView extends StatelessWidget {
   const FeedbackBottomSheetView({
@@ -20,6 +21,8 @@ class FeedbackBottomSheetView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(context)!;
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -27,28 +30,28 @@ class FeedbackBottomSheetView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min, // Dynamische Höhe
           children: [
-            const Text(
-              'Results:',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              localizations.feedBackBottomSheetTitle,
+              style: TextTheme.of(context).bodyLarge,
             ),
             const SizedBox(height: 16),
             if (correctAnswers.isNotEmpty) ...[
-              const Text('✅ Correct Answers:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(localizations.feedbackBSheetCorrectAnswers,
+                  style: TextTheme.of(context).bodyLarge),
               ...correctAnswers.map((a) => Text('- ${a.text}',
                   style: const TextStyle(color: Colors.green))),
               const SizedBox(height: 8),
             ],
             if (incorrectAnswers.isNotEmpty) ...[
-              const Text('❌ Incorrect Answers:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(localizations.feedbackBSheetWrongAnswers,
+                  style: TextTheme.of(context).bodyLarge),
               ...incorrectAnswers.map((a) => Text('- ${a.text}',
                   style: const TextStyle(color: Colors.red))),
               const SizedBox(height: 8),
             ],
             if (missedCorrectAnswers.isNotEmpty) ...[
-              const Text('⚠️ Missed Correct Answers:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(localizations.feedbackBSheetMissedCorrectAnswers,
+                  style: TextTheme.of(context).bodyLarge),
               ...missedCorrectAnswers.map((a) => Text('- ${a.text}',
                   style: const TextStyle(color: Colors.orange))),
               const SizedBox(height: 8),
