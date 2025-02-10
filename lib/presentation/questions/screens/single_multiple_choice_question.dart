@@ -122,10 +122,8 @@ class _SingleMultipleChoiceQuestionPageState
                   child: LightDarkSwitchBtn(
                     title: localizations.submitAnswerBtnLbl,
                     isActive: isMultipleChoice
-                        ? answers.any((answer) => answer
-                            .isSelected) // Prüft, ob mindestens eine Antwort ausgewählt ist
-                        : answers.any((answer) =>
-                            answer.isSelected), // Gilt auch für Single Choice
+                        ? answers.any((answer) => answer.isSelected)
+                        : answers.any((answer) => answer.isSelected),
                     onPressed: () {
                       if (answers.isNotEmpty &&
                           answers.any((answer) => answer.isSelected)) {
