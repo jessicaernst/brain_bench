@@ -1,22 +1,20 @@
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
-import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/widgets/no_data_available_view.dart';
-import 'package:brain_bench/core/widgets/progress_indicator_bar_view.dart';
 import 'package:brain_bench/data/models/answer.dart';
 import 'package:brain_bench/data/models/question.dart';
 import 'package:brain_bench/data/providers/quiz/question_providers.dart';
-import 'package:brain_bench/presentation/questions/widgets/answer_list_view.dart';
 import 'package:brain_bench/presentation/questions/widgets/feedback_bottom_sheet_view.dart';
+import 'package:brain_bench/presentation/questions/widgets/single_multtiple_question_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logging/logging.dart';
 
-final Logger _logger = Logger('SingleMultipleChoiceQuestionPage');
+final Logger _logger = Logger('QuizPage');
 
-class SingleMultipleChoiceQuestionPage extends ConsumerStatefulWidget {
-  const SingleMultipleChoiceQuestionPage({
+class QuizPage extends ConsumerStatefulWidget {
+  const QuizPage({
     super.key,
     required this.topicId,
   });
@@ -24,12 +22,11 @@ class SingleMultipleChoiceQuestionPage extends ConsumerStatefulWidget {
   final String topicId;
 
   @override
-  ConsumerState<SingleMultipleChoiceQuestionPage> createState() =>
+  ConsumerState<QuizPage> createState() =>
       _SingleMultipleChoiceQuestionPageState();
 }
 
-class _SingleMultipleChoiceQuestionPageState
-    extends ConsumerState<SingleMultipleChoiceQuestionPage> {
+class _SingleMultipleChoiceQuestionPageState extends ConsumerState<QuizPage> {
   /// Displays the result bottom sheet after a question is answered
   void _showResultBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -152,41 +149,22 @@ class _SingleMultipleChoiceQuestionPageState
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                const SizedBox(height: 8),
-                ProgressIndicatorBarView(progress: progress),
-                const SizedBox(height: 24),
-                Text(
-                  currentQuestion.question,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const Spacer(),
-                AnswerListView(
-                  question: currentQuestion,
-                  isMultipleChoice: isMultipleChoice,
-                  onAnswerSelected: (answerId) => answersNotifier
-                      .toggleAnswerSelection(answerId, isMultipleChoice),
-                ),
-                const SizedBox(height: 24),
-                Center(
-                  child: LightDarkSwitchBtn(
-                    title: localizations.submitAnswerBtnLbl,
-                    isActive: answers.any((answer) => answer.isSelected),
-                    onPressed: () {
-                      if (answers.any((answer) => answer.isSelected)) {
-                        _logger.info('🟢 Submit button pressed');
-                        quizViewModel.checkAnswers(ref);
-                        _showResultBottomSheet(context);
-                      } else {
-                        _logger.warning('⚠️ No answers selected.');
-                      }
-                    },
-                  ),
-                ),
-                const SizedBox(height: 24),
-              ],
+            child: SingleMulttipleQuestionView(
+              progress: progress,
+              currentQuestion: currentQuestion,
+              isMultipleChoice: isMultipleChoice,
+              answersNotifier: answersNotifier,
+              localizations: localizations,
+              answers: answers,
+              onAnswerSelected: () {
+                if (answers.any((answer) => answer.isSelected)) {
+                  _logger.info('🟢 Submit button pressed');
+                  quizViewModel.checkAnswers(ref);
+                  _showResultBottomSheet(context);
+                } else {
+                  _logger.warning('⚠️ No answers selected.');
+                }
+              },
             ),
           );
         },
