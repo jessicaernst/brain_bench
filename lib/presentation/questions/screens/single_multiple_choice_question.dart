@@ -33,6 +33,7 @@ class _SingleMultipleChoiceQuestionPageState
     showModalBottomSheet(
       context: context,
       isDismissible: false,
+      isScrollControlled: true,
       builder: (ctx) {
         return Consumer(
           builder: (context, ref, child) {
