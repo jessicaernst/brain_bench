@@ -6,7 +6,7 @@ part of 'answers_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$answersNotifierHash() => r'7ff2c12644a81d22f9085a93f310d1161d4d4739';
+String _$answersNotifierHash() => r'20a772ed153622591f6b5ec4bf7fd0e6b426f4e3';
 
 /// See also [AnswersNotifier].
 @ProviderFor(AnswersNotifier)
