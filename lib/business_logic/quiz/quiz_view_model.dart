@@ -1,5 +1,6 @@
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
 import 'package:brain_bench/data/models/answer.dart';
+import 'package:brain_bench/data/models/question.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -49,6 +50,30 @@ class QuizViewModel extends _$QuizViewModel {
     );
   }
 
+  /// Load the next question
+  void loadNextQuestion(WidgetRef ref) {
+    if (state.currentIndex + 1 < state.questions.length) {
+      state = state.copyWith(currentIndex: state.currentIndex + 1);
+      _logger.info('🔄 Loading next question: Index ${state.currentIndex}');
+
+      // Initialize answers for the next question
+      final answersNotifier = ref.read(answersNotifierProvider.notifier);
+      answersNotifier
+          .initializeAnswers(state.questions[state.currentIndex].answers);
+    } else {
+      _logger.info('✅ No more questions available.');
+    }
+  }
+
+  /// Set the questions for the quiz
+  void setQuestions(List<Question> questions, WidgetRef ref) {
+    state = state.copyWith(questions: questions, currentIndex: 0);
+    _logger.info('Questions initialized. Total: ${questions.length}');
+    ref
+        .read(answersNotifierProvider.notifier)
+        .initializeAnswers(questions.first.answers);
+  }
+
   /// Reset the quiz by clearing all user selections
   void resetQuiz(Ref ref) {
     _logger.info('Resetting the quiz and clearing all selected answers.');
@@ -64,30 +89,38 @@ class QuizViewModel extends _$QuizViewModel {
 }
 
 class QuizState {
-  final List<Answer> correctAnswers;
-  final List<Answer> incorrectAnswers;
-  final List<Answer> missedCorrectAnswers;
-
   QuizState({
+    required this.questions,
+    required this.currentIndex,
     required this.correctAnswers,
     required this.incorrectAnswers,
     required this.missedCorrectAnswers,
   });
 
-  /// Create the initial state with empty lists for answers
+  final List<Question> questions;
+  final int currentIndex;
+  final List<Answer> correctAnswers;
+  final List<Answer> incorrectAnswers;
+  final List<Answer> missedCorrectAnswers;
+
   factory QuizState.initial() => QuizState(
+        questions: [],
+        currentIndex: 0,
         correctAnswers: [],
         incorrectAnswers: [],
         missedCorrectAnswers: [],
       );
 
-  /// Copy the current state with optional updated properties
   QuizState copyWith({
+    List<Question>? questions,
+    int? currentIndex,
     List<Answer>? correctAnswers,
     List<Answer>? incorrectAnswers,
     List<Answer>? missedCorrectAnswers,
   }) {
     return QuizState(
+      questions: questions ?? this.questions,
+      currentIndex: currentIndex ?? this.currentIndex,
       correctAnswers: correctAnswers ?? this.correctAnswers,
       incorrectAnswers: incorrectAnswers ?? this.incorrectAnswers,
       missedCorrectAnswers: missedCorrectAnswers ?? this.missedCorrectAnswers,

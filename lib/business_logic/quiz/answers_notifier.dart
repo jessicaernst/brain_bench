@@ -16,11 +16,15 @@ class AnswersNotifier extends _$AnswersNotifier {
 
   /// Initialize the list of answers at the start of a quiz
   void initializeAnswers(List<Answer> initialAnswers) {
-    if (state.isNotEmpty) {
-      _logger
-          .info('🔹 Answers already initialized, skipping re-initialization.');
-      return; // Prevent resetting if answers are already loaded
+    final currentAnswerIds = state.map((answer) => answer.id).toList();
+    final newAnswerIds = initialAnswers.map((answer) => answer.id).toList();
+
+    if (currentAnswerIds.isNotEmpty && currentAnswerIds.equals(newAnswerIds)) {
+      _logger.info(
+          '🔹 Answers are already initialized for this question, skipping re-initialization.');
+      return; // Prevent resetting if the same question's answers are already loaded
     }
+
     _logger
         .info('🔄 Initializing answers with ${initialAnswers.length} items.');
     state = initialAnswers;
@@ -68,5 +72,30 @@ class AnswersNotifier extends _$AnswersNotifier {
     }).toList();
 
     _logger.info('🔄 Answer selection updated for ID: $answerId');
+  }
+}
+
+extension ListEquality<T> on List<T> {
+  // Define an extension on the List type to provide an equality-checking method.
+
+  bool equals(List<T> other) {
+    // Define a method `equals` that checks if the current list and the `other` list are equal.
+
+    if (length != other.length) return false;
+    // Step 1: Check if the lengths of the two lists are different.
+    // If they are not the same, the lists cannot be equal, so return false.
+
+    for (int i = 0; i < length; i++) {
+      // Step 2: Iterate over each index of the lists.
+      // Compare the corresponding elements in both lists.
+
+      if (this[i] != other[i]) return false;
+      // Step 3: If any element in the current list (`this[i]`) is not equal to the corresponding
+      // element in the `other` list (`other[i]`), return false.
+    }
+
+    return true;
+    // Step 4: If the loop completes without finding any mismatched elements,
+    // it means the two lists are equal. Return true.
   }
 }

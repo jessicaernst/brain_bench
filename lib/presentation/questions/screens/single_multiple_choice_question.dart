@@ -49,9 +49,19 @@ class _SingleMultipleChoiceQuestionPageState
               correctAnswers: quizState.correctAnswers,
               incorrectAnswers: quizState.incorrectAnswers,
               missedCorrectAnswers: quizState.missedCorrectAnswers,
-              btnLbl: 'Close',
+              btnLbl: quizState.currentIndex + 1 < quizState.questions.length
+                  ? 'Next Question'
+                  : 'Finish',
               onBtnPressed: () {
                 Navigator.pop(context);
+
+                if (quizState.currentIndex + 1 < quizState.questions.length) {
+                  ref
+                      .read(quizViewModelProvider.notifier)
+                      .loadNextQuestion(ref);
+                } else {
+                  _logger.info('Quiz completed.');
+                }
               },
             );
           },
@@ -82,23 +92,42 @@ class _SingleMultipleChoiceQuestionPageState
             return const NoDataAvailableView(text: '❌ No questions available.');
           }
 
-          final question = questions.first;
-          final isMultipleChoice = question.type == QuestionType.multipleChoice;
+          Future.microtask(() {
+            if (ref.read(quizViewModelProvider).questions.isEmpty) {
+              ref
+                  .read(quizViewModelProvider.notifier)
+                  .setQuestions(questions, ref);
+              _logger.info('Questions initialized in QuizViewModel.');
+            }
+          });
+
+          final quizState = ref.watch(quizViewModelProvider);
+
+          if (quizState.questions.isEmpty) {
+            _logger.warning(
+                'Questions list is empty. Make sure they are initialized properly.');
+            return const Center(
+              child: Text(
+                'No questions available.',
+                style: TextStyle(fontSize: 18),
+              ),
+            );
+          }
+
+          final currentQuestion = quizState.questions[quizState.currentIndex];
+          final isMultipleChoice =
+              currentQuestion.type == QuestionType.multipleChoice;
 
           _logger.info(
-              '✅ First question loaded: ${question.question} (ID: ${question.id}), Type: ${question.type}');
+              '✅ First question loaded: ${currentQuestion.question} (ID: ${currentQuestion.id}), Type: ${currentQuestion.type}');
 
           final answers = ref.watch(answersNotifierProvider);
           final answersNotifier = ref.watch(answersNotifierProvider.notifier);
 
           Future.microtask(() {
-            final answers = ref.read(answersNotifierProvider);
-            if (answers.isEmpty) {
-              _logger.info('🔄 Initializing answers in AnswersNotifier');
-              ref
-                  .read(answersNotifierProvider.notifier)
-                  .initializeAnswers(question.answers);
-            }
+            _logger.info(
+                '🔄 Initializing answers for question at index ${quizState.currentIndex}');
+            answersNotifier.initializeAnswers(currentQuestion.answers);
           });
 
           return Padding(
@@ -109,13 +138,13 @@ class _SingleMultipleChoiceQuestionPageState
                 const ProgressIndicatorBarView(),
                 const SizedBox(height: 24),
                 Text(
-                  question.question,
+                  currentQuestion.question,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 const Spacer(),
                 AnswerListView(
-                  question: question,
+                  question: currentQuestion,
                   isMultipleChoice: isMultipleChoice,
                   onAnswerSelected: (answerId) => answersNotifier
                       .toggleAnswerSelection(answerId, isMultipleChoice),
