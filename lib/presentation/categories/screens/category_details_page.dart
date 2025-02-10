@@ -1,4 +1,4 @@
-import 'package:brain_bench/business_logic/categories/categories_view_model.dart';
+import 'package:brain_bench/business_logic/categories/categories_provider.dart';
 import 'package:brain_bench/core/widgets/no_data_available_view.dart';
 import 'package:brain_bench/data/models/category.dart';
 import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
@@ -23,6 +23,7 @@ class CategoryDetailsPage extends ConsumerWidget {
     final String languageCode = Localizations.localeOf(context).languageCode;
     final AppLocalizations localizations = AppLocalizations.of(context)!;
 
+    // If no category is selected, show an error message
     if (category == null) {
       return Scaffold(
         appBar: AppBar(
@@ -39,6 +40,7 @@ class CategoryDetailsPage extends ConsumerWidget {
       );
     }
 
+    // Extract localized strings for category details
     final String name =
         languageCode == 'de' ? category!.nameDe : category!.nameEn;
     final String description = languageCode == 'de'
@@ -48,8 +50,12 @@ class CategoryDetailsPage extends ConsumerWidget {
         languageCode == 'de' ? category!.subtitleDe : category!.subtitleEn;
 
     return PopScope(
-      onPopInvokedWithResult: (didPop, result) =>
-          ref.read(categoriesViewModelProvider.notifier).selectCategory(null),
+      onPopInvokedWithResult: (didPop, result) {
+        // Reset the selected category when navigating back
+        ref
+            .read(selectedCategoryNotifierProvider.notifier)
+            .selectCategory(null);
+      },
       child: Scaffold(
         appBar: AppBar(
           title: Text(name),

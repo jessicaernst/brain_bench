@@ -26,13 +26,13 @@ class AnswerListView extends StatelessWidget {
         horizontal: MediaQuery.of(context).size.width * 0.10,
       ),
       child: Consumer(builder: (context, ref, child) {
-        final answers = ref
-            .watch(answersNotifierProvider); // UI wird automatisch aktualisiert
+        // Get the list of answers from the AnswersNotifier
+        final answers = ref.watch(answersNotifierProvider);
 
         return ListView(
           shrinkWrap: true,
           children: answers.map((answer) {
-            final isSelected = answer.isSelected; // Direkt aus Riverpod-State
+            final isSelected = answer.isSelected;
 
             return GestureDetector(
               onTap: () => onAnswerSelected(answer.id),
