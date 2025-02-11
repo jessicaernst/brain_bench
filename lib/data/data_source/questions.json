@@ -154,7 +154,7 @@
         "topicId": "27556107-b9b0-4f49-b790-8b973827e24d",
         "questionEn": "Which of the following are valid access modifiers in Dart?",
         "questionDe": "Welche der folgenden sind gültige Zugriffsmodifikatoren in Dart?",
-        "type": "multipleChoice",
+        "type": "singleChoice",
         "answerIds": [
             "bbb11111-cccc-dddd-eeee-ffff00001111",
             "bbb11111-cccc-dddd-eeee-ffff00002222",
