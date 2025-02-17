@@ -69,9 +69,11 @@ class _SingleMultipleChoiceQuestionPageState extends ConsumerState<QuizPage> {
       quizViewModel.loadNextQuestion(ref);
     } else {
       quizViewModel.resetQuiz(ref);
-      _logger.info('Quiz completed.');
+      _logger.info('🎉 Quiz completed.');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.quizCompletedMsg)),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.quizCompletedMsg),
+        ),
       );
     }
   }

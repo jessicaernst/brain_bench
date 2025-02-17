@@ -56,7 +56,7 @@
     "@finishQuizBtnLbl": {
         "description": "The label of the button to finish the quiz"
     },
-    "quizCompletedMsg": "Quiz abgeschlossen",
+    "quizCompletedMsg": "🎉 Quiz abgeschlossen",
     "@quizCompletedMsg": {
         "description": "The message displayed when the quiz is completed"
     },
