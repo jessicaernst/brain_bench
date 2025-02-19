@@ -1,8 +1,8 @@
 import 'dart:ui';
+import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/gradient_colors.dart';
 import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TopicExpandableContent extends StatelessWidget {
   const TopicExpandableContent({

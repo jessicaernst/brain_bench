@@ -1,8 +1,8 @@
+import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/theme_data.dart';
 import 'package:brain_bench/navigation/routes/route_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BrainBenchApp extends StatelessWidget {
   const BrainBenchApp({super.key});

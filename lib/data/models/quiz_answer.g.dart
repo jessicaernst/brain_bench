@@ -17,6 +17,9 @@ _$QuizAnswerImpl _$$QuizAnswerImplFromJson(Map<String, dynamic> json) =>
       correctAnswers: (json['correctAnswers'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
+      incorrectAnswers: (json['incorrectAnswers'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$$QuizAnswerImplToJson(_$QuizAnswerImpl instance) =>
@@ -26,4 +29,5 @@ Map<String, dynamic> _$$QuizAnswerImplToJson(_$QuizAnswerImpl instance) =>
       'questionText': instance.questionText,
       'givenAnswers': instance.givenAnswers,
       'correctAnswers': instance.correctAnswers,
+      'incorrectAnswers': instance.incorrectAnswers,
     };

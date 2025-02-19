@@ -25,6 +25,7 @@ mixin _$QuizAnswer {
   String get questionText => throw _privateConstructorUsedError;
   List<String> get givenAnswers => throw _privateConstructorUsedError;
   List<String> get correctAnswers => throw _privateConstructorUsedError;
+  List<String> get incorrectAnswers => throw _privateConstructorUsedError;
 
   /// Serializes this QuizAnswer to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,7 +48,8 @@ abstract class $QuizAnswerCopyWith<$Res> {
       String questionId,
       String questionText,
       List<String> givenAnswers,
-      List<String> correctAnswers});
+      List<String> correctAnswers,
+      List<String> incorrectAnswers});
 }
 
 /// @nodoc
@@ -70,6 +72,7 @@ class _$QuizAnswerCopyWithImpl<$Res, $Val extends QuizAnswer>
     Object? questionText = null,
     Object? givenAnswers = null,
     Object? correctAnswers = null,
+    Object? incorrectAnswers = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -92,6 +95,10 @@ class _$QuizAnswerCopyWithImpl<$Res, $Val extends QuizAnswer>
           ? _value.correctAnswers
           : correctAnswers // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      incorrectAnswers: null == incorrectAnswers
+          ? _value.incorrectAnswers
+          : incorrectAnswers // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -109,7 +116,8 @@ abstract class _$$QuizAnswerImplCopyWith<$Res>
       String questionId,
       String questionText,
       List<String> givenAnswers,
-      List<String> correctAnswers});
+      List<String> correctAnswers,
+      List<String> incorrectAnswers});
 }
 
 /// @nodoc
@@ -130,6 +138,7 @@ class __$$QuizAnswerImplCopyWithImpl<$Res>
     Object? questionText = null,
     Object? givenAnswers = null,
     Object? correctAnswers = null,
+    Object? incorrectAnswers = null,
   }) {
     return _then(_$QuizAnswerImpl(
       id: null == id
@@ -152,6 +161,10 @@ class __$$QuizAnswerImplCopyWithImpl<$Res>
           ? _value._correctAnswers
           : correctAnswers // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      incorrectAnswers: null == incorrectAnswers
+          ? _value._incorrectAnswers
+          : incorrectAnswers // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -164,9 +177,11 @@ class _$QuizAnswerImpl implements _QuizAnswer {
       required this.questionId,
       required this.questionText,
       required final List<String> givenAnswers,
-      required final List<String> correctAnswers})
+      required final List<String> correctAnswers,
+      required final List<String> incorrectAnswers})
       : _givenAnswers = givenAnswers,
-        _correctAnswers = correctAnswers;
+        _correctAnswers = correctAnswers,
+        _incorrectAnswers = incorrectAnswers;
 
   factory _$QuizAnswerImpl.fromJson(Map<String, dynamic> json) =>
       _$$QuizAnswerImplFromJson(json);
@@ -193,9 +208,18 @@ class _$QuizAnswerImpl implements _QuizAnswer {
     return EqualUnmodifiableListView(_correctAnswers);
   }
 
+  final List<String> _incorrectAnswers;
+  @override
+  List<String> get incorrectAnswers {
+    if (_incorrectAnswers is EqualUnmodifiableListView)
+      return _incorrectAnswers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_incorrectAnswers);
+  }
+
   @override
   String toString() {
-    return 'QuizAnswer(id: $id, questionId: $questionId, questionText: $questionText, givenAnswers: $givenAnswers, correctAnswers: $correctAnswers)';
+    return 'QuizAnswer(id: $id, questionId: $questionId, questionText: $questionText, givenAnswers: $givenAnswers, correctAnswers: $correctAnswers, incorrectAnswers: $incorrectAnswers)';
   }
 
   @override
@@ -211,7 +235,9 @@ class _$QuizAnswerImpl implements _QuizAnswer {
             const DeepCollectionEquality()
                 .equals(other._givenAnswers, _givenAnswers) &&
             const DeepCollectionEquality()
-                .equals(other._correctAnswers, _correctAnswers));
+                .equals(other._correctAnswers, _correctAnswers) &&
+            const DeepCollectionEquality()
+                .equals(other._incorrectAnswers, _incorrectAnswers));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -222,7 +248,8 @@ class _$QuizAnswerImpl implements _QuizAnswer {
       questionId,
       questionText,
       const DeepCollectionEquality().hash(_givenAnswers),
-      const DeepCollectionEquality().hash(_correctAnswers));
+      const DeepCollectionEquality().hash(_correctAnswers),
+      const DeepCollectionEquality().hash(_incorrectAnswers));
 
   /// Create a copy of QuizAnswer
   /// with the given fields replaced by the non-null parameter values.
@@ -246,7 +273,8 @@ abstract class _QuizAnswer implements QuizAnswer {
       required final String questionId,
       required final String questionText,
       required final List<String> givenAnswers,
-      required final List<String> correctAnswers}) = _$QuizAnswerImpl;
+      required final List<String> correctAnswers,
+      required final List<String> incorrectAnswers}) = _$QuizAnswerImpl;
 
   factory _QuizAnswer.fromJson(Map<String, dynamic> json) =
       _$QuizAnswerImpl.fromJson;
@@ -261,6 +289,8 @@ abstract class _QuizAnswer implements QuizAnswer {
   List<String> get givenAnswers;
   @override
   List<String> get correctAnswers;
+  @override
+  List<String> get incorrectAnswers;
 
   /// Create a copy of QuizAnswer
   /// with the given fields replaced by the non-null parameter values.

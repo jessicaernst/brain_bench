@@ -1,6 +1,6 @@
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
 import 'package:brain_bench/data/models/question.dart';
-import 'package:brain_bench/presentation/questions/widgets/answer_row_view.dart';
+import 'package:brain_bench/presentation/quiz/widgets/answer_row_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

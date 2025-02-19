@@ -1,5 +1,5 @@
 import 'package:brain_bench/data/models/answer.dart';
-import 'package:brain_bench/presentation/questions/widgets/round_check_mark_view.dart';
+import 'package:brain_bench/presentation/quiz/widgets/round_check_mark_view.dart';
 import 'package:flutter/material.dart';
 
 class AnswerRowView extends StatelessWidget {

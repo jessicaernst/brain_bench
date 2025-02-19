@@ -12,20 +12,26 @@ class QuizAnswer with _$QuizAnswer {
     required String questionText,
     required List<String> givenAnswers,
     required List<String> correctAnswers,
+    required List<String> incorrectAnswers,
   }) = _QuizAnswer;
 
   factory QuizAnswer.create({
     required String questionId,
-    required String answer,
     required String questionText,
-    required bool isCorrect,
+    required List<String> givenAnswers,
+    required List<String> correctAnswers,
   }) {
+    // Get all incorrect answers
+    final incorrectAnswers =
+        givenAnswers.where((ans) => !correctAnswers.contains(ans)).toList();
+
     return QuizAnswer(
       id: const Uuid().v4(),
       questionId: questionId,
       questionText: questionText,
-      givenAnswers: [answer],
-      correctAnswers: isCorrect ? [answer] : [],
+      givenAnswers: givenAnswers,
+      correctAnswers: correctAnswers,
+      incorrectAnswers: incorrectAnswers,
     );
   }
 

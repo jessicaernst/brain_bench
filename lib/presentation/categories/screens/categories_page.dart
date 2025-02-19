@@ -1,10 +1,10 @@
 import 'package:brain_bench/business_logic/categories/categories_provider.dart';
+import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/data/providers/quiz/category_providers.dart';
 import 'package:brain_bench/presentation/categories/widgets/category_row_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
 

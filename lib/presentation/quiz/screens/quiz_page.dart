@@ -1,14 +1,15 @@
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
+import 'package:brain_bench/business_logic/quiz/quiz_answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
+import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/widgets/no_data_available_view.dart';
 import 'package:brain_bench/data/models/answer.dart';
 import 'package:brain_bench/data/models/question.dart';
 import 'package:brain_bench/data/providers/quiz/question_providers.dart';
-import 'package:brain_bench/presentation/questions/widgets/feedback_bottom_sheet_view.dart';
-import 'package:brain_bench/presentation/questions/widgets/single_multtiple_question_view.dart';
+import 'package:brain_bench/presentation/quiz/widgets/feedback_bottom_sheet_view.dart';
+import 'package:brain_bench/presentation/quiz/widgets/single_multtiple_question_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logging/logging.dart';
 
 final Logger _logger = Logger('QuizPage');
@@ -28,7 +29,33 @@ class QuizPage extends ConsumerStatefulWidget {
 
 class _SingleMultipleChoiceQuestionPageState extends ConsumerState<QuizPage> {
   /// Displays the result bottom sheet after a question is answered
-  void _showResultBottomSheet(BuildContext context) {
+  void _showResultBottomSheet(BuildContext context, WidgetRef ref) {
+    final quizState = ref.read(quizViewModelProvider);
+    final quizAnswerNotifier = ref.read(quizAnswersNotifierProvider.notifier);
+
+    final currentQuestion = quizState.questions[quizState.currentIndex];
+
+    // User Selected Answers
+    final selectedAnswers = ref
+        .read(answersNotifierProvider)
+        .where((answer) => answer.isSelected)
+        .map((answer) => answer.text)
+        .toList();
+
+    // Get the correct answers
+    final correctAnswers = currentQuestion.answers
+        .where((answer) => answer.isCorrect)
+        .map((answer) => answer.text)
+        .toList();
+
+    // Save the answer to the QuizAnswersNotifier
+    quizAnswerNotifier.addAnswer(
+      currentQuestion.id,
+      currentQuestion.question,
+      selectedAnswers,
+      correctAnswers,
+    );
+
     showModalBottomSheet(
       context: context,
       isDismissible: false,
@@ -37,11 +64,6 @@ class _SingleMultipleChoiceQuestionPageState extends ConsumerState<QuizPage> {
         return Consumer(
           builder: (context, ref, child) {
             final quizState = ref.watch(quizViewModelProvider);
-
-            _logger.info(
-                'Bottom Sheet Data: Correct: ${quizState.correctAnswers.length}, '
-                'Incorrect: ${quizState.incorrectAnswers.length}, '
-                'Missed: ${quizState.missedCorrectAnswers.length}');
 
             return FeedbackBottomSheetView(
               correctAnswers: quizState.correctAnswers,
@@ -68,13 +90,11 @@ class _SingleMultipleChoiceQuestionPageState extends ConsumerState<QuizPage> {
     if (quizViewModel.hasNextQuestion()) {
       quizViewModel.loadNextQuestion(ref);
     } else {
-      quizViewModel.resetQuiz(ref);
       _logger.info('🎉 Quiz completed.');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.quizCompletedMsg),
-        ),
-      );
+
+      Navigator.pushReplacementNamed(context, '/quizResult').then((_) {
+        quizViewModel.resetQuiz(ref);
+      });
     }
   }
 
@@ -162,7 +182,7 @@ class _SingleMultipleChoiceQuestionPageState extends ConsumerState<QuizPage> {
                 if (answers.any((answer) => answer.isSelected)) {
                   _logger.info('🟢 Submit button pressed');
                   quizViewModel.checkAnswers(ref);
-                  _showResultBottomSheet(context);
+                  _showResultBottomSheet(context, ref);
                 } else {
                   _logger.warning('⚠️ No answers selected.');
                 }
