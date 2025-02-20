@@ -6,6 +6,7 @@ import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/widgets/dash_evolution_progress_dircle_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
 Logger logger = Logger('CategoryDetailsPage');
@@ -101,10 +102,8 @@ class CategoryDetailsPage extends ConsumerWidget {
                   title: localizations.catgoryBtnLbl,
                   isActive: true,
                   onPressed: () {
-                    Navigator.of(context).pushNamed(
-                      '/categories/details/topics',
-                      arguments: category?.id,
-                    );
+                    context.go('/categories/details/topics',
+                        extra: category?.id);
                   },
                 ),
               ),

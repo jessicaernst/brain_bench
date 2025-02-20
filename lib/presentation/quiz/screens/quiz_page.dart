@@ -10,6 +10,7 @@ import 'package:brain_bench/presentation/quiz/widgets/feedback_bottom_sheet_view
 import 'package:brain_bench/presentation/quiz/widgets/single_multtiple_question_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
 final Logger _logger = Logger('QuizPage');
@@ -92,9 +93,7 @@ class _SingleMultipleChoiceQuestionPageState extends ConsumerState<QuizPage> {
     } else {
       _logger.info('🎉 Quiz completed.');
 
-      Navigator.pushReplacementNamed(context, '/quizResult').then((_) {
-        quizViewModel.resetQuiz(ref);
-      });
+      context.go('/categories/details/topics/quiz/result');
     }
   }
 

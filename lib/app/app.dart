@@ -1,6 +1,6 @@
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/theme_data.dart';
-import 'package:brain_bench/navigation/routes/route_generator.dart';
+import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -9,7 +9,7 @@ class BrainBenchApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Brain Bench',
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -26,8 +26,7 @@ class BrainBenchApp extends StatelessWidget {
       theme: BrainBenchTheme.lightTheme,
       darkTheme: BrainBenchTheme.darkTheme,
       themeMode: ThemeMode.system,
-      initialRoute: '/',
-      onGenerateRoute: RouteGenerator.generateRoute,
+      routerConfig: router,
     );
   }
 }

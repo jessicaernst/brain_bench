@@ -4,6 +4,7 @@ import 'package:brain_bench/data/providers/quiz/topic_providers.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
 Logger _logger = Logger('TopicsPage');
@@ -53,10 +54,8 @@ class TopicsPage extends ConsumerWidget {
                         title: topic.name,
                         description: topic.description,
                         onPressed: () {
-                          Navigator.of(context, rootNavigator: true).pushNamed(
-                            '/quiz',
-                            arguments: topic.id,
-                          );
+                          context.go('/categories/details/topics/quiz',
+                              extra: topic.id);
                         },
                       ),
                     );

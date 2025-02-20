@@ -5,6 +5,7 @@ import 'package:brain_bench/data/providers/quiz/category_providers.dart';
 import 'package:brain_bench/presentation/categories/widgets/category_row_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
 
@@ -87,10 +88,10 @@ class CategoriesPage extends ConsumerWidget {
                         );
                         _logger.info(
                             'Navigating to category details for categoryId: ${selectedCategory.id}');
-                        Navigator.of(context).pushNamed(
-                          '/categories/details',
-                          arguments: selectedCategory,
-                        );
+
+                        // ✅ Übergebe das gesamte Category-Objekt
+                        context.go('/categories/details',
+                            extra: selectedCategory);
                       } else {
                         _logger.warning('No category selected for navigation.');
                         ScaffoldMessenger.of(context).showSnackBar(
