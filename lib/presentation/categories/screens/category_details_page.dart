@@ -1,5 +1,5 @@
-import 'package:brain_bench/business_logic/categories/categories_provider.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/widgets/back_nav_app_bar.dart';
 import 'package:brain_bench/core/widgets/no_data_available_view.dart';
 import 'package:brain_bench/data/models/category.dart';
 import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
@@ -27,13 +27,11 @@ class CategoryDetailsPage extends ConsumerWidget {
     // If no category is selected, show an error message
     if (category == null) {
       return Scaffold(
-        appBar: AppBar(
-          title: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              languageCode == 'de' ? 'Kategoriedetails' : 'Category Details',
-            ),
-          ),
+        appBar: BackNavAppBar(
+          title: languageCode == 'de' ? 'Kategoriedetails' : 'Category Details',
+          onBack: () {
+            context.go('/categories');
+          },
         ),
         body: const NoDataAvailableView(
           text: '❌ No category selected. Please go back and select a category.',
@@ -50,66 +48,55 @@ class CategoryDetailsPage extends ConsumerWidget {
     final String subtitle =
         languageCode == 'de' ? category!.subtitleDe : category!.subtitleEn;
 
-    return PopScope(
-      onPopInvokedWithResult: (didPop, result) {
-        // Reset the selected category when navigating back
-        ref
-            .read(selectedCategoryNotifierProvider.notifier)
-            .selectCategory(null);
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(name),
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          elevation: 0,
-          shadowColor: Colors.transparent,
-        ),
-        body: SafeArea(
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 80),
-                child: ListView(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.all(16.0),
-                  children: [
-                    const SizedBox(height: 24),
-                    DashEvolutionProgressCircleView(
-                      progress: category!.progress,
-                      size: 180,
-                    ),
-                    const SizedBox(height: 48),
-                    Text(
-                      subtitle,
-                      style: Theme.of(context).textTheme.headlineLarge,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      description,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+    return Scaffold(
+      appBar: BackNavAppBar(
+        title: name,
+        onBack: () {
+          context.go('/categories');
+        },
+      ),
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 80),
+            child: ListView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.all(16.0),
+              children: [
+                const SizedBox(height: 24),
+                DashEvolutionProgressCircleView(
+                  progress: category!.progress,
+                  size: 180,
                 ),
-              ),
-              // Fixed button at the bottom
-              Positioned(
-                bottom: 16,
-                left: 16,
-                right: 16,
-                child: LightDarkSwitchBtn(
-                  title: localizations.catgoryBtnLbl,
-                  isActive: true,
-                  onPressed: () {
-                    context.go('/categories/details/topics',
-                        extra: category?.id);
-                  },
+                const SizedBox(height: 48),
+                Text(
+                  subtitle,
+                  style: Theme.of(context).textTheme.headlineLarge,
+                  textAlign: TextAlign.center,
                 ),
-              ),
-            ],
+                const SizedBox(height: 8),
+                Text(
+                  description,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
-        ),
+          // Fixed button at the bottom
+          Positioned(
+            bottom: 16,
+            left: 16,
+            right: 16,
+            child: LightDarkSwitchBtn(
+              title: localizations.catgoryBtnLbl,
+              isActive: true,
+              onPressed: () {
+                context.go('/categories/details/topics', extra: category?.id);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

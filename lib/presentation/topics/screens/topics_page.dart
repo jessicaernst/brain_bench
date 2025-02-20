@@ -1,3 +1,4 @@
+import 'package:brain_bench/core/widgets/back_nav_app_bar.dart';
 import 'package:brain_bench/core/widgets/no_data_available_view.dart';
 import 'package:brain_bench/core/widgets/progress_indicator_bar_view.dart';
 import 'package:brain_bench/data/providers/quiz/topic_providers.dart';
@@ -25,8 +26,11 @@ class TopicsPage extends ConsumerWidget {
     final topicsAsync = ref.watch(topicsProvider(categoryId, languageCode));
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
+      appBar: BackNavAppBar(
+        title: title,
+        onBack: () {
+          context.go('/categories');
+        },
       ),
       body: Column(
         children: [

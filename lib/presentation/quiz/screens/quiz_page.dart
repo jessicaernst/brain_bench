@@ -2,6 +2,7 @@ import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/widgets/back_nav_app_bar.dart';
 import 'package:brain_bench/core/widgets/no_data_available_view.dart';
 import 'package:brain_bench/data/models/answer.dart';
 import 'package:brain_bench/data/models/question.dart';
@@ -26,11 +27,10 @@ class QuizPage extends ConsumerStatefulWidget {
   final String categoryId;
 
   @override
-  ConsumerState<QuizPage> createState() =>
-      _SingleMultipleChoiceQuestionPageState();
+  ConsumerState<QuizPage> createState() => _QuizPageState();
 }
 
-class _SingleMultipleChoiceQuestionPageState extends ConsumerState<QuizPage> {
+class _QuizPageState extends ConsumerState<QuizPage> {
   /// Displays the result bottom sheet after a question is answered
   void _showResultBottomSheet(BuildContext context, WidgetRef ref) {
     final quizState = ref.read(quizViewModelProvider);
@@ -97,7 +97,10 @@ class _SingleMultipleChoiceQuestionPageState extends ConsumerState<QuizPage> {
     } else {
       _logger.info('🎉 Quiz completed.');
 
-      context.go('/categories/details/topics/quiz/result');
+      context.go(
+        '/categories/details/topics/quiz/result',
+        extra: widget.categoryId,
+      );
     }
   }
 
@@ -115,8 +118,14 @@ class _SingleMultipleChoiceQuestionPageState extends ConsumerState<QuizPage> {
         ref.watch(questionsProvider(widget.topicId, languageCode));
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(localizations.quizAppBarTitle),
+      appBar: BackNavAppBar(
+        title: localizations.quizAppBarTitle,
+        onBack: () {
+          context.go(
+            '/categories/details/topics',
+            extra: widget.categoryId,
+          );
+        },
       ),
       body: questionsAsync.when(
         data: (questions) {

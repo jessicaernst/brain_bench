@@ -1,6 +1,8 @@
 import 'package:brain_bench/business_logic/quiz/quiz_answers_notifier.dart';
+import 'package:brain_bench/core/widgets/back_nav_app_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class QuizResultPage extends ConsumerWidget {
   const QuizResultPage({
@@ -15,7 +17,14 @@ class QuizResultPage extends ConsumerWidget {
     final quizAnswers = ref.watch(quizAnswersNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Quiz Ergebnisse')),
+      appBar: BackNavAppBar(
+          title: 'Quiz Ergebnisse',
+          onBack: () {
+            context.go(
+              '/categories',
+              extra: categoryId,
+            );
+          }),
       body: quizAnswers.isEmpty
           ? const Center(child: Text('Keine Antworten gespeichert.'))
           : ListView.builder(

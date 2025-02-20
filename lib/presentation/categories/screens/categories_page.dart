@@ -42,69 +42,65 @@ class CategoriesPage extends ConsumerWidget {
             'Categories loaded successfully. Total: ${categories.length}');
         return Scaffold(
           appBar: AppBar(
-            automaticallyImplyLeading: false,
             title: Text(
               localizations.appBarTitleCategories,
-              style: Theme.of(context).textTheme.headlineSmall,
             ),
           ),
-          body: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: categories.map((category) {
-                        final categoryName = languageCode == 'de'
-                            ? category.nameDe
-                            : category.nameEn;
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: categories.map((category) {
+                      final categoryName = languageCode == 'de'
+                          ? category.nameDe
+                          : category.nameEn;
 
-                        return Padding(
-                          key: ValueKey(category.id),
-                          padding: const EdgeInsets.only(bottom: 32),
-                          child: CategoryRowView(
-                            categoryId: category.id,
-                            categoryTitle: categoryName,
-                            progress: category.progress,
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                      return Padding(
+                        key: ValueKey(category.id),
+                        padding: const EdgeInsets.only(bottom: 32),
+                        child: CategoryRowView(
+                          categoryId: category.id,
+                          categoryTitle: categoryName,
+                          progress: category.progress,
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: LightDarkSwitchBtn(
-                    title: localizations.chooseCategoryBtnLbl,
-                    // depends on selectedCategoryId
-                    isActive: selectedCategoryId != null,
-                    onPressed: () {
-                      if (selectedCategoryId != null) {
-                        final selectedCategory = categories.firstWhere(
-                          (category) => category.id == selectedCategoryId,
-                        );
-                        _logger.info(
-                            'Navigating to category details for categoryId: ${selectedCategory.id}');
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: LightDarkSwitchBtn(
+                  title: localizations.chooseCategoryBtnLbl,
+                  // depends on selectedCategoryId
+                  isActive: selectedCategoryId != null,
+                  onPressed: () {
+                    if (selectedCategoryId != null) {
+                      final selectedCategory = categories.firstWhere(
+                        (category) => category.id == selectedCategoryId,
+                      );
+                      _logger.info(
+                          'Navigating to category details for categoryId: ${selectedCategory.id}');
 
-                        // ✅ Übergebe das gesamte Category-Objekt
-                        context.go('/categories/details',
-                            extra: selectedCategory);
-                      } else {
-                        _logger.warning('No category selected for navigation.');
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please select a category first.'),
-                          ),
-                        );
-                      }
-                    },
-                  ),
+                      // ✅ Übergebe das gesamte Category-Objekt
+                      context.go('/categories/details',
+                          extra: selectedCategory);
+                    } else {
+                      _logger.warning('No category selected for navigation.');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please select a category first.'),
+                        ),
+                      );
+                    }
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
