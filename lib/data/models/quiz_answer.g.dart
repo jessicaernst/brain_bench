@@ -9,6 +9,8 @@ part of 'quiz_answer.dart';
 _$QuizAnswerImpl _$$QuizAnswerImplFromJson(Map<String, dynamic> json) =>
     _$QuizAnswerImpl(
       id: json['id'] as String,
+      topicId: json['topicId'] as String,
+      categoryId: json['categoryId'] as String,
       questionId: json['questionId'] as String,
       questionText: json['questionText'] as String,
       givenAnswers: (json['givenAnswers'] as List<dynamic>)
@@ -25,6 +27,8 @@ _$QuizAnswerImpl _$$QuizAnswerImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$QuizAnswerImplToJson(_$QuizAnswerImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'topicId': instance.topicId,
+      'categoryId': instance.categoryId,
       'questionId': instance.questionId,
       'questionText': instance.questionText,
       'givenAnswers': instance.givenAnswers,

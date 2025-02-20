@@ -21,6 +21,8 @@ QuizAnswer _$QuizAnswerFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$QuizAnswer {
   String get id => throw _privateConstructorUsedError;
+  String get topicId => throw _privateConstructorUsedError;
+  String get categoryId => throw _privateConstructorUsedError;
   String get questionId => throw _privateConstructorUsedError;
   String get questionText => throw _privateConstructorUsedError;
   List<String> get givenAnswers => throw _privateConstructorUsedError;
@@ -45,6 +47,8 @@ abstract class $QuizAnswerCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      String topicId,
+      String categoryId,
       String questionId,
       String questionText,
       List<String> givenAnswers,
@@ -68,6 +72,8 @@ class _$QuizAnswerCopyWithImpl<$Res, $Val extends QuizAnswer>
   @override
   $Res call({
     Object? id = null,
+    Object? topicId = null,
+    Object? categoryId = null,
     Object? questionId = null,
     Object? questionText = null,
     Object? givenAnswers = null,
@@ -78,6 +84,14 @@ class _$QuizAnswerCopyWithImpl<$Res, $Val extends QuizAnswer>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      topicId: null == topicId
+          ? _value.topicId
+          : topicId // ignore: cast_nullable_to_non_nullable
+              as String,
+      categoryId: null == categoryId
+          ? _value.categoryId
+          : categoryId // ignore: cast_nullable_to_non_nullable
               as String,
       questionId: null == questionId
           ? _value.questionId
@@ -113,6 +127,8 @@ abstract class _$$QuizAnswerImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
+      String topicId,
+      String categoryId,
       String questionId,
       String questionText,
       List<String> givenAnswers,
@@ -134,6 +150,8 @@ class __$$QuizAnswerImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? topicId = null,
+    Object? categoryId = null,
     Object? questionId = null,
     Object? questionText = null,
     Object? givenAnswers = null,
@@ -144,6 +162,14 @@ class __$$QuizAnswerImplCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      topicId: null == topicId
+          ? _value.topicId
+          : topicId // ignore: cast_nullable_to_non_nullable
+              as String,
+      categoryId: null == categoryId
+          ? _value.categoryId
+          : categoryId // ignore: cast_nullable_to_non_nullable
               as String,
       questionId: null == questionId
           ? _value.questionId
@@ -174,6 +200,8 @@ class __$$QuizAnswerImplCopyWithImpl<$Res>
 class _$QuizAnswerImpl implements _QuizAnswer {
   _$QuizAnswerImpl(
       {required this.id,
+      required this.topicId,
+      required this.categoryId,
       required this.questionId,
       required this.questionText,
       required final List<String> givenAnswers,
@@ -188,6 +216,10 @@ class _$QuizAnswerImpl implements _QuizAnswer {
 
   @override
   final String id;
+  @override
+  final String topicId;
+  @override
+  final String categoryId;
   @override
   final String questionId;
   @override
@@ -219,7 +251,7 @@ class _$QuizAnswerImpl implements _QuizAnswer {
 
   @override
   String toString() {
-    return 'QuizAnswer(id: $id, questionId: $questionId, questionText: $questionText, givenAnswers: $givenAnswers, correctAnswers: $correctAnswers, incorrectAnswers: $incorrectAnswers)';
+    return 'QuizAnswer(id: $id, topicId: $topicId, categoryId: $categoryId, questionId: $questionId, questionText: $questionText, givenAnswers: $givenAnswers, correctAnswers: $correctAnswers, incorrectAnswers: $incorrectAnswers)';
   }
 
   @override
@@ -228,6 +260,9 @@ class _$QuizAnswerImpl implements _QuizAnswer {
         (other.runtimeType == runtimeType &&
             other is _$QuizAnswerImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.topicId, topicId) || other.topicId == topicId) &&
+            (identical(other.categoryId, categoryId) ||
+                other.categoryId == categoryId) &&
             (identical(other.questionId, questionId) ||
                 other.questionId == questionId) &&
             (identical(other.questionText, questionText) ||
@@ -245,6 +280,8 @@ class _$QuizAnswerImpl implements _QuizAnswer {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      topicId,
+      categoryId,
       questionId,
       questionText,
       const DeepCollectionEquality().hash(_givenAnswers),
@@ -270,6 +307,8 @@ class _$QuizAnswerImpl implements _QuizAnswer {
 abstract class _QuizAnswer implements QuizAnswer {
   factory _QuizAnswer(
       {required final String id,
+      required final String topicId,
+      required final String categoryId,
       required final String questionId,
       required final String questionText,
       required final List<String> givenAnswers,
@@ -281,6 +320,10 @@ abstract class _QuizAnswer implements QuizAnswer {
 
   @override
   String get id;
+  @override
+  String get topicId;
+  @override
+  String get categoryId;
   @override
   String get questionId;
   @override

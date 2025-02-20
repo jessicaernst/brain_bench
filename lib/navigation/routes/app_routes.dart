@@ -13,7 +13,6 @@ import 'package:brain_bench/navigation/tabs/screens/tabs_page.dart';
 final GoRouter router = GoRouter(
   initialLocation: '/home',
   routes: [
-    /// 🟢 **TABS-ROUTE mit Bottom Navbar**
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return TabsPage(navigationShell: navigationShell);
@@ -55,19 +54,26 @@ final GoRouter router = GoRouter(
         ),
       ],
     ),
-
     GoRoute(
       path: '/categories/details/topics/quiz',
       builder: (_, state) {
-        final topicId = state.extra as String?;
-        return topicId != null
-            ? QuizPage(topicId: topicId)
+        final extra = state.extra as Map<String, String>?;
+        final topicId = extra?['topicId'];
+        final categoryId = extra?['categoryId'];
+
+        return topicId != null && categoryId != null
+            ? QuizPage(topicId: topicId, categoryId: categoryId)
             : const NotFoundPage();
       },
     ),
     GoRoute(
       path: '/categories/details/topics/quiz/result',
-      builder: (_, __) => const QuizResultPage(),
+      builder: (_, state) {
+        final categoryId = state.extra as String?;
+        return categoryId != null
+            ? QuizResultPage(categoryId: categoryId)
+            : const NotFoundPage();
+      },
     ),
   ],
 );

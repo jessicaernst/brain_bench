@@ -54,8 +54,13 @@ class TopicsPage extends ConsumerWidget {
                         title: topic.name,
                         description: topic.description,
                         onPressed: () {
-                          context.go('/categories/details/topics/quiz',
-                              extra: topic.id);
+                          context.go(
+                            '/categories/details/topics/quiz',
+                            extra: {
+                              'topicId': topic.id,
+                              'categoryId': categoryId,
+                            },
+                          );
                         },
                       ),
                     );

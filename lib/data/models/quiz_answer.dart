@@ -8,6 +8,8 @@ part 'quiz_answer.g.dart';
 class QuizAnswer with _$QuizAnswer {
   factory QuizAnswer({
     required String id,
+    required String topicId,
+    required String categoryId,
     required String questionId,
     required String questionText,
     required List<String> givenAnswers,
@@ -17,6 +19,8 @@ class QuizAnswer with _$QuizAnswer {
 
   factory QuizAnswer.create({
     required String questionId,
+    required String topicId,
+    required String categoryId,
     required String questionText,
     required List<String> givenAnswers,
     required List<String> correctAnswers,
@@ -28,6 +32,8 @@ class QuizAnswer with _$QuizAnswer {
     return QuizAnswer(
       id: const Uuid().v4(),
       questionId: questionId,
+      topicId: topicId,
+      categoryId: categoryId,
       questionText: questionText,
       givenAnswers: givenAnswers,
       correctAnswers: correctAnswers,

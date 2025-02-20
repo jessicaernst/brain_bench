@@ -19,9 +19,11 @@ class QuizPage extends ConsumerStatefulWidget {
   const QuizPage({
     super.key,
     required this.topicId,
+    required this.categoryId,
   });
 
   final String topicId;
+  final String categoryId;
 
   @override
   ConsumerState<QuizPage> createState() =>
@@ -52,6 +54,8 @@ class _SingleMultipleChoiceQuestionPageState extends ConsumerState<QuizPage> {
     // Save the answer to the QuizAnswersNotifier
     quizAnswerNotifier.addAnswer(
       currentQuestion.id,
+      currentQuestion.topicId,
+      widget.categoryId,
       currentQuestion.question,
       selectedAnswers,
       correctAnswers,

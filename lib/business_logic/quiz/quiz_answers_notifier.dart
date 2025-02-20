@@ -13,6 +13,8 @@ class QuizAnswersNotifier extends _$QuizAnswersNotifier {
 
   void addAnswer(
     String questionId,
+    String topicId,
+    String categoryId,
     String questionText,
     List<String> givenAnswers,
     List<String> correctAnswers,
@@ -21,6 +23,8 @@ class QuizAnswersNotifier extends _$QuizAnswersNotifier {
       ...state,
       QuizAnswer.create(
         questionId: questionId,
+        topicId: topicId,
+        categoryId: categoryId,
         questionText: questionText,
         givenAnswers: givenAnswers,
         correctAnswers: correctAnswers,
