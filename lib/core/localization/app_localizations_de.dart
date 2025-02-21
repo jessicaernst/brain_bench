@@ -64,4 +64,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get feedbackBSheetMissedCorrectAnswers => '⚠️ verpasste korrekte Antworten:';
+
+  @override
+  String get quizResultsAppBarTitle => 'Quiz Ergebnisse';
+
+  @override
+  String get quizResultsNotSaved => 'Keine Quiz Ergebnisse gespeichert';
 }

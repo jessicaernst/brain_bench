@@ -208,6 +208,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'⚠️ Missed Correct Answers:'**
   String get feedbackBSheetMissedCorrectAnswers;
+
+  /// The title of the quiz results page in the app bar
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Results'**
+  String get quizResultsAppBarTitle;
+
+  /// The message displayed when the quiz results are not saved
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz results not saved'**
+  String get quizResultsNotSaved;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

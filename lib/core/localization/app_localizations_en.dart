@@ -64,4 +64,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get feedbackBSheetMissedCorrectAnswers => '⚠️ Missed Correct Answers:';
+
+  @override
+  String get quizResultsAppBarTitle => 'Quiz Results';
+
+  @override
+  String get quizResultsNotSaved => 'Quiz results not saved';
 }

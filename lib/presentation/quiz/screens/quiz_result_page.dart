@@ -1,10 +1,13 @@
-import 'package:brain_bench/business_logic/quiz/quiz_answers_notifier.dart';
+import 'package:brain_bench/business_logic/quiz/quiz_result_notifier.dart';
+import 'package:brain_bench/presentation/quiz/widgets/answer_card.dart';
+import 'package:brain_bench/presentation/quiz/widgets/toggle_button.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/widgets/back_nav_app_bar.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class QuizResultPage extends ConsumerWidget {
+class QuizResultPage extends HookConsumerWidget {
   const QuizResultPage({
     super.key,
     required this.categoryId,
@@ -14,56 +17,69 @@ class QuizResultPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final quizAnswers = ref.watch(quizAnswersNotifierProvider);
+    final state = ref.watch(quizResultNotifierProvider);
+    final notifier = ref.read(quizResultNotifierProvider.notifier);
+    final AppLocalizations localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: BackNavAppBar(
-          title: 'Quiz Ergebnisse',
-          onBack: () {
-            context.go(
-              '/categories',
-              extra: categoryId,
-            );
-          }),
-      body: quizAnswers.isEmpty
-          ? const Center(child: Text('Keine Antworten gespeichert.'))
-          : ListView.builder(
-              itemCount: quizAnswers.length,
-              itemBuilder: (context, index) {
-                final answer = quizAnswers[index];
-                return Card(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          answer.questionText,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          "Deine Antwort(en): ${answer.givenAnswers.join(", ")}",
-                          style: TextStyle(
-                              color: answer.incorrectAnswers.isEmpty
-                                  ? Colors.green
-                                  : Colors.red),
-                        ),
-                        Text(
-                          "Richtige Antwort(en): ${answer.correctAnswers.join(", ")}",
-                          style: const TextStyle(color: Colors.green),
-                        ),
-                        if (answer.incorrectAnswers.isNotEmpty)
-                          Text(
-                            "Falsche Antwort(en): ${answer.incorrectAnswers.join(", ")}",
-                            style: const TextStyle(color: Colors.red),
-                          ),
-                      ],
-                    ),
+        title: localizations.quizResultsAppBarTitle,
+        onBack: () {
+          context.go(
+            '/categories',
+            extra: categoryId,
+          );
+        },
+      ),
+      body: state.quizAnswers.isEmpty
+          ? Center(child: Text(localizations.quizResultsNotSaved))
+          : Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ToggleButton(
+                        isSelected: state.selectedView == SelectedView.correct,
+                        icon: Icons.thumb_up,
+                        isCorrect: true,
+                        onTap: () => notifier.toggleView(SelectedView.correct),
+                      ),
+                      const SizedBox(width: 48),
+                      ToggleButton(
+                        isSelected:
+                            state.selectedView == SelectedView.incorrect,
+                        icon: Icons.thumb_down,
+                        isCorrect: false,
+                        onTap: () =>
+                            notifier.toggleView(SelectedView.incorrect),
+                      ),
+                    ],
                   ),
-                );
-              },
+                ),
+
+                // Antwort-Liste
+                Expanded(
+                  child: ListView(
+                    children: state.quizAnswers
+                        .where((answer) =>
+                            state.selectedView == SelectedView.correct
+                                ? answer.incorrectAnswers.isEmpty
+                                : state.selectedView == SelectedView.incorrect
+                                    ? answer.incorrectAnswers.isNotEmpty
+                                    : false)
+                        .map((answer) => AnswerCard(
+                              answer: answer,
+                              isExpanded:
+                                  state.expandedAnswers.contains(answer.id),
+                              onExpand: () =>
+                                  notifier.toggleExplanation(answer.id),
+                            ))
+                        .toList(),
+                  ),
+                ),
+              ],
             ),
     );
   }

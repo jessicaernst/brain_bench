@@ -75,5 +75,13 @@
     "feedbackBSheetMissedCorrectAnswers": "⚠️ Missed Correct Answers:",
     "@feedbackBSheetMissedCorrectAnswers": {
         "description": "The label for the missed correct answers in the quiz results bottom sheet"
+    },
+    "quizResultsAppBarTitle": "Quiz Results",
+    "@quizResultsAppBarTitle": {
+        "description": "The title of the quiz results page in the app bar"
+    },
+    "quizResultsNotSaved": "Quiz results not saved",
+    "@quizResultsNotSaved": {
+        "description": "The message displayed when the quiz results are not saved"
     }
 }
