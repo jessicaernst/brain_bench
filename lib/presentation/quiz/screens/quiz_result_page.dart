@@ -28,8 +28,8 @@ class QuizResultPage extends HookConsumerWidget {
         title: localizations.quizResultsAppBarTitle,
         onBack: () {
           ref.read(quizAnswersNotifierProvider.notifier).reset();
-          ref.invalidate(quizViewModelProvider);
-          ref.invalidate(quizResultNotifierProvider);
+          ref.read(quizViewModelProvider.notifier).resetQuiz(ref);
+
           context.go(
             '/categories/details/topics',
             extra: categoryId,
@@ -63,8 +63,6 @@ class QuizResultPage extends HookConsumerWidget {
                     ],
                   ),
                 ),
-
-                // Antwort-Liste
                 Expanded(
                   child: ListView(
                     children: state.quizAnswers
@@ -76,10 +74,7 @@ class QuizResultPage extends HookConsumerWidget {
                                     : false)
                         .map((answer) => AnswerCard(
                               answer: answer,
-                              isExpanded:
-                                  state.expandedAnswers.contains(answer.id),
-                              onExpand: () =>
-                                  notifier.toggleExplanation(answer.id),
+                              isCorrect: answer.incorrectAnswers.isEmpty,
                             ))
                         .toList(),
                   ),

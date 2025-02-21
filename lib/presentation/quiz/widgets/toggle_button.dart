@@ -13,7 +13,7 @@ class ToggleButton extends StatelessWidget {
 
   final bool isSelected;
   final IconData icon;
-  final bool isCorrect; // Entscheidet zwischen korrekt/falsch
+  final bool isCorrect;
   final VoidCallback onTap;
 
   @override

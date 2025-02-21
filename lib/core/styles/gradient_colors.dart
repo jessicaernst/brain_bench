@@ -152,4 +152,24 @@ abstract class BrainBenchGradients {
     ],
     stops: const [0.1, 1.0],
   );
+
+  static final LinearGradient answerCardLightGradient = LinearGradient(
+    colors: [
+      BrainBenchColors.blueprintBlue.withAlpha((0.4 * 255).toInt()),
+      BrainBenchColors.blueprintBlue.withAlpha((0.1 * 255).toInt()),
+    ],
+    stops: const [0.0, 1.0],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+  static final LinearGradient answerCardDarkGradient = LinearGradient(
+    colors: [
+      BrainBenchColors.flutterSky.withAlpha((0.4 * 255).toInt()),
+      BrainBenchColors.flutterSky.withAlpha((0.1 * 255).toInt()),
+    ],
+    stops: const [0.0, 1.0],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 }
