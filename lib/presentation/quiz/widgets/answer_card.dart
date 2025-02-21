@@ -20,7 +20,8 @@ class AnswerCard extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            title: Text(answer.questionText),
+            title: Text(answer.questionText,
+                style: Theme.of(context).textTheme.bodyLarge),
             trailing: IconButton(
               icon: Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
               onPressed: onExpand,
@@ -32,25 +33,18 @@ class AnswerCard extends StatelessWidget {
               child: Column(
                 spacing: 16,
                 children: [
-                  Text(
+                  const Text(
                     'Keine Erklärung verfügbar.',
-                    style: TextStyle(color: Colors.grey[700]),
                   ),
                   Text(
                     "Deine Antwort(en): ${answer.givenAnswers.join(", ")}",
-                    style: TextStyle(
-                        color: answer.incorrectAnswers.isEmpty
-                            ? Colors.green
-                            : Colors.red),
                   ),
                   Text(
                     "Richtige Antwort(en): ${answer.correctAnswers.join(", ")}",
-                    style: const TextStyle(color: Colors.green),
                   ),
                   if (answer.incorrectAnswers.isNotEmpty)
                     Text(
                       "Falsche Antwort(en): ${answer.incorrectAnswers.join(", ")}",
-                      style: const TextStyle(color: Colors.red),
                     ),
                 ],
               ),

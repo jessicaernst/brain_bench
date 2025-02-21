@@ -1,4 +1,6 @@
+import 'package:brain_bench/business_logic/quiz/quiz_answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_result_notifier.dart';
+import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
 import 'package:brain_bench/presentation/quiz/widgets/answer_card.dart';
 import 'package:brain_bench/presentation/quiz/widgets/toggle_button.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -25,8 +27,11 @@ class QuizResultPage extends HookConsumerWidget {
       appBar: BackNavAppBar(
         title: localizations.quizResultsAppBarTitle,
         onBack: () {
+          ref.read(quizAnswersNotifierProvider.notifier).reset();
+          ref.invalidate(quizViewModelProvider);
+          ref.invalidate(quizResultNotifierProvider);
           context.go(
-            '/categories',
+            '/categories/details/topics',
             extra: categoryId,
           );
         },

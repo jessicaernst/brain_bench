@@ -1,4 +1,4 @@
-import 'package:brain_bench/core/styles/colors.dart';
+import 'package:brain_bench/core/styles/gradient_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -25,24 +25,9 @@ class ToggleButton extends StatelessWidget {
         width: isSelected ? 110 : 90,
         height: isSelected ? 110 : 90,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: isCorrect
-                ? [
-                    BrainBenchColors.correctAnswerGlass
-                        .withAlpha((0.4 * 255).toInt()),
-                    BrainBenchColors.correctAnswerGlass
-                        .withAlpha((0.1 * 255).toInt())
-                  ]
-                : [
-                    BrainBenchColors.falseQuestionGlass
-                        .withAlpha((0.4 * 255).toInt()),
-                    BrainBenchColors.falseQuestionGlass
-                        .withAlpha((0.1 * 255).toInt())
-                  ],
-            stops: const [0.0, 1.0],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          gradient: isCorrect
+              ? BrainBenchGradients.correctAnswerGlass
+              : BrainBenchGradients.falseQuestionGlass,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Center(

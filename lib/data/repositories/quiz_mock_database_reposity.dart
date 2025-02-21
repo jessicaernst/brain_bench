@@ -27,7 +27,7 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
     final String jsonString = await rootBundle.loadString(categoriesPath);
     final List<dynamic> jsonData = json.decode(jsonString);
 
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
 
     return jsonData
         .map((e) => Category(
@@ -49,7 +49,7 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
     final String jsonString = await rootBundle.loadString(topicsPath);
     final List<dynamic> jsonData = json.decode(jsonString);
 
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
 
     return jsonData.where((e) => e['categoryId'] == categoryId).map((e) {
       return Topic(
@@ -67,7 +67,7 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
   @override
   Future<List<Question>> getQuestions(
       String topicId, String languageCode) async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
 
     final String questionJsonString =
         await rootBundle.loadString(questionsPath);
@@ -110,7 +110,7 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
     final String jsonString = await rootBundle.loadString(answersPath);
     final List<dynamic> jsonData = json.decode(jsonString);
 
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
 
     _logger
         .info('Geladene Antwortdaten: ${jsonData.length} Antworten gefunden.');

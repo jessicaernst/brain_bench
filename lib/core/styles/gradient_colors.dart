@@ -64,21 +64,23 @@ abstract class BrainBenchGradients {
     ],
   );
 
-  static const LinearGradient correctAnswerGlass = LinearGradient(
+  static LinearGradient correctAnswerGlass = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
+    stops: const [0.0, 1.0],
     colors: [
-      BrainBenchColors.correctAnswerGlass,
-      BrainBenchColors.correctAnswerGlassLight,
+      BrainBenchColors.correctAnswerGlass.withAlpha((0.4 * 255).toInt()),
+      BrainBenchColors.correctAnswerGlass.withAlpha((0.1 * 255).toInt())
     ],
   );
 
-  static const LinearGradient falseQuestionGlass = LinearGradient(
+  static LinearGradient falseQuestionGlass = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
+    stops: const [0.0, 1.0],
     colors: [
-      BrainBenchColors.falseQuestionGlass,
-      BrainBenchColors.falseQuestionGlassLight,
+      BrainBenchColors.falseQuestionGlass.withAlpha((0.4 * 255).toInt()),
+      BrainBenchColors.falseQuestionGlass.withAlpha((0.1 * 255).toInt())
     ],
   );
 
