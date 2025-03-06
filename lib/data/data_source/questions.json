@@ -1,182 +1,184 @@
-[
-    {
-        "id": "8b1e84bc-03e9-4389-990f-70e2eec5a498",
-        "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
-        "questionEn": "What is used in a `switch` case to exit a case block?",
-        "questionDe": "Was wird in einem `switch`-Case verwendet, um aus einem Case-Block zu springen?",
-        "type": "singleChoice",
-        "answerIds": [
-            "e013e9de-844e-46ed-b4f3-58015602fcfc",
-            "8fcaa512-dbe0-42c3-b8b0-b012103f6d30",
-            "9733d531-e016-4910-aa43-df9cd12b7919",
-            "5c7fb767-715f-4e11-b487-430e4218cbb2"
-        ],
-        "explanationEn": "`break` is used to exit a `switch` case block in Dart.",
-        "explanationDe": "`break` wird verwendet, um einen `switch`-Case-Block in Dart zu verlassen."
-    },
-    {
-        "id": "66987e47-5e75-4937-97f1-c4150df079be",
-        "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
-        "questionEn": "What is the default data type for a variable in Dart when no type is specified?",
-        "questionDe": "Was ist der Standard-Datentyp für eine Variable in Dart, wenn kein Typ angegeben wird?",
-        "type": "singleChoice",
-        "answerIds": [
-            "354ef179-b414-43d3-b252-38523de74a62",
-            "a7e3c650-5cbf-4198-a30b-488df60b4373",
-            "dbd0963e-14e4-4ff7-adbe-a82da77ef389",
-            "22afc8ad-a64d-4087-8d3d-636d2c62d867"
-        ],
-        "explanationEn": "The default type is `dynamic`.",
-        "explanationDe": "Der Standard-Datentyp ist `dynamic`."
-    },
-    {
-        "id": "51450201-af5e-4c75-94d0-1427afeb6e5c",
-        "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
-        "questionEn": "Which data type is used to store whole numbers in Dart?",
-        "questionDe": "Welcher Datentyp wird verwendet, um ganze Zahlen in Dart zu speichern?",
-        "type": "singleChoice",
-        "answerIds": [
-            "e42164e7-2bf3-43a2-b900-e7b6a0a1065f",
-            "7e4025f4-87dc-4250-a113-2203a26dfa6f",
-            "f2e5556d-f463-40bc-9a25-979a6d5754ce",
-            "c0b0a1d2-e3f4-5678-9012-345678901234"
-        ],
-        "explanationEn": "The 'int' data type is used to store whole numbers in Dart.",
-        "explanationDe": "Der Datentyp 'int' wird in Dart verwendet, um ganze Zahlen zu speichern."
-    },
-    {
-        "id": "20ba7eb9-ad36-4c52-be9f-da41e0760215",
-        "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
-        "questionEn": "Which data type represents a variable that can be either an integer or a floating-point number?",
-        "questionDe": "Welcher Datentyp repräsentiert eine Variable, die entweder eine ganze Zahl oder eine Gleitkommazahl sein kann?",
-        "type": "singleChoice",
-        "answerIds": [
-            "57f5a4a3-ae2d-4a9d-b91b-8c44cae6dfb6",
-            "19c23df4-21de-482c-99f3-b5aae1bf959f",
-            "95aa454a-2ea1-4ecc-b9b4-10c89f9d841a",
-            "22afc8ad-a64d-4087-8d3d-636d2c62d867"
-        ],
-        "explanationEn": "The 'num' type can represent both integers and floating-point numbers in Dart.",
-        "explanationDe": "Der Datentyp 'num' kann sowohl ganze Zahlen als auch Gleitkommazahlen in Dart repräsentieren."
-    },
-    {
-        "id": "ec2c4a0e-16d6-4891-a664-893eeec531bd",
-        "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
-        "questionEn": "Which loop in Dart guarantees that the code executes at least once?",
-        "questionDe": "Welche Schleife in Dart garantiert, dass der Code mindestens einmal ausgeführt wird?",
-        "type": "singleChoice",
-        "answerIds": [
-            "03941be4-aab0-4d49-8d0b-8ba493313c14",
-            "8331ec98-1245-4ba2-8f37-493401f3e419",
-            "c944a61c-4ae6-44b2-81f0-73869310f36a",
-            "8b9ca395-e709-4bb1-bb8b-478539f9bf7a"
-        ],
-        "explanationEn": "The do-while loop guarantees that the code is executed at least once.",
-        "explanationDe": "Die do-while-Schleife garantiert, dass der Code mindestens einmal ausgeführt wird."
-    },
-    {
-        "id": "a6125683-d0ab-4c70-8c1e-1fe6057207e7",
-        "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
-        "questionEn": "How do you break a loop before it completes?",
-        "questionDe": "Wie wird eine Schleife abgebrochen, bevor sie vollständig abgeschlossen ist?",
-        "type": "singleChoice",
-        "answerIds": [
-            "e28c90bd-a2c3-47fb-a243-ca4f897c83b2",
-            "0a7cc7dc-5cfe-4bd3-b3ab-cee2eae3dfa6",
-            "edbe2ec4-a414-40c5-b007-76b1f17e1916",
-            "e013e9de-844e-46ed-b4f3-58015602fcfc"
-        ],
-        "explanationEn": "The break statement is used to exit a loop before it completes.",
-        "explanationDe": "Mit break wird eine Schleife vorzeitig beendet."
-    },
-    {
-        "id": "05b2baae-9a13-4488-8a4a-8d0522a7be76",
-        "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
-        "questionEn": "What is used in Dart to create a key-value pair storage?",
-        "questionDe": "Was wird in Dart verwendet, um einen Schlüssel-Wert-Paar-Speicher zu erstellen?",
-        "type": "singleChoice",
-        "answerIds": [
-            "de7605a0-b512-4b63-888e-ab583bd3d3b0",
-            "7f3504c7-36a7-460a-9ade-89997bf816f3",
-            "2ef76d78-6d71-4ec0-9503-61511abea03a",
-            "de4d2c1d-4594-43ed-9adf-57500ca6bb11"
-        ],
-        "explanationEn": "Map is used to store key-value pairs in Dart.",
-        "explanationDe": "Map wird in Dart verwendet, um Schlüssel-Wert-Paare zu speichern."
-    },
-    {
-        "id": "f397def3-5da1-4728-99f1-c94a7b4a5336",
-        "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
-        "questionEn": "How do you insert a key-value pair into a map?",
-        "questionDe": "Wie wird ein Schlüssel-Wert-Paar in eine Map eingefügt?",
-        "type": "singleChoice",
-        "answerIds": [
-            "c8b67c48-b091-41cf-bfc1-7801d2c840e4",
-            "e82307e8-732d-459a-8de6-a693b70da679",
-            "086c1ef7-8d64-4cc7-ae6f-8df5adb79d71",
-            "11c3ff6e-380b-4ff0-812c-17910298788e"
-        ],
-        "explanationEn": "In Dart, you can insert a key-value pair into a map using the bracket notation.",
-        "explanationDe": "In Dart fügt man ein Schlüssel-Wert-Paar in eine Map mit Hilfe der Klammern ein."
-    },
-    {
-        "id": "6ae8591c-3b00-456e-ad1f-f0776ce9de7d",
-        "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
-        "questionEn": "Which operator is used to retrieve the value of a key in a map?",
-        "questionDe": "Welcher Operator wird verwendet, um den Wert eines Schlüssels in einer Map abzurufen?",
-        "type": "singleChoice",
-        "answerIds": [
-            "128c344e-ae59-4598-964c-036b2a175092",
-            "9535d89a-424f-4958-85ff-21bff93d8dfc",
-            "c9743e2b-ef96-4dc7-97d1-bb4f97b2952a",
-            "915bcc4b-d08d-4a74-9a81-f553627f3971"
-        ],
-        "explanationEn": "The [] operator is used to retrieve the value of a key in a map.",
-        "explanationDe": "Der []-Operator wird verwendet, um den Wert eines Schlüssels in einer Map abzurufen."
-    },
-    {
-        "id": "1a2b3c4d-1111-2222-3333-444455556666",
-        "topicId": "27556107-b9b0-4f49-b790-8b973827e24d",
-        "questionEn": "Which concepts belong to object-oriented programming?",
-        "questionDe": "Welche Konzepte gehören zur objektorientierten Programmierung?",
-        "type": "multipleChoice",
-        "answerIds": [
-            "aaa11111-bbbb-cccc-dddd-eeeeffff0001",
-            "aaa11111-bbbb-cccc-dddd-eeeeffff0002",
-            "aaa11111-bbbb-cccc-dddd-eeeeffff0003",
-            "aaa11111-bbbb-cccc-dddd-eeeeffff0004"
-        ],
-        "explanationEn": "Encapsulation, inheritance, and polymorphism are key concepts of OOP.",
-        "explanationDe": "Kapselung, Vererbung und Polymorphismus sind Kernkonzepte der OOP."
-    },
-    {
-        "id": "1a2b3c4d-7777-8888-9999-000011112222",
-        "topicId": "27556107-b9b0-4f49-b790-8b973827e24d",
-        "questionEn": "Which of the following are valid access modifiers in Dart?",
-        "questionDe": "Welche der folgenden sind gültige Zugriffsmodifikatoren in Dart?",
-        "type": "singleChoice",
-        "answerIds": [
-            "bbb11111-cccc-dddd-eeee-ffff00001111",
-            "bbb11111-cccc-dddd-eeee-ffff00002222",
-            "bbb11111-cccc-dddd-eeee-ffff00003333",
-            "bbb11111-cccc-dddd-eeee-ffff00004444"
-        ],
-        "explanationEn": "Dart only has private access via `_`, public is the default.",
-        "explanationDe": "Dart hat nur privaten Zugriff über `_`, öffentlich ist der Standard."
-    },
-    {
-        "id": "1a2b3c4d-aaaa-bbbb-cccc-dddd11112222",
-        "topicId": "27556107-b9b0-4f49-b790-8b973827e24d",
-        "questionEn": "Which keywords exist in Dart for loops?",
-        "questionDe": "Welche Schlüsselwörter gibt es in Dart für Schleifen?",
-        "type": "multipleChoice",
-        "answerIds": [
-            "ccc11111-dddd-eeee-ffff-000011112222",
-            "ccc11111-dddd-eeee-ffff-000022223333",
-            "ccc11111-dddd-eeee-ffff-000033334444",
-            "ccc11111-dddd-eeee-ffff-000044445555"
-        ],
-        "explanationEn": "Dart supports `for`, `while`, and `foreach` loops.",
-        "explanationDe": "Dart unterstützt `for`-, `while`- und `foreach`-Schleifen."
-    }
-]
+{
+    "questions": [
+        {
+            "id": "8b1e84bc-03e9-4389-990f-70e2eec5a498",
+            "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
+            "questionEn": "What is used in a `switch` case to exit a case block?",
+            "questionDe": "Was wird in einem `switch`-Case verwendet, um aus einem Case-Block zu springen?",
+            "type": "singleChoice",
+            "answerIds": [
+                "e013e9de-844e-46ed-b4f3-58015602fcfc",
+                "8fcaa512-dbe0-42c3-b8b0-b012103f6d30",
+                "9733d531-e016-4910-aa43-df9cd12b7919",
+                "5c7fb767-715f-4e11-b487-430e4218cbb2"
+            ],
+            "explanationEn": "`break` is used to exit a `switch` case block in Dart.",
+            "explanationDe": "`break` wird verwendet, um einen `switch`-Case-Block in Dart zu verlassen."
+        },
+        {
+            "id": "66987e47-5e75-4937-97f1-c4150df079be",
+            "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
+            "questionEn": "What is the default data type for a variable in Dart when no type is specified?",
+            "questionDe": "Was ist der Standard-Datentyp für eine Variable in Dart, wenn kein Typ angegeben wird?",
+            "type": "singleChoice",
+            "answerIds": [
+                "354ef179-b414-43d3-b252-38523de74a62",
+                "a7e3c650-5cbf-4198-a30b-488df60b4373",
+                "dbd0963e-14e4-4ff7-adbe-a82da77ef389",
+                "22afc8ad-a64d-4087-8d3d-636d2c62d867"
+            ],
+            "explanationEn": "The default type is `dynamic`.",
+            "explanationDe": "Der Standard-Datentyp ist `dynamic`."
+        },
+        {
+            "id": "51450201-af5e-4c75-94d0-1427afeb6e5c",
+            "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
+            "questionEn": "Which data type is used to store whole numbers in Dart?",
+            "questionDe": "Welcher Datentyp wird verwendet, um ganze Zahlen in Dart zu speichern?",
+            "type": "singleChoice",
+            "answerIds": [
+                "e42164e7-2bf3-43a2-b900-e7b6a0a1065f",
+                "7e4025f4-87dc-4250-a113-2203a26dfa6f",
+                "f2e5556d-f463-40bc-9a25-979a6d5754ce",
+                "c0b0a1d2-e3f4-5678-9012-345678901234"
+            ],
+            "explanationEn": "The 'int' data type is used to store whole numbers in Dart.",
+            "explanationDe": "Der Datentyp 'int' wird in Dart verwendet, um ganze Zahlen zu speichern."
+        },
+        {
+            "id": "20ba7eb9-ad36-4c52-be9f-da41e0760215",
+            "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
+            "questionEn": "Which data type represents a variable that can be either an integer or a floating-point number?",
+            "questionDe": "Welcher Datentyp repräsentiert eine Variable, die entweder eine ganze Zahl oder eine Gleitkommazahl sein kann?",
+            "type": "singleChoice",
+            "answerIds": [
+                "57f5a4a3-ae2d-4a9d-b91b-8c44cae6dfb6",
+                "19c23df4-21de-482c-99f3-b5aae1bf959f",
+                "95aa454a-2ea1-4ecc-b9b4-10c89f9d841a",
+                "22afc8ad-a64d-4087-8d3d-636d2c62d867"
+            ],
+            "explanationEn": "The 'num' type can represent both integers and floating-point numbers in Dart.",
+            "explanationDe": "Der Datentyp 'num' kann sowohl ganze Zahlen als auch Gleitkommazahlen in Dart repräsentieren."
+        },
+        {
+            "id": "ec2c4a0e-16d6-4891-a664-893eeec531bd",
+            "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
+            "questionEn": "Which loop in Dart guarantees that the code executes at least once?",
+            "questionDe": "Welche Schleife in Dart garantiert, dass der Code mindestens einmal ausgeführt wird?",
+            "type": "singleChoice",
+            "answerIds": [
+                "03941be4-aab0-4d49-8d0b-8ba493313c14",
+                "8331ec98-1245-4ba2-8f37-493401f3e419",
+                "c944a61c-4ae6-44b2-81f0-73869310f36a",
+                "8b9ca395-e709-4bb1-bb8b-478539f9bf7a"
+            ],
+            "explanationEn": "The do-while loop guarantees that the code is executed at least once.",
+            "explanationDe": "Die do-while-Schleife garantiert, dass der Code mindestens einmal ausgeführt wird."
+        },
+        {
+            "id": "a6125683-d0ab-4c70-8c1e-1fe6057207e7",
+            "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
+            "questionEn": "How do you break a loop before it completes?",
+            "questionDe": "Wie wird eine Schleife abgebrochen, bevor sie vollständig abgeschlossen ist?",
+            "type": "singleChoice",
+            "answerIds": [
+                "e28c90bd-a2c3-47fb-a243-ca4f897c83b2",
+                "0a7cc7dc-5cfe-4bd3-b3ab-cee2eae3dfa6",
+                "edbe2ec4-a414-40c5-b007-76b1f17e1916",
+                "e013e9de-844e-46ed-b4f3-58015602fcfc"
+            ],
+            "explanationEn": "The break statement is used to exit a loop before it completes.",
+            "explanationDe": "Mit break wird eine Schleife vorzeitig beendet."
+        },
+        {
+            "id": "05b2baae-9a13-4488-8a4a-8d0522a7be76",
+            "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
+            "questionEn": "What is used in Dart to create a key-value pair storage?",
+            "questionDe": "Was wird in Dart verwendet, um einen Schlüssel-Wert-Paar-Speicher zu erstellen?",
+            "type": "singleChoice",
+            "answerIds": [
+                "de7605a0-b512-4b63-888e-ab583bd3d3b0",
+                "7f3504c7-36a7-460a-9ade-89997bf816f3",
+                "2ef76d78-6d71-4ec0-9503-61511abea03a",
+                "de4d2c1d-4594-43ed-9adf-57500ca6bb11"
+            ],
+            "explanationEn": "Map is used to store key-value pairs in Dart.",
+            "explanationDe": "Map wird in Dart verwendet, um Schlüssel-Wert-Paare zu speichern."
+        },
+        {
+            "id": "f397def3-5da1-4728-99f1-c94a7b4a5336",
+            "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
+            "questionEn": "How do you insert a key-value pair into a map?",
+            "questionDe": "Wie wird ein Schlüssel-Wert-Paar in eine Map eingefügt?",
+            "type": "singleChoice",
+            "answerIds": [
+                "c8b67c48-b091-41cf-bfc1-7801d2c840e4",
+                "e82307e8-732d-459a-8de6-a693b70da679",
+                "086c1ef7-8d64-4cc7-ae6f-8df5adb79d71",
+                "11c3ff6e-380b-4ff0-812c-17910298788e"
+            ],
+            "explanationEn": "In Dart, you can insert a key-value pair into a map using the bracket notation.",
+            "explanationDe": "In Dart fügt man ein Schlüssel-Wert-Paar in eine Map mit Hilfe der Klammern ein."
+        },
+        {
+            "id": "6ae8591c-3b00-456e-ad1f-f0776ce9de7d",
+            "topicId": "a42460af-5147-40ed-8588-28018edebfb1",
+            "questionEn": "Which operator is used to retrieve the value of a key in a map?",
+            "questionDe": "Welcher Operator wird verwendet, um den Wert eines Schlüssels in einer Map abzurufen?",
+            "type": "singleChoice",
+            "answerIds": [
+                "128c344e-ae59-4598-964c-036b2a175092",
+                "9535d89a-424f-4958-85ff-21bff93d8dfc",
+                "c9743e2b-ef96-4dc7-97d1-bb4f97b2952a",
+                "915bcc4b-d08d-4a74-9a81-f553627f3971"
+            ],
+            "explanationEn": "The [] operator is used to retrieve the value of a key in a map.",
+            "explanationDe": "Der []-Operator wird verwendet, um den Wert eines Schlüssels in einer Map abzurufen."
+        },
+        {
+            "id": "1a2b3c4d-1111-2222-3333-444455556666",
+            "topicId": "27556107-b9b0-4f49-b790-8b973827e24d",
+            "questionEn": "Which concepts belong to object-oriented programming?",
+            "questionDe": "Welche Konzepte gehören zur objektorientierten Programmierung?",
+            "type": "multipleChoice",
+            "answerIds": [
+                "aaa11111-bbbb-cccc-dddd-eeeeffff0001",
+                "aaa11111-bbbb-cccc-dddd-eeeeffff0002",
+                "aaa11111-bbbb-cccc-dddd-eeeeffff0003",
+                "aaa11111-bbbb-cccc-dddd-eeeeffff0004"
+            ],
+            "explanationEn": "Encapsulation, inheritance, and polymorphism are key concepts of OOP.",
+            "explanationDe": "Kapselung, Vererbung und Polymorphismus sind Kernkonzepte der OOP."
+        },
+        {
+            "id": "1a2b3c4d-7777-8888-9999-000011112222",
+            "topicId": "27556107-b9b0-4f49-b790-8b973827e24d",
+            "questionEn": "Which of the following are valid access modifiers in Dart?",
+            "questionDe": "Welche der folgenden sind gültige Zugriffsmodifikatoren in Dart?",
+            "type": "singleChoice",
+            "answerIds": [
+                "bbb11111-cccc-dddd-eeee-ffff00001111",
+                "bbb11111-cccc-dddd-eeee-ffff00002222",
+                "bbb11111-cccc-dddd-eeee-ffff00003333",
+                "bbb11111-cccc-dddd-eeee-ffff00004444"
+            ],
+            "explanationEn": "Dart only has private access via `_`, public is the default.",
+            "explanationDe": "Dart hat nur privaten Zugriff über `_`, öffentlich ist der Standard."
+        },
+        {
+            "id": "1a2b3c4d-aaaa-bbbb-cccc-dddd11112222",
+            "topicId": "27556107-b9b0-4f49-b790-8b973827e24d",
+            "questionEn": "Which keywords exist in Dart for loops?",
+            "questionDe": "Welche Schlüsselwörter gibt es in Dart für Schleifen?",
+            "type": "multipleChoice",
+            "answerIds": [
+                "ccc11111-dddd-eeee-ffff-000011112222",
+                "ccc11111-dddd-eeee-ffff-000022223333",
+                "ccc11111-dddd-eeee-ffff-000033334444",
+                "ccc11111-dddd-eeee-ffff-000044445555"
+            ],
+            "explanationEn": "Dart supports `for`, `while`, and `foreach` loops.",
+            "explanationDe": "Dart unterstützt `for`-, `while`- und `foreach`-Schleifen."
+        }
+    ]
+}

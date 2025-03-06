@@ -1,470 +1,472 @@
-[
-    {
-        "id": "a42460af-5147-40ed-8588-28018edebfb1",
-        "nameEn": "Dart Basics",
-        "nameDe": "Dart Grundlagen",
-        "descriptionEn": "Introduction to Dart programming.",
-        "descriptionDe": "Einführung in die Dart-Programmierung",
-        "categoryId": "f711e799-3ebe-46d3-9d78-722e2d024cec",
-        "progress": 0.0
-    },
-    {
-        "id": "27556107-b9b0-4f49-b790-8b973827e24d",
-        "nameEn": "OOP Basics",
-        "nameDe": "OOP Grundlagen",
-        "descriptionEn": "Learn Object-Oriented Programming concepts in Dart.",
-        "descriptionDe": "Grundlagen der objektorientierten Programmierung mit Dart.",
-        "categoryId": "f711e799-3ebe-46d3-9d78-722e2d024cec",
-        "progress": 0.0
-    },
-    {
-        "id": "d1e2f3g4-ecosystem-001",
-        "nameEn": "Agile Principles",
-        "nameDe": "Agile Prinzipien",
-        "descriptionEn": "Deep dive into agile project management principles, including Scrum, Kanban, and SAFe frameworks. Understand how agile practices enhance team collaboration, improve delivery speed, and foster adaptability in software development.",
-        "descriptionDe": "Tiefgehende Einführung in die Prinzipien des agilen Projektmanagements, einschließlich Scrum-, Kanban- und SAFe-Frameworks. Verstehen, wie agile Praktiken die Teamzusammenarbeit verbessern, die Liefergeschwindigkeit erhöhen und die Anpassungsfähigkeit in der Softwareentwicklung fördern.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "h5i6j7k8-ecosystem-002",
-        "nameEn": "Mobile App Lifecycle",
-        "nameDe": "Lebenszyklus einer mobilen App",
-        "descriptionEn": "Learn the key phases in mobile app development, from ideation to deployment. This topic covers app architecture, development tools, testing methodologies, and strategies for publishing apps on app stores.",
-        "descriptionDe": "Erfahre die wichtigsten Phasen der mobilen App-Entwicklung, von der Ideenfindung bis zur Bereitstellung. Dieses Thema umfasst App-Architektur, Entwicklungstools, Testmethoden und Strategien für die Veröffentlichung von Apps in App-Stores.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "l9m0n1o2-design-001",
-        "nameEn": "UI/UX Fundamentals",
-        "nameDe": "Grundlagen von UI/UX",
-        "descriptionEn": "Explore the principles of user interface and user experience design. Learn how to design user-friendly interfaces that prioritize accessibility, consistency, and aesthetic appeal.",
-        "descriptionDe": "Erfahre die Grundlagen des Designs von Benutzeroberflächen und Benutzererlebnissen. Lerne, wie du benutzerfreundliche Oberflächen gestalten kannst, die Barrierefreiheit, Konsistenz und ästhetische Attraktivität in den Vordergrund stellen.",
-        "categoryId": "2b3c4d5e-design-002",
-        "progress": 0.0
-    },
-    {
-        "id": "p3q4r5s6-design-002",
-        "nameEn": "Design Systems",
-        "nameDe": "Designsysteme",
-        "descriptionEn": "Understand the role of design systems in maintaining consistency across large-scale projects. Learn to create reusable components, define style guides, and manage design tokens.",
-        "descriptionDe": "Verstehe die Rolle von Designsystemen bei der Gewährleistung von Konsistenz in großen Projekten. Lerne, wiederverwendbare Komponenten zu erstellen, Stilrichtlinien zu definieren und Designtokens zu verwalten.",
-        "categoryId": "2b3c4d5e-design-002",
-        "progress": 0.0
-    },
-    {
-        "id": "t7u8v9w0-coding-001",
-        "nameEn": "Functional Programming in Dart",
-        "nameDe": "Funktionale Programmierung mit Dart",
-        "descriptionEn": "Discover functional programming concepts and how they are implemented in Dart. Topics include higher-order functions, immutability, and functional interfaces.",
-        "descriptionDe": "Entdecke die Konzepte der funktionalen Programmierung und deren Umsetzung in Dart. Themen sind höherwertige Funktionen, Unveränderlichkeit und funktionale Schnittstellen.",
-        "categoryId": "f711e799-3ebe-46d3-9d78-722e2d024cec",
-        "progress": 0.0
-    },
-    {
-        "id": "x1y2z3a4-coding-002",
-        "nameEn": "Dart Data Structures",
-        "nameDe": "Dart-Datenstrukturen",
-        "descriptionEn": "Learn about the fundamental data structures in Dart, including lists, sets, maps, and queues. Understand their applications, strengths, and weaknesses.",
-        "descriptionDe": "Lerne die grundlegenden Datenstrukturen in Dart kennen, einschließlich Listen, Sets, Maps und Queues. Verstehe ihre Anwendungen, Stärken und Schwächen.",
-        "categoryId": "f711e799-3ebe-46d3-9d78-722e2d024cec",
-        "progress": 0.0
-    },
-    {
-        "id": "b5c6d7e8-flutter-001",
-        "nameEn": "State Management in Flutter",
-        "nameDe": "State-Management in Flutter",
-        "descriptionEn": "Master state management techniques in Flutter, including Provider, Riverpod, and Bloc. Learn how to build scalable and maintainable Flutter apps.",
-        "descriptionDe": "Beherrsche Techniken des State-Managements in Flutter, einschließlich Provider, Riverpod und Bloc. Lerne, wie du skalierbare und wartbare Flutter-Apps erstellen kannst.",
-        "categoryId": "3c4d5e6f-flutter-003",
-        "progress": 0.0
-    },
-    {
-        "id": "f9g0h1i2-flutter-002",
-        "nameEn": "Flutter Animations",
-        "nameDe": "Animationen in Flutter",
-        "descriptionEn": "Create engaging user experiences with Flutter's animation framework. This topic covers implicit and explicit animations, as well as custom animation controllers.",
-        "descriptionDe": "Erstelle ansprechende Benutzererlebnisse mit dem Animationsframework von Flutter. Dieses Thema umfasst implizite und explizite Animationen sowie benutzerdefinierte Animationscontroller.",
-        "categoryId": "3c4d5e6f-flutter-003",
-        "progress": 0.0
-    },
-    {
-        "id": "j3k4l5m6-flutter-003",
-        "nameEn": "Responsive Design in Flutter",
-        "nameDe": "Responsives Design in Flutter",
-        "descriptionEn": "Learn how to build apps that adapt seamlessly to different screen sizes and orientations. Topics include MediaQuery, LayoutBuilder, and adaptive widgets.",
-        "descriptionDe": "Lerne, wie du Apps erstellst, die sich nahtlos an verschiedene Bildschirmgrößen und Ausrichtungen anpassen. Themen sind MediaQuery, LayoutBuilder und adaptive Widgets.",
-        "categoryId": "3c4d5e6f-flutter-003",
-        "progress": 0.0
-    },
-    {
-        "id": "n7o8p9q0-flutter-004",
-        "nameEn": "Integrating APIs in Flutter",
-        "nameDe": "Integration von APIs in Flutter",
-        "descriptionEn": "Learn to connect your Flutter apps with external APIs. Understand RESTful principles, HTTP requests, and how to handle JSON data.",
-        "descriptionDe": "Lerne, wie du deine Flutter-Apps mit externen APIs verbindest. Verstehe RESTful-Prinzipien, HTTP-Anfragen und die Verarbeitung von JSON-Daten.",
-        "categoryId": "3c4d5e6f-flutter-003",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-001",
-        "nameEn": "Introduction to Agile",
-        "nameDe": "Einführung in Agile",
-        "descriptionEn": "Explore the history, core values, and principles of Agile methodologies. Learn why Agile has become the gold standard for modern software development.",
-        "descriptionDe": "Erkunde die Geschichte, Kernwerte und Prinzipien agiler Methoden. Erfahre, warum Agile zum Goldstandard moderner Softwareentwicklung geworden ist.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-002",
-        "nameEn": "Scrum Framework Basics",
-        "nameDe": "Grundlagen des Scrum-Frameworks",
-        "descriptionEn": "Dive into Scrum roles, artifacts, and ceremonies. Understand how to use sprints and backlogs effectively.",
-        "descriptionDe": "Tauche ein in Scrum-Rollen, Artefakte und Zeremonien. Lerne, wie man Sprints und Backlogs effektiv nutzt.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-003",
-        "nameEn": "Kanban Methodology",
-        "nameDe": "Kanban-Methodologie",
-        "descriptionEn": "Learn how Kanban boards and visual workflows can streamline your development process.",
-        "descriptionDe": "Erfahre, wie Kanban-Boards und visuelle Workflows deinen Entwicklungsprozess optimieren können.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-004",
-        "nameEn": "Scaling Agile with SAFe",
-        "nameDe": "Agile Skalierung mit SAFe",
-        "descriptionEn": "Explore the Scaled Agile Framework (SAFe) for managing multiple teams across large projects.",
-        "descriptionDe": "Erkunde das Scaled Agile Framework (SAFe) zur Verwaltung mehrerer Teams in großen Projekten.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-005",
-        "nameEn": "Mobile App Ecosystem Overview",
-        "nameDe": "Überblick über das Mobile-App-Ökosystem",
-        "descriptionEn": "Understand the various components of the mobile app ecosystem, including platforms, tools, and market trends.",
-        "descriptionDe": "Verstehe die verschiedenen Komponenten des Mobile-App-Ökosystems, einschließlich Plattformen, Tools und Markttrends.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-006",
-        "nameEn": "Agile Metrics and KPIs",
-        "nameDe": "Agile Metriken und KPIs",
-        "descriptionEn": "Learn how to measure team performance and project success with Agile-specific metrics.",
-        "descriptionDe": "Lerne, wie du die Teamleistung und den Projekterfolg mit Agile-spezifischen Metriken misst.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-007",
-        "nameEn": "Collaboration Tools for Teams",
-        "nameDe": "Zusammenarbeitstools für Teams",
-        "descriptionEn": "Explore popular tools like Jira, Trello, and Slack for team collaboration and project management.",
-        "descriptionDe": "Erfahre mehr über beliebte Tools wie Jira, Trello und Slack für Teamarbeit und Projektmanagement.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-008",
-        "nameEn": "Mindset for Agile Teams",
-        "nameDe": "Mindset für Agile-Teams",
-        "descriptionEn": "Develop the right mindset to foster adaptability, ownership, and collaboration in Agile teams.",
-        "descriptionDe": "Entwickle das richtige Mindset, um Anpassungsfähigkeit, Eigenverantwortung und Zusammenarbeit in Agile-Teams zu fördern.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-009",
-        "nameEn": "Risk Management in Agile",
-        "nameDe": "Risikomanagement in Agile",
-        "descriptionEn": "Understand how to identify, assess, and mitigate risks in an Agile project environment.",
-        "descriptionDe": "Verstehe, wie du Risiken in einer Agile-Projektumgebung identifizierst, bewertest und minimierst.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-010",
-        "nameEn": "Continuous Delivery and DevOps",
-        "nameDe": "Continuous Delivery und DevOps",
-        "descriptionEn": "Learn the principles of DevOps and how they integrate with Agile for continuous delivery.",
-        "descriptionDe": "Lerne die Prinzipien von DevOps und wie sie sich mit Agile für eine kontinuierliche Bereitstellung integrieren lassen.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-001",
-        "nameEn": "Introduction to Agile",
-        "nameDe": "Einführung in Agile",
-        "descriptionEn": "Explore the history, core values, and principles of Agile methodologies. Learn why Agile has become the gold standard for modern software development.",
-        "descriptionDe": "Erkunde die Geschichte, Kernwerte und Prinzipien agiler Methoden. Erfahre, warum Agile zum Goldstandard moderner Softwareentwicklung geworden ist.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-002",
-        "nameEn": "Scrum Framework Basics",
-        "nameDe": "Grundlagen des Scrum-Frameworks",
-        "descriptionEn": "Dive into Scrum roles, artifacts, and ceremonies. Understand how to use sprints and backlogs effectively.",
-        "descriptionDe": "Tauche ein in Scrum-Rollen, Artefakte und Zeremonien. Lerne, wie man Sprints und Backlogs effektiv nutzt.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-003",
-        "nameEn": "Kanban Methodology",
-        "nameDe": "Kanban-Methodologie",
-        "descriptionEn": "Learn how Kanban boards and visual workflows can streamline your development process.",
-        "descriptionDe": "Erfahre, wie Kanban-Boards und visuelle Workflows deinen Entwicklungsprozess optimieren können.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-004",
-        "nameEn": "Scaling Agile with SAFe",
-        "nameDe": "Agile Skalierung mit SAFe",
-        "descriptionEn": "Explore the Scaled Agile Framework (SAFe) for managing multiple teams across large projects.",
-        "descriptionDe": "Erkunde das Scaled Agile Framework (SAFe) zur Verwaltung mehrerer Teams in großen Projekten.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-005",
-        "nameEn": "Mobile App Ecosystem Overview",
-        "nameDe": "Überblick über das Mobile-App-Ökosystem",
-        "descriptionEn": "Understand the various components of the mobile app ecosystem, including platforms, tools, and market trends.",
-        "descriptionDe": "Verstehe die verschiedenen Komponenten des Mobile-App-Ökosystems, einschließlich Plattformen, Tools und Markttrends.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-006",
-        "nameEn": "Agile Metrics and KPIs",
-        "nameDe": "Agile Metriken und KPIs",
-        "descriptionEn": "Learn how to measure team performance and project success with Agile-specific metrics.",
-        "descriptionDe": "Lerne, wie du die Teamleistung und den Projekterfolg mit Agile-spezifischen Metriken misst.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-007",
-        "nameEn": "Collaboration Tools for Teams",
-        "nameDe": "Zusammenarbeitstools für Teams",
-        "descriptionEn": "Explore popular tools like Jira, Trello, and Slack for team collaboration and project management.",
-        "descriptionDe": "Erfahre mehr über beliebte Tools wie Jira, Trello und Slack für Teamarbeit und Projektmanagement.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-008",
-        "nameEn": "Mindset for Agile Teams",
-        "nameDe": "Mindset für Agile-Teams",
-        "descriptionEn": "Develop the right mindset to foster adaptability, ownership, and collaboration in Agile teams.",
-        "descriptionDe": "Entwickle das richtige Mindset, um Anpassungsfähigkeit, Eigenverantwortung und Zusammenarbeit in Agile-Teams zu fördern.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-009",
-        "nameEn": "Risk Management in Agile",
-        "nameDe": "Risikomanagement in Agile",
-        "descriptionEn": "Understand how to identify, assess, and mitigate risks in an Agile project environment.",
-        "descriptionDe": "Verstehe, wie du Risiken in einer Agile-Projektumgebung identifizierst, bewertest und minimierst.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "ecosystem-001-topic-010",
-        "nameEn": "Continuous Delivery and DevOps",
-        "nameDe": "Continuous Delivery und DevOps",
-        "descriptionEn": "Learn the principles of DevOps and how they integrate with Agile for continuous delivery.",
-        "descriptionDe": "Lerne die Prinzipien von DevOps und wie sie sich mit Agile für eine kontinuierliche Bereitstellung integrieren lassen.",
-        "categoryId": "1a2b3c4d-ecosystem-001",
-        "progress": 0.0
-    },
-    {
-        "id": "1b-design-001",
-        "nameEn": "Design Basics",
-        "nameDe": "Design-Grundlagen",
-        "descriptionEn": "Learn the fundamental principles of design, including layout, color theory, and typography. This quiz will help you understand the essentials of creating visually appealing and functional user interfaces.",
-        "descriptionDe": "Lernen Sie die grundlegenden Prinzipien des Designs, einschließlich Layout, Farbtheorie und Typografie. Dieses Quiz hilft Ihnen, die Grundlagen für die Erstellung von visuell ansprechenden und funktionalen Benutzeroberflächen zu verstehen.",
-        "categoryId": "2b3c4d5e-design-002",
-        "progress": 0.0
-    },
-    {
-        "id": "2b-design-002",
-        "nameEn": "User-Centered Design",
-        "nameDe": "Benutzerzentriertes Design",
-        "descriptionEn": "Explore the importance of designing with the user in mind. This quiz will test your knowledge of user personas, usability testing, and empathy mapping.",
-        "descriptionDe": "Erforschen Sie die Bedeutung des Designs mit dem Benutzer im Fokus. Dieses Quiz testet Ihr Wissen über Benutzer-Personas, Usability-Tests und Empathie-Mapping.",
-        "categoryId": "2b3c4d5e-design-002",
-        "progress": 0.0
-    },
-    {
-        "id": "3b-design-003",
-        "nameEn": "Accessibility",
-        "nameDe": "Barrierefreiheit",
-        "descriptionEn": "Understand how to design accessible interfaces for diverse users. The quiz focuses on WCAG guidelines, color contrast, and keyboard navigation.",
-        "descriptionDe": "Verstehen Sie, wie man barrierefreie Oberflächen für unterschiedliche Benutzer entwirft. Das Quiz konzentriert sich auf WCAG-Richtlinien, Farbkontrast und Tastaturnavigation.",
-        "categoryId": "2b3c4d5e-design-002",
-        "progress": 0.0
-    },
-    {
-        "id": "4b-design-004",
-        "nameEn": "Material Design",
-        "nameDe": "Material Design",
-        "descriptionEn": "Learn the principles of Google's Material Design and how to implement them in your projects. This quiz will assess your understanding of components, layouts, and motion.",
-        "descriptionDe": "Lernen Sie die Prinzipien von Googles Material Design und wie Sie diese in Ihren Projekten umsetzen können. Dieses Quiz bewertet Ihr Verständnis von Komponenten, Layouts und Bewegung.",
-        "categoryId": "2b3c4d5e-design-002",
-        "progress": 0.0
-    },
-    {
-        "id": "5b-design-005",
-        "nameEn": "Design Systems",
-        "nameDe": "Design-Systeme",
-        "descriptionEn": "Discover how to create and use design systems to ensure consistency across your applications. This quiz tests your knowledge of reusable components and design tokens.",
-        "descriptionDe": "Entdecken Sie, wie man Design-Systeme erstellt und nutzt, um Konsistenz in Ihren Anwendungen zu gewährleisten. Dieses Quiz testet Ihr Wissen über wiederverwendbare Komponenten und Design-Tokens.",
-        "categoryId": "2b3c4d5e-design-002",
-        "progress": 0.0
-    },
-    {
-        "id": "6b-design-006",
-        "nameEn": "Animation Principles",
-        "nameDe": "Animationsprinzipien",
-        "descriptionEn": "Learn how to use animations effectively to enhance user experience. The quiz includes topics like easing curves, transitions, and micro-interactions.",
-        "descriptionDe": "Lernen Sie, wie Sie Animationen effektiv einsetzen, um die Benutzererfahrung zu verbessern. Das Quiz behandelt Themen wie Easing-Kurven, Übergänge und Mikrointeraktionen.",
-        "categoryId": "2b3c4d5e-design-002",
-        "progress": 0.0
-    },
-    {
-        "id": "7b-design-007",
-        "nameEn": "Responsive Design",
-        "nameDe": "Responsives Design",
-        "descriptionEn": "Understand the techniques for designing interfaces that work across multiple devices and screen sizes. The quiz covers media queries, flexible grids, and breakpoints.",
-        "descriptionDe": "Verstehen Sie die Techniken zur Gestaltung von Oberflächen, die auf verschiedenen Geräten und Bildschirmgrößen funktionieren. Das Quiz behandelt Media Queries, flexible Raster und Breakpoints.",
-        "categoryId": "2b3c4d5e-design-002",
-        "progress": 0.0
-    },
-    {
-        "id": "8b-design-008",
-        "nameEn": "Dark Mode Design",
-        "nameDe": "Design für den Dunkelmodus",
-        "descriptionEn": "Learn how to design user interfaces for dark mode. This quiz evaluates your understanding of color schemes, contrast, and readability in dark mode.",
-        "descriptionDe": "Lernen Sie, wie man Benutzeroberflächen für den Dunkelmodus gestaltet. Dieses Quiz bewertet Ihr Verständnis von Farbschemata, Kontrast und Lesbarkeit im Dunkelmodus.",
-        "categoryId": "2b3c4d5e-design-002",
-        "progress": 0.0
-    },
-    {
-        "id": "9b-design-009",
-        "nameEn": "Prototyping",
-        "nameDe": "Prototyping",
-        "descriptionEn": "Explore how to create interactive prototypes using tools like Figma or Adobe XD. The quiz assesses your ability to transform design ideas into testable models.",
-        "descriptionDe": "Erforschen Sie, wie man interaktive Prototypen mit Tools wie Figma oder Adobe XD erstellt. Das Quiz bewertet Ihre Fähigkeit, Designideen in testbare Modelle umzuwandeln.",
-        "categoryId": "2b3c4d5e-design-002",
-        "progress": 0.0
-    },
-    {
-        "id": "10b-design-010",
-        "nameEn": "Color Psychology",
-        "nameDe": "Farbpsychologie",
-        "descriptionEn": "Learn how to use colors strategically to influence user behavior. This quiz covers topics like color associations, branding, and emotional impact.",
-        "descriptionDe": "Lernen Sie, wie Sie Farben strategisch einsetzen, um das Benutzerverhalten zu beeinflussen. Dieses Quiz behandelt Themen wie Farbassoziationen, Branding und emotionale Wirkung.",
-        "categoryId": "2b3c4d5e-design-002",
-        "progress": 0.0
-    },
-    {
-        "id": "1c-flutter-001",
-        "nameEn": "Flutter Basics",
-        "nameDe": "Flutter-Grundlagen",
-        "descriptionEn": "Learn the fundamentals of Flutter, including widgets, layouts, and state management. This quiz helps you get started with building Flutter applications.",
-        "descriptionDe": "Lernen Sie die Grundlagen von Flutter, einschließlich Widgets, Layouts und State Management. Dieses Quiz hilft Ihnen beim Einstieg in die Entwicklung von Flutter-Anwendungen.",
-        "categoryId": "3c4d5e6f-flutter-003",
-        "progress": 0.0
-    },
-    {
-        "id": "2c-flutter-002",
-        "nameEn": "State Management",
-        "nameDe": "State Management",
-        "descriptionEn": "Understand different state management solutions in Flutter, such as Provider and Riverpod. This quiz evaluates your ability to manage application state effectively.",
-        "descriptionDe": "Verstehen Sie verschiedene Lösungen für das State Management in Flutter, wie Provider und Riverpod. Dieses Quiz bewertet Ihre Fähigkeit, den Anwendungszustand effektiv zu verwalten.",
-        "categoryId": "3c4d5e6f-flutter-003",
-        "progress": 0.0
-    },
-    {
-        "id": "3c-flutter-003",
-        "nameEn": "Flutter Animations",
-        "nameDe": "Flutter-Animationen",
-        "descriptionEn": "Explore animation techniques in Flutter, including implicit and explicit animations. This quiz will test your skills in creating smooth and engaging animations.",
-        "descriptionDe": "Erforschen Sie Animationstechniken in Flutter, einschließlich impliziter und expliziter Animationen. Dieses Quiz testet Ihre Fähigkeiten, flüssige und ansprechende Animationen zu erstellen.",
-        "categoryId": "3c4d5e6f-flutter-003",
-        "progress": 0.0
-    },
-    {
-        "id": "4c-flutter-004",
-        "nameEn": "Custom Widgets",
-        "nameDe": "Benutzerdefinierte Widgets",
-        "descriptionEn": "Learn how to create reusable custom widgets in Flutter. The quiz assesses your ability to encapsulate functionality into modular components.",
-        "descriptionDe": "Lernen Sie, wie man wiederverwendbare benutzerdefinierte Widgets in Flutter erstellt. Das Quiz bewertet Ihre Fähigkeit, Funktionalität in modulare Komponenten zu kapseln.",
-        "categoryId": "3c4d5e6f-flutter-003",
-        "progress": 0.0
-    },
-    {
-        "id": "5c-flutter-005",
-        "nameEn": "Networking in Flutter",
-        "nameDe": "Netzwerkprogrammierung in Flutter",
-        "descriptionEn": "Understand how to fetch and display data from REST APIs. This quiz tests your knowledge of HTTP requests and JSON parsing in Flutter.",
-        "descriptionDe": "Verstehen Sie, wie man Daten von REST-APIs abruft und anzeigt. Dieses Quiz testet Ihr Wissen über HTTP-Anfragen und JSON-Parsing in Flutter.",
-        "categoryId": "3c4d5e6f-flutter-003",
-        "progress": 0.0
-    },
-    {
-        "id": "6c-flutter-006",
-        "nameEn": "Responsive Design in Flutter",
-        "nameDe": "Responsives Design in Flutter",
-        "descriptionEn": "Learn how to create responsive UIs in Flutter that adapt to various screen sizes. The quiz covers media queries and layout builders.",
-        "descriptionDe": "Lernen Sie, wie man responsive Benutzeroberflächen in Flutter erstellt, die sich an verschiedene Bildschirmgrößen anpassen. Das Quiz behandelt Media Queries und Layout-Builder.",
-        "categoryId": "3c4d5e6f-flutter-003",
-        "progress": 0.0
-    },
-    {
-        "id": "7c-flutter-007",
-        "nameEn": "Flutter Testing",
-        "nameDe": "Flutter-Tests",
-        "descriptionEn": "Understand how to write unit, widget, and integration tests in Flutter. This quiz evaluates your ability to ensure application quality through testing.",
-        "descriptionDe": "Verstehen Sie, wie man Unit-, Widget- und Integrationstests in Flutter schreibt. Dieses Quiz bewertet Ihre Fähigkeit, die Qualität der Anwendung durch Tests sicherzustellen.",
-        "categoryId": "3c4d5e6f-flutter-003",
-        "progress": 0.0
-    },
-    {
-        "id": "8c-flutter-008",
-        "nameEn": "Flutter Performance Optimization",
-        "nameDe": "Leistungsoptimierung in Flutter",
-        "descriptionEn": "Learn techniques to optimize Flutter app performance, including widget rebuilding and memory management. This quiz tests your knowledge of performance best practices.",
-        "descriptionDe": "Lernen Sie Techniken zur Optimierung der Leistung von Flutter-Apps, einschließlich Widget-Wiederaufbau und Speicherverwaltung. Dieses Quiz testet Ihr Wissen über Best Practices zur Leistung.",
-        "categoryId": "3c4d5e6f-flutter-003",
-        "progress": 0.0
-    },
-    {
-        "id": "9c-flutter-009",
-        "nameEn": "Flutter and Firebase",
-        "nameDe": "Flutter und Firebase",
-        "descriptionEn": "Explore how to integrate Firebase into Flutter apps for authentication, database, and analytics. This quiz assesses your ability to use Firebase services effectively.",
-        "descriptionDe": "Erkunden Sie, wie man Firebase in Flutter-Apps für Authentifizierung, Datenbanken und Analysen integriert. Dieses Quiz bewertet Ihre Fähigkeit, Firebase-Dienste effektiv zu nutzen.",
-        "categoryId": "3c4d5e6f-flutter-003",
-        "progress": 0.0
-    },
-    {
-        "id": "10c-flutter-010",
-        "nameEn": "Flutter Plugins",
-        "nameDe": "Flutter-Plugins",
-        "descriptionEn": "Discover popular Flutter plugins and how to integrate them into your projects. The quiz tests your knowledge of plugins like shared_preferences and url_launcher.",
-        "descriptionDe": "Entdecken Sie beliebte Flutter-Plugins und wie Sie diese in Ihre Projekte integrieren. Das Quiz testet Ihr Wissen über Plugins wie shared_preferences und url_launcher.",
-        "categoryId": "3c4d5e6f-flutter-003",
-        "progress": 0.0
-    }
-]
+{
+    "topics": [
+        {
+            "id": "a42460af-5147-40ed-8588-28018edebfb1",
+            "nameEn": "Dart Basics",
+            "nameDe": "Dart Grundlagen",
+            "descriptionEn": "Introduction to Dart programming.",
+            "descriptionDe": "Einführung in die Dart-Programmierung",
+            "categoryId": "f711e799-3ebe-46d3-9d78-722e2d024cec",
+            "progress": 0.0
+        },
+        {
+            "id": "27556107-b9b0-4f49-b790-8b973827e24d",
+            "nameEn": "OOP Basics",
+            "nameDe": "OOP Grundlagen",
+            "descriptionEn": "Learn Object-Oriented Programming concepts in Dart.",
+            "descriptionDe": "Grundlagen der objektorientierten Programmierung mit Dart.",
+            "categoryId": "f711e799-3ebe-46d3-9d78-722e2d024cec",
+            "progress": 0.0
+        },
+        {
+            "id": "d1e2f3g4-ecosystem-001",
+            "nameEn": "Agile Principles",
+            "nameDe": "Agile Prinzipien",
+            "descriptionEn": "Deep dive into agile project management principles, including Scrum, Kanban, and SAFe frameworks. Understand how agile practices enhance team collaboration, improve delivery speed, and foster adaptability in software development.",
+            "descriptionDe": "Tiefgehende Einführung in die Prinzipien des agilen Projektmanagements, einschließlich Scrum-, Kanban- und SAFe-Frameworks. Verstehen, wie agile Praktiken die Teamzusammenarbeit verbessern, die Liefergeschwindigkeit erhöhen und die Anpassungsfähigkeit in der Softwareentwicklung fördern.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "h5i6j7k8-ecosystem-002",
+            "nameEn": "Mobile App Lifecycle",
+            "nameDe": "Lebenszyklus einer mobilen App",
+            "descriptionEn": "Learn the key phases in mobile app development, from ideation to deployment. This topic covers app architecture, development tools, testing methodologies, and strategies for publishing apps on app stores.",
+            "descriptionDe": "Erfahre die wichtigsten Phasen der mobilen App-Entwicklung, von der Ideenfindung bis zur Bereitstellung. Dieses Thema umfasst App-Architektur, Entwicklungstools, Testmethoden und Strategien für die Veröffentlichung von Apps in App-Stores.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "l9m0n1o2-design-001",
+            "nameEn": "UI/UX Fundamentals",
+            "nameDe": "Grundlagen von UI/UX",
+            "descriptionEn": "Explore the principles of user interface and user experience design. Learn how to design user-friendly interfaces that prioritize accessibility, consistency, and aesthetic appeal.",
+            "descriptionDe": "Erfahre die Grundlagen des Designs von Benutzeroberflächen und Benutzererlebnissen. Lerne, wie du benutzerfreundliche Oberflächen gestalten kannst, die Barrierefreiheit, Konsistenz und ästhetische Attraktivität in den Vordergrund stellen.",
+            "categoryId": "2b3c4d5e-design-002",
+            "progress": 0.0
+        },
+        {
+            "id": "p3q4r5s6-design-002",
+            "nameEn": "Design Systems",
+            "nameDe": "Designsysteme",
+            "descriptionEn": "Understand the role of design systems in maintaining consistency across large-scale projects. Learn to create reusable components, define style guides, and manage design tokens.",
+            "descriptionDe": "Verstehe die Rolle von Designsystemen bei der Gewährleistung von Konsistenz in großen Projekten. Lerne, wiederverwendbare Komponenten zu erstellen, Stilrichtlinien zu definieren und Designtokens zu verwalten.",
+            "categoryId": "2b3c4d5e-design-002",
+            "progress": 0.0
+        },
+        {
+            "id": "t7u8v9w0-coding-001",
+            "nameEn": "Functional Programming in Dart",
+            "nameDe": "Funktionale Programmierung mit Dart",
+            "descriptionEn": "Discover functional programming concepts and how they are implemented in Dart. Topics include higher-order functions, immutability, and functional interfaces.",
+            "descriptionDe": "Entdecke die Konzepte der funktionalen Programmierung und deren Umsetzung in Dart. Themen sind höherwertige Funktionen, Unveränderlichkeit und funktionale Schnittstellen.",
+            "categoryId": "f711e799-3ebe-46d3-9d78-722e2d024cec",
+            "progress": 0.0
+        },
+        {
+            "id": "x1y2z3a4-coding-002",
+            "nameEn": "Dart Data Structures",
+            "nameDe": "Dart-Datenstrukturen",
+            "descriptionEn": "Learn about the fundamental data structures in Dart, including lists, sets, maps, and queues. Understand their applications, strengths, and weaknesses.",
+            "descriptionDe": "Lerne die grundlegenden Datenstrukturen in Dart kennen, einschließlich Listen, Sets, Maps und Queues. Verstehe ihre Anwendungen, Stärken und Schwächen.",
+            "categoryId": "f711e799-3ebe-46d3-9d78-722e2d024cec",
+            "progress": 0.0
+        },
+        {
+            "id": "b5c6d7e8-flutter-001",
+            "nameEn": "State Management in Flutter",
+            "nameDe": "State-Management in Flutter",
+            "descriptionEn": "Master state management techniques in Flutter, including Provider, Riverpod, and Bloc. Learn how to build scalable and maintainable Flutter apps.",
+            "descriptionDe": "Beherrsche Techniken des State-Managements in Flutter, einschließlich Provider, Riverpod und Bloc. Lerne, wie du skalierbare und wartbare Flutter-Apps erstellen kannst.",
+            "categoryId": "3c4d5e6f-flutter-003",
+            "progress": 0.0
+        },
+        {
+            "id": "f9g0h1i2-flutter-002",
+            "nameEn": "Flutter Animations",
+            "nameDe": "Animationen in Flutter",
+            "descriptionEn": "Create engaging user experiences with Flutter's animation framework. This topic covers implicit and explicit animations, as well as custom animation controllers.",
+            "descriptionDe": "Erstelle ansprechende Benutzererlebnisse mit dem Animationsframework von Flutter. Dieses Thema umfasst implizite und explizite Animationen sowie benutzerdefinierte Animationscontroller.",
+            "categoryId": "3c4d5e6f-flutter-003",
+            "progress": 0.0
+        },
+        {
+            "id": "j3k4l5m6-flutter-003",
+            "nameEn": "Responsive Design in Flutter",
+            "nameDe": "Responsives Design in Flutter",
+            "descriptionEn": "Learn how to build apps that adapt seamlessly to different screen sizes and orientations. Topics include MediaQuery, LayoutBuilder, and adaptive widgets.",
+            "descriptionDe": "Lerne, wie du Apps erstellst, die sich nahtlos an verschiedene Bildschirmgrößen und Ausrichtungen anpassen. Themen sind MediaQuery, LayoutBuilder und adaptive Widgets.",
+            "categoryId": "3c4d5e6f-flutter-003",
+            "progress": 0.0
+        },
+        {
+            "id": "n7o8p9q0-flutter-004",
+            "nameEn": "Integrating APIs in Flutter",
+            "nameDe": "Integration von APIs in Flutter",
+            "descriptionEn": "Learn to connect your Flutter apps with external APIs. Understand RESTful principles, HTTP requests, and how to handle JSON data.",
+            "descriptionDe": "Lerne, wie du deine Flutter-Apps mit externen APIs verbindest. Verstehe RESTful-Prinzipien, HTTP-Anfragen und die Verarbeitung von JSON-Daten.",
+            "categoryId": "3c4d5e6f-flutter-003",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-001",
+            "nameEn": "Introduction to Agile",
+            "nameDe": "Einführung in Agile",
+            "descriptionEn": "Explore the history, core values, and principles of Agile methodologies. Learn why Agile has become the gold standard for modern software development.",
+            "descriptionDe": "Erkunde die Geschichte, Kernwerte und Prinzipien agiler Methoden. Erfahre, warum Agile zum Goldstandard moderner Softwareentwicklung geworden ist.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-002",
+            "nameEn": "Scrum Framework Basics",
+            "nameDe": "Grundlagen des Scrum-Frameworks",
+            "descriptionEn": "Dive into Scrum roles, artifacts, and ceremonies. Understand how to use sprints and backlogs effectively.",
+            "descriptionDe": "Tauche ein in Scrum-Rollen, Artefakte und Zeremonien. Lerne, wie man Sprints und Backlogs effektiv nutzt.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-003",
+            "nameEn": "Kanban Methodology",
+            "nameDe": "Kanban-Methodologie",
+            "descriptionEn": "Learn how Kanban boards and visual workflows can streamline your development process.",
+            "descriptionDe": "Erfahre, wie Kanban-Boards und visuelle Workflows deinen Entwicklungsprozess optimieren können.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-004",
+            "nameEn": "Scaling Agile with SAFe",
+            "nameDe": "Agile Skalierung mit SAFe",
+            "descriptionEn": "Explore the Scaled Agile Framework (SAFe) for managing multiple teams across large projects.",
+            "descriptionDe": "Erkunde das Scaled Agile Framework (SAFe) zur Verwaltung mehrerer Teams in großen Projekten.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-005",
+            "nameEn": "Mobile App Ecosystem Overview",
+            "nameDe": "Überblick über das Mobile-App-Ökosystem",
+            "descriptionEn": "Understand the various components of the mobile app ecosystem, including platforms, tools, and market trends.",
+            "descriptionDe": "Verstehe die verschiedenen Komponenten des Mobile-App-Ökosystems, einschließlich Plattformen, Tools und Markttrends.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-006",
+            "nameEn": "Agile Metrics and KPIs",
+            "nameDe": "Agile Metriken und KPIs",
+            "descriptionEn": "Learn how to measure team performance and project success with Agile-specific metrics.",
+            "descriptionDe": "Lerne, wie du die Teamleistung und den Projekterfolg mit Agile-spezifischen Metriken misst.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-007",
+            "nameEn": "Collaboration Tools for Teams",
+            "nameDe": "Zusammenarbeitstools für Teams",
+            "descriptionEn": "Explore popular tools like Jira, Trello, and Slack for team collaboration and project management.",
+            "descriptionDe": "Erfahre mehr über beliebte Tools wie Jira, Trello und Slack für Teamarbeit und Projektmanagement.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-008",
+            "nameEn": "Mindset for Agile Teams",
+            "nameDe": "Mindset für Agile-Teams",
+            "descriptionEn": "Develop the right mindset to foster adaptability, ownership, and collaboration in Agile teams.",
+            "descriptionDe": "Entwickle das richtige Mindset, um Anpassungsfähigkeit, Eigenverantwortung und Zusammenarbeit in Agile-Teams zu fördern.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-009",
+            "nameEn": "Risk Management in Agile",
+            "nameDe": "Risikomanagement in Agile",
+            "descriptionEn": "Understand how to identify, assess, and mitigate risks in an Agile project environment.",
+            "descriptionDe": "Verstehe, wie du Risiken in einer Agile-Projektumgebung identifizierst, bewertest und minimierst.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-010",
+            "nameEn": "Continuous Delivery and DevOps",
+            "nameDe": "Continuous Delivery und DevOps",
+            "descriptionEn": "Learn the principles of DevOps and how they integrate with Agile for continuous delivery.",
+            "descriptionDe": "Lerne die Prinzipien von DevOps und wie sie sich mit Agile für eine kontinuierliche Bereitstellung integrieren lassen.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-001",
+            "nameEn": "Introduction to Agile",
+            "nameDe": "Einführung in Agile",
+            "descriptionEn": "Explore the history, core values, and principles of Agile methodologies. Learn why Agile has become the gold standard for modern software development.",
+            "descriptionDe": "Erkunde die Geschichte, Kernwerte und Prinzipien agiler Methoden. Erfahre, warum Agile zum Goldstandard moderner Softwareentwicklung geworden ist.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-002",
+            "nameEn": "Scrum Framework Basics",
+            "nameDe": "Grundlagen des Scrum-Frameworks",
+            "descriptionEn": "Dive into Scrum roles, artifacts, and ceremonies. Understand how to use sprints and backlogs effectively.",
+            "descriptionDe": "Tauche ein in Scrum-Rollen, Artefakte und Zeremonien. Lerne, wie man Sprints und Backlogs effektiv nutzt.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-003",
+            "nameEn": "Kanban Methodology",
+            "nameDe": "Kanban-Methodologie",
+            "descriptionEn": "Learn how Kanban boards and visual workflows can streamline your development process.",
+            "descriptionDe": "Erfahre, wie Kanban-Boards und visuelle Workflows deinen Entwicklungsprozess optimieren können.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-004",
+            "nameEn": "Scaling Agile with SAFe",
+            "nameDe": "Agile Skalierung mit SAFe",
+            "descriptionEn": "Explore the Scaled Agile Framework (SAFe) for managing multiple teams across large projects.",
+            "descriptionDe": "Erkunde das Scaled Agile Framework (SAFe) zur Verwaltung mehrerer Teams in großen Projekten.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-005",
+            "nameEn": "Mobile App Ecosystem Overview",
+            "nameDe": "Überblick über das Mobile-App-Ökosystem",
+            "descriptionEn": "Understand the various components of the mobile app ecosystem, including platforms, tools, and market trends.",
+            "descriptionDe": "Verstehe die verschiedenen Komponenten des Mobile-App-Ökosystems, einschließlich Plattformen, Tools und Markttrends.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-006",
+            "nameEn": "Agile Metrics and KPIs",
+            "nameDe": "Agile Metriken und KPIs",
+            "descriptionEn": "Learn how to measure team performance and project success with Agile-specific metrics.",
+            "descriptionDe": "Lerne, wie du die Teamleistung und den Projekterfolg mit Agile-spezifischen Metriken misst.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-007",
+            "nameEn": "Collaboration Tools for Teams",
+            "nameDe": "Zusammenarbeitstools für Teams",
+            "descriptionEn": "Explore popular tools like Jira, Trello, and Slack for team collaboration and project management.",
+            "descriptionDe": "Erfahre mehr über beliebte Tools wie Jira, Trello und Slack für Teamarbeit und Projektmanagement.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-008",
+            "nameEn": "Mindset for Agile Teams",
+            "nameDe": "Mindset für Agile-Teams",
+            "descriptionEn": "Develop the right mindset to foster adaptability, ownership, and collaboration in Agile teams.",
+            "descriptionDe": "Entwickle das richtige Mindset, um Anpassungsfähigkeit, Eigenverantwortung und Zusammenarbeit in Agile-Teams zu fördern.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-009",
+            "nameEn": "Risk Management in Agile",
+            "nameDe": "Risikomanagement in Agile",
+            "descriptionEn": "Understand how to identify, assess, and mitigate risks in an Agile project environment.",
+            "descriptionDe": "Verstehe, wie du Risiken in einer Agile-Projektumgebung identifizierst, bewertest und minimierst.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "ecosystem-001-topic-010",
+            "nameEn": "Continuous Delivery and DevOps",
+            "nameDe": "Continuous Delivery und DevOps",
+            "descriptionEn": "Learn the principles of DevOps and how they integrate with Agile for continuous delivery.",
+            "descriptionDe": "Lerne die Prinzipien von DevOps und wie sie sich mit Agile für eine kontinuierliche Bereitstellung integrieren lassen.",
+            "categoryId": "1a2b3c4d-ecosystem-001",
+            "progress": 0.0
+        },
+        {
+            "id": "1b-design-001",
+            "nameEn": "Design Basics",
+            "nameDe": "Design-Grundlagen",
+            "descriptionEn": "Learn the fundamental principles of design, including layout, color theory, and typography. This quiz will help you understand the essentials of creating visually appealing and functional user interfaces.",
+            "descriptionDe": "Lernen Sie die grundlegenden Prinzipien des Designs, einschließlich Layout, Farbtheorie und Typografie. Dieses Quiz hilft Ihnen, die Grundlagen für die Erstellung von visuell ansprechenden und funktionalen Benutzeroberflächen zu verstehen.",
+            "categoryId": "2b3c4d5e-design-002",
+            "progress": 0.0
+        },
+        {
+            "id": "2b-design-002",
+            "nameEn": "User-Centered Design",
+            "nameDe": "Benutzerzentriertes Design",
+            "descriptionEn": "Explore the importance of designing with the user in mind. This quiz will test your knowledge of user personas, usability testing, and empathy mapping.",
+            "descriptionDe": "Erforschen Sie die Bedeutung des Designs mit dem Benutzer im Fokus. Dieses Quiz testet Ihr Wissen über Benutzer-Personas, Usability-Tests und Empathie-Mapping.",
+            "categoryId": "2b3c4d5e-design-002",
+            "progress": 0.0
+        },
+        {
+            "id": "3b-design-003",
+            "nameEn": "Accessibility",
+            "nameDe": "Barrierefreiheit",
+            "descriptionEn": "Understand how to design accessible interfaces for diverse users. The quiz focuses on WCAG guidelines, color contrast, and keyboard navigation.",
+            "descriptionDe": "Verstehen Sie, wie man barrierefreie Oberflächen für unterschiedliche Benutzer entwirft. Das Quiz konzentriert sich auf WCAG-Richtlinien, Farbkontrast und Tastaturnavigation.",
+            "categoryId": "2b3c4d5e-design-002",
+            "progress": 0.0
+        },
+        {
+            "id": "4b-design-004",
+            "nameEn": "Material Design",
+            "nameDe": "Material Design",
+            "descriptionEn": "Learn the principles of Google's Material Design and how to implement them in your projects. This quiz will assess your understanding of components, layouts, and motion.",
+            "descriptionDe": "Lernen Sie die Prinzipien von Googles Material Design und wie Sie diese in Ihren Projekten umsetzen können. Dieses Quiz bewertet Ihr Verständnis von Komponenten, Layouts und Bewegung.",
+            "categoryId": "2b3c4d5e-design-002",
+            "progress": 0.0
+        },
+        {
+            "id": "5b-design-005",
+            "nameEn": "Design Systems",
+            "nameDe": "Design-Systeme",
+            "descriptionEn": "Discover how to create and use design systems to ensure consistency across your applications. This quiz tests your knowledge of reusable components and design tokens.",
+            "descriptionDe": "Entdecken Sie, wie man Design-Systeme erstellt und nutzt, um Konsistenz in Ihren Anwendungen zu gewährleisten. Dieses Quiz testet Ihr Wissen über wiederverwendbare Komponenten und Design-Tokens.",
+            "categoryId": "2b3c4d5e-design-002",
+            "progress": 0.0
+        },
+        {
+            "id": "6b-design-006",
+            "nameEn": "Animation Principles",
+            "nameDe": "Animationsprinzipien",
+            "descriptionEn": "Learn how to use animations effectively to enhance user experience. The quiz includes topics like easing curves, transitions, and micro-interactions.",
+            "descriptionDe": "Lernen Sie, wie Sie Animationen effektiv einsetzen, um die Benutzererfahrung zu verbessern. Das Quiz behandelt Themen wie Easing-Kurven, Übergänge und Mikrointeraktionen.",
+            "categoryId": "2b3c4d5e-design-002",
+            "progress": 0.0
+        },
+        {
+            "id": "7b-design-007",
+            "nameEn": "Responsive Design",
+            "nameDe": "Responsives Design",
+            "descriptionEn": "Understand the techniques for designing interfaces that work across multiple devices and screen sizes. The quiz covers media queries, flexible grids, and breakpoints.",
+            "descriptionDe": "Verstehen Sie die Techniken zur Gestaltung von Oberflächen, die auf verschiedenen Geräten und Bildschirmgrößen funktionieren. Das Quiz behandelt Media Queries, flexible Raster und Breakpoints.",
+            "categoryId": "2b3c4d5e-design-002",
+            "progress": 0.0
+        },
+        {
+            "id": "8b-design-008",
+            "nameEn": "Dark Mode Design",
+            "nameDe": "Design für den Dunkelmodus",
+            "descriptionEn": "Learn how to design user interfaces for dark mode. This quiz evaluates your understanding of color schemes, contrast, and readability in dark mode.",
+            "descriptionDe": "Lernen Sie, wie man Benutzeroberflächen für den Dunkelmodus gestaltet. Dieses Quiz bewertet Ihr Verständnis von Farbschemata, Kontrast und Lesbarkeit im Dunkelmodus.",
+            "categoryId": "2b3c4d5e-design-002",
+            "progress": 0.0
+        },
+        {
+            "id": "9b-design-009",
+            "nameEn": "Prototyping",
+            "nameDe": "Prototyping",
+            "descriptionEn": "Explore how to create interactive prototypes using tools like Figma or Adobe XD. The quiz assesses your ability to transform design ideas into testable models.",
+            "descriptionDe": "Erforschen Sie, wie man interaktive Prototypen mit Tools wie Figma oder Adobe XD erstellt. Das Quiz bewertet Ihre Fähigkeit, Designideen in testbare Modelle umzuwandeln.",
+            "categoryId": "2b3c4d5e-design-002",
+            "progress": 0.0
+        },
+        {
+            "id": "10b-design-010",
+            "nameEn": "Color Psychology",
+            "nameDe": "Farbpsychologie",
+            "descriptionEn": "Learn how to use colors strategically to influence user behavior. This quiz covers topics like color associations, branding, and emotional impact.",
+            "descriptionDe": "Lernen Sie, wie Sie Farben strategisch einsetzen, um das Benutzerverhalten zu beeinflussen. Dieses Quiz behandelt Themen wie Farbassoziationen, Branding und emotionale Wirkung.",
+            "categoryId": "2b3c4d5e-design-002",
+            "progress": 0.0
+        },
+        {
+            "id": "1c-flutter-001",
+            "nameEn": "Flutter Basics",
+            "nameDe": "Flutter-Grundlagen",
+            "descriptionEn": "Learn the fundamentals of Flutter, including widgets, layouts, and state management. This quiz helps you get started with building Flutter applications.",
+            "descriptionDe": "Lernen Sie die Grundlagen von Flutter, einschließlich Widgets, Layouts und State Management. Dieses Quiz hilft Ihnen beim Einstieg in die Entwicklung von Flutter-Anwendungen.",
+            "categoryId": "3c4d5e6f-flutter-003",
+            "progress": 0.0
+        },
+        {
+            "id": "2c-flutter-002",
+            "nameEn": "State Management",
+            "nameDe": "State Management",
+            "descriptionEn": "Understand different state management solutions in Flutter, such as Provider and Riverpod. This quiz evaluates your ability to manage application state effectively.",
+            "descriptionDe": "Verstehen Sie verschiedene Lösungen für das State Management in Flutter, wie Provider und Riverpod. Dieses Quiz bewertet Ihre Fähigkeit, den Anwendungszustand effektiv zu verwalten.",
+            "categoryId": "3c4d5e6f-flutter-003",
+            "progress": 0.0
+        },
+        {
+            "id": "3c-flutter-003",
+            "nameEn": "Flutter Animations",
+            "nameDe": "Flutter-Animationen",
+            "descriptionEn": "Explore animation techniques in Flutter, including implicit and explicit animations. This quiz will test your skills in creating smooth and engaging animations.",
+            "descriptionDe": "Erforschen Sie Animationstechniken in Flutter, einschließlich impliziter und expliziter Animationen. Dieses Quiz testet Ihre Fähigkeiten, flüssige und ansprechende Animationen zu erstellen.",
+            "categoryId": "3c4d5e6f-flutter-003",
+            "progress": 0.0
+        },
+        {
+            "id": "4c-flutter-004",
+            "nameEn": "Custom Widgets",
+            "nameDe": "Benutzerdefinierte Widgets",
+            "descriptionEn": "Learn how to create reusable custom widgets in Flutter. The quiz assesses your ability to encapsulate functionality into modular components.",
+            "descriptionDe": "Lernen Sie, wie man wiederverwendbare benutzerdefinierte Widgets in Flutter erstellt. Das Quiz bewertet Ihre Fähigkeit, Funktionalität in modulare Komponenten zu kapseln.",
+            "categoryId": "3c4d5e6f-flutter-003",
+            "progress": 0.0
+        },
+        {
+            "id": "5c-flutter-005",
+            "nameEn": "Networking in Flutter",
+            "nameDe": "Netzwerkprogrammierung in Flutter",
+            "descriptionEn": "Understand how to fetch and display data from REST APIs. This quiz tests your knowledge of HTTP requests and JSON parsing in Flutter.",
+            "descriptionDe": "Verstehen Sie, wie man Daten von REST-APIs abruft und anzeigt. Dieses Quiz testet Ihr Wissen über HTTP-Anfragen und JSON-Parsing in Flutter.",
+            "categoryId": "3c4d5e6f-flutter-003",
+            "progress": 0.0
+        },
+        {
+            "id": "6c-flutter-006",
+            "nameEn": "Responsive Design in Flutter",
+            "nameDe": "Responsives Design in Flutter",
+            "descriptionEn": "Learn how to create responsive UIs in Flutter that adapt to various screen sizes. The quiz covers media queries and layout builders.",
+            "descriptionDe": "Lernen Sie, wie man responsive Benutzeroberflächen in Flutter erstellt, die sich an verschiedene Bildschirmgrößen anpassen. Das Quiz behandelt Media Queries und Layout-Builder.",
+            "categoryId": "3c4d5e6f-flutter-003",
+            "progress": 0.0
+        },
+        {
+            "id": "7c-flutter-007",
+            "nameEn": "Flutter Testing",
+            "nameDe": "Flutter-Tests",
+            "descriptionEn": "Understand how to write unit, widget, and integration tests in Flutter. This quiz evaluates your ability to ensure application quality through testing.",
+            "descriptionDe": "Verstehen Sie, wie man Unit-, Widget- und Integrationstests in Flutter schreibt. Dieses Quiz bewertet Ihre Fähigkeit, die Qualität der Anwendung durch Tests sicherzustellen.",
+            "categoryId": "3c4d5e6f-flutter-003",
+            "progress": 0.0
+        },
+        {
+            "id": "8c-flutter-008",
+            "nameEn": "Flutter Performance Optimization",
+            "nameDe": "Leistungsoptimierung in Flutter",
+            "descriptionEn": "Learn techniques to optimize Flutter app performance, including widget rebuilding and memory management. This quiz tests your knowledge of performance best practices.",
+            "descriptionDe": "Lernen Sie Techniken zur Optimierung der Leistung von Flutter-Apps, einschließlich Widget-Wiederaufbau und Speicherverwaltung. Dieses Quiz testet Ihr Wissen über Best Practices zur Leistung.",
+            "categoryId": "3c4d5e6f-flutter-003",
+            "progress": 0.0
+        },
+        {
+            "id": "9c-flutter-009",
+            "nameEn": "Flutter and Firebase",
+            "nameDe": "Flutter und Firebase",
+            "descriptionEn": "Explore how to integrate Firebase into Flutter apps for authentication, database, and analytics. This quiz assesses your ability to use Firebase services effectively.",
+            "descriptionDe": "Erkunden Sie, wie man Firebase in Flutter-Apps für Authentifizierung, Datenbanken und Analysen integriert. Dieses Quiz bewertet Ihre Fähigkeit, Firebase-Dienste effektiv zu nutzen.",
+            "categoryId": "3c4d5e6f-flutter-003",
+            "progress": 0.0
+        },
+        {
+            "id": "10c-flutter-010",
+            "nameEn": "Flutter Plugins",
+            "nameDe": "Flutter-Plugins",
+            "descriptionEn": "Discover popular Flutter plugins and how to integrate them into your projects. The quiz tests your knowledge of plugins like shared_preferences and url_launcher.",
+            "descriptionDe": "Entdecken Sie beliebte Flutter-Plugins und wie Sie diese in Ihre Projekte integrieren. Das Quiz testet Ihr Wissen über Plugins wie shared_preferences und url_launcher.",
+            "categoryId": "3c4d5e6f-flutter-003",
+            "progress": 0.0
+        }
+    ]
+}

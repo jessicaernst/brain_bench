@@ -25,7 +25,9 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
   @override
   Future<List<Category>> getCategories(String languageCode) async {
     final String jsonString = await rootBundle.loadString(categoriesPath);
-    final List<dynamic> jsonData = json.decode(jsonString);
+    final Map<String, dynamic> jsonMap = json.decode(jsonString);
+    final List<dynamic> jsonData =
+        jsonMap['categories']; // Extraktion der Liste
 
     await Future.delayed(const Duration(seconds: 1));
 
@@ -47,7 +49,8 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
   @override
   Future<List<Topic>> getTopics(String categoryId, String languageCode) async {
     final String jsonString = await rootBundle.loadString(topicsPath);
-    final List<dynamic> jsonData = json.decode(jsonString);
+    final Map<String, dynamic> jsonMap = json.decode(jsonString);
+    final List<dynamic> jsonData = jsonMap['topics']; // Extraktion der Liste
 
     await Future.delayed(const Duration(seconds: 1));
 
@@ -71,10 +74,15 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
 
     final String questionJsonString =
         await rootBundle.loadString(questionsPath);
-    final List<dynamic> questionJsonData = json.decode(questionJsonString);
+    final Map<String, dynamic> questionJsonMap =
+        json.decode(questionJsonString);
+    final List<dynamic> questionJsonData =
+        questionJsonMap['questions']; // Extraktion der Liste
 
     final String answerJsonString = await rootBundle.loadString(answersPath);
-    final List<dynamic> answerJsonData = json.decode(answerJsonString);
+    final Map<String, dynamic> answerJsonMap = json.decode(answerJsonString);
+    final List<dynamic> answerJsonData =
+        answerJsonMap['answers']; // Extraktion der Liste
 
     final Map<String, Answer> answersMap = {
       for (var e in answerJsonData)
@@ -108,7 +116,8 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
     _logger.info('getAnswers() aufgerufen für: $answerIds');
 
     final String jsonString = await rootBundle.loadString(answersPath);
-    final List<dynamic> jsonData = json.decode(jsonString);
+    final Map<String, dynamic> jsonMap = json.decode(jsonString);
+    final List<dynamic> jsonData = jsonMap['answers']; // Extraktion der Liste
 
     await Future.delayed(const Duration(seconds: 1));
 
@@ -144,9 +153,8 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
 
       // Read the file content as a string
       final String jsonString = await file.readAsString();
-
-      // Decode the string into a JSON list
-      final List<dynamic> jsonData = json.decode(jsonString);
+      final Map<String, dynamic> jsonMap = json.decode(jsonString);
+      final List<dynamic> jsonData = jsonMap['results']; // Extraktion der Liste
 
       // Use the mock user ID to filter results
       return jsonData
@@ -165,20 +173,20 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
     try {
       // Load existing JSON file or create an empty list
       final file = File(resultsPath);
-      List<dynamic> jsonData = [];
+      Map<String, dynamic> jsonMap = {'results': []};
 
       if (file.existsSync()) {
         // Read the file content
         final String jsonString = await file.readAsString();
-        jsonData = json.decode(jsonString);
+        jsonMap = json.decode(jsonString);
       }
 
-      // Convert the new Result object to JSON
+      // Add new result
       final newResult = result.copyWith(userId: _mockUserId).toJson();
-      jsonData.add(newResult);
+      jsonMap['results'].add(newResult);
 
       // Write updated JSON data back to the file
-      await file.writeAsString(jsonEncode(jsonData), flush: true);
+      await file.writeAsString(jsonEncode(jsonMap), flush: true);
 
       _logger.info('Result successfully saved!');
     } catch (e) {
