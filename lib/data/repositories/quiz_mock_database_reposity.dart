@@ -26,8 +26,7 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
   Future<List<Category>> getCategories(String languageCode) async {
     final String jsonString = await rootBundle.loadString(categoriesPath);
     final Map<String, dynamic> jsonMap = json.decode(jsonString);
-    final List<dynamic> jsonData =
-        jsonMap['categories']; // Extraktion der Liste
+    final List<dynamic> jsonData = jsonMap['categories'];
 
     await Future.delayed(const Duration(seconds: 1));
 
@@ -50,7 +49,7 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
   Future<List<Topic>> getTopics(String categoryId, String languageCode) async {
     final String jsonString = await rootBundle.loadString(topicsPath);
     final Map<String, dynamic> jsonMap = json.decode(jsonString);
-    final List<dynamic> jsonData = jsonMap['topics']; // Extraktion der Liste
+    final List<dynamic> jsonData = jsonMap['topics'];
 
     await Future.delayed(const Duration(seconds: 1));
 
@@ -76,13 +75,11 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
         await rootBundle.loadString(questionsPath);
     final Map<String, dynamic> questionJsonMap =
         json.decode(questionJsonString);
-    final List<dynamic> questionJsonData =
-        questionJsonMap['questions']; // Extraktion der Liste
+    final List<dynamic> questionJsonData = questionJsonMap['questions'];
 
     final String answerJsonString = await rootBundle.loadString(answersPath);
     final Map<String, dynamic> answerJsonMap = json.decode(answerJsonString);
-    final List<dynamic> answerJsonData =
-        answerJsonMap['answers']; // Extraktion der Liste
+    final List<dynamic> answerJsonData = answerJsonMap['answers'];
 
     final Map<String, Answer> answersMap = {
       for (var e in answerJsonData)
@@ -117,7 +114,7 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
 
     final String jsonString = await rootBundle.loadString(answersPath);
     final Map<String, dynamic> jsonMap = json.decode(jsonString);
-    final List<dynamic> jsonData = jsonMap['answers']; // Extraktion der Liste
+    final List<dynamic> jsonData = jsonMap['answers'];
 
     await Future.delayed(const Duration(seconds: 1));
 
