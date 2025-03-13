@@ -64,19 +64,34 @@ class QuizResultPage extends HookConsumerWidget {
                   ),
                 ),
                 Expanded(
-                  child: ListView(
-                    children: state.quizAnswers
+                  child: ListView.separated(
+                    itemCount: state.quizAnswers
                         .where((answer) =>
                             state.selectedView == SelectedView.correct
                                 ? answer.incorrectAnswers.isEmpty
                                 : state.selectedView == SelectedView.incorrect
                                     ? answer.incorrectAnswers.isNotEmpty
                                     : false)
-                        .map((answer) => AnswerCard(
-                              answer: answer,
-                              isCorrect: answer.incorrectAnswers.isEmpty,
-                            ))
-                        .toList(),
+                        .length,
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 16), // Abstand hier setzen
+                    itemBuilder: (context, index) {
+                      final filteredAnswers = state.quizAnswers
+                          .where((answer) =>
+                              state.selectedView == SelectedView.correct
+                                  ? answer.incorrectAnswers.isEmpty
+                                  : state.selectedView == SelectedView.incorrect
+                                      ? answer.incorrectAnswers.isNotEmpty
+                                      : false)
+                          .toList();
+
+                      final answer = filteredAnswers[index];
+
+                      return AnswerCard(
+                        answer: answer,
+                        isCorrect: answer.incorrectAnswers.isEmpty,
+                      );
+                    },
                   ),
                 ),
               ],
