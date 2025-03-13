@@ -1,9 +1,9 @@
 import 'package:brain_bench/core/localization/app_localizations.dart';
-import 'package:brain_bench/core/widgets/back_nav_app_bar.dart';
-import 'package:brain_bench/core/widgets/no_data_available_view.dart';
+import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
+import 'package:brain_bench/core/component_widgets/no_data_available_view.dart';
 import 'package:brain_bench/data/models/category.dart';
-import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
-import 'package:brain_bench/core/widgets/dash_evolution_progress_dircle_view.dart';
+import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
+import 'package:brain_bench/core/component_widgets/dash_evolution_progress_dircle_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

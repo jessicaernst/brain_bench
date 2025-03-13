@@ -1,5 +1,5 @@
 import 'package:brain_bench/core/localization/app_localizations.dart';
-import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
+import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/data/models/answer.dart';
 import 'package:flutter/material.dart';
 

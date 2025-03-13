@@ -1,6 +1,6 @@
-import 'package:brain_bench/core/widgets/back_nav_app_bar.dart';
-import 'package:brain_bench/core/widgets/no_data_available_view.dart';
-import 'package:brain_bench/core/widgets/progress_indicator_bar_view.dart';
+import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
+import 'package:brain_bench/core/component_widgets/no_data_available_view.dart';
+import 'package:brain_bench/core/component_widgets/progress_indicator_bar_view.dart';
 import 'package:brain_bench/data/providers/quiz/topic_providers.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

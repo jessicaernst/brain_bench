@@ -1,4 +1,4 @@
-import 'package:brain_bench/core/widgets/back_nav_app_bar.dart';
+import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 

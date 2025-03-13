@@ -1,6 +1,6 @@
 import 'package:brain_bench/business_logic/categories/categories_provider.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
-import 'package:brain_bench/core/widgets/light_dark_switch_btn.dart';
+import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/data/providers/quiz/category_providers.dart';
 import 'package:brain_bench/presentation/categories/widgets/category_row_view.dart';
 import 'package:flutter/material.dart';

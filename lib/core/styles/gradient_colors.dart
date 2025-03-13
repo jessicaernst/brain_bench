@@ -103,6 +103,7 @@ abstract class BrainBenchGradients {
     ],
   );
 
+  // Button Gradients
   static final LinearGradient btnStrokeGradient = LinearGradient(
     colors: [
       Colors.white.withAlpha((0.3 * 255).toInt()),
@@ -133,6 +134,7 @@ abstract class BrainBenchGradients {
     ],
   );
 
+  // Topic Card Gradients
   static final LinearGradient topicCardDarkGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
@@ -153,6 +155,7 @@ abstract class BrainBenchGradients {
     stops: const [0.1, 1.0],
   );
 
+  // Answer Card Gradients
   static final LinearGradient answerCardLightGradient = LinearGradient(
     colors: [
       BrainBenchColors.blueprintBlue.withAlpha((0.4 * 255).toInt()),
@@ -171,5 +174,25 @@ abstract class BrainBenchGradients {
     stops: const [0.0, 1.0],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
+  );
+
+  static final LinearGradient answerContentCardLightGradient = LinearGradient(
+    colors: [
+      BrainBenchColors.blueprintBlue.withAlpha((0.0 * 255).toInt()),
+      BrainBenchColors.blueprintBlue.withAlpha((0.2 * 255).toInt()),
+    ],
+    stops: const [0.0, 1.0],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+  );
+
+  static final LinearGradient answerContentCardDarkGradient = LinearGradient(
+    colors: [
+      BrainBenchColors.flutterSky.withAlpha((0.0 * 255).toInt()),
+      BrainBenchColors.flutterSky.withAlpha((0.2 * 255).toInt()),
+    ],
+    stops: const [0.0, 1.0],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
   );
 }

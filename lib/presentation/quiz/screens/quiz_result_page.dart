@@ -5,7 +5,7 @@ import 'package:brain_bench/presentation/quiz/widgets/answer_card.dart';
 import 'package:brain_bench/presentation/quiz/widgets/toggle_button.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
-import 'package:brain_bench/core/widgets/back_nav_app_bar.dart';
+import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

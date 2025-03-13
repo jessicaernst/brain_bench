@@ -1,5 +1,5 @@
-import 'package:brain_bench/core/widgets/darkmode_btn.dart';
-import 'package:brain_bench/core/widgets/lightmode_btn.dart';
+import 'package:brain_bench/core/component_widgets/darkmode_btn.dart';
+import 'package:brain_bench/core/component_widgets/lightmode_btn.dart';
 import 'package:flutter/material.dart';
 
 class LightDarkSwitchBtn extends StatelessWidget {

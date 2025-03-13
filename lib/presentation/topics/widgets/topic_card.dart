@@ -25,28 +25,22 @@ class TopicCard extends ConsumerWidget {
         ref.read(topicCardStateProvider(cardId: cardId).notifier);
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final cardWidth = constraints.maxWidth;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TopicMainCard(
-              title: title,
-              isExpanded: isExpanded,
-              onTap: stateNotifier.toggle,
-              isDarkMode: isDarkMode,
-            ),
-            TopicExpandableContent(
-              cardWidth: cardWidth,
-              description: description,
-              onPressed: onPressed,
-              isExpanded: isExpanded,
-              title: title,
-            ),
-          ],
-        );
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TopicMainCard(
+          title: title,
+          isExpanded: isExpanded,
+          onTap: stateNotifier.toggle,
+          isDarkMode: isDarkMode,
+        ),
+        TopicCardExpandable(
+          description: description,
+          onPressed: onPressed,
+          isExpanded: isExpanded,
+          title: title,
+        ),
+      ],
     );
   }
 }

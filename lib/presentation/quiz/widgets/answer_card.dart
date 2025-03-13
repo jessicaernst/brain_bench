@@ -1,4 +1,4 @@
-import 'package:brain_bench/presentation/quiz/widgets/answer_expandable_content.dart';
+import 'package:brain_bench/presentation/quiz/widgets/answer_expandable.dart';
 import 'package:brain_bench/presentation/quiz/widgets/answer_main_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,7 +32,7 @@ class AnswerCard extends ConsumerWidget {
           onTap: stateNotifier.toggle,
           isDarkMode: isDarkMode,
         ),
-        AnswerExpandableContent(
+        AnswerExpandable(
           isExpanded: isExpanded,
           answer: answer,
         ),
