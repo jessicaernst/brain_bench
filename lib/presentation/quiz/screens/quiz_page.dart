@@ -38,27 +38,36 @@ class _QuizPageState extends ConsumerState<QuizPage> {
 
     final currentQuestion = quizState.questions[quizState.currentIndex];
 
-    // User Selected Answers
+// User-selected answers
     final selectedAnswers = ref
         .read(answersNotifierProvider)
         .where((answer) => answer.isSelected)
         .map((answer) => answer.text)
         .toList();
 
-    // Get the correct answers
+// Collect all possible answers for UI representation
+    final allAnswers =
+        currentQuestion.answers.map((answer) => answer.text).toList();
+
+// Get the correct answers
     final correctAnswers = currentQuestion.answers
         .where((answer) => answer.isCorrect)
         .map((answer) => answer.text)
         .toList();
 
-    // Save the answer to the QuizAnswersNotifier
+// Get explanation if available
+    final explanation = currentQuestion.explanation;
+
+// Save answer with all information
     quizAnswerNotifier.addAnswer(
-      currentQuestion.id,
-      currentQuestion.topicId,
-      widget.categoryId,
-      currentQuestion.question,
-      selectedAnswers,
-      correctAnswers,
+      questionId: currentQuestion.id,
+      topicId: currentQuestion.topicId,
+      categoryId: widget.categoryId,
+      questionText: currentQuestion.question,
+      givenAnswers: selectedAnswers,
+      correctAnswers: correctAnswers,
+      allAnswers: allAnswers,
+      explanation: explanation,
     );
 
     showModalBottomSheet(

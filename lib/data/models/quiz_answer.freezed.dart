@@ -28,6 +28,8 @@ mixin _$QuizAnswer {
   List<String> get givenAnswers => throw _privateConstructorUsedError;
   List<String> get correctAnswers => throw _privateConstructorUsedError;
   List<String> get incorrectAnswers => throw _privateConstructorUsedError;
+  List<String> get allAnswers => throw _privateConstructorUsedError;
+  String? get explanation => throw _privateConstructorUsedError;
 
   /// Serializes this QuizAnswer to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -53,7 +55,9 @@ abstract class $QuizAnswerCopyWith<$Res> {
       String questionText,
       List<String> givenAnswers,
       List<String> correctAnswers,
-      List<String> incorrectAnswers});
+      List<String> incorrectAnswers,
+      List<String> allAnswers,
+      String? explanation});
 }
 
 /// @nodoc
@@ -79,6 +83,8 @@ class _$QuizAnswerCopyWithImpl<$Res, $Val extends QuizAnswer>
     Object? givenAnswers = null,
     Object? correctAnswers = null,
     Object? incorrectAnswers = null,
+    Object? allAnswers = null,
+    Object? explanation = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -113,6 +119,14 @@ class _$QuizAnswerCopyWithImpl<$Res, $Val extends QuizAnswer>
           ? _value.incorrectAnswers
           : incorrectAnswers // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      allAnswers: null == allAnswers
+          ? _value.allAnswers
+          : allAnswers // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      explanation: freezed == explanation
+          ? _value.explanation
+          : explanation // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -133,7 +147,9 @@ abstract class _$$QuizAnswerImplCopyWith<$Res>
       String questionText,
       List<String> givenAnswers,
       List<String> correctAnswers,
-      List<String> incorrectAnswers});
+      List<String> incorrectAnswers,
+      List<String> allAnswers,
+      String? explanation});
 }
 
 /// @nodoc
@@ -157,6 +173,8 @@ class __$$QuizAnswerImplCopyWithImpl<$Res>
     Object? givenAnswers = null,
     Object? correctAnswers = null,
     Object? incorrectAnswers = null,
+    Object? allAnswers = null,
+    Object? explanation = freezed,
   }) {
     return _then(_$QuizAnswerImpl(
       id: null == id
@@ -191,6 +209,14 @@ class __$$QuizAnswerImplCopyWithImpl<$Res>
           ? _value._incorrectAnswers
           : incorrectAnswers // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      allAnswers: null == allAnswers
+          ? _value._allAnswers
+          : allAnswers // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      explanation: freezed == explanation
+          ? _value.explanation
+          : explanation // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -206,10 +232,13 @@ class _$QuizAnswerImpl implements _QuizAnswer {
       required this.questionText,
       required final List<String> givenAnswers,
       required final List<String> correctAnswers,
-      required final List<String> incorrectAnswers})
+      required final List<String> incorrectAnswers,
+      required final List<String> allAnswers,
+      this.explanation})
       : _givenAnswers = givenAnswers,
         _correctAnswers = correctAnswers,
-        _incorrectAnswers = incorrectAnswers;
+        _incorrectAnswers = incorrectAnswers,
+        _allAnswers = allAnswers;
 
   factory _$QuizAnswerImpl.fromJson(Map<String, dynamic> json) =>
       _$$QuizAnswerImplFromJson(json);
@@ -249,9 +278,20 @@ class _$QuizAnswerImpl implements _QuizAnswer {
     return EqualUnmodifiableListView(_incorrectAnswers);
   }
 
+  final List<String> _allAnswers;
+  @override
+  List<String> get allAnswers {
+    if (_allAnswers is EqualUnmodifiableListView) return _allAnswers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_allAnswers);
+  }
+
+  @override
+  final String? explanation;
+
   @override
   String toString() {
-    return 'QuizAnswer(id: $id, topicId: $topicId, categoryId: $categoryId, questionId: $questionId, questionText: $questionText, givenAnswers: $givenAnswers, correctAnswers: $correctAnswers, incorrectAnswers: $incorrectAnswers)';
+    return 'QuizAnswer(id: $id, topicId: $topicId, categoryId: $categoryId, questionId: $questionId, questionText: $questionText, givenAnswers: $givenAnswers, correctAnswers: $correctAnswers, incorrectAnswers: $incorrectAnswers, allAnswers: $allAnswers, explanation: $explanation)';
   }
 
   @override
@@ -272,7 +312,11 @@ class _$QuizAnswerImpl implements _QuizAnswer {
             const DeepCollectionEquality()
                 .equals(other._correctAnswers, _correctAnswers) &&
             const DeepCollectionEquality()
-                .equals(other._incorrectAnswers, _incorrectAnswers));
+                .equals(other._incorrectAnswers, _incorrectAnswers) &&
+            const DeepCollectionEquality()
+                .equals(other._allAnswers, _allAnswers) &&
+            (identical(other.explanation, explanation) ||
+                other.explanation == explanation));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -286,7 +330,9 @@ class _$QuizAnswerImpl implements _QuizAnswer {
       questionText,
       const DeepCollectionEquality().hash(_givenAnswers),
       const DeepCollectionEquality().hash(_correctAnswers),
-      const DeepCollectionEquality().hash(_incorrectAnswers));
+      const DeepCollectionEquality().hash(_incorrectAnswers),
+      const DeepCollectionEquality().hash(_allAnswers),
+      explanation);
 
   /// Create a copy of QuizAnswer
   /// with the given fields replaced by the non-null parameter values.
@@ -313,7 +359,9 @@ abstract class _QuizAnswer implements QuizAnswer {
       required final String questionText,
       required final List<String> givenAnswers,
       required final List<String> correctAnswers,
-      required final List<String> incorrectAnswers}) = _$QuizAnswerImpl;
+      required final List<String> incorrectAnswers,
+      required final List<String> allAnswers,
+      final String? explanation}) = _$QuizAnswerImpl;
 
   factory _QuizAnswer.fromJson(Map<String, dynamic> json) =
       _$QuizAnswerImpl.fromJson;
@@ -334,6 +382,10 @@ abstract class _QuizAnswer implements QuizAnswer {
   List<String> get correctAnswers;
   @override
   List<String> get incorrectAnswers;
+  @override
+  List<String> get allAnswers;
+  @override
+  String? get explanation;
 
   /// Create a copy of QuizAnswer
   /// with the given fields replaced by the non-null parameter values.

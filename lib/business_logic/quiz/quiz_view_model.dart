@@ -48,16 +48,26 @@ class QuizViewModel extends _$QuizViewModel {
     }
   }
 
+  /// Checks the user's selected answers and updates the state accordingly.
+  /// A question is considered correct **only if** all correct answers are selected
+  /// and **no incorrect answers** are chosen.
   /// Checks the user's selected answers and updates state accordingly
   void checkAnswers(WidgetRef ref) {
     final answers = ref.read(answersNotifierProvider);
+
+    // ✅ Keep correctly selected answers (even if user missed some)
     final correctAnswers =
         answers.where((a) => a.isSelected && a.isCorrect).toList();
+
+    // ❌ Selected answers that are incorrect
     final incorrectAnswers =
         answers.where((a) => a.isSelected && !a.isCorrect).toList();
+
+    // ⚠️ Missed correct answers (not selected but should have been)
     final missedCorrectAnswers =
         answers.where((a) => !a.isSelected && a.isCorrect).toList();
 
+    // Update state, keeping correct answers even if some were missed
     state = state.copyWith(
       correctAnswers: correctAnswers,
       incorrectAnswers: incorrectAnswers,

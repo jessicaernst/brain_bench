@@ -7,7 +7,7 @@ part of 'quiz_answers_notifier.dart';
 // **************************************************************************
 
 String _$quizAnswersNotifierHash() =>
-    r'81034c080f9c8ebc6330d83dc0332ed80061c921';
+    r'869229ff86edd7d70a05c1c4fa00c78520195916';
 
 /// See also [QuizAnswersNotifier].
 @ProviderFor(QuizAnswersNotifier)

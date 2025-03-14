@@ -15,6 +15,8 @@ class QuizAnswer with _$QuizAnswer {
     required List<String> givenAnswers,
     required List<String> correctAnswers,
     required List<String> incorrectAnswers,
+    required List<String> allAnswers,
+    String? explanation,
   }) = _QuizAnswer;
 
   factory QuizAnswer.create({
@@ -24,6 +26,8 @@ class QuizAnswer with _$QuizAnswer {
     required String questionText,
     required List<String> givenAnswers,
     required List<String> correctAnswers,
+    required List<String> allAnswers,
+    String? explanation,
   }) {
     // Get all incorrect answers
     final incorrectAnswers =
@@ -38,6 +42,8 @@ class QuizAnswer with _$QuizAnswer {
       givenAnswers: givenAnswers,
       correctAnswers: correctAnswers,
       incorrectAnswers: incorrectAnswers,
+      allAnswers: allAnswers,
+      explanation: explanation,
     );
   }
 
