@@ -3,6 +3,10 @@ import 'package:brain_bench/core/styles/gradient_colors.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_card_expandable_content.dart';
 import 'package:flutter/material.dart';
 
+/// A widget that represents an expandable topic card.
+///
+/// This widget is used to display an expandable topic card with a title, description, and an action button.
+/// It is typically used within a [CardExpandableContent] widget to provide expandable content for a card.
 class TopicCardExpandable extends StatelessWidget {
   const TopicCardExpandable({
     super.key,

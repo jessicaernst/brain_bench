@@ -41,7 +41,7 @@ class QuizResultPage extends HookConsumerWidget {
           : Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(24.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
