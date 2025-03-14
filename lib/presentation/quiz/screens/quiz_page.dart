@@ -220,7 +220,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
           return Center(
             child: Text(
               'Error loading questions: $error',
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: TextTheme.of(context).bodyMedium,
               textAlign: TextAlign.center,
             ),
           );

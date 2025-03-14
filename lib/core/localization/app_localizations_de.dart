@@ -57,17 +57,26 @@ class AppLocalizationsDe extends AppLocalizations {
   String get feedBackBottomSheetTitle => 'Ergebnisse';
 
   @override
-  String get feedbackBSheetCorrectAnswers => '✅ korrekte Antworten:';
+  String get feedbackBSheetCorrectAnswers => 'Korrekte Antworten:';
 
   @override
-  String get feedbackBSheetWrongAnswers => '❌ falsche Antworten:';
+  String get feedbackBSheetWrongAnswers => 'Falsche Antworten:';
 
   @override
-  String get feedbackBSheetMissedCorrectAnswers => '⚠️ verpasste korrekte Antworten:';
+  String get feedbackBSheetMissedCorrectAnswers => 'Verpasste korrekte Antworten:';
 
   @override
   String get quizResultsAppBarTitle => 'Quiz Ergebnisse';
 
   @override
   String get quizResultsNotSaved => 'Keine Quiz Ergebnisse gespeichert';
+
+  @override
+  String get answerExpandableQuestionHeader => 'Frage:';
+
+  @override
+  String get answerExpandableExplanationHeader => 'Erklärung:';
+
+  @override
+  String get answerExpandableNoExplanation => 'Keine Erklärung verfügbar';
 }

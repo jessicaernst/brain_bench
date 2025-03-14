@@ -194,19 +194,19 @@ abstract class AppLocalizations {
   /// The label for the correct answers in the quiz results bottom sheet
   ///
   /// In en, this message translates to:
-  /// **'✅ Correct Answers:'**
+  /// **'Correct Answers:'**
   String get feedbackBSheetCorrectAnswers;
 
   /// The label for the incorrect answers in the quiz results bottom sheet
   ///
   /// In en, this message translates to:
-  /// **'❌ Incorrect Answers:'**
+  /// **'Incorrect Answers:'**
   String get feedbackBSheetWrongAnswers;
 
   /// The label for the missed correct answers in the quiz results bottom sheet
   ///
   /// In en, this message translates to:
-  /// **'⚠️ Missed Correct Answers:'**
+  /// **'Missed Correct Answers:'**
   String get feedbackBSheetMissedCorrectAnswers;
 
   /// The title of the quiz results page in the app bar
@@ -220,6 +220,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Quiz results not saved'**
   String get quizResultsNotSaved;
+
+  /// The header of the expandable question in the answer page
+  ///
+  /// In en, this message translates to:
+  /// **'Question:'**
+  String get answerExpandableQuestionHeader;
+
+  /// The header of the expandable explanation in the answer page
+  ///
+  /// In en, this message translates to:
+  /// **'Explanation:'**
+  String get answerExpandableExplanationHeader;
+
+  /// The message displayed when there is no explanation available
+  ///
+  /// In en, this message translates to:
+  /// **'No explanation available'**
+  String get answerExpandableNoExplanation;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

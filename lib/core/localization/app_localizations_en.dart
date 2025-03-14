@@ -57,17 +57,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get feedBackBottomSheetTitle => 'Results';
 
   @override
-  String get feedbackBSheetCorrectAnswers => '✅ Correct Answers:';
+  String get feedbackBSheetCorrectAnswers => 'Correct Answers:';
 
   @override
-  String get feedbackBSheetWrongAnswers => '❌ Incorrect Answers:';
+  String get feedbackBSheetWrongAnswers => 'Incorrect Answers:';
 
   @override
-  String get feedbackBSheetMissedCorrectAnswers => '⚠️ Missed Correct Answers:';
+  String get feedbackBSheetMissedCorrectAnswers => 'Missed Correct Answers:';
 
   @override
   String get quizResultsAppBarTitle => 'Quiz Results';
 
   @override
   String get quizResultsNotSaved => 'Quiz results not saved';
+
+  @override
+  String get answerExpandableQuestionHeader => 'Question:';
+
+  @override
+  String get answerExpandableExplanationHeader => 'Explanation:';
+
+  @override
+  String get answerExpandableNoExplanation => 'No explanation available';
 }

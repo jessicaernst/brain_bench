@@ -64,15 +64,15 @@
     "@feedBackBottomSheetTitle": {
         "description": "The title of the bottom sheet that displays the quiz results"
     },
-    "feedbackBSheetCorrectAnswers": "✅ Correct Answers:",
+    "feedbackBSheetCorrectAnswers": "Correct Answers:",
     "@feedbackBSheetCorrectAnswers": {
         "description": "The label for the correct answers in the quiz results bottom sheet"
     },
-    "feedbackBSheetWrongAnswers": "❌ Incorrect Answers:",
+    "feedbackBSheetWrongAnswers": "Incorrect Answers:",
     "@feedbackBSheetWrongAnswers": {
         "description": "The label for the incorrect answers in the quiz results bottom sheet"
     },
-    "feedbackBSheetMissedCorrectAnswers": "⚠️ Missed Correct Answers:",
+    "feedbackBSheetMissedCorrectAnswers": "Missed Correct Answers:",
     "@feedbackBSheetMissedCorrectAnswers": {
         "description": "The label for the missed correct answers in the quiz results bottom sheet"
     },
@@ -83,5 +83,17 @@
     "quizResultsNotSaved": "Quiz results not saved",
     "@quizResultsNotSaved": {
         "description": "The message displayed when the quiz results are not saved"
+    },
+    "answerExpandableQuestionHeader": "Question:",
+    "@answerExpandableQuestionHeader": {
+        "description": "The header of the expandable question in the answer page"
+    },
+    "answerExpandableExplanationHeader": "Explanation:",
+    "@answerExpandableExplanationHeader": {
+        "description": "The header of the expandable explanation in the answer page"
+    },
+    "answerExpandableNoExplanation": "No explanation available",
+    "@answerExpandableNoExplanation": {
+        "description": "The message displayed when there is no explanation available"
     }
 }

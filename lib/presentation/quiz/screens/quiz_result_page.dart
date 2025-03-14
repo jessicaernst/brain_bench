@@ -74,7 +74,7 @@ class QuizResultPage extends HookConsumerWidget {
                                     : false)
                         .length,
                     separatorBuilder: (context, index) =>
-                        const SizedBox(height: 16), // Abstand hier setzen
+                        const SizedBox(height: 16),
                     itemBuilder: (context, index) {
                       final filteredAnswers = state.quizAnswers
                           .where((answer) =>

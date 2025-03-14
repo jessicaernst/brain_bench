@@ -43,13 +43,13 @@ class AnswerMainCard extends StatelessWidget {
                   isCorrect
                       ? CupertinoIcons.hand_thumbsup_fill
                       : CupertinoIcons.hand_thumbsdown_fill,
-                  color: Theme.of(context).textTheme.bodySmall!.color,
+                  color: TextTheme.of(context).bodySmall!.color,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     answerText,
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: TextTheme.of(context).bodyLarge,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
