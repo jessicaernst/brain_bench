@@ -28,8 +28,8 @@ class AnswerRowView extends StatelessWidget {
             child: Text(
               answer.text,
               style: selected
-                  ? Theme.of(context).textTheme.bodyLarge
-                  : Theme.of(context).textTheme.bodyMedium,
+                  ? TextTheme.of(context).bodyLarge
+                  : TextTheme.of(context).bodyMedium,
               softWrap: true,
             ),
           ),

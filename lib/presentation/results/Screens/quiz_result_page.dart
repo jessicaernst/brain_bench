@@ -1,7 +1,7 @@
 import 'package:brain_bench/business_logic/quiz/quiz_answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_result_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
-import 'package:brain_bench/presentation/quiz/widgets/answer_card.dart';
+import 'package:brain_bench/presentation/results/widgets/answer_card.dart';
 import 'package:brain_bench/presentation/quiz/widgets/toggle_button.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';

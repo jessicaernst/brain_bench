@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:brain_bench/presentation/categories/screens/categories_page.dart';
 import 'package:brain_bench/presentation/home/screens/home_page.dart';
 import 'package:brain_bench/presentation/quiz/screens/quiz_page.dart';
-import 'package:brain_bench/presentation/quiz/screens/quiz_result_page.dart';
+import 'package:brain_bench/presentation/results/Screens/quiz_result_page.dart';
 import 'package:brain_bench/presentation/results/screens/result_page.dart';
 import 'package:brain_bench/presentation/topics/screens/topics_page.dart';
 import 'package:brain_bench/navigation/tabs/screens/tabs_page.dart';

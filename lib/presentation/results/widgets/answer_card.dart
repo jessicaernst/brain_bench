@@ -1,5 +1,5 @@
-import 'package:brain_bench/presentation/quiz/widgets/answer_expandable.dart';
-import 'package:brain_bench/presentation/quiz/widgets/answer_main_card.dart';
+import 'package:brain_bench/presentation/results/widgets/answer_expandable.dart';
+import 'package:brain_bench/presentation/results/widgets/answer_main_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:brain_bench/business_logic/quiz/answer_card_provider.dart';

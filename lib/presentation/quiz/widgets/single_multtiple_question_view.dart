@@ -37,7 +37,7 @@ class SingleMulttipleQuestionView extends StatelessWidget {
         Text(
           currentQuestion.question,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: TextTheme.of(context).bodyMedium,
         ),
         const Spacer(),
         AnswerListView(
