@@ -3,7 +3,7 @@ import 'package:brain_bench/business_logic/quiz/quiz_result_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
-import 'package:brain_bench/presentation/results/widgets/answer_card.dart';
+import 'package:brain_bench/presentation/results/widgets/quiz_result_expanded_view.dart';
 import 'package:brain_bench/presentation/results/widgets/toggle_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +12,7 @@ import 'package:brain_bench/data/models/quiz_answer.dart';
 
 /// This widget displays the results of a quiz, showing a list of answer cards
 /// and allowing the user to filter between correct and incorrect answers.
-class QuizResultPage extends ConsumerWidget {
+class QuizResultPage extends ConsumerStatefulWidget {
   /// Creates a [QuizResultPage].
   ///
   /// The [categoryId] parameter is required and represents the ID of the
@@ -25,17 +25,18 @@ class QuizResultPage extends ConsumerWidget {
   /// The ID of the category the quiz belongs to.
   final String categoryId;
 
-  // ✅ Animation constants - Defining these as constants improves readability and maintainability.
-  /// The duration for all animations in this page.
+  @override
+  ConsumerState<QuizResultPage> createState() => _QuizResultPageState();
+}
+
+class _QuizResultPageState extends ConsumerState<QuizResultPage> {
+  // ✅ ScrollController for the ListView
+  final ScrollController _scrollController = ScrollController();
+
+  // ✅ Animation constants
   static const Duration _animationDuration = Duration(milliseconds: 300);
-
-  /// The default padding used throughout the page.
   static const double _defaultPadding = 24.0;
-
-  /// The horizontal spacing between the toggle buttons.
   static const double _buttonSpacing = 48.0;
-
-  /// The factor used to calculate the height of the explanatory text.
   static const double _explanationTextHeightFactor = 0.25;
 
   // ✅ Method for creating the animated containers - This method centralizes the creation of AnimatedContainers.
@@ -54,20 +55,18 @@ class QuizResultPage extends ConsumerWidget {
     bool? isVisible,
   }) {
     return AnimatedContainer(
-      duration: _animationDuration, // Use the predefined animation duration.
-      padding: padding, // Apply the provided padding.
-      alignment: alignment, // Apply the provided alignment.
-      height: height, // Apply the provided height.
+      duration: _animationDuration,
+      padding: padding,
+      alignment: alignment,
+      height: height,
       child: isVisible != null
-          ? Visibility(
-              visible: isVisible,
-              child: child) // Conditionally show the child based on isVisible.
-          : child, // If isVisible is not provided, always show the child.
+          ? Visibility(visible: isVisible, child: child)
+          : child,
     );
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     // Access the current state from QuizResultNotifier.
     final state = ref.watch(quizResultNotifierProvider);
 
@@ -80,7 +79,7 @@ class QuizResultPage extends ConsumerWidget {
     // Get the filtered list of answers from the notifier based on the current state.
     final List<QuizAnswer> filteredAnswers = notifier.getFilteredAnswers();
 
-    // ✅ Check if there are correct or incorrect answers.
+    // Check if there are correct or incorrect answers.
     final bool hasCorrectAnswers = notifier.hasCorrectAnswers();
     final bool hasIncorrectAnswers = notifier.hasIncorrectAnswers();
 
@@ -89,40 +88,35 @@ class QuizResultPage extends ConsumerWidget {
         title: Text(localizations.quizResultsAppBarTitle),
       ),
       body: state.quizAnswers.isEmpty
-          ? Center(
-              child: Text(localizations
-                  .quizResultsNotSaved)) // Display a message if no quiz answers are available.
+          ? Center(child: Text(localizations.quizResultsNotSaved))
           : Column(
               children: [
-                // ✅ Show explanatory text conditionally - Display the explanatory text if no filter is selected and no cards are expanded.
+                // Show explanatory text conditionally
                 _createAnimatedContainer(
                   height: state.shouldShowExplanationText
                       ? MediaQuery.of(context).size.height *
-                          _explanationTextHeightFactor // Calculate the height based on screen size.
-                      : 0, // Hide the text by setting the height to 0.
-                  isVisible: state
-                      .shouldShowExplanationText, // Control the visibility.
+                          _explanationTextHeightFactor
+                      : 0,
+                  isVisible: state.shouldShowExplanationText,
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: _defaultPadding),
                       child: ClipRect(
                         child: Text(
-                          localizations
-                              .quizToggleExplanation, // Get the localized text.
-                          textAlign:
-                              TextAlign.center, // Center the text horizontally.
+                          localizations.quizToggleExplanation,
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
                   ),
                 ),
-                // ✅ Using AnimatedContainer to manage vertical and horizontal positioning of the buttons. - Animate the button row's position and padding.
+                // Using AnimatedContainer to manage vertical and horizontal positioning of the buttons.
                 _createAnimatedContainer(
                   padding: EdgeInsets.only(
                     top: state.selectedView == SelectedView.none
                         ? 0
-                        : _defaultPadding, // Set top padding to 0 if no filter is selected, otherwise use the default padding.
+                        : _defaultPadding,
                     left: _defaultPadding,
                     right: _defaultPadding,
                   ),
@@ -132,60 +126,44 @@ class QuizResultPage extends ConsumerWidget {
                   child: SizedBox(
                     width: double.infinity,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment
-                          .center, // Center the buttons horizontally.
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // ToggleButton for correct answers.
                         ToggleButton(
                           isSelected:
                               state.selectedView == SelectedView.correct,
                           icon: Icons.thumb_up,
                           isCorrect: true,
-                          isActive:
-                              hasCorrectAnswers, // ✅ Set isActive based on hasCorrectAnswers.
-                          onTap: () => notifier.toggleView(SelectedView.correct,
-                              ref), // Switch to correct view.
+                          isActive: hasCorrectAnswers,
+                          onTap: () =>
+                              notifier.toggleView(SelectedView.correct, ref),
                         ),
                         const SizedBox(width: _buttonSpacing),
-                        // ToggleButton for incorrect answers.
                         ToggleButton(
                           isSelected:
                               state.selectedView == SelectedView.incorrect,
                           icon: Icons.thumb_down,
                           isCorrect: false,
-                          isActive:
-                              hasIncorrectAnswers, // ✅ Set isActive based on hasIncorrectAnswers.
-                          onTap: () => notifier.toggleView(
-                              SelectedView.incorrect,
-                              ref), // Switch to incorrect view.
+                          isActive: hasIncorrectAnswers,
+                          onTap: () =>
+                              notifier.toggleView(SelectedView.incorrect, ref),
                         ),
                       ],
                     ),
                   ),
                 ),
                 const SizedBox(height: _defaultPadding),
-                Expanded(
-                  child: ListView.separated(
-                    itemCount: filteredAnswers.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: _defaultPadding),
-                    itemBuilder: (context, index) {
-                      final answer = filteredAnswers[index];
-
-                      return AnswerCard(
-                        answer: answer,
-                        isCorrect: answer.incorrectAnswers.isEmpty,
-                      );
-                    },
-                  ),
+                QuizResultExpandedView(
+                  scrollController: _scrollController,
+                  filteredAnswers: filteredAnswers,
+                  defaultPadding: _defaultPadding,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(32),
+                  padding: const EdgeInsets.all(_defaultPadding),
                   child: LightDarkSwitchBtn(
                       title: 'End Quiz',
                       isActive: true,
                       onPressed: () {
-                        // TODO: add save quiz
+                        // TODO: add save quiz and navigation
 
                         // Reset the state of QuizAnswersNotifier when navigating back.
                         ref.read(quizAnswersNotifierProvider.notifier).reset();
@@ -198,8 +176,8 @@ class QuizResultPage extends ConsumerWidget {
 
                         // Navigate back to the topics page for the current category.
                         context.go('/categories/details/topics',
-                            extra: categoryId);
-                      }), // Button to end the quiz.
+                            extra: widget.categoryId);
+                      }),
                 )
               ],
             ),
