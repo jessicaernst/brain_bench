@@ -8,7 +8,6 @@ import 'package:brain_bench/presentation/results/widgets/toggle_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
 import 'package:brain_bench/data/models/quiz_answer.dart';
 
 /// This widget displays the results of a quiz, showing a list of answer cards
@@ -81,22 +80,13 @@ class QuizResultPage extends ConsumerWidget {
     // Get the filtered list of answers from the notifier based on the current state.
     final List<QuizAnswer> filteredAnswers = notifier.getFilteredAnswers();
 
+    // ✅ Check if there are correct or incorrect answers.
+    final bool hasCorrectAnswers = notifier.hasCorrectAnswers();
+    final bool hasIncorrectAnswers = notifier.hasIncorrectAnswers();
+
     return Scaffold(
-      appBar: BackNavAppBar(
-        title: localizations.quizResultsAppBarTitle,
-        onBack: () {
-          // Reset the state of QuizAnswersNotifier when navigating back.
-          ref.read(quizAnswersNotifierProvider.notifier).reset();
-
-          // Reset the state of QuizViewModel when navigating back.
-          ref.read(quizViewModelProvider.notifier).resetQuiz(ref);
-
-          // Reset the selected view to none.
-          notifier.toggleView(SelectedView.none, ref);
-
-          // Navigate back to the topics page for the current category.
-          context.go('/categories/details/topics', extra: categoryId);
-        },
+      appBar: AppBar(
+        title: Text(localizations.quizResultsAppBarTitle),
       ),
       body: state.quizAnswers.isEmpty
           ? Center(
@@ -115,8 +105,7 @@ class QuizResultPage extends ConsumerWidget {
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal:
-                              _defaultPadding), // Add horizontal padding to the text.
+                          horizontal: _defaultPadding),
                       child: ClipRect(
                         child: Text(
                           localizations
@@ -139,11 +128,9 @@ class QuizResultPage extends ConsumerWidget {
                   ),
                   alignment: state.selectedView == SelectedView.none
                       ? Alignment.center
-                      : Alignment
-                          .topLeft, // Center the buttons if no filter is selected, otherwise align to the top-left.
+                      : Alignment.topLeft,
                   child: SizedBox(
-                    width: double
-                        .infinity, // Make the SizedBox take up all available horizontal space.
+                    width: double.infinity,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment
                           .center, // Center the buttons horizontally.
@@ -154,18 +141,20 @@ class QuizResultPage extends ConsumerWidget {
                               state.selectedView == SelectedView.correct,
                           icon: Icons.thumb_up,
                           isCorrect: true,
+                          isActive:
+                              hasCorrectAnswers, // ✅ Set isActive based on hasCorrectAnswers.
                           onTap: () => notifier.toggleView(SelectedView.correct,
                               ref), // Switch to correct view.
                         ),
-                        const SizedBox(
-                            width:
-                                _buttonSpacing), // Add spacing between the buttons.
+                        const SizedBox(width: _buttonSpacing),
                         // ToggleButton for incorrect answers.
                         ToggleButton(
                           isSelected:
                               state.selectedView == SelectedView.incorrect,
                           icon: Icons.thumb_down,
                           isCorrect: false,
+                          isActive:
+                              hasIncorrectAnswers, // ✅ Set isActive based on hasIncorrectAnswers.
                           onTap: () => notifier.toggleView(
                               SelectedView.incorrect,
                               ref), // Switch to incorrect view.
@@ -174,21 +163,15 @@ class QuizResultPage extends ConsumerWidget {
                     ),
                   ),
                 ),
-                const SizedBox(
-                    height:
-                        _defaultPadding), // Add default spacing below the button row.
+                const SizedBox(height: _defaultPadding),
                 Expanded(
                   child: ListView.separated(
-                    itemCount: filteredAnswers
-                        .length, // Use the length of the filtered list.
-                    separatorBuilder: (context, index) => const SizedBox(
-                        height:
-                            _defaultPadding), // Add spacing between answer cards.
+                    itemCount: filteredAnswers.length,
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: _defaultPadding),
                     itemBuilder: (context, index) {
-                      // Get the answer card data for this index.
                       final answer = filteredAnswers[index];
 
-                      // Create and return an AnswerCard widget.
                       return AnswerCard(
                         answer: answer,
                         isCorrect: answer.incorrectAnswers.isEmpty,
@@ -197,12 +180,26 @@ class QuizResultPage extends ConsumerWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(
-                      _defaultPadding), // Add padding around the button.
+                  padding: const EdgeInsets.all(32),
                   child: LightDarkSwitchBtn(
                       title: 'End Quiz',
                       isActive: true,
-                      onPressed: () {}), // Button to end the quiz.
+                      onPressed: () {
+                        // TODO: add save quiz
+
+                        // Reset the state of QuizAnswersNotifier when navigating back.
+                        ref.read(quizAnswersNotifierProvider.notifier).reset();
+
+                        // Reset the state of QuizViewModel when navigating back.
+                        ref.read(quizViewModelProvider.notifier).resetQuiz(ref);
+
+                        // Reset the selected view to none.
+                        notifier.toggleView(SelectedView.none, ref);
+
+                        // Navigate back to the topics page for the current category.
+                        context.go('/categories/details/topics',
+                            extra: categoryId);
+                      }), // Button to end the quiz.
                 )
               ],
             ),

@@ -63,6 +63,18 @@ abstract class BrainBenchColors {
   static final Color white40 = Colors.white.withAlpha((0.4 * 255).toInt());
   static final Color white10 = Colors.white.withAlpha((0.1 * 255).toInt());
 
+  /// A medium gray for the inactive state of the toggle buttons.
+  static const Color inactiveGray = Color.fromARGB(255, 150, 150, 150);
+
+  /// A lighter version of [inactiveGray] for a less intense inactive state.
+  static const Color inactiveGrayLight = Color.fromARGB(255, 200, 200, 200);
+
+  static final Color inactiveGray20 =
+      inactiveGray.withAlpha((0.2 * 255).toInt());
+
+  static final Color inactiveGrayLight10 =
+      inactiveGrayLight.withAlpha((0.1 * 255).toInt());
+
   static final Color progressIndicatorBackground =
       const Color.fromARGB(255, 120, 120, 128).withAlpha((0.16 * 255).toInt());
 }

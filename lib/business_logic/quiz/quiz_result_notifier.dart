@@ -57,6 +57,17 @@ class QuizResultNotifier extends _$QuizResultNotifier {
           .toList();
     }
   }
+
+  // ✅ Helper method to check if there are any correct answers.
+  bool hasCorrectAnswers() {
+    return state.quizAnswers.any((answer) => answer.incorrectAnswers.isEmpty);
+  }
+
+  // ✅ Helper method to check if there are any incorrect answers.
+  bool hasIncorrectAnswers() {
+    return state.quizAnswers
+        .any((answer) => answer.incorrectAnswers.isNotEmpty);
+  }
 }
 
 enum SelectedView { none, correct, incorrect }
