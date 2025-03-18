@@ -1,82 +1,88 @@
 import 'package:brain_bench/core/mixins/ensure_visible_mixin.dart';
-import 'package:brain_bench/data/models/topic.dart';
-import 'package:brain_bench/presentation/topics/widgets/topic_expandable_content.dart';
-import 'package:brain_bench/presentation/topics/widgets/topic_main_card.dart';
+import 'package:brain_bench/presentation/results/widgets/answer_expandable.dart';
+import 'package:brain_bench/presentation/results/widgets/answer_main_card.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:brain_bench/business_logic/quiz/quiz_result_notifier.dart';
+import 'package:brain_bench/data/models/quiz_answer.dart';
 
-final Logger logger = Logger('TopicCard');
-
-/// This widget displays a single topic card in the list of topics.
+/// This widget represents a single answer card in the quiz result page.
 ///
-/// It handles the display of the topic's title and an expandable section for more details.
-class TopicCard extends StatefulWidget {
-  /// Creates a [TopicCard].
+/// It displays the main answer information and provides an expandable area
+/// for more detailed content, such as the explanation.
+class AnswerCard extends ConsumerStatefulWidget {
+  /// Creates an [AnswerCard].
   ///
-  /// [topic]: The topic data to be displayed.
-  /// [onPressed]: Callback for when the user wants to start the quiz for this topic.
-  /// [isExpanded]: Whether the expandable content is currently shown.
-  /// [onToggle]: Callback for when the user taps on the card to expand/collapse.
-  const TopicCard({
+  /// [answer]: The [QuizAnswer] object containing the data to display.
+  /// [isCorrect]: A boolean indicating whether the answer is correct.
+  const AnswerCard({
     super.key,
-    required this.topic,
-    required this.onPressed,
-    required this.isExpanded,
-    required this.onToggle,
+    required this.answer,
+    required this.isCorrect,
   });
 
-  /// The topic data to be displayed.
-  final Topic topic;
+  /// The [QuizAnswer] object containing the data to display.
+  final QuizAnswer answer;
 
-  /// Callback for when the user wants to start the quiz for this topic.
-  final VoidCallback onPressed;
-
-  /// Whether the expandable content is currently shown.
-  final bool isExpanded;
-
-  /// Callback for when the user taps on the card to expand/collapse.
-  final VoidCallback onToggle;
+  /// A boolean indicating whether the answer is correct.
+  final bool isCorrect;
 
   @override
-  State<TopicCard> createState() => _TopicCardState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AnswerCardState();
 }
 
-/// State for the [TopicCard] widget.
-class _TopicCardState extends State<TopicCard> with EnsureVisibleMixin {
-  // ✅ Add a GlobalKey to each AnswerCard - Allows us to identify this card in the widget tree.
+/// The state for the [AnswerCard] widget.
+///
+/// This state handles the interaction with the card, such as expanding/collapsing
+/// and ensuring the card is visible when expanded.
+class _AnswerCardState extends ConsumerState<AnswerCard>
+    with EnsureVisibleMixin {
+  // We use the mixin to ensure the card is visible when expanded.
+
+  // ✅ Add a GlobalKey to each AnswerCard - Allows us to identify this card uniquely in the widget tree.
   @override
   final GlobalKey cardKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    // Check if the app is in dark mode
+    // Access the current quiz result state from the provider.
+    final quizResultState = ref.watch(quizResultNotifierProvider);
+
+    // Access the notifier to trigger state changes.
+    final stateNotifier = ref.read(quizResultNotifierProvider.notifier);
+
+    // Check if the current answer card is expanded.
+    final bool isExpanded =
+        quizResultState.expandedAnswers.contains(widget.answer.questionId);
+
+    // Check if the app is in dark mode.
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    logger.fine('build called for topic: ${widget.topic.name}');
+
+    // ✅ Use the key in the Column - Assign the GlobalKey to the main widget to identify it.
     return Column(
       key: cardKey,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Main card section with title and tap functionality.
-        TopicMainCard(
-          title: widget.topic.name,
-          isExpanded: widget.isExpanded,
+        // The main card area that displays the question and handles expansion.
+        AnswerMainCard(
+          answerText: widget.answer.questionText,
+          isCorrect: widget.isCorrect,
+          isExpanded: isExpanded,
           onTap: () {
-            logger.fine('tapped topic: ${widget.topic.name}');
-            widget
-                .onToggle(); // Call the onToggle callback to notify the parent that the card was tapped.
-            // If the card is not expanded (just tapped to expand), ensure it's visible.
-            if (!widget.isExpanded) {
-              ensureCardIsVisible(cardName: widget.topic.name);
+            // Toggle the explanation for the current answer.
+            stateNotifier.toggleExplanation(widget.answer.questionId);
+            // ✅ Ensure the card is visible after tapping - If the card is not expanded, ensure it is visible.
+            if (!isExpanded) {
+              ensureCardIsVisible(
+                  cardName: widget.answer.questionId); // Make the card visible.
             }
           },
           isDarkMode: isDarkMode,
         ),
-        // Expandable content section.
-        TopicCardExpandable(
-          description: widget.topic.description,
-          onPressed: widget.onPressed, // Pass the quiz start callback.
-          isExpanded: widget.isExpanded,
-          title: widget.topic.name,
+        // The expandable area that contains detailed information about the answer.
+        AnswerExpandable(
+          isExpanded: isExpanded,
+          answer: widget.answer,
         ),
       ],
     );
