@@ -48,7 +48,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nextQuestionBtnLbl => 'Next Question';
 
   @override
-  String get finishQuizBtnLbl => 'Finish Quiz';
+  String get finishQuizBtnLbl => 'Show Results';
 
   @override
   String get quizCompletedMsg => '🎉 Quiz Completed';
@@ -82,4 +82,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quizToggleExplanation => 'Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!';
+
+  @override
+  String get quizResultBtnLbl => 'Back to topic selection';
 }

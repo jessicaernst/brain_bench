@@ -48,7 +48,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get nextQuestionBtnLbl => 'Nächste Frage';
 
   @override
-  String get finishQuizBtnLbl => 'Quiz beenden';
+  String get finishQuizBtnLbl => 'Zeige Ergebnisse';
 
   @override
   String get quizCompletedMsg => '🎉 Quiz abgeschlossen';
@@ -82,4 +82,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get quizToggleExplanation => 'Hier kannst du zwischen deinen richtigen und falschen Antworten filtern. Tippe dafür auf die Daumen!';
+
+  @override
+  String get quizResultBtnLbl => 'Zurück zu Themenauswahl';
 }

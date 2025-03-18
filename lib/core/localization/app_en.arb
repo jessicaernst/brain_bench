@@ -52,7 +52,7 @@
     "@nextQuestionBtnLbl": {
         "description": "The label of the button to go to the next question"
     },
-    "finishQuizBtnLbl": "Finish Quiz",
+    "finishQuizBtnLbl": "Show Results",
     "@finishQuizBtnLbl": {
         "description": "The label of the button to finish the quiz"
     },
@@ -99,5 +99,9 @@
     "quizToggleExplanation": "Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!",
     "@quizToggleExplanation": {
         "description": "The label for the toggle explanation button"
+    },
+    "quizResultBtnLbl": "Back to topic selection",
+    "@quizResultBtnLbl": {
+        "description": "The label of the button to view the quiz results"
     }
 }

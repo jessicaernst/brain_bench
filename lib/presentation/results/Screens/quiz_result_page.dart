@@ -90,23 +90,6 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(localizations.quizResultsAppBarTitle),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            _logger.info('Back button pressed');
-            // Reset the state of QuizAnswersNotifier when navigating back.
-            ref.read(quizAnswersNotifierProvider.notifier).reset();
-
-            // Reset the state of QuizViewModel when navigating back.
-            ref.read(quizViewModelProvider.notifier).resetQuiz(ref);
-
-            // Reset the selected view to none.
-            notifier.toggleView(SelectedView.none, ref);
-
-            // Navigate back to the topics page for the current category.
-            context.go('/categories/details/topics', extra: widget.categoryId);
-          },
-        ),
       ),
       body: state.quizAnswers.isEmpty
           ? Center(child: Text(localizations.quizResultsNotSaved))
@@ -181,7 +164,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                 Padding(
                   padding: const EdgeInsets.all(_defaultPadding),
                   child: LightDarkSwitchBtn(
-                      title: 'End Quiz',
+                      title: localizations.quizResultBtnLbl,
                       isActive: true,
                       onPressed: () {
                         _logger.info('End Quiz button pressed');

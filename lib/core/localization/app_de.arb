@@ -52,7 +52,7 @@
     "@nextQuestionBtnLbl": {
         "description": "The label of the button to go to the next question"
     },
-    "finishQuizBtnLbl": "Quiz beenden",
+    "finishQuizBtnLbl": "Zeige Ergebnisse",
     "@finishQuizBtnLbl": {
         "description": "The label of the button to finish the quiz"
     },
@@ -99,5 +99,9 @@
     "quizToggleExplanation": "Hier kannst du zwischen deinen richtigen und falschen Antworten filtern. Tippe dafür auf die Daumen!",
     "@quizToggleExplanation": {
         "description": "The label for the toggle explanation button"
+    },
+    "quizResultBtnLbl": "Zurück zu Themenauswahl",
+    "@quizResultBtnLbl": {
+        "description": "The label of the button to go back to the quiz"
     }
 }

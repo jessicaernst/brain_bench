@@ -176,7 +176,7 @@ abstract class AppLocalizations {
   /// The label of the button to finish the quiz
   ///
   /// In en, this message translates to:
-  /// **'Finish Quiz'**
+  /// **'Show Results'**
   String get finishQuizBtnLbl;
 
   /// The message displayed when the quiz is completed
@@ -244,6 +244,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!'**
   String get quizToggleExplanation;
+
+  /// The label of the button to view the quiz results
+  ///
+  /// In en, this message translates to:
+  /// **'Back to topic selection'**
+  String get quizResultBtnLbl;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
