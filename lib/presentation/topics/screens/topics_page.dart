@@ -54,9 +54,6 @@ class TopicsPage extends ConsumerWidget {
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                       child: TopicCard(
-                        cardId: topic.id,
-                        title: topic.name,
-                        description: topic.description,
                         onPressed: () {
                           context.go(
                             '/categories/details/topics/quiz',
@@ -66,6 +63,7 @@ class TopicsPage extends ConsumerWidget {
                             },
                           );
                         },
+                        topic: topic,
                       ),
                     );
                   },
