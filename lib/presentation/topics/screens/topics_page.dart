@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
-Logger _logger = Logger('TopicsPage');
+final Logger _logger = Logger('TopicsPage');
 
-class TopicsPage extends ConsumerWidget {
+class TopicsPage extends ConsumerStatefulWidget {
   const TopicsPage({
     super.key,
     required this.categoryId,
@@ -19,11 +19,20 @@ class TopicsPage extends ConsumerWidget {
   final String categoryId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TopicsPage> createState() => _TopicsPageState();
+}
+
+class _TopicsPageState extends ConsumerState<TopicsPage> {
+  // ✅ Map to hold the expanded state of each TopicCard, keyed by topicId
+  final Map<String, bool> _expandedStates = {};
+
+  @override
+  Widget build(BuildContext context) {
     final String languageCode = Localizations.localeOf(context).languageCode;
     final title = languageCode == 'de' ? 'Themen' : 'Topics';
 
-    final topicsAsync = ref.watch(topicsProvider(categoryId, languageCode));
+    final topicsAsync =
+        ref.watch(topicsProvider(widget.categoryId, languageCode));
 
     return Scaffold(
       appBar: BackNavAppBar(
@@ -42,24 +51,37 @@ class TopicsPage extends ConsumerWidget {
               data: (topics) {
                 if (topics.isEmpty) {
                   _logger.warning(
-                      '⚠️ No topics found for Category ID: $categoryId');
+                      '⚠️ No topics found for Category ID: ${widget.categoryId}');
                   return const NoDataAvailableView(
                     text: '❌  No topics available.',
                   );
                 }
                 return ListView.builder(
+                  key: const PageStorageKey(
+                      'topicList'), //✅ Add Key for listview
                   itemCount: topics.length,
                   itemBuilder: (context, index) {
                     final topic = topics[index];
+                    // ✅ Initialize the expanded state in the map if it doesn't exist.
+                    _expandedStates.putIfAbsent(topic.id, () => false);
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                       child: TopicCard(
+                        isExpanded:
+                            _expandedStates[topic.id]!, //✅ pass the value.
+                        onToggle: () {
+                          //✅ Create a toggle callback
+                          setState(() {
+                            _expandedStates[topic.id] =
+                                !_expandedStates[topic.id]!;
+                          });
+                        },
                         onPressed: () {
                           context.go(
                             '/categories/details/topics/quiz',
                             extra: {
                               'topicId': topic.id,
-                              'categoryId': categoryId,
+                              'categoryId': widget.categoryId,
                             },
                           );
                         },

@@ -2,33 +2,34 @@ import 'package:brain_bench/data/models/topic.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_expandable_content.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_main_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:brain_bench/business_logic/topics/topic_provider.dart';
+import 'package:logging/logging.dart';
 
-class TopicCard extends ConsumerStatefulWidget {
+final Logger logger = Logger('TopicCard');
+
+class TopicCard extends StatefulWidget {
   const TopicCard({
     super.key,
     required this.topic,
     required this.onPressed,
+    required this.isExpanded,
+    required this.onToggle,
   });
 
   final Topic topic;
   final VoidCallback onPressed;
+  final bool isExpanded; //✅ Add isExpanded
+  final VoidCallback onToggle; //✅ Add onToggle
 
   @override
-  ConsumerState<TopicCard> createState() => _TopicCardState();
+  State<TopicCard> createState() => _TopicCardState();
 }
 
-class _TopicCardState extends ConsumerState<TopicCard> {
+class _TopicCardState extends State<TopicCard> {
   // ✅ Add a GlobalKey to each AnswerCard
   final GlobalKey _cardKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    final isExpanded =
-        ref.watch(topicCardStateProvider(cardId: widget.topic.id));
-    final stateNotifier =
-        ref.read(topicCardStateProvider(cardId: widget.topic.id).notifier);
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     logger.fine('build called for topic: ${widget.topic.name}');
     return Column(
@@ -37,11 +38,11 @@ class _TopicCardState extends ConsumerState<TopicCard> {
       children: [
         TopicMainCard(
           title: widget.topic.name,
-          isExpanded: isExpanded,
+          isExpanded: widget.isExpanded,
           onTap: () {
             logger.fine('tapped topic: ${widget.topic.name}');
-            stateNotifier.toggle();
-            if (!isExpanded) {
+            widget.onToggle();
+            if (!widget.isExpanded) {
               _ensureCardIsVisible();
             }
           },
@@ -50,7 +51,7 @@ class _TopicCardState extends ConsumerState<TopicCard> {
         TopicCardExpandable(
           description: widget.topic.description,
           onPressed: widget.onPressed,
-          isExpanded: isExpanded,
+          isExpanded: widget.isExpanded,
           title: widget.topic.name,
         ),
       ],
