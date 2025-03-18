@@ -2,7 +2,7 @@ import 'package:brain_bench/presentation/results/widgets/answer_expandable.dart'
 import 'package:brain_bench/presentation/results/widgets/answer_main_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:brain_bench/business_logic/quiz/answer_card_provider.dart';
+import 'package:brain_bench/business_logic/quiz/quiz_result_notifier.dart';
 import 'package:brain_bench/data/models/quiz_answer.dart';
 
 class AnswerCard extends ConsumerWidget {
@@ -17,9 +17,10 @@ class AnswerCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isExpanded = ref.watch(answerCardExpandedProvider(answer.questionId));
-    final stateNotifier =
-        ref.read(answerCardExpandedProvider(answer.questionId).notifier);
+    final quizResultState = ref.watch(quizResultNotifierProvider);
+    final stateNotifier = ref.read(quizResultNotifierProvider.notifier);
+    final bool isExpanded =
+        quizResultState.expandedAnswers.contains(answer.questionId);
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Column(
@@ -29,7 +30,7 @@ class AnswerCard extends ConsumerWidget {
           answerText: answer.questionText,
           isCorrect: isCorrect,
           isExpanded: isExpanded,
-          onTap: stateNotifier.toggle,
+          onTap: () => stateNotifier.toggleExplanation(answer.questionId),
           isDarkMode: isDarkMode,
         ),
         AnswerExpandable(

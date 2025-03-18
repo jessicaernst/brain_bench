@@ -1,4 +1,5 @@
-import 'package:brain_bench/data/models/quiz_answer.dart';
+import 'package:brain_bench/business_logic/quiz/quiz_result_state.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'quiz_answers_notifier.dart';
 
@@ -16,10 +17,16 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     );
   }
 
-  void toggleView(SelectedView view) {
-    state = state.copyWith(
-      selectedView: state.selectedView == view ? SelectedView.none : view,
-    );
+  void toggleView(SelectedView newView, WidgetRef ref) {
+    if (state.selectedView == newView) return;
+
+    // ✅ 1. Collapse all answer cards before switching view
+    state = state.copyWith(expandedAnswers: {});
+
+    // 🕒 2. Wait for animation (~300ms), then switch view
+    Future.delayed(const Duration(milliseconds: 300), () {
+      state = state.copyWith(selectedView: newView);
+    });
   }
 
   void toggleExplanation(String questionId) {
@@ -34,27 +41,3 @@ class QuizResultNotifier extends _$QuizResultNotifier {
 }
 
 enum SelectedView { none, correct, incorrect }
-
-class QuizResultState {
-  final SelectedView selectedView;
-  final Set<String> expandedAnswers;
-  final List<QuizAnswer> quizAnswers;
-
-  QuizResultState({
-    required this.selectedView,
-    required this.expandedAnswers,
-    required this.quizAnswers,
-  });
-
-  QuizResultState copyWith({
-    SelectedView? selectedView,
-    Set<String>? expandedAnswers,
-    List<QuizAnswer>? quizAnswers,
-  }) {
-    return QuizResultState(
-      selectedView: selectedView ?? this.selectedView,
-      expandedAnswers: expandedAnswers ?? this.expandedAnswers,
-      quizAnswers: quizAnswers ?? this.quizAnswers,
-    );
-  }
-}

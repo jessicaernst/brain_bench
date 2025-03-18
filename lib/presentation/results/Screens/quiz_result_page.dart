@@ -2,7 +2,7 @@ import 'package:brain_bench/business_logic/quiz/quiz_answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_result_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
 import 'package:brain_bench/presentation/results/widgets/answer_card.dart';
-import 'package:brain_bench/presentation/quiz/widgets/toggle_button.dart';
+import 'package:brain_bench/presentation/results/widgets/toggle_button.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
@@ -49,7 +49,8 @@ class QuizResultPage extends HookConsumerWidget {
                         isSelected: state.selectedView == SelectedView.correct,
                         icon: Icons.thumb_up,
                         isCorrect: true,
-                        onTap: () => notifier.toggleView(SelectedView.correct),
+                        onTap: () =>
+                            notifier.toggleView(SelectedView.correct, ref),
                       ),
                       const SizedBox(width: 48),
                       ToggleButton(
@@ -58,7 +59,7 @@ class QuizResultPage extends HookConsumerWidget {
                         icon: Icons.thumb_down,
                         isCorrect: false,
                         onTap: () =>
-                            notifier.toggleView(SelectedView.incorrect),
+                            notifier.toggleView(SelectedView.incorrect, ref),
                       ),
                     ],
                   ),
