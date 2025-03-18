@@ -1,4 +1,5 @@
 import 'package:brain_bench/business_logic/quiz/quiz_result_state.dart';
+import 'package:brain_bench/data/models/quiz_answer.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'quiz_answers_notifier.dart';
@@ -41,6 +42,20 @@ class QuizResultNotifier extends _$QuizResultNotifier {
       newExpandedAnswers.add(questionId);
     }
     state = state.copyWith(expandedAnswers: newExpandedAnswers);
+  }
+
+  List<QuizAnswer> getFilteredAnswers() {
+    if (state.selectedView == SelectedView.none) {
+      return [];
+    } else if (state.selectedView == SelectedView.correct) {
+      return state.quizAnswers
+          .where((answer) => answer.incorrectAnswers.isEmpty)
+          .toList();
+    } else {
+      return state.quizAnswers
+          .where((answer) => answer.incorrectAnswers.isNotEmpty)
+          .toList();
+    }
   }
 }
 

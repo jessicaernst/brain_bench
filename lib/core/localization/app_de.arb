@@ -95,5 +95,9 @@
     "answerExpandableNoExplanation": "Keine Erklärung verfügbar",
     "@answerExpandableNoExplanation": {
         "description": "The message displayed when there is no explanation available"
+    },
+    "quizToggleExplanation": "Hier kannst du zwischen deinen richtigen und falschen Antworten filtern. Tippe dafür auf die Daumen!",
+    "@quizToggleExplanation": {
+        "description": "The label for the toggle explanation button"
     }
 }

@@ -95,5 +95,9 @@
     "answerExpandableNoExplanation": "No explanation available",
     "@answerExpandableNoExplanation": {
         "description": "The message displayed when there is no explanation available"
+    },
+    "quizToggleExplanation": "Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!",
+    "@quizToggleExplanation": {
+        "description": "The label for the toggle explanation button"
     }
 }

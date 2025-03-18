@@ -79,4 +79,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get answerExpandableNoExplanation => 'Keine Erklärung verfügbar';
+
+  @override
+  String get quizToggleExplanation => 'Hier kannst du zwischen deinen richtigen und falschen Antworten filtern. Tippe dafür auf die Daumen!';
 }

@@ -23,4 +23,7 @@ class QuizResultState {
       quizAnswers: quizAnswers ?? this.quizAnswers,
     );
   }
+
+  bool get shouldShowExplanationText =>
+      selectedView == SelectedView.none && expandedAnswers.isEmpty;
 }

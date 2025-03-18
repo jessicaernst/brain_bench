@@ -79,4 +79,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get answerExpandableNoExplanation => 'No explanation available';
+
+  @override
+  String get quizToggleExplanation => 'Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!';
 }

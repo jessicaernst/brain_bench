@@ -238,6 +238,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No explanation available'**
   String get answerExpandableNoExplanation;
+
+  /// The label for the toggle explanation button
+  ///
+  /// In en, this message translates to:
+  /// **'Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!'**
+  String get quizToggleExplanation;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
