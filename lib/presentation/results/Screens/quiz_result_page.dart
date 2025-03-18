@@ -9,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:brain_bench/data/models/quiz_answer.dart';
+import 'package:logging/logging.dart';
+
+final Logger _logger = Logger('QuizResultPage');
 
 /// This widget displays the results of a quiz, showing a list of answer cards
 /// and allowing the user to filter between correct and incorrect answers.
@@ -67,6 +70,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
 
   @override
   Widget build(BuildContext context) {
+    _logger.fine('build() called for QuizResultPage');
     // Access the current state from QuizResultNotifier.
     final state = ref.watch(quizResultNotifierProvider);
 
@@ -86,6 +90,23 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(localizations.quizResultsAppBarTitle),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            _logger.info('Back button pressed');
+            // Reset the state of QuizAnswersNotifier when navigating back.
+            ref.read(quizAnswersNotifierProvider.notifier).reset();
+
+            // Reset the state of QuizViewModel when navigating back.
+            ref.read(quizViewModelProvider.notifier).resetQuiz(ref);
+
+            // Reset the selected view to none.
+            notifier.toggleView(SelectedView.none, ref);
+
+            // Navigate back to the topics page for the current category.
+            context.go('/categories/details/topics', extra: widget.categoryId);
+          },
+        ),
       ),
       body: state.quizAnswers.isEmpty
           ? Center(child: Text(localizations.quizResultsNotSaved))
@@ -163,6 +184,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                       title: 'End Quiz',
                       isActive: true,
                       onPressed: () {
+                        _logger.info('End Quiz button pressed');
                         // TODO: add save quiz and navigation
 
                         // Reset the state of QuizAnswersNotifier when navigating back.
