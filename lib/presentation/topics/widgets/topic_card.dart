@@ -1,3 +1,4 @@
+import 'package:brain_bench/core/mixins/ensure_visible_mixin.dart';
 import 'package:brain_bench/data/models/topic.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_expandable_content.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_main_card.dart';
@@ -24,16 +25,17 @@ class TopicCard extends StatefulWidget {
   State<TopicCard> createState() => _TopicCardState();
 }
 
-class _TopicCardState extends State<TopicCard> {
+class _TopicCardState extends State<TopicCard> with EnsureVisibleMixin {
   // ✅ Add a GlobalKey to each AnswerCard
-  final GlobalKey _cardKey = GlobalKey();
+  @override
+  final GlobalKey cardKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     logger.fine('build called for topic: ${widget.topic.name}');
     return Column(
-      key: _cardKey, // Add key to the main Widget.
+      key: cardKey, // Add key to the main Widget.
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TopicMainCard(
@@ -43,7 +45,7 @@ class _TopicCardState extends State<TopicCard> {
             logger.fine('tapped topic: ${widget.topic.name}');
             widget.onToggle();
             if (!widget.isExpanded) {
-              _ensureCardIsVisible();
+              ensureCardIsVisible(cardName: widget.topic.name);
             }
           },
           isDarkMode: isDarkMode,
@@ -56,24 +58,5 @@ class _TopicCardState extends State<TopicCard> {
         ),
       ],
     );
-  }
-
-  // ✅ Helper method to ensure the card is visible
-  void _ensureCardIsVisible() {
-    logger.fine('_ensureCardIsVisible called for topic: ${widget.topic.name}');
-    Future.delayed(const Duration(milliseconds: 300), () {
-      final RenderObject? renderObject =
-          _cardKey.currentContext?.findRenderObject();
-      if (renderObject != null && renderObject.attached) {
-        logger.info('Scrolling to make topic visible: ${widget.topic.name}');
-        Scrollable.ensureVisible(
-          _cardKey.currentContext!,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
-      } else {
-        logger.warning('RenderObject not found or not attached');
-      }
-    });
   }
 }

@@ -1,3 +1,4 @@
+import 'package:brain_bench/core/mixins/ensure_visible_mixin.dart';
 import 'package:brain_bench/presentation/results/widgets/answer_expandable.dart';
 import 'package:brain_bench/presentation/results/widgets/answer_main_card.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +20,10 @@ class AnswerCard extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _AnswerCardState();
 }
 
-class _AnswerCardState extends ConsumerState<AnswerCard> {
-  // ✅ Add a GlobalKey to each AnswerCard
-  final GlobalKey _cardKey = GlobalKey();
+class _AnswerCardState extends ConsumerState<AnswerCard>
+    with EnsureVisibleMixin {
+  @override
+  final GlobalKey cardKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +33,8 @@ class _AnswerCardState extends ConsumerState<AnswerCard> {
         quizResultState.expandedAnswers.contains(widget.answer.questionId);
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    // ✅ Use the key in the Column
     return Column(
-      key: _cardKey,
+      key: cardKey,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AnswerMainCard(
@@ -42,9 +43,8 @@ class _AnswerCardState extends ConsumerState<AnswerCard> {
           isExpanded: isExpanded,
           onTap: () {
             stateNotifier.toggleExplanation(widget.answer.questionId);
-            // ✅ Ensure the card is visible after tapping
             if (!isExpanded) {
-              _ensureCardIsVisible();
+              ensureCardIsVisible(cardName: widget.answer.questionId);
             }
           },
           isDarkMode: isDarkMode,
@@ -55,20 +55,5 @@ class _AnswerCardState extends ConsumerState<AnswerCard> {
         ),
       ],
     );
-  }
-
-  // ✅ Helper method to ensure the card is visible
-  void _ensureCardIsVisible() {
-    Future.delayed(const Duration(milliseconds: 300), () {
-      final RenderObject? renderObject =
-          _cardKey.currentContext?.findRenderObject();
-      if (renderObject != null && renderObject.attached) {
-        Scrollable.ensureVisible(
-          _cardKey.currentContext!,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
-      }
-    });
   }
 }
