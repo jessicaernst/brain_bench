@@ -1,6 +1,7 @@
 import 'package:brain_bench/business_logic/quiz/quiz_answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_result_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
+import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/presentation/results/widgets/answer_card.dart';
 import 'package:brain_bench/presentation/results/widgets/toggle_button.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -29,6 +30,7 @@ class QuizResultPage extends HookConsumerWidget {
         onBack: () {
           ref.read(quizAnswersNotifierProvider.notifier).reset();
           ref.read(quizViewModelProvider.notifier).resetQuiz(ref);
+          notifier.toggleView(SelectedView.none, ref);
 
           context.go(
             '/categories/details/topics',
@@ -66,25 +68,33 @@ class QuizResultPage extends HookConsumerWidget {
                 ),
                 Expanded(
                   child: ListView.separated(
-                    itemCount: state.quizAnswers
-                        .where((answer) =>
-                            state.selectedView == SelectedView.correct
-                                ? answer.incorrectAnswers.isEmpty
-                                : state.selectedView == SelectedView.incorrect
-                                    ? answer.incorrectAnswers.isNotEmpty
-                                    : false)
-                        .length,
+                    itemCount: state.selectedView == SelectedView.none
+                        ? 0
+                        : state.quizAnswers.where((answer) {
+                            if (state.selectedView == SelectedView.correct) {
+                              return answer.incorrectAnswers
+                                  .isEmpty; // Show correct answers
+                            } else if (state.selectedView ==
+                                SelectedView.incorrect) {
+                              return answer.incorrectAnswers
+                                  .isNotEmpty; // Show incorrect answers
+                            }
+                            return false; // Default: show nothing (should not reach here)
+                          }).length,
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 16),
                     itemBuilder: (context, index) {
-                      final filteredAnswers = state.quizAnswers
-                          .where((answer) =>
-                              state.selectedView == SelectedView.correct
-                                  ? answer.incorrectAnswers.isEmpty
-                                  : state.selectedView == SelectedView.incorrect
-                                      ? answer.incorrectAnswers.isNotEmpty
-                                      : false)
-                          .toList();
+                      final filteredAnswers = state.quizAnswers.where((answer) {
+                        if (state.selectedView == SelectedView.correct) {
+                          return answer
+                              .incorrectAnswers.isEmpty; // Show correct answers
+                        } else if (state.selectedView ==
+                            SelectedView.incorrect) {
+                          return answer.incorrectAnswers
+                              .isNotEmpty; // Show incorrect answers
+                        }
+                        return false; // Default: show nothing (should not reach here)
+                      }).toList();
 
                       final answer = filteredAnswers[index];
 
@@ -95,6 +105,11 @@ class QuizResultPage extends HookConsumerWidget {
                     },
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: LightDarkSwitchBtn(
+                      title: 'End Quiz', isActive: true, onPressed: () {}),
+                )
               ],
             ),
     );

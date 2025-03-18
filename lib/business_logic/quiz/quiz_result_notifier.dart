@@ -18,15 +18,19 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   }
 
   void toggleView(SelectedView newView, WidgetRef ref) {
-    if (state.selectedView == newView) return;
+    if (state.selectedView != SelectedView.none &&
+        state.selectedView == newView) {
+      // If we're currently in correct/incorrect and we tap the same button, go to none
+      state = state.copyWith(selectedView: SelectedView.none);
+    } else {
+      // ✅ 1. Collapse all answer cards before switching view
+      state = state.copyWith(expandedAnswers: {});
 
-    // ✅ 1. Collapse all answer cards before switching view
-    state = state.copyWith(expandedAnswers: {});
-
-    // 🕒 2. Wait for animation (~300ms), then switch view
-    Future.delayed(const Duration(milliseconds: 300), () {
-      state = state.copyWith(selectedView: newView);
-    });
+      // 🕒 2. Wait for animation (~300ms), then switch view
+      Future.delayed(const Duration(milliseconds: 300), () {
+        state = state.copyWith(selectedView: newView);
+      });
+    }
   }
 
   void toggleExplanation(String questionId) {
