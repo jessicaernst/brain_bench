@@ -80,4 +80,16 @@ class QuizViewModel extends _$QuizViewModel {
     state = QuizState.initial();
     ref.read(answersNotifierProvider.notifier).resetAnswers();
   }
+
+  // ✅ New method to get all correct answers for the current question
+  List<String> getAllCorrectAnswersForCurrentQuestion(WidgetRef ref) {
+    final currentQuestion = state.questions[state.currentIndex];
+    final allCorrectAnswers = <String>[];
+    for (final answer in currentQuestion.answers) {
+      if (answer.isCorrect) {
+        allCorrectAnswers.add(answer.text);
+      }
+    }
+    return allCorrectAnswers;
+  }
 }

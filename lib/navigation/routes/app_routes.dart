@@ -57,6 +57,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/categories/details/topics/quiz',
       builder: (_, state) {
+        // ✅ Extract topicId and categoryId correctly
         final extra = state.extra as Map<String, String>?;
         final topicId = extra?['topicId'];
         final categoryId = extra?['categoryId'];
@@ -69,6 +70,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/categories/details/topics/quiz/result',
       builder: (_, state) {
+        // ✅ Extract categoryId correctly
         final categoryId = state.extra as String?;
         return categoryId != null
             ? QuizResultPage(categoryId: categoryId)

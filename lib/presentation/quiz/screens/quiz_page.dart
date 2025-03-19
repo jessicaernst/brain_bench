@@ -38,27 +38,32 @@ class _QuizPageState extends ConsumerState<QuizPage> {
 
     final currentQuestion = quizState.questions[quizState.currentIndex];
 
-// User-selected answers
+    // User-selected answers
     final selectedAnswers = ref
         .read(answersNotifierProvider)
         .where((answer) => answer.isSelected)
         .map((answer) => answer.text)
         .toList();
 
-// Collect all possible answers for UI representation
+    // Collect all possible answers for UI representation
     final allAnswers =
         currentQuestion.answers.map((answer) => answer.text).toList();
 
-// Get the correct answers
+    // Get the correct answers
     final correctAnswers = currentQuestion.answers
         .where((answer) => answer.isCorrect)
         .map((answer) => answer.text)
         .toList();
 
-// Get explanation if available
+    // Get explanation if available
     final explanation = currentQuestion.explanation;
 
-// Save answer with all information
+    // ✅ Get all correct answers for the current question
+    final allCorrectAnswers = ref
+        .read(quizViewModelProvider.notifier)
+        .getAllCorrectAnswersForCurrentQuestion(ref);
+
+    // Save answer with all information
     quizAnswerNotifier.addAnswer(
       questionId: currentQuestion.id,
       topicId: currentQuestion.topicId,
@@ -68,6 +73,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
       correctAnswers: correctAnswers,
       allAnswers: allAnswers,
       explanation: explanation,
+      allCorrectAnswers: allCorrectAnswers,
     );
 
     showModalBottomSheet(
@@ -106,9 +112,10 @@ class _QuizPageState extends ConsumerState<QuizPage> {
     } else {
       _logger.info('🎉 Quiz completed.');
 
+      // ✅ Pass only the categoryId as a String
       context.go(
         '/categories/details/topics/quiz/result',
-        extra: widget.categoryId,
+        extra: widget.categoryId, // Pass only the categoryId
       );
     }
   }
@@ -130,9 +137,10 @@ class _QuizPageState extends ConsumerState<QuizPage> {
       appBar: BackNavAppBar(
         title: localizations.quizAppBarTitle,
         onBack: () {
+          // ✅ Pass only the categoryId as a String
           context.go(
             '/categories/details/topics',
-            extra: widget.categoryId,
+            extra: widget.categoryId, // Pass only the categoryId
           );
         },
       ),

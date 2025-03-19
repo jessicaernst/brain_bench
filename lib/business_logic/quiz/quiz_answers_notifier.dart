@@ -21,10 +21,22 @@ class QuizAnswersNotifier extends _$QuizAnswersNotifier {
     required List<String> correctAnswers,
     required List<String> allAnswers,
     String? explanation,
+    required List<String> allCorrectAnswers, // Add allCorrectAnswers
   }) {
     // Find answers the user should have selected but missed
     final missedCorrectAnswers =
         correctAnswers.where((ans) => !givenAnswers.contains(ans)).toList();
+
+    // ✅ Calculate points earned
+    int pointsEarned = 0;
+    for (final givenAnswer in givenAnswers) {
+      if (allCorrectAnswers.contains(givenAnswer)) {
+        pointsEarned++;
+      }
+    }
+
+    // ✅ Calculate possible points
+    final possiblePoints = allCorrectAnswers.length;
 
     state = [
       ...state,
@@ -37,6 +49,8 @@ class QuizAnswersNotifier extends _$QuizAnswersNotifier {
         correctAnswers: correctAnswers,
         allAnswers: allAnswers,
         explanation: explanation,
+        pointsEarned: pointsEarned, // Pass pointsEarned here
+        possiblePoints: possiblePoints, // Pass possiblePoints here
       ).copyWith(incorrectAnswers: missedCorrectAnswers),
     ];
 
@@ -45,6 +59,8 @@ class QuizAnswersNotifier extends _$QuizAnswersNotifier {
     _logger.info('📊 Correct Answers: $correctAnswers');
     _logger.info('📊 All Answers: $allAnswers');
     _logger.info('📊 Explanation: ${explanation ?? "None"}');
+    _logger.info('📊 Points Earned: $pointsEarned'); // Log points earned
+    _logger.info('📊 Possible Points: $possiblePoints'); // Log possible points
     _logger.info('📊 Amount of saved answers: ${state.length}');
   }
 

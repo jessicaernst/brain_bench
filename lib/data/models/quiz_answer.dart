@@ -17,6 +17,8 @@ class QuizAnswer with _$QuizAnswer {
     required List<String> incorrectAnswers,
     required List<String> allAnswers,
     String? explanation,
+    @Default(0) int pointsEarned,
+    @Default(0) int possiblePoints,
   }) = _QuizAnswer;
 
   factory QuizAnswer.create({
@@ -28,8 +30,9 @@ class QuizAnswer with _$QuizAnswer {
     required List<String> correctAnswers,
     required List<String> allAnswers,
     String? explanation,
+    required int pointsEarned,
+    required int possiblePoints,
   }) {
-    // Get all incorrect answers
     final incorrectAnswers =
         givenAnswers.where((ans) => !correctAnswers.contains(ans)).toList();
 
@@ -44,6 +47,8 @@ class QuizAnswer with _$QuizAnswer {
       incorrectAnswers: incorrectAnswers,
       allAnswers: allAnswers,
       explanation: explanation,
+      pointsEarned: pointsEarned,
+      possiblePoints: possiblePoints,
     );
   }
 

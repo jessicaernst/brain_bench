@@ -60,30 +60,25 @@ class QuizResultNotifier extends _$QuizResultNotifier {
         'getFilteredAnswers called with current selectedView: ${state.selectedView}');
     if (state.selectedView == SelectedView.none) {
       _logger.info('Returning empty list because selectedView is none');
+      return []; // Return an empty list when in SelectedView.none
     } else if (state.selectedView == SelectedView.correct) {
       _logger.info('Filtering for correct answers');
+      return state.quizAnswers
+          .where((answer) => answer.pointsEarned == answer.possiblePoints)
+          .toList();
     } else {
       _logger.info('Filtering for incorrect answers');
+      return state.quizAnswers
+          .where((answer) => answer.pointsEarned != answer.possiblePoints)
+          .toList();
     }
-    final List<QuizAnswer> filteredAnswers =
-        state.selectedView == SelectedView.none
-            ? []
-            : state.selectedView == SelectedView.correct
-                ? state.quizAnswers
-                    .where((answer) => answer.incorrectAnswers.isEmpty)
-                    .toList()
-                : state.quizAnswers
-                    .where((answer) => answer.incorrectAnswers.isNotEmpty)
-                    .toList();
-    _logger.fine('Returning filteredAnswers: ${filteredAnswers.length}');
-    return filteredAnswers;
   }
 
   // Helper method to check if there are any correct answers.
   bool hasCorrectAnswers() {
     _logger.fine('hasCorrectAnswers called');
-    final bool result =
-        state.quizAnswers.any((answer) => answer.incorrectAnswers.isEmpty);
+    final bool result = state.quizAnswers
+        .any((answer) => answer.pointsEarned == answer.possiblePoints);
     _logger.info('hasCorrectAnswers returning: $result');
     return result;
   }
@@ -91,26 +86,26 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   // Helper method to check if there are any incorrect answers.
   bool hasIncorrectAnswers() {
     _logger.fine('hasIncorrectAnswers called');
-    final bool result =
-        state.quizAnswers.any((answer) => answer.incorrectAnswers.isNotEmpty);
+    final bool result = state.quizAnswers
+        .any((answer) => answer.pointsEarned != answer.possiblePoints);
     _logger.info('hasIncorrectAnswers returning: $result');
     return result;
   }
 
-  // ✅ Calculate the total possible points
+  // ✅ Calculate the total possible points (sum of all correct answers)
   int calculateTotalPossiblePoints() {
     _logger.fine('calculateTotalPossiblePoints called');
-    final total = state.quizAnswers.length;
+    final total = state.quizAnswers
+        .fold<int>(0, (sum, answer) => sum + answer.possiblePoints);
     _logger.info('calculateTotalPossiblePoints returning: $total');
     return total;
   }
 
-  // ✅ Calculate the user's points
+  // ✅ Calculate the user's points (sum of points earned)
   int calculateUserPoints() {
     _logger.fine('calculateUserPoints called');
     final userPoints = state.quizAnswers
-        .where((answer) => answer.incorrectAnswers.isEmpty)
-        .length;
+        .fold<int>(0, (sum, answer) => sum + answer.pointsEarned);
     _logger.info('calculateUserPoints returning: $userPoints');
     return userPoints;
   }
