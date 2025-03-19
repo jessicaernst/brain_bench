@@ -112,7 +112,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                     child: Column(
                       children: [
                         Text(
-                          'Score: $userPoints / $totalPossiblePoints \n(${percentage.toStringAsFixed(1)}%)',
+                          '${localizations.quizResultScore}: $userPoints / $totalPossiblePoints \n(${percentage.toStringAsFixed(1)}%)',
                           style: BrainBenchTextStyles.title1(),
                           textAlign: TextAlign.center,
                         ),
