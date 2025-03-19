@@ -117,30 +117,15 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          spacing: 8,
-                          children: [
-                            Icon(
-                              isPassed
-                                  ? Icons.sentiment_very_satisfied
-                                  : Icons.sentiment_very_dissatisfied,
-                              size: 40,
-                              color: isPassed
-                                  ? BrainBenchColors.correctAnswerGlass
-                                  : BrainBenchColors.falseQuestionGlass,
-                            ),
-                            Text(
-                              isPassed
-                                  ? localizations.quizResultPassed
-                                  : localizations.quizResultFailed,
-                              style: BrainBenchTextStyles.title2Bold().copyWith(
-                                color: isPassed
-                                    ? BrainBenchColors.correctAnswerGlass
-                                    : BrainBenchColors.falseQuestionGlass,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          isPassed
+                              ? localizations.quizResultPassed
+                              : localizations.quizResultFailed,
+                          style: BrainBenchTextStyles.title2Bold().copyWith(
+                            color: isPassed
+                                ? BrainBenchColors.correctAnswerGlass
+                                : BrainBenchColors.falseQuestionGlass,
+                          ),
                         ),
                       ],
                     ),
