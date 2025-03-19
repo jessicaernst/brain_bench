@@ -85,4 +85,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get quizResultBtnLbl => 'Zurück zu Themenauswahl';
+
+  @override
+  String get quizResultPassed => 'Bestanden';
+
+  @override
+  String get quizResultFailed => 'Nicht bestanden';
+
+  @override
+  String get quizResultScore => 'Punktzahl';
 }

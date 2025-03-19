@@ -63,15 +63,19 @@ class AnswersNotifier extends _$AnswersNotifier {
 
   // Toggle the `isSelected` state of a specific answer by its ID
   void toggleAnswerSelection(String answerId, bool isMultipleChoice) {
-    state = state.map((answer) {
-      if (isMultipleChoice) {
+    if (!isMultipleChoice) {
+      // If it's not a multiple-choice question, deselect all other answers
+      state = state.map((answer) {
+        return answer.copyWith(isSelected: answer.id == answerId);
+      }).toList();
+    } else {
+      // If it's a multiple-choice question, toggle the selected state of the answer
+      state = state.map((answer) {
         return answer.id == answerId
             ? answer.copyWith(isSelected: !answer.isSelected)
             : answer;
-      } else {
-        return answer.copyWith(isSelected: answer.id == answerId);
-      }
-    }).toList();
+      }).toList();
+    }
 
     _logger.info('🔄 Answer selection updated for ID: $answerId');
   }

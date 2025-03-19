@@ -85,4 +85,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quizResultBtnLbl => 'Back to topic selection';
+
+  @override
+  String get quizResultPassed => 'Passed';
+
+  @override
+  String get quizResultFailed => 'Failed';
+
+  @override
+  String get quizResultScore => 'Score';
 }

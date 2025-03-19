@@ -96,6 +96,44 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     _logger.info('hasIncorrectAnswers returning: $result');
     return result;
   }
+
+  // ✅ Calculate the total possible points
+  int calculateTotalPossiblePoints() {
+    _logger.fine('calculateTotalPossiblePoints called');
+    final total = state.quizAnswers.length;
+    _logger.info('calculateTotalPossiblePoints returning: $total');
+    return total;
+  }
+
+  // ✅ Calculate the user's points
+  int calculateUserPoints() {
+    _logger.fine('calculateUserPoints called');
+    final userPoints = state.quizAnswers
+        .where((answer) => answer.incorrectAnswers.isEmpty)
+        .length;
+    _logger.info('calculateUserPoints returning: $userPoints');
+    return userPoints;
+  }
+
+  // ✅ Calculate the percentage
+  double calculatePercentage() {
+    _logger.fine('calculatePercentage called');
+    final total = calculateTotalPossiblePoints();
+    if (total == 0) return 0.0;
+    final userPoints = calculateUserPoints();
+    final percentage = (userPoints / total) * 100;
+    _logger.info('calculatePercentage returning: $percentage');
+    return percentage;
+  }
+
+  // ✅ Determine if the quiz was passed
+  bool isQuizPassed() {
+    _logger.fine('isQuizPassed called');
+    final percentage = calculatePercentage();
+    final isPassed = percentage >= 60.0;
+    _logger.info('isQuizPassed returning: $isPassed');
+    return isPassed;
+  }
 }
 
 enum SelectedView { none, correct, incorrect }

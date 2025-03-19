@@ -103,5 +103,17 @@
     "quizResultBtnLbl": "Back to topic selection",
     "@quizResultBtnLbl": {
         "description": "The label of the button to view the quiz results"
+    },
+    "quizResultPassed": "Passed",
+    "@quizResultPassed": {
+        "description": "The label for the passed quiz result"
+    },
+    "quizResultFailed": "Failed",
+    "@quizResultFailed": {
+        "description": "The label for the failed quiz result"
+    },
+    "quizResultScore": "Score",
+    "@quizResultScore": {
+        "description": "The label for the quiz result score"
     }
 }

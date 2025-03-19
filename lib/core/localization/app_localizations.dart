@@ -250,6 +250,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to topic selection'**
   String get quizResultBtnLbl;
+
+  /// The label for the passed quiz result
+  ///
+  /// In en, this message translates to:
+  /// **'Passed'**
+  String get quizResultPassed;
+
+  /// The label for the failed quiz result
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get quizResultFailed;
+
+  /// The label for the quiz result score
+  ///
+  /// In en, this message translates to:
+  /// **'Score'**
+  String get quizResultScore;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

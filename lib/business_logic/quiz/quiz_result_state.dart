@@ -25,5 +25,5 @@ class QuizResultState {
   }
 
   bool get shouldShowExplanationText =>
-      selectedView == SelectedView.none && expandedAnswers.isEmpty;
+      selectedView != SelectedView.none || expandedAnswers.isNotEmpty;
 }

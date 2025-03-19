@@ -3,6 +3,8 @@ import 'package:brain_bench/business_logic/quiz/quiz_result_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/styles/colors.dart';
+import 'package:brain_bench/core/styles/text_styles.dart';
 import 'package:brain_bench/presentation/results/widgets/quiz_result_expanded_view.dart';
 import 'package:brain_bench/presentation/results/widgets/toggle_button.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +42,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
   static const Duration _animationDuration = Duration(milliseconds: 300);
   static const double _defaultPadding = 24.0;
   static const double _buttonSpacing = 48.0;
-  static const double _explanationTextHeightFactor = 0.25;
+  static const double _explanationTextHeightFactor = 0.15;
 
   // ✅ Method for creating the animated containers - This method centralizes the creation of AnimatedContainers.
   /// Creates an [AnimatedContainer] with consistent settings for animations, padding, alignment, and visibility.
@@ -87,6 +89,12 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
     final bool hasCorrectAnswers = notifier.hasCorrectAnswers();
     final bool hasIncorrectAnswers = notifier.hasIncorrectAnswers();
 
+    // ✅ Calculate the score and pass/fail status
+    final totalPossiblePoints = notifier.calculateTotalPossiblePoints();
+    final userPoints = notifier.calculateUserPoints();
+    final percentage = notifier.calculatePercentage();
+    final isPassed = notifier.isQuizPassed();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(localizations.quizResultsAppBarTitle),
@@ -95,22 +103,48 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
           ? Center(child: Text(localizations.quizResultsNotSaved))
           : Column(
               children: [
-                // Show explanatory text conditionally
+                // ✅ Display Score and Pass/Fail Status
                 _createAnimatedContainer(
-                  height: state.shouldShowExplanationText
+                  // ✅ Show only when not in correct/incorrect view
+                  isVisible: state.selectedView == SelectedView.none,
+                  child: Padding(
+                    padding: const EdgeInsets.all(_defaultPadding),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Score: $userPoints / $totalPossiblePoints \n(${percentage.toStringAsFixed(1)}%)',
+                          style: BrainBenchTextStyles.title1(),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          isPassed
+                              ? localizations.quizResultPassed
+                              : localizations.quizResultFailed,
+                          style: BrainBenchTextStyles.title2Bold().copyWith(
+                            color: isPassed
+                                ? BrainBenchColors.correctAnswerGlass
+                                : BrainBenchColors.falseQuestionGlass,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // ✅ Explanation Text Container
+                _createAnimatedContainer(
+                  height: state.selectedView == SelectedView.none
                       ? MediaQuery.of(context).size.height *
                           _explanationTextHeightFactor
                       : 0,
-                  isVisible: state.shouldShowExplanationText,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: _defaultPadding),
-                      child: ClipRect(
-                        child: Text(
-                          localizations.quizToggleExplanation,
-                          textAlign: TextAlign.center,
-                        ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: _defaultPadding),
+                    child: Visibility(
+                      visible: state.selectedView == SelectedView.none,
+                      child: Text(
+                        localizations.quizToggleExplanation,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
@@ -119,7 +153,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                 _createAnimatedContainer(
                   padding: EdgeInsets.only(
                     top: state.selectedView == SelectedView.none
-                        ? 0
+                        ? _defaultPadding
                         : _defaultPadding,
                     left: _defaultPadding,
                     right: _defaultPadding,
@@ -162,7 +196,8 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                   defaultPadding: _defaultPadding,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(_defaultPadding),
+                  padding: const EdgeInsets.fromLTRB(
+                      _defaultPadding, 16, _defaultPadding, 32),
                   child: LightDarkSwitchBtn(
                       title: localizations.quizResultBtnLbl,
                       isActive: true,
@@ -181,7 +216,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
 
                         // Navigate back to the topics page for the current category.
                         context.go('/categories/details/topics',
-                            extra: widget.categoryId);
+                            extra: {'categoryId': widget.categoryId});
                       }),
                 )
               ],
