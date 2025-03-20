@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
-import 'package:brain_bench/data/models/quiz_answer.dart'; // Importiere QuizAnswer
+import 'package:brain_bench/data/models/quiz/quiz_answer.dart'; // Importiere QuizAnswer
 
 part 'result.freezed.dart';
 part 'result.g.dart';

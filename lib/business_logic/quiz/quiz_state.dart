@@ -1,5 +1,5 @@
-import 'package:brain_bench/data/models/answer.dart';
-import 'package:brain_bench/data/models/question.dart';
+import 'package:brain_bench/data/models/quiz/answer.dart';
+import 'package:brain_bench/data/models/quiz/question.dart';
 
 class QuizState {
   QuizState({

@@ -1,4 +1,4 @@
-import 'package:brain_bench/data/models/category.dart';
+import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/data/providers/database_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

@@ -10,7 +10,7 @@ import 'package:brain_bench/presentation/results/widgets/toggle_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:brain_bench/data/models/quiz_answer.dart';
+import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
 import 'package:logging/logging.dart';
 
 final Logger _logger = Logger('QuizResultPage');

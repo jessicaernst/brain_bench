@@ -1,4 +1,4 @@
-import 'package:brain_bench/data/models/quiz_answer.dart';
+import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
 import 'package:brain_bench/presentation/results/widgets/answer_card.dart';
 import 'package:flutter/material.dart';
 

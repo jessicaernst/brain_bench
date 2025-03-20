@@ -1,5 +1,5 @@
 import 'package:brain_bench/business_logic/quiz/quiz_result_notifier.dart';
-import 'package:brain_bench/data/models/quiz_answer.dart';
+import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
 
 class QuizResultState {
   final SelectedView selectedView;

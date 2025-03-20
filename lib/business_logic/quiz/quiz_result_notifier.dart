@@ -1,6 +1,6 @@
 import 'package:brain_bench/business_logic/quiz/quiz_result_state.dart';
-import 'package:brain_bench/data/models/quiz_answer.dart';
-import 'package:brain_bench/data/models/result.dart';
+import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
+import 'package:brain_bench/data/models/result/result.dart';
 import 'package:brain_bench/data/providers/results/result_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';

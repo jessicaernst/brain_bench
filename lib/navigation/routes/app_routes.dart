@@ -1,4 +1,4 @@
-import 'package:brain_bench/data/models/category.dart';
+import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/navigation/routes/not_found_page.dart';
 import 'package:brain_bench/presentation/categories/screens/category_details_page.dart';
 import 'package:go_router/go_router.dart';

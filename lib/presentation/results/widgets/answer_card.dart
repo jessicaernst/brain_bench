@@ -4,7 +4,7 @@ import 'package:brain_bench/presentation/results/widgets/answer_main_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_result_notifier.dart';
-import 'package:brain_bench/data/models/quiz_answer.dart';
+import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
 
 /// This widget represents a single answer card in the quiz result page.
 ///

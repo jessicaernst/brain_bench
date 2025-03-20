@@ -1,4 +1,4 @@
-import 'package:brain_bench/data/models/answer.dart';
+import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:collection/collection.dart';

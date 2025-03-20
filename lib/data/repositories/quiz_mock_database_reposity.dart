@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:brain_bench/data/models/category.dart';
-import 'package:brain_bench/data/models/topic.dart';
-import 'package:brain_bench/data/models/question.dart';
-import 'package:brain_bench/data/models/answer.dart';
-import 'package:brain_bench/data/models/result.dart';
+import 'package:brain_bench/data/models/category/category.dart';
+import 'package:brain_bench/data/models/topic/topic.dart';
+import 'package:brain_bench/data/models/quiz/question.dart';
+import 'package:brain_bench/data/models/quiz/answer.dart';
+import 'package:brain_bench/data/models/result/result.dart';
 import 'package:logging/logging.dart';
 import 'quiz_database_repository.dart';
 

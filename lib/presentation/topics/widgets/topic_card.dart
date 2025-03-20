@@ -1,5 +1,5 @@
 import 'package:brain_bench/core/mixins/ensure_visible_mixin.dart';
-import 'package:brain_bench/data/models/topic.dart';
+import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_expandable_content.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_main_card.dart';
 import 'package:flutter/material.dart';

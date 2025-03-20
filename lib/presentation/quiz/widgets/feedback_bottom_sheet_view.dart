@@ -2,7 +2,7 @@ import 'package:brain_bench/core/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
-import 'package:brain_bench/data/models/answer.dart';
+import 'package:brain_bench/data/models/quiz/answer.dart';
 
 /// This widget displays a bottom sheet that provides feedback to the user after answering a quiz question.
 /// It shows the correct answers, incorrect answers, and any missed correct answers.

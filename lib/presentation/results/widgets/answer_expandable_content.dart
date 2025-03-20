@@ -1,6 +1,6 @@
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
-import 'package:brain_bench/data/models/quiz_answer.dart';
+import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
 import 'package:flutter/material.dart';
 
 /// This widget displays the detailed content of a quiz answer, including the question,
