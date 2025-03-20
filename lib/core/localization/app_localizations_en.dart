@@ -94,4 +94,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quizResultScore => 'Score';
+
+  @override
+  String get topicsDone => 'Done';
+
+  @override
+  String get topicsTitle => 'Topics';
 }

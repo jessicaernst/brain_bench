@@ -115,5 +115,13 @@
     "quizResultScore": "Punktzahl",
     "@quizResultScore": {
         "description": "The label for the quiz result score"
+    },
+    "topicsDone": "Erledigt",
+    "@topicsDone": {
+        "description": "The label for the done topics"
+    },
+    "topicsTitle": "Topics",
+    "@topicsTitle": {
+        "description": "The title of the topics page"
     }
 }

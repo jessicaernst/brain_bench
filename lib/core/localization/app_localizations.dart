@@ -268,6 +268,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Score'**
   String get quizResultScore;
+
+  /// The label for the done topics
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get topicsDone;
+
+  /// The title of the topics page
+  ///
+  /// In en, this message translates to:
+  /// **'Topics'**
+  String get topicsTitle;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

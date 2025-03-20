@@ -1,6 +1,7 @@
 import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
 import 'package:brain_bench/core/component_widgets/no_data_available_view.dart';
 import 'package:brain_bench/core/component_widgets/progress_indicator_bar_view.dart';
+import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/models/topic.dart';
 import 'package:brain_bench/data/providers/quiz/topic_providers.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_card.dart';
@@ -31,14 +32,14 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
   @override
   Widget build(BuildContext context) {
     final String languageCode = Localizations.localeOf(context).languageCode;
-    final title = languageCode == 'de' ? 'Themen' : 'Topics';
+    final AppLocalizations localizations = AppLocalizations.of(context)!;
 
     final topicsAsync =
         ref.watch(topicsProvider(widget.categoryId, languageCode));
 
     return Scaffold(
       appBar: BackNavAppBar(
-        title: title,
+        title: localizations.topicsTitle,
         onBack: () {
           context.go('/categories');
         },
@@ -100,7 +101,7 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
                     if (doneTopics.isNotEmpty)
                       ExpansionTile(
                         title: Text(
-                          languageCode == 'de' ? 'Erledigt' : 'Done',
+                          localizations.topicsDone,
                           style: TextTheme.of(context).headlineMedium,
                         ),
                         initiallyExpanded: _showDoneTopics,
