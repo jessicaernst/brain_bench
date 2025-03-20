@@ -79,11 +79,14 @@ class _TopicCardState extends State<TopicCard> with EnsureVisibleMixin {
           isDarkMode: isDarkMode,
         ),
         // The expandable area that contains detailed information about the topic.
-        TopicCardExpandable(
-          description: widget.topic.description,
-          onPressed: widget.onPressed, // Pass the callback to start the quiz.
-          isExpanded: widget.isExpanded,
-          title: widget.topic.name,
+        Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          child: TopicCardExpandable(
+            description: widget.topic.description,
+            onPressed: widget.onPressed, // Pass the callback to start the quiz.
+            isExpanded: widget.isExpanded,
+            title: widget.topic.name,
+          ),
         ),
       ],
     );

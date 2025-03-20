@@ -1,6 +1,7 @@
 import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
 import 'package:brain_bench/core/component_widgets/no_data_available_view.dart';
 import 'package:brain_bench/core/component_widgets/progress_indicator_bar_view.dart';
+import 'package:brain_bench/data/models/topic.dart';
 import 'package:brain_bench/data/providers/quiz/topic_providers.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,6 +26,7 @@ class TopicsPage extends ConsumerStatefulWidget {
 class _TopicsPageState extends ConsumerState<TopicsPage> {
   // ✅ Map to hold the expanded state of each TopicCard, keyed by topicId
   final Map<String, bool> _expandedStates = {};
+  bool _showDoneTopics = false; // ✅ State for the "Done" section
 
   @override
   Widget build(BuildContext context) {
@@ -56,39 +58,84 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
                     text: '❌  No topics available.',
                   );
                 }
-                return ListView.builder(
-                  key: const PageStorageKey(
-                      'topicList'), //✅ Add Key for listview
-                  itemCount: topics.length,
-                  itemBuilder: (context, index) {
-                    final topic = topics[index];
-                    // ✅ Initialize the expanded state in the map if it doesn't exist.
-                    _expandedStates.putIfAbsent(topic.id, () => false);
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                      child: TopicCard(
-                        isExpanded:
-                            _expandedStates[topic.id]!, //✅ pass the value.
-                        onToggle: () {
-                          //✅ Create a toggle callback
+
+                // ✅ Split topics into done and undone
+                final List<Topic> doneTopics =
+                    topics.where((t) => t.isDone).toList();
+                final List<Topic> undoneTopics =
+                    topics.where((t) => !t.isDone).toList();
+
+                return ListView(
+                  key: const PageStorageKey('topicList'),
+                  children: [
+                    // ✅ Undone Topics
+                    if (undoneTopics.isNotEmpty)
+                      ...undoneTopics.map((topic) {
+                        _expandedStates.putIfAbsent(topic.id, () => false);
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                          child: TopicCard(
+                            isExpanded: _expandedStates[topic.id]!,
+                            onToggle: () {
+                              setState(() {
+                                _expandedStates[topic.id] =
+                                    !_expandedStates[topic.id]!;
+                              });
+                            },
+                            onPressed: () {
+                              context.go(
+                                '/categories/details/topics/quiz',
+                                extra: {
+                                  'topicId': topic.id,
+                                  'categoryId': widget.categoryId,
+                                },
+                              );
+                            },
+                            topic: topic,
+                          ),
+                        );
+                      }),
+
+                    // ✅ Done Topics Section
+                    if (doneTopics.isNotEmpty)
+                      ExpansionTile(
+                        title: Text(
+                          languageCode == 'de' ? 'Erledigt' : 'Done',
+                          style: TextTheme.of(context).headlineMedium,
+                        ),
+                        initiallyExpanded: _showDoneTopics,
+                        onExpansionChanged: (expanded) {
                           setState(() {
-                            _expandedStates[topic.id] =
-                                !_expandedStates[topic.id]!;
+                            _showDoneTopics = expanded;
                           });
                         },
-                        onPressed: () {
-                          context.go(
-                            '/categories/details/topics/quiz',
-                            extra: {
-                              'topicId': topic.id,
-                              'categoryId': widget.categoryId,
-                            },
+                        children: doneTopics.map((topic) {
+                          _expandedStates.putIfAbsent(topic.id, () => false);
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: TopicCard(
+                              isExpanded: _expandedStates[topic.id]!,
+                              onToggle: () {
+                                setState(() {
+                                  _expandedStates[topic.id] =
+                                      !_expandedStates[topic.id]!;
+                                });
+                              },
+                              onPressed: () {
+                                context.go(
+                                  '/categories/details/topics/quiz',
+                                  extra: {
+                                    'topicId': topic.id,
+                                    'categoryId': widget.categoryId,
+                                  },
+                                );
+                              },
+                              topic: topic,
+                            ),
                           );
-                        },
-                        topic: topic,
+                        }).toList(),
                       ),
-                    );
-                  },
+                  ],
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator()),

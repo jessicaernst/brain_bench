@@ -58,6 +58,16 @@ class BrainBenchTheme {
             color: BrainBenchColors.blueprintBlue,
           ),
         ),
+        expansionTileTheme: const ExpansionTileThemeData(
+          collapsedIconColor: BrainBenchColors.deepDive,
+          iconColor: BrainBenchColors.deepDive,
+          collapsedBackgroundColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
+          tilePadding: EdgeInsets.symmetric(horizontal: 16),
+          childrenPadding: EdgeInsets.only(left: 16, right: 16, bottom: 80),
+          collapsedShape: Border(),
+          shape: Border(),
+        ),
       );
 
   static ThemeData get darkTheme => ThemeData(
@@ -110,6 +120,16 @@ class BrainBenchTheme {
           iconTheme: const IconThemeData(
             color: BrainBenchColors.flutterSky,
           ),
+        ),
+        expansionTileTheme: const ExpansionTileThemeData(
+          collapsedIconColor: BrainBenchColors.cloudCanvas,
+          iconColor: BrainBenchColors.cloudCanvas,
+          collapsedBackgroundColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
+          tilePadding: EdgeInsets.symmetric(horizontal: 16),
+          childrenPadding: EdgeInsets.only(left: 16, right: 16, bottom: 8),
+          collapsedShape: Border(),
+          shape: Border(),
         ),
       );
 }
