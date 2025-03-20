@@ -8,7 +8,13 @@ part of 'answers_notifier.dart';
 
 String _$answersNotifierHash() => r'd613296dff9a5aa4b5e0e7709b89942212570909';
 
-/// See also [AnswersNotifier].
+/// A Riverpod notifier that manages a list of [Answer] objects.
+///
+/// This notifier is responsible for storing and managing the answers for a
+/// single question in a quiz. It keeps track of the answers, their selected
+/// state, and provides methods to initialize, toggle, and reset the answers.
+///
+/// Copied from [AnswersNotifier].
 @ProviderFor(AnswersNotifier)
 final answersNotifierProvider =
     AutoDisposeNotifierProvider<AnswersNotifier, List<Answer>>.internal(

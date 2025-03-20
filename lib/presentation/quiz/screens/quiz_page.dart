@@ -16,14 +16,27 @@ import 'package:logging/logging.dart';
 
 final Logger _logger = Logger('QuizPage');
 
+/// A widget that displays a quiz for a specific topic.
+///
+/// This page fetches questions for a given [topicId] and allows the user to
+/// answer them. It manages the quiz flow, including displaying questions,
+/// handling user input, showing feedback, and navigating to the result page
+/// upon completion.
 class QuizPage extends ConsumerStatefulWidget {
+  /// Creates a [QuizPage].
+  ///
+  /// The [topicId] and [categoryId] parameters are required and represent the
+  /// ID of the topic and category for which the quiz is being taken.
   const QuizPage({
     super.key,
     required this.topicId,
     required this.categoryId,
   });
 
+  /// The ID of the topic for which the quiz is being taken.
   final String topicId;
+
+  /// The ID of the category the topic belongs to.
   final String categoryId;
 
   @override
@@ -31,7 +44,17 @@ class QuizPage extends ConsumerStatefulWidget {
 }
 
 class _QuizPageState extends ConsumerState<QuizPage> {
-  /// Displays the result bottom sheet after a question is answered
+  /// Displays the result bottom sheet after a question is answered.
+  ///
+  /// This method shows a modal bottom sheet that provides feedback on the
+  /// user's answer to the current question. It displays whether the answer
+  /// was correct or incorrect, shows the correct answers, and provides an
+  /// explanation if available. It also allows the user to proceed to the next
+  /// question or finish the quiz.
+  ///
+  /// Parameters:
+  ///   - [context]: The build context.
+  ///   - [ref]: The widget ref to access providers.
   void _showResultBottomSheet(BuildContext context, WidgetRef ref) {
     final quizState = ref.read(quizViewModelProvider);
     final quizAnswerNotifier = ref.read(quizAnswersNotifierProvider.notifier);
@@ -103,7 +126,14 @@ class _QuizPageState extends ConsumerState<QuizPage> {
     );
   }
 
-  /// Handles logic to either load the next question or finish the quiz
+  /// Handles logic to either load the next question or finish the quiz.
+  ///
+  /// This method determines whether to load the next question or navigate to
+  /// the quiz result page based on the current state of the quiz.
+  ///
+  /// Parameters:
+  ///   - [context]: The build context.
+  ///   - [ref]: The widget ref to access providers.
   void _handleNextQuestionOrFinish(BuildContext context, WidgetRef ref) {
     final quizViewModel = ref.read(quizViewModelProvider.notifier);
 
@@ -112,10 +142,13 @@ class _QuizPageState extends ConsumerState<QuizPage> {
     } else {
       _logger.info('🎉 Quiz completed.');
 
-      // ✅ Pass only the categoryId as a String
+      // ✅ Pass categoryId and topicId as a Map
       context.go(
         '/categories/details/topics/quiz/result',
-        extra: widget.categoryId, // Pass only the categoryId
+        extra: <String, String>{
+          'categoryId': widget.categoryId,
+          'topicId': widget.topicId,
+        },
       );
     }
   }

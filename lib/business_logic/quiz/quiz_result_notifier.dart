@@ -1,16 +1,35 @@
 import 'package:brain_bench/business_logic/quiz/quiz_result_state.dart';
 import 'package:brain_bench/data/models/quiz_answer.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:brain_bench/data/models/result.dart';
+import 'package:brain_bench/data/providers/results/result_providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'quiz_answers_notifier.dart';
 
 part 'quiz_result_notifier.g.dart';
 
+/// Logger instance for the QuizResultNotifier class.
 final Logger _logger = Logger('QuizResultNotifier');
 
+/// A Riverpod notifier that manages the state of the quiz result page.
+///
+/// This notifier is responsible for:
+/// - Managing the selected view (none, correct, incorrect).
+/// - Managing the expanded answers.
+/// - Providing a filtered list of answers based on the selected view.
+/// - Calculating the total possible points, user points, and percentage.
+/// - Determining if the quiz was passed.
+/// - Saving the quiz result to the mock database.
+/// - Marking a topic as done in the mock database.
 @riverpod
 class QuizResultNotifier extends _$QuizResultNotifier {
+  /// Builds the initial state of the notifier.
+  ///
+  /// The initial state is set to:
+  /// - `selectedView`: `SelectedView.none`
+  /// - `expandedAnswers`: An empty set.
+  /// - `quizAnswers`: The list of quiz answers from the `quizAnswersNotifierProvider`.
   @override
   QuizResultState build() {
     final quizAnswers = ref.watch(quizAnswersNotifierProvider);
@@ -22,6 +41,15 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     );
   }
 
+  /// Toggles the selected view between `none`, `correct`, and `incorrect`.
+  ///
+  /// If the current view is not `none` and the new view is the same as the
+  /// current view, the view is toggled to `none`. Otherwise, the view is
+  /// toggled to the new view.
+  ///
+  /// Parameters:
+  ///   - [newView]: The new view to toggle to.
+  ///   - [ref]: The `WidgetRef` to access other providers.
   void toggleView(SelectedView newView, WidgetRef ref) {
     _logger.fine('toggleView called with newView: $newView');
     if (state.selectedView != SelectedView.none &&
@@ -42,6 +70,13 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     }
   }
 
+  /// Toggles the explanation for a given question.
+  ///
+  /// If the explanation for the question is already expanded, it is collapsed.
+  /// Otherwise, it is expanded.
+  ///
+  /// Parameters:
+  ///   - [questionId]: The ID of the question to toggle the explanation for.
   void toggleExplanation(String questionId) {
     _logger.fine('toggleExplanation called for questionId: $questionId');
     final newExpandedAnswers = {...state.expandedAnswers};
@@ -55,6 +90,14 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     state = state.copyWith(expandedAnswers: newExpandedAnswers);
   }
 
+  /// Returns a filtered list of answers based on the selected view.
+  ///
+  /// If the selected view is `none`, an empty list is returned. If the
+  /// selected view is `correct`, only correct answers are returned. If the
+  /// selected view is `incorrect`, only incorrect answers are returned.
+  ///
+  /// Returns:
+  ///   A list of [QuizAnswer] objects.
   List<QuizAnswer> getFilteredAnswers() {
     _logger.fine(
         'getFilteredAnswers called with current selectedView: ${state.selectedView}');
@@ -74,7 +117,10 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     }
   }
 
-  // Helper method to check if there are any correct answers.
+  /// Checks if there are any correct answers.
+  ///
+  /// Returns:
+  ///   `true` if there are any correct answers, `false` otherwise.
   bool hasCorrectAnswers() {
     _logger.fine('hasCorrectAnswers called');
     final bool result = state.quizAnswers
@@ -83,7 +129,10 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     return result;
   }
 
-  // Helper method to check if there are any incorrect answers.
+  /// Checks if there are any incorrect answers.
+  ///
+  /// Returns:
+  ///   `true` if there are any incorrect answers, `false` otherwise.
   bool hasIncorrectAnswers() {
     _logger.fine('hasIncorrectAnswers called');
     final bool result = state.quizAnswers
@@ -92,7 +141,10 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     return result;
   }
 
-  // ✅ Calculate the total possible points (sum of all correct answers)
+  /// Calculates the total possible points for the quiz.
+  ///
+  /// Returns:
+  ///   The total possible points.
   int calculateTotalPossiblePoints() {
     _logger.fine('calculateTotalPossiblePoints called');
     final total = state.quizAnswers
@@ -101,7 +153,10 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     return total;
   }
 
-  // ✅ Calculate the user's points (sum of points earned)
+  /// Calculates the user's points for the quiz.
+  ///
+  /// Returns:
+  ///   The user's points.
   int calculateUserPoints() {
     _logger.fine('calculateUserPoints called');
     final userPoints = state.quizAnswers
@@ -110,7 +165,10 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     return userPoints;
   }
 
-  // ✅ Calculate the percentage
+  /// Calculates the percentage of correct answers.
+  ///
+  /// Returns:
+  ///   The percentage of correct answers.
   double calculatePercentage() {
     _logger.fine('calculatePercentage called');
     final total = calculateTotalPossiblePoints();
@@ -121,7 +179,10 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     return percentage;
   }
 
-  // ✅ Determine if the quiz was passed
+  /// Determines if the quiz was passed.
+  ///
+  /// Returns:
+  ///   `true` if the quiz was passed, `false` otherwise.
   bool isQuizPassed() {
     _logger.fine('isQuizPassed called');
     final percentage = calculatePercentage();
@@ -129,6 +190,49 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     _logger.info('isQuizPassed returning: $isPassed');
     return isPassed;
   }
+
+  /// Saves the quiz result to the mock database.
+  ///
+  /// This method creates a [Result] object with the current quiz data and
+  /// saves it using the `saveResultNotifierProvider`.
+  ///
+  /// Parameters:
+  ///   - [categoryId]: The ID of the category the quiz belongs to.
+  ///   - [topicId]: The ID of the topic the quiz belongs to.
+  ///   - [userId]: The ID of the user who took the quiz.
+  ///   - [ref]: The `WidgetRef` to access other providers.
+  Future<void> saveQuizResult(
+      String categoryId, String topicId, String userId, WidgetRef ref) async {
+    _logger.info(
+        'saveQuizResult() called for categoryId: $categoryId, topicId: $topicId');
+    final result = Result.create(
+        categoryId: categoryId,
+        topicId: topicId,
+        correct: calculateUserPoints(),
+        total: calculateTotalPossiblePoints(),
+        score: calculatePercentage(),
+        quizAnswers: state.quizAnswers,
+        userId: userId);
+    await ref.read(saveResultNotifierProvider.notifier).saveResult(result);
+    _logger.info('Quiz result saved successfully.');
+  }
+
+  /// Marks a topic as done in the mock database.
+  ///
+  /// This method uses the `saveResultNotifierProvider` to mark a
+  /// topic as done.
+  ///
+  /// Parameters:
+  ///   - [topicId]: The ID of the topic to mark as done.
+  ///   - [ref]: The `WidgetRef` to access other providers.
+  Future<void> markTopicAsDone(String topicId, WidgetRef ref) async {
+    _logger.info('markTopicAsDone() called for topicId: $topicId');
+    await ref
+        .read(saveResultNotifierProvider.notifier)
+        .markTopicAsDone(topicId);
+    _logger.info('Topic $topicId marked as done.');
+  }
 }
 
+/// Enum representing the selected view on the quiz result page.
 enum SelectedView { none, correct, incorrect }

@@ -8,7 +8,12 @@ part of 'result_providers.dart';
 
 String _$resultsHash() => r'9ae60e7d0f80c5f66a1e9ddc6c50ad093ae63152';
 
-/// See also [results].
+/// Provides a list of [Result] objects for a specific user.
+///
+/// This provider uses the [quizMockDatabaseRepositoryProvider] to fetch the
+/// results from the mock database.
+///
+/// Copied from [results].
 @ProviderFor(results)
 final resultsProvider = AutoDisposeFutureProvider<List<Result>>.internal(
   results,
@@ -23,9 +28,14 @@ final resultsProvider = AutoDisposeFutureProvider<List<Result>>.internal(
 // ignore: unused_element
 typedef ResultsRef = AutoDisposeFutureProviderRef<List<Result>>;
 String _$saveResultNotifierHash() =>
-    r'7c89583f590c60a777ef4b685d05963bc77b3f29';
+    r'11d87357f80ce3490f8acda05b39f9f7e4982ed6';
 
-/// See also [SaveResultNotifier].
+/// A notifier that handles saving quiz results and marking topics as done.
+///
+/// This notifier uses the [quizMockDatabaseRepositoryProvider] to interact
+/// with the mock database.
+///
+/// Copied from [SaveResultNotifier].
 @ProviderFor(SaveResultNotifier)
 final saveResultNotifierProvider =
     AutoDisposeAsyncNotifierProvider<SaveResultNotifier, void>.internal(

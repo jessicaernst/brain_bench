@@ -23,10 +23,12 @@ mixin _$Result {
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get topicId => throw _privateConstructorUsedError;
+  String get categoryId => throw _privateConstructorUsedError;
   int get correct => throw _privateConstructorUsedError;
   int get total => throw _privateConstructorUsedError;
   double get score => throw _privateConstructorUsedError;
   DateTime get timestamp => throw _privateConstructorUsedError;
+  List<QuizAnswer> get quizAnswers => throw _privateConstructorUsedError;
 
   /// Serializes this Result to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -46,10 +48,12 @@ abstract class $ResultCopyWith<$Res> {
       {String id,
       String userId,
       String topicId,
+      String categoryId,
       int correct,
       int total,
       double score,
-      DateTime timestamp});
+      DateTime timestamp,
+      List<QuizAnswer> quizAnswers});
 }
 
 /// @nodoc
@@ -70,10 +74,12 @@ class _$ResultCopyWithImpl<$Res, $Val extends Result>
     Object? id = null,
     Object? userId = null,
     Object? topicId = null,
+    Object? categoryId = null,
     Object? correct = null,
     Object? total = null,
     Object? score = null,
     Object? timestamp = null,
+    Object? quizAnswers = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -87,6 +93,10 @@ class _$ResultCopyWithImpl<$Res, $Val extends Result>
       topicId: null == topicId
           ? _value.topicId
           : topicId // ignore: cast_nullable_to_non_nullable
+              as String,
+      categoryId: null == categoryId
+          ? _value.categoryId
+          : categoryId // ignore: cast_nullable_to_non_nullable
               as String,
       correct: null == correct
           ? _value.correct
@@ -104,6 +114,10 @@ class _$ResultCopyWithImpl<$Res, $Val extends Result>
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      quizAnswers: null == quizAnswers
+          ? _value.quizAnswers
+          : quizAnswers // ignore: cast_nullable_to_non_nullable
+              as List<QuizAnswer>,
     ) as $Val);
   }
 }
@@ -119,10 +133,12 @@ abstract class _$$ResultImplCopyWith<$Res> implements $ResultCopyWith<$Res> {
       {String id,
       String userId,
       String topicId,
+      String categoryId,
       int correct,
       int total,
       double score,
-      DateTime timestamp});
+      DateTime timestamp,
+      List<QuizAnswer> quizAnswers});
 }
 
 /// @nodoc
@@ -141,10 +157,12 @@ class __$$ResultImplCopyWithImpl<$Res>
     Object? id = null,
     Object? userId = null,
     Object? topicId = null,
+    Object? categoryId = null,
     Object? correct = null,
     Object? total = null,
     Object? score = null,
     Object? timestamp = null,
+    Object? quizAnswers = null,
   }) {
     return _then(_$ResultImpl(
       id: null == id
@@ -158,6 +176,10 @@ class __$$ResultImplCopyWithImpl<$Res>
       topicId: null == topicId
           ? _value.topicId
           : topicId // ignore: cast_nullable_to_non_nullable
+              as String,
+      categoryId: null == categoryId
+          ? _value.categoryId
+          : categoryId // ignore: cast_nullable_to_non_nullable
               as String,
       correct: null == correct
           ? _value.correct
@@ -175,6 +197,10 @@ class __$$ResultImplCopyWithImpl<$Res>
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      quizAnswers: null == quizAnswers
+          ? _value._quizAnswers
+          : quizAnswers // ignore: cast_nullable_to_non_nullable
+              as List<QuizAnswer>,
     ));
   }
 }
@@ -186,10 +212,13 @@ class _$ResultImpl implements _Result {
       {required this.id,
       required this.userId,
       required this.topicId,
+      required this.categoryId,
       required this.correct,
       required this.total,
       required this.score,
-      required this.timestamp});
+      required this.timestamp,
+      required final List<QuizAnswer> quizAnswers})
+      : _quizAnswers = quizAnswers;
 
   factory _$ResultImpl.fromJson(Map<String, dynamic> json) =>
       _$$ResultImplFromJson(json);
@@ -201,6 +230,8 @@ class _$ResultImpl implements _Result {
   @override
   final String topicId;
   @override
+  final String categoryId;
+  @override
   final int correct;
   @override
   final int total;
@@ -208,10 +239,17 @@ class _$ResultImpl implements _Result {
   final double score;
   @override
   final DateTime timestamp;
+  final List<QuizAnswer> _quizAnswers;
+  @override
+  List<QuizAnswer> get quizAnswers {
+    if (_quizAnswers is EqualUnmodifiableListView) return _quizAnswers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_quizAnswers);
+  }
 
   @override
   String toString() {
-    return 'Result(id: $id, userId: $userId, topicId: $topicId, correct: $correct, total: $total, score: $score, timestamp: $timestamp)';
+    return 'Result(id: $id, userId: $userId, topicId: $topicId, categoryId: $categoryId, correct: $correct, total: $total, score: $score, timestamp: $timestamp, quizAnswers: $quizAnswers)';
   }
 
   @override
@@ -222,17 +260,30 @@ class _$ResultImpl implements _Result {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.topicId, topicId) || other.topicId == topicId) &&
+            (identical(other.categoryId, categoryId) ||
+                other.categoryId == categoryId) &&
             (identical(other.correct, correct) || other.correct == correct) &&
             (identical(other.total, total) || other.total == total) &&
             (identical(other.score, score) || other.score == score) &&
             (identical(other.timestamp, timestamp) ||
-                other.timestamp == timestamp));
+                other.timestamp == timestamp) &&
+            const DeepCollectionEquality()
+                .equals(other._quizAnswers, _quizAnswers));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, userId, topicId, correct, total, score, timestamp);
+      runtimeType,
+      id,
+      userId,
+      topicId,
+      categoryId,
+      correct,
+      total,
+      score,
+      timestamp,
+      const DeepCollectionEquality().hash(_quizAnswers));
 
   /// Create a copy of Result
   /// with the given fields replaced by the non-null parameter values.
@@ -255,10 +306,12 @@ abstract class _Result implements Result {
       {required final String id,
       required final String userId,
       required final String topicId,
+      required final String categoryId,
       required final int correct,
       required final int total,
       required final double score,
-      required final DateTime timestamp}) = _$ResultImpl;
+      required final DateTime timestamp,
+      required final List<QuizAnswer> quizAnswers}) = _$ResultImpl;
 
   factory _Result.fromJson(Map<String, dynamic> json) = _$ResultImpl.fromJson;
 
@@ -269,6 +322,8 @@ abstract class _Result implements Result {
   @override
   String get topicId;
   @override
+  String get categoryId;
+  @override
   int get correct;
   @override
   int get total;
@@ -276,6 +331,8 @@ abstract class _Result implements Result {
   double get score;
   @override
   DateTime get timestamp;
+  @override
+  List<QuizAnswer> get quizAnswers;
 
   /// Create a copy of Result
   /// with the given fields replaced by the non-null parameter values.

@@ -11,132 +11,258 @@ import 'quiz_database_repository.dart';
 
 final Logger _logger = Logger('QuizMockDatabaseRepository');
 
-// Define a mock user ID (since the User model does not exist)
+/// A mock user ID used for all results in this mock database.
+///
+/// Since the User model does not exist in this application, this constant is
+/// used to simulate a user ID for all results.
 const String _mockUserId = 'mock-user-1234';
 
+/// A mock implementation of the [QuizDatabaseRepository] interface.
+///
+/// This class simulates a database by reading and writing data to JSON files.
+/// It provides methods to retrieve categories, topics, questions, answers, and
+/// results, as well as to save results and mark topics as done. It is intended
+/// for development and testing purposes and should not be used in a production
+/// environment.
 class QuizMockDatabaseRepository implements QuizDatabaseRepository {
+  /// The file path for the results data.
   final String resultsPath = 'lib/data/data_source/results.json';
+
+  /// The file path for the categories data.
   final String categoriesPath = 'lib/data/data_source/category.json';
+
+  /// The file path for the topics data.
   final String topicsPath = 'lib/data/data_source/topics.json';
+
+  /// The file path for the questions data.
   final String questionsPath = 'lib/data/data_source/questions.json';
+
+  /// The file path for the answers data.
   final String answersPath = 'lib/data/data_source/answers.json';
 
-  // read Categories
+  /// The file path for the topic status data.
+  final String topicStatusPath = 'lib/data/data_source/topic_status.json';
+
+  /// Retrieves a list of [Category] objects from the mock database.
+  ///
+  /// This method reads the categories data from the `categories.json` file,
+  /// decodes it, and returns a list of [Category] objects. It also simulates
+  /// a network delay of 1 second.
+  ///
+  /// Parameters:
+  ///   - [languageCode]: The language code to determine which language to use for the category names and descriptions.
+  ///
+  /// Returns:
+  ///   A [Future] that completes with a list of [Category] objects.
+  ///   Returns an empty list if an error occurs.
   @override
   Future<List<Category>> getCategories(String languageCode) async {
-    final String jsonString = await rootBundle.loadString(categoriesPath);
-    final Map<String, dynamic> jsonMap = json.decode(jsonString);
-    final List<dynamic> jsonData = jsonMap['categories'];
+    try {
+      final String jsonString = await rootBundle.loadString(categoriesPath);
+      final Map<String, dynamic> jsonMap = json.decode(jsonString);
+      final List<dynamic> jsonData = jsonMap['categories'];
 
-    await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
 
-    return jsonData
-        .map((e) => Category(
-              id: e['id'],
-              nameEn: e['nameEn'],
-              nameDe: e['nameDe'],
-              subtitleEn: e['subtitleEn'],
-              subtitleDe: e['subtitleDe'],
-              descriptionEn: e['descriptionEn'],
-              descriptionDe: e['descriptionDe'],
-              progress: (e['progress'] as num?)?.toDouble() ?? 0.0,
-            ))
-        .toList();
+      return jsonData
+          .map((e) => Category(
+                id: e['id'],
+                nameEn: e['nameEn'],
+                nameDe: e['nameDe'],
+                subtitleEn: e['subtitleEn'],
+                subtitleDe: e['subtitleDe'],
+                descriptionEn: e['descriptionEn'],
+                descriptionDe: e['descriptionDe'],
+                progress: (e['progress'] as num?)?.toDouble() ?? 0.0,
+              ))
+          .toList();
+    } on FileSystemException catch (e) {
+      _logger.severe('FileSystemException in getCategories: $e');
+      return [];
+    } on FormatException catch (e) {
+      _logger.severe('FormatException in getCategories: $e');
+      return [];
+    } catch (e) {
+      _logger.severe('Unexpected error in getCategories: $e');
+      return [];
+    }
   }
 
-  // read Topics
+  /// Retrieves a list of [Topic] objects for a given category from the mock database.
+  ///
+  /// This method reads the topics data from the `topics.json` file, decodes it,
+  /// filters the topics by the given [categoryId], and returns a list of
+  /// [Topic] objects. It also simulates a network delay of 1 second.
+  ///
+  /// Parameters:
+  ///   - [categoryId]: The ID of the category to retrieve topics for.
+  ///   - [languageCode]: The language code to determine which language to use for the topic names and descriptions.
+  ///
+  /// Returns:
+  ///   A [Future] that completes with a list of [Topic] objects.
+  ///   Returns an empty list if an error occurs.
   @override
   Future<List<Topic>> getTopics(String categoryId, String languageCode) async {
-    final String jsonString = await rootBundle.loadString(topicsPath);
-    final Map<String, dynamic> jsonMap = json.decode(jsonString);
-    final List<dynamic> jsonData = jsonMap['topics'];
+    try {
+      final String jsonString = await rootBundle.loadString(topicsPath);
+      final Map<String, dynamic> jsonMap = json.decode(jsonString);
+      final List<dynamic> jsonData = jsonMap['topics'];
 
-    await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
 
-    return jsonData.where((e) => e['categoryId'] == categoryId).map((e) {
-      return Topic(
-        id: e['id'],
-        name: languageCode == 'de' ? e['nameDe'] : e['nameEn'],
-        description:
-            languageCode == 'de' ? e['descriptionDe'] : e['descriptionEn'],
-        categoryId: e['categoryId'],
-        progress: e['progress'],
-      );
-    }).toList();
+      return jsonData.where((e) => e['categoryId'] == categoryId).map((e) {
+        return Topic(
+          id: e['id'],
+          name: languageCode == 'de' ? e['nameDe'] : e['nameEn'],
+          description:
+              languageCode == 'de' ? e['descriptionDe'] : e['descriptionEn'],
+          categoryId: e['categoryId'],
+          progress: e['progress'],
+        );
+      }).toList();
+    } on FileSystemException catch (e) {
+      _logger.severe('FileSystemException in getTopics: $e');
+      return [];
+    } on FormatException catch (e) {
+      _logger.severe('FormatException in getTopics: $e');
+      return [];
+    } catch (e) {
+      _logger.severe('Unexpected error in getTopics: $e');
+      return [];
+    }
   }
 
-  // read Questions
+  /// Retrieves a list of [Question] objects for a given topic from the mock database.
+  ///
+  /// This method reads the questions data from the `questions.json` file and
+  /// the answers data from the `answers.json` file, decodes them, filters the
+  /// questions by the given [topicId], and returns a list of [Question]
+  /// objects. It also simulates a network delay of 1 second.
+  ///
+  /// Parameters:
+  ///   - [topicId]: The ID of the topic to retrieve questions for.
+  ///   - [languageCode]: The language code to determine which language to use for the question text and explanations.
+  ///
+  /// Returns:
+  ///   A [Future] that completes with a list of [Question] objects.
+  ///   Returns an empty list if an error occurs.
   @override
   Future<List<Question>> getQuestions(
       String topicId, String languageCode) async {
-    await Future.delayed(const Duration(seconds: 1));
+    try {
+      await Future.delayed(const Duration(seconds: 1));
 
-    final String questionJsonString =
-        await rootBundle.loadString(questionsPath);
-    final Map<String, dynamic> questionJsonMap =
-        json.decode(questionJsonString);
-    final List<dynamic> questionJsonData = questionJsonMap['questions'];
+      final String questionJsonString =
+          await rootBundle.loadString(questionsPath);
+      final Map<String, dynamic> questionJsonMap =
+          json.decode(questionJsonString);
+      final List<dynamic> questionJsonData = questionJsonMap['questions'];
 
-    final String answerJsonString = await rootBundle.loadString(answersPath);
-    final Map<String, dynamic> answerJsonMap = json.decode(answerJsonString);
-    final List<dynamic> answerJsonData = answerJsonMap['answers'];
+      final String answerJsonString = await rootBundle.loadString(answersPath);
+      final Map<String, dynamic> answerJsonMap = json.decode(answerJsonString);
+      final List<dynamic> answerJsonData = answerJsonMap['answers'];
 
-    final Map<String, Answer> answersMap = {
-      for (var e in answerJsonData)
-        e['id']: Answer(
+      final Map<String, Answer> answersMap = {
+        for (var e in answerJsonData)
+          e['id']: Answer(
+            id: e['id'],
+            text: languageCode == 'de' ? e['textDe'] : e['textEn'],
+            isCorrect: e['isCorrect'],
+          ),
+      };
+
+      return questionJsonData.where((e) => e['topicId'] == topicId).map((e) {
+        return Question(
           id: e['id'],
-          text: languageCode == 'de' ? e['textDe'] : e['textEn'],
-          isCorrect: e['isCorrect'],
-        ),
-    };
-
-    return questionJsonData.where((e) => e['topicId'] == topicId).map((e) {
-      return Question(
-        id: e['id'],
-        topicId: e['topicId'],
-        question: languageCode == 'de' ? e['questionDe'] : e['questionEn'],
-        type: QuestionType.values.firstWhere(
-          (type) => type.toString().split('.').last == e['type'],
-        ),
-        answers: (e['answerIds'] as List<dynamic>)
-            .map((answerId) => answersMap[answerId]!)
-            .toList(),
-        explanation:
-            languageCode == 'de' ? e['explanationDe'] : e['explanationEn'],
-      );
-    }).toList();
+          topicId: e['topicId'],
+          question: languageCode == 'de' ? e['questionDe'] : e['questionEn'],
+          type: QuestionType.values.firstWhere(
+            (type) => type.toString().split('.').last == e['type'],
+          ),
+          answers: (e['answerIds'] as List<dynamic>)
+              .map((answerId) => answersMap[answerId]!)
+              .toList(),
+          explanation:
+              languageCode == 'de' ? e['explanationDe'] : e['explanationEn'],
+        );
+      }).toList();
+    } on FileSystemException catch (e) {
+      _logger.severe('FileSystemException in getQuestions: $e');
+      return [];
+    } on FormatException catch (e) {
+      _logger.severe('FormatException in getQuestions: $e');
+      return [];
+    } catch (e) {
+      _logger.severe('Unexpected error in getQuestions: $e');
+      return [];
+    }
   }
 
+  /// Retrieves a list of [Answer] objects for given answer IDs from the mock database.
+  ///
+  /// This method reads the answers data from the `answers.json` file, decodes
+  /// it, filters the answers by the given [answerIds], and returns a list of
+  /// [Answer] objects. It also simulates a network delay of 1 second.
+  ///
+  /// Parameters:
+  ///   - [answerIds]: A list of answer IDs to retrieve.
+  ///   - [languageCode]: The language code to determine which language to use for the answer text.
+  ///
+  /// Returns:
+  ///   A [Future] that completes with a list of [Answer] objects.
+  ///   Returns an empty list if an error occurs.
   @override
   Future<List<Answer>> getAnswers(
       List<String> answerIds, String languageCode) async {
-    _logger.info('getAnswers() aufgerufen für: $answerIds');
+    try {
+      _logger.info('getAnswers() aufgerufen für: $answerIds');
 
-    final String jsonString = await rootBundle.loadString(answersPath);
-    final Map<String, dynamic> jsonMap = json.decode(jsonString);
-    final List<dynamic> jsonData = jsonMap['answers'];
+      final String jsonString = await rootBundle.loadString(answersPath);
+      final Map<String, dynamic> jsonMap = json.decode(jsonString);
+      final List<dynamic> jsonData = jsonMap['answers'];
 
-    await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
 
-    _logger
-        .info('Geladene Antwortdaten: ${jsonData.length} Antworten gefunden.');
+      _logger.info(
+          'Geladene Antwortdaten: ${jsonData.length} Antworten gefunden.');
 
-    final List<Answer> answers = jsonData
-        .where((e) => answerIds.contains(e['id']))
-        .map((e) => Answer(
-              id: e['id'],
-              text: languageCode == 'de' ? e['textDe'] : e['textEn'],
-              isCorrect: e['isCorrect'],
-            ))
-        .toList();
+      final List<Answer> answers = jsonData
+          .where((e) => answerIds.contains(e['id']))
+          .map((e) => Answer(
+                id: e['id'],
+                text: languageCode == 'de' ? e['textDe'] : e['textEn'],
+                isCorrect: e['isCorrect'],
+              ))
+          .toList();
 
-    _logger.info(
-        'Gefilterte Antworten: ${answers.length} von ${answerIds.length} IDs gefunden.');
+      _logger.info(
+          'Gefilterte Antworten: ${answers.length} von ${answerIds.length} IDs gefunden.');
 
-    return answers;
+      return answers;
+    } on FileSystemException catch (e) {
+      _logger.severe('FileSystemException in getAnswers: $e');
+      return [];
+    } on FormatException catch (e) {
+      _logger.severe('FormatException in getAnswers: $e');
+      return [];
+    } catch (e) {
+      _logger.severe('Unexpected error in getAnswers: $e');
+      return [];
+    }
   }
 
-// Read Results
+  /// Retrieves a list of [Result] objects for a given user from the mock database.
+  ///
+  /// This method reads the results data from the `results.json` file, decodes
+  /// it, filters the results by the given [userId], and returns a list of
+  /// [Result] objects.
+  ///
+  /// Parameters:
+  ///   - [userId]: The ID of the user to retrieve results for.
+  ///
+  /// Returns:
+  ///   A [Future] that completes with a list of [Result] objects.
+  ///   Returns an empty list if an error occurs or the file does not exist.
   @override
   Future<List<Result>> getResults(String userId) async {
     try {
@@ -145,6 +271,7 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
 
       // Check if the file exists, return an empty list if not
       if (!file.existsSync()) {
+        _logger.warning('Results file does not exist.');
         return [];
       }
 
@@ -158,13 +285,30 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
           .where((e) => e['userId'] == _mockUserId)
           .map((e) => Result.fromJson(e as Map<String, dynamic>))
           .toList();
+    } on FileSystemException catch (e) {
+      _logger.severe('FileSystemException in getResults: $e');
+      return [];
+    } on FormatException catch (e) {
+      _logger.severe('FormatException in getResults: $e');
+      return [];
     } catch (e) {
-      _logger.severe('Error reading results: $e');
+      _logger.severe('Unexpected error in getResults: $e');
       return [];
     }
   }
 
-  // Save Result - Always Assign the Mock User ID
+  /// Saves a [Result] object to the mock database.
+  ///
+  /// This method writes the given [result] to the `results.json` file.
+  /// It always assigns the [_mockUserId] to the result, overwriting any
+  /// existing user ID.
+  ///
+  /// Parameters:
+  ///   - [result]: The [Result] object to save.
+  ///
+  /// Returns:
+  ///   A [Future] that completes when the result has been saved.
+  ///   Logs an error if an exception occurs.
   @override
   Future<void> saveResult(Result result) async {
     try {
@@ -186,8 +330,51 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
       await file.writeAsString(jsonEncode(jsonMap), flush: true);
 
       _logger.info('Result successfully saved!');
+    } on FileSystemException catch (e) {
+      _logger.severe('FileSystemException in saveResult: $e');
+    } on FormatException catch (e) {
+      _logger.severe('FormatException in saveResult: $e');
     } catch (e) {
       _logger.severe('Error saving result: $e');
+    }
+  }
+
+  /// Marks a topic as done in the mock database.
+  ///
+  /// This method writes the given [topicId] to the `topic_status.json` file.
+  ///
+  /// Parameters:
+  ///   - [topicId]: The [topicId] to mark as done.
+  ///
+  /// Returns:
+  ///   A [Future] that completes when the topic has been marked as done.
+  ///   Logs an error if an exception occurs.
+  @override
+  Future<void> markTopicAsDone(String topicId) async {
+    try {
+      // Load existing JSON file or create an empty map
+      final file = File(topicStatusPath);
+      Map<String, dynamic> jsonMap = {};
+
+      if (file.existsSync()) {
+        // Read the file content
+        final String jsonString = await file.readAsString();
+        jsonMap = json.decode(jsonString);
+      }
+
+      // Add or update the topic status
+      jsonMap[topicId] = true;
+
+      // Write updated JSON data back to the file
+      await file.writeAsString(jsonEncode(jsonMap), flush: true);
+
+      _logger.info('Topic $topicId marked as done successfully!');
+    } on FileSystemException catch (e) {
+      _logger.severe('FileSystemException in markTopicAsDone: $e');
+    } on FormatException catch (e) {
+      _logger.severe('FormatException in markTopicAsDone: $e');
+    } catch (e) {
+      _logger.severe('Error marking topic $topicId as done: $e');
     }
   }
 }

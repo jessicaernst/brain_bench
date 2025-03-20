@@ -90,11 +90,13 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/categories/details/topics/quiz/result',
       builder: (_, state) {
-        // Extract categoryId from the extra data (a String).
-        final categoryId = state.extra as String?;
-        // If a categoryId is provided, show the QuizResultPage; otherwise, show the NotFoundPage.
-        return categoryId != null
-            ? QuizResultPage(categoryId: categoryId)
+        // Extract categoryId and topicId from the extra data (a Map).
+        final extra = state.extra as Map<String, String>?;
+        final categoryId = extra?['categoryId'];
+        final topicId = extra?['topicId'];
+        // If a categoryId and topicId is provided, show the QuizResultPage; otherwise, show the NotFoundPage.
+        return categoryId != null && topicId != null
+            ? QuizResultPage(categoryId: categoryId, topicId: topicId)
             : const NotFoundPage();
       },
     ),

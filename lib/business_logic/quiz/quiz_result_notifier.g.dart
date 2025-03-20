@@ -7,9 +7,20 @@ part of 'quiz_result_notifier.dart';
 // **************************************************************************
 
 String _$quizResultNotifierHash() =>
-    r'a02d39f41c9696b5310db9d864c1d1348ea0839e';
+    r'30e90de4f3f6e23448aa27335f406b08f7b91ff5';
 
-/// See also [QuizResultNotifier].
+/// A Riverpod notifier that manages the state of the quiz result page.
+///
+/// This notifier is responsible for:
+/// - Managing the selected view (none, correct, incorrect).
+/// - Managing the expanded answers.
+/// - Providing a filtered list of answers based on the selected view.
+/// - Calculating the total possible points, user points, and percentage.
+/// - Determining if the quiz was passed.
+/// - Saving the quiz result to the mock database.
+/// - Marking a topic as done in the mock database.
+///
+/// Copied from [QuizResultNotifier].
 @ProviderFor(QuizResultNotifier)
 final quizResultNotifierProvider =
     AutoDisposeNotifierProvider<QuizResultNotifier, QuizResultState>.internal(

@@ -25,10 +25,14 @@ class QuizResultPage extends ConsumerStatefulWidget {
   const QuizResultPage({
     super.key,
     required this.categoryId,
+    required this.topicId,
   });
 
   /// The ID of the category the quiz belongs to.
   final String categoryId;
+
+  /// The ID of the topic the quiz belongs to.
+  final String topicId;
 
   @override
   ConsumerState<QuizResultPage> createState() => _QuizResultPageState();
@@ -112,7 +116,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                     child: Column(
                       children: [
                         Text(
-                          '${localizations.quizResultScore}: $userPoints / $totalPossiblePoints \n(${percentage.toStringAsFixed(1)}%)',
+                          '${localizations.quizResultScore}: $userPoints / $totalPossiblePoints \n${percentage.toStringAsFixed(1)}%',
                           style: BrainBenchTextStyles.title1(),
                           textAlign: TextAlign.center,
                         ),
@@ -201,9 +205,14 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                   child: LightDarkSwitchBtn(
                       title: localizations.quizResultBtnLbl,
                       isActive: true,
-                      onPressed: () {
+                      onPressed: () async {
                         _logger.info('End Quiz button pressed');
-                        // TODO: add save quiz and navigation
+                        // ✅ Save the quiz result
+                        await notifier.saveQuizResult(widget.categoryId,
+                            widget.topicId, 'mock-user-1234', ref);
+
+                        // ✅ Mark the topic as done
+                        await notifier.markTopicAsDone(widget.topicId, ref);
 
                         // Reset the state of QuizAnswersNotifier when navigating back.
                         ref.read(quizAnswersNotifierProvider.notifier).reset();

@@ -9,7 +9,14 @@ part of 'quiz_answers_notifier.dart';
 String _$quizAnswersNotifierHash() =>
     r'f98c5ec68fe9a6038df0ad3c883b954fd39d6999';
 
-/// See also [QuizAnswersNotifier].
+/// A Riverpod notifier that manages a list of [QuizAnswer] objects.
+///
+/// This notifier is responsible for storing and managing the answers given by
+/// the user during a quiz. It keeps track of the question, the user's given
+/// answers, the correct answers, and calculates the points earned for each
+/// answer.
+///
+/// Copied from [QuizAnswersNotifier].
 @ProviderFor(QuizAnswersNotifier)
 final quizAnswersNotifierProvider =
     NotifierProvider<QuizAnswersNotifier, List<QuizAnswer>>.internal(

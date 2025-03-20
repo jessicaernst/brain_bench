@@ -7,15 +7,29 @@ part 'answers_notifier.g.dart';
 
 final Logger _logger = Logger('AnswersNotifier');
 
+/// A Riverpod notifier that manages a list of [Answer] objects.
+///
+/// This notifier is responsible for storing and managing the answers for a
+/// single question in a quiz. It keeps track of the answers, their selected
+/// state, and provides methods to initialize, toggle, and reset the answers.
 @riverpod
 class AnswersNotifier extends _$AnswersNotifier {
+  /// Builds the initial state of the notifier, which is an empty list of
+  /// [Answer] objects.
   @override
   List<Answer> build() {
     _logger.info('AnswersNotifier initialized with an empty state.');
     return [];
   }
 
-  /// Initialize the list of answers at the start of a quiz
+  /// Initializes the list of answers at the start of a quiz.
+  ///
+  /// This method takes a list of [Answer] objects and sets them as the
+  /// current state of the notifier. It also checks if the answers are already
+  /// initialized to prevent resetting the state unnecessarily.
+  ///
+  /// Parameters:
+  ///   - [initialAnswers]: A list of [Answer] objects to initialize the state with.
   void initializeAnswers(List<Answer> initialAnswers) {
     final currentAnswerIds = state.map((answer) => answer.id).toList();
     final newAnswerIds = initialAnswers.map((answer) => answer.id).toList();
@@ -32,7 +46,13 @@ class AnswersNotifier extends _$AnswersNotifier {
     state = initialAnswers;
   }
 
-  /// Toggle the `isSelected` state of a specific answer by its ID
+  /// Toggle the `isSelected` state of a specific answer by its ID.
+  ///
+  /// This method toggles the `isSelected` property of an [Answer] object
+  /// with the given [answerId].
+  ///
+  /// Parameters:
+  ///   - [answerId]: The ID of the answer to toggle.
   void toggleAnswer(String answerId) {
     _logger.info('Toggling answer selection for ID: $answerId');
     state = state.map((answer) {
@@ -45,7 +65,10 @@ class AnswersNotifier extends _$AnswersNotifier {
     }).toList();
   }
 
-  /// Reset all answers' `isSelected` states to `false`
+  /// Reset all answers' `isSelected` states to `false`.
+  ///
+  /// This method resets the `isSelected` property of all [Answer] objects in
+  /// the state to `false`.
   void resetAnswers() {
     _logger.info('Resetting all answers.');
     state = state.map((answer) {
@@ -54,14 +77,25 @@ class AnswersNotifier extends _$AnswersNotifier {
     }).toList();
   }
 
-  /// Get a list of all selected answers
+  /// Get a list of all selected answers.
+  ///
+  /// This getter returns a list of all [Answer] objects in the state where
+  /// the `isSelected` property is `true`.
   List<Answer> get selectedAnswers {
     final selected = state.where((answer) => answer.isSelected).toList();
     _logger.info('Retrieved ${selected.length} selected answers.');
     return selected;
   }
 
-  // Toggle the `isSelected` state of a specific answer by its ID
+  /// Toggle the `isSelected` state of a specific answer by its ID.
+  ///
+  /// This method toggles the `isSelected` property of an [Answer] object
+  /// with the given [answerId]. If [isMultipleChoice] is `false`, it deselects
+  /// all other answers before toggling the selected answer.
+  ///
+  /// Parameters:
+  ///   - [answerId]: The ID of the answer to toggle.
+  ///   - [isMultipleChoice]: A boolean indicating whether the question is a multiple-choice question.
   void toggleAnswerSelection(String answerId, bool isMultipleChoice) {
     if (!isMultipleChoice) {
       // If it's not a multiple-choice question, deselect all other answers
