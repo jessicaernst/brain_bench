@@ -223,8 +223,10 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                         // Reset the selected view to none.
                         notifier.toggleView(SelectedView.none, ref);
 
-                        context.go('/categories/details/topics',
-                            extra: widget.categoryId);
+                        if (context.mounted) {
+                          context.go('/categories/details/topics',
+                              extra: widget.categoryId);
+                        }
                       }),
                 )
               ],

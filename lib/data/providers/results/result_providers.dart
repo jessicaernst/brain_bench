@@ -10,8 +10,8 @@ part 'result_providers.g.dart';
 /// This provider uses the [quizMockDatabaseRepositoryProvider] to fetch the
 /// results from the mock database.
 @riverpod
-Future<List<Result>> results(Ref ref) {
-  final repo = ref.watch(quizMockDatabaseRepositoryProvider);
+Future<List<Result>> results(Ref ref) async {
+  final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
   return repo.getResults('mock-user-1234'); // Mocked user ID
 }
 
@@ -33,7 +33,7 @@ class SaveResultNotifier extends _$SaveResultNotifier {
   /// Parameters:
   ///   - [result]: The [Result] object to save.
   Future<void> saveResult(Result result) async {
-    final repo = ref.read(quizMockDatabaseRepositoryProvider);
+    final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
     await repo.saveResult(result);
   }
 
@@ -45,7 +45,7 @@ class SaveResultNotifier extends _$SaveResultNotifier {
   /// Parameters:
   ///   - [topicId]: The ID of the topic to mark as done.
   Future<void> markTopicAsDone(String topicId) async {
-    final repo = ref.read(quizMockDatabaseRepositoryProvider);
+    final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
     await repo.markTopicAsDone(topicId);
   }
 }

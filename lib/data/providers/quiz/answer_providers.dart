@@ -11,7 +11,7 @@ Logger _logger = Logger('AnswerProviders');
 @riverpod
 Future<List<Answer>> answers(
     Ref ref, List<String> answerIds, String languageCode) async {
-  final repo = ref.watch(quizMockDatabaseRepositoryProvider);
+  final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
   final result = await repo.getAnswers(answerIds, languageCode);
 
   _logger.info('answersProvider liefert: ${result.length} Antworten');

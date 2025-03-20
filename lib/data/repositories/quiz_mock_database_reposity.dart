@@ -26,22 +26,52 @@ const String _mockUserId = 'mock-user-1234';
 /// environment.
 class QuizMockDatabaseRepository implements QuizDatabaseRepository {
   /// The file path for the results data.
-  final String resultsPath = 'lib/data/data_source/results.json';
+  final String resultsPath;
 
   /// The file path for the categories data.
-  final String categoriesPath = 'lib/data/data_source/category.json';
+  final String categoriesPath;
 
   /// The file path for the topics data.
-  final String topicsPath = 'lib/data/data_source/topics.json';
+  final String topicsPath;
 
   /// The file path for the questions data.
-  final String questionsPath = 'lib/data/data_source/questions.json';
+  final String questionsPath;
 
   /// The file path for the answers data.
-  final String answersPath = 'lib/data/data_source/answers.json';
+  final String answersPath;
 
-  /// The file path for the topic status data.
-  final String topicStatusPath = 'lib/data/data_source/topic_status.json';
+  QuizMockDatabaseRepository({
+    required this.resultsPath,
+    required this.categoriesPath,
+    required this.topicsPath,
+    required this.questionsPath,
+    required this.answersPath,
+  });
+
+  /// Copies the JSON asset files from the app bundle to the documents directory.
+  Future<void> copyAssetsToDocuments() async {
+    await _copyAssetToDocument(
+        'lib/data/data_source/results.json', resultsPath);
+    await _copyAssetToDocument(
+        'lib/data/data_source/category.json', categoriesPath);
+    await _copyAssetToDocument('lib/data/data_source/topics.json', topicsPath);
+    await _copyAssetToDocument(
+        'lib/data/data_source/questions.json', questionsPath);
+    await _copyAssetToDocument(
+        'lib/data/data_source/answers.json', answersPath);
+  }
+
+  /// Copies a single asset file to the documents directory.
+  Future<void> _copyAssetToDocument(
+      String assetPath, String documentPath) async {
+    final file = File(documentPath);
+    if (!await file.exists()) {
+      final byteData = await rootBundle.load(assetPath);
+      final bytes = byteData.buffer.asUint8List();
+      await file.create(recursive: true);
+      await file.writeAsBytes(bytes);
+    }
+  }
 
   /// Retrieves a list of [Category] objects from the mock database.
   ///
@@ -58,7 +88,9 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
   @override
   Future<List<Category>> getCategories(String languageCode) async {
     try {
-      final String jsonString = await rootBundle.loadString(categoriesPath);
+      final file = File(categoriesPath); // ✅ Use File here
+      final String jsonString =
+          await file.readAsString(); // ✅ Use readAsString()
       final Map<String, dynamic> jsonMap = json.decode(jsonString);
       final List<dynamic> jsonData = jsonMap['categories'];
 
@@ -104,7 +136,9 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
   @override
   Future<List<Topic>> getTopics(String categoryId, String languageCode) async {
     try {
-      final String jsonString = await rootBundle.loadString(topicsPath);
+      final file = File(topicsPath); // ✅ Use File here
+      final String jsonString =
+          await file.readAsString(); // ✅ Use readAsString()
       final Map<String, dynamic> jsonMap = json.decode(jsonString);
       final List<dynamic> jsonData = jsonMap['topics'];
 
@@ -117,7 +151,8 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
           description:
               languageCode == 'de' ? e['descriptionDe'] : e['descriptionEn'],
           categoryId: e['categoryId'],
-          progress: e['progress'],
+          progress: (e['progress'] as num?)?.toDouble() ?? 0.0,
+          isDone: e['isDone'] ?? false,
         );
       }).toList();
     } on FileSystemException catch (e) {
@@ -152,13 +187,16 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
     try {
       await Future.delayed(const Duration(seconds: 1));
 
+      final fileQuestion = File(questionsPath); // ✅ Use File here
       final String questionJsonString =
-          await rootBundle.loadString(questionsPath);
+          await fileQuestion.readAsString(); // ✅ Use readAsString()
       final Map<String, dynamic> questionJsonMap =
           json.decode(questionJsonString);
       final List<dynamic> questionJsonData = questionJsonMap['questions'];
 
-      final String answerJsonString = await rootBundle.loadString(answersPath);
+      final fileAnswer = File(answersPath); // ✅ Use File here
+      final String answerJsonString =
+          await fileAnswer.readAsString(); // ✅ Use readAsString()
       final Map<String, dynamic> answerJsonMap = json.decode(answerJsonString);
       final List<dynamic> answerJsonData = answerJsonMap['answers'];
 
@@ -217,7 +255,9 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
     try {
       _logger.info('getAnswers() aufgerufen für: $answerIds');
 
-      final String jsonString = await rootBundle.loadString(answersPath);
+      final file = File(answersPath); // ✅ Use File here
+      final String jsonString =
+          await file.readAsString(); // ✅ Use readAsString()
       final Map<String, dynamic> jsonMap = json.decode(jsonString);
       final List<dynamic> jsonData = jsonMap['answers'];
 
@@ -267,7 +307,7 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
   Future<List<Result>> getResults(String userId) async {
     try {
       // Load the JSON file
-      final file = File(resultsPath);
+      final file = File(resultsPath); // ✅ Use File here
 
       // Check if the file exists, return an empty list if not
       if (!file.existsSync()) {
@@ -276,7 +316,8 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
       }
 
       // Read the file content as a string
-      final String jsonString = await file.readAsString();
+      final String jsonString =
+          await file.readAsString(); // ✅ Use readAsString()
       final Map<String, dynamic> jsonMap = json.decode(jsonString);
       final List<dynamic> jsonData = jsonMap['results']; // Extraktion der Liste
 
@@ -341,10 +382,10 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
 
   /// Marks a topic as done in the mock database.
   ///
-  /// This method writes the given [topicId] to the `topic_status.json` file.
+  /// This method updates the `isDone` property of a topic in the `topics.json` file.
   ///
   /// Parameters:
-  ///   - [topicId]: The [topicId] to mark as done.
+  ///   - [topicId]: The ID of the topic to mark as done.
   ///
   /// Returns:
   ///   A [Future] that completes when the topic has been marked as done.
@@ -352,23 +393,29 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
   @override
   Future<void> markTopicAsDone(String topicId) async {
     try {
-      // Load existing JSON file or create an empty map
-      final file = File(topicStatusPath);
-      Map<String, dynamic> jsonMap = {};
+      // Load the topics JSON file from the documents directory
+      final file = File(topicsPath);
+      final String jsonString =
+          await file.readAsString(); // ✅ Use readAsString() and File
+      final Map<String, dynamic> jsonMap = json.decode(jsonString);
+      final List<dynamic> jsonData = jsonMap['topics'];
 
-      if (file.existsSync()) {
-        // Read the file content
-        final String jsonString = await file.readAsString();
-        jsonMap = json.decode(jsonString);
+      // Find the topic to update
+      final topicIndex = jsonData.indexWhere((topic) => topic['id'] == topicId);
+
+      if (topicIndex == -1) {
+        _logger.warning('Topic with ID $topicId not found.');
+        return;
       }
 
-      // Add or update the topic status
-      jsonMap[topicId] = true;
+      // Update the isDone property
+      jsonData[topicIndex]['isDone'] = true;
 
-      // Write updated JSON data back to the file
+      // Write the updated JSON data back to the file
       await file.writeAsString(jsonEncode(jsonMap), flush: true);
 
-      _logger.info('Topic $topicId marked as done successfully!');
+      _logger
+          .info('Topic $topicId marked as done in topics.json successfully!');
     } on FileSystemException catch (e) {
       _logger.severe('FileSystemException in markTopicAsDone: $e');
     } on FormatException catch (e) {

@@ -6,7 +6,8 @@ import 'package:brain_bench/data/models/topic.dart';
 part 'topic_providers.g.dart';
 
 @riverpod
-Future<List<Topic>> topics(Ref ref, String categoryId, String languageCode) {
-  final repo = ref.watch(quizMockDatabaseRepositoryProvider);
+Future<List<Topic>> topics(
+    Ref ref, String categoryId, String languageCode) async {
+  final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
   return repo.getTopics(categoryId, languageCode);
 }

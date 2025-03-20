@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'category_providers.g.dart';
 
 @riverpod
-Future<List<Category>> categories(Ref ref, String languageCode) {
-  final repo = ref.watch(quizMockDatabaseRepositoryProvider);
+Future<List<Category>> categories(Ref ref, String languageCode) async {
+  final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
   return repo.getCategories(languageCode);
 }
