@@ -211,6 +211,7 @@ class QuizResultNotifier extends _$QuizResultNotifier {
         correct: calculateUserPoints(),
         total: calculateTotalPossiblePoints(),
         score: calculatePercentage(),
+        isPassed: isQuizPassed(),
         quizAnswers: state.quizAnswers,
         userId: userId);
     await ref.read(saveResultNotifierProvider.notifier).saveResult(result);

@@ -33,6 +33,7 @@ class Result with _$Result {
     required int correct,
     required int total,
     required double score,
+    required bool isPassed,
     required DateTime timestamp,
     required List<QuizAnswer> quizAnswers,
   }) = _Result;
@@ -58,6 +59,7 @@ class Result with _$Result {
     required int correct,
     required int total,
     required double score,
+    required bool isPassed,
     required List<QuizAnswer> quizAnswers,
   }) {
     return Result(
@@ -68,6 +70,7 @@ class Result with _$Result {
       correct: correct,
       total: total,
       score: score,
+      isPassed: isPassed,
       timestamp: DateTime.now(),
       quizAnswers: quizAnswers,
     );

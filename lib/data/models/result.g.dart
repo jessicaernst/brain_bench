@@ -14,6 +14,7 @@ _$ResultImpl _$$ResultImplFromJson(Map<String, dynamic> json) => _$ResultImpl(
       correct: (json['correct'] as num).toInt(),
       total: (json['total'] as num).toInt(),
       score: (json['score'] as num).toDouble(),
+      isPassed: json['isPassed'] as bool,
       timestamp: DateTime.parse(json['timestamp'] as String),
       quizAnswers: (json['quizAnswers'] as List<dynamic>)
           .map((e) => QuizAnswer.fromJson(e as Map<String, dynamic>))
@@ -29,6 +30,7 @@ Map<String, dynamic> _$$ResultImplToJson(_$ResultImpl instance) =>
       'correct': instance.correct,
       'total': instance.total,
       'score': instance.score,
+      'isPassed': instance.isPassed,
       'timestamp': instance.timestamp.toIso8601String(),
       'quizAnswers': instance.quizAnswers,
     };

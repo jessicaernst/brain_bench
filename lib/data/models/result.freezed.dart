@@ -27,6 +27,7 @@ mixin _$Result {
   int get correct => throw _privateConstructorUsedError;
   int get total => throw _privateConstructorUsedError;
   double get score => throw _privateConstructorUsedError;
+  bool get isPassed => throw _privateConstructorUsedError;
   DateTime get timestamp => throw _privateConstructorUsedError;
   List<QuizAnswer> get quizAnswers => throw _privateConstructorUsedError;
 
@@ -52,6 +53,7 @@ abstract class $ResultCopyWith<$Res> {
       int correct,
       int total,
       double score,
+      bool isPassed,
       DateTime timestamp,
       List<QuizAnswer> quizAnswers});
 }
@@ -78,6 +80,7 @@ class _$ResultCopyWithImpl<$Res, $Val extends Result>
     Object? correct = null,
     Object? total = null,
     Object? score = null,
+    Object? isPassed = null,
     Object? timestamp = null,
     Object? quizAnswers = null,
   }) {
@@ -110,6 +113,10 @@ class _$ResultCopyWithImpl<$Res, $Val extends Result>
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
               as double,
+      isPassed: null == isPassed
+          ? _value.isPassed
+          : isPassed // ignore: cast_nullable_to_non_nullable
+              as bool,
       timestamp: null == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
@@ -137,6 +144,7 @@ abstract class _$$ResultImplCopyWith<$Res> implements $ResultCopyWith<$Res> {
       int correct,
       int total,
       double score,
+      bool isPassed,
       DateTime timestamp,
       List<QuizAnswer> quizAnswers});
 }
@@ -161,6 +169,7 @@ class __$$ResultImplCopyWithImpl<$Res>
     Object? correct = null,
     Object? total = null,
     Object? score = null,
+    Object? isPassed = null,
     Object? timestamp = null,
     Object? quizAnswers = null,
   }) {
@@ -193,6 +202,10 @@ class __$$ResultImplCopyWithImpl<$Res>
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
               as double,
+      isPassed: null == isPassed
+          ? _value.isPassed
+          : isPassed // ignore: cast_nullable_to_non_nullable
+              as bool,
       timestamp: null == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
@@ -216,6 +229,7 @@ class _$ResultImpl implements _Result {
       required this.correct,
       required this.total,
       required this.score,
+      required this.isPassed,
       required this.timestamp,
       required final List<QuizAnswer> quizAnswers})
       : _quizAnswers = quizAnswers;
@@ -238,6 +252,8 @@ class _$ResultImpl implements _Result {
   @override
   final double score;
   @override
+  final bool isPassed;
+  @override
   final DateTime timestamp;
   final List<QuizAnswer> _quizAnswers;
   @override
@@ -249,7 +265,7 @@ class _$ResultImpl implements _Result {
 
   @override
   String toString() {
-    return 'Result(id: $id, userId: $userId, topicId: $topicId, categoryId: $categoryId, correct: $correct, total: $total, score: $score, timestamp: $timestamp, quizAnswers: $quizAnswers)';
+    return 'Result(id: $id, userId: $userId, topicId: $topicId, categoryId: $categoryId, correct: $correct, total: $total, score: $score, isPassed: $isPassed, timestamp: $timestamp, quizAnswers: $quizAnswers)';
   }
 
   @override
@@ -265,6 +281,8 @@ class _$ResultImpl implements _Result {
             (identical(other.correct, correct) || other.correct == correct) &&
             (identical(other.total, total) || other.total == total) &&
             (identical(other.score, score) || other.score == score) &&
+            (identical(other.isPassed, isPassed) ||
+                other.isPassed == isPassed) &&
             (identical(other.timestamp, timestamp) ||
                 other.timestamp == timestamp) &&
             const DeepCollectionEquality()
@@ -282,6 +300,7 @@ class _$ResultImpl implements _Result {
       correct,
       total,
       score,
+      isPassed,
       timestamp,
       const DeepCollectionEquality().hash(_quizAnswers));
 
@@ -310,6 +329,7 @@ abstract class _Result implements Result {
       required final int correct,
       required final int total,
       required final double score,
+      required final bool isPassed,
       required final DateTime timestamp,
       required final List<QuizAnswer> quizAnswers}) = _$ResultImpl;
 
@@ -329,6 +349,8 @@ abstract class _Result implements Result {
   int get total;
   @override
   double get score;
+  @override
+  bool get isPassed;
   @override
   DateTime get timestamp;
   @override
