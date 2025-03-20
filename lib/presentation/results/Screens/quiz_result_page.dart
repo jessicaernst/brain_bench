@@ -211,8 +211,10 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                         await notifier.saveQuizResult(widget.categoryId,
                             widget.topicId, 'mock-user-1234', ref);
 
-                        // ✅ Mark the topic as done
-                        await notifier.markTopicAsDone(widget.topicId, ref);
+                        // ✅ Mark the topic as done ONLY if the quiz was passed
+                        if (isPassed) {
+                          await notifier.markTopicAsDone(widget.topicId, ref);
+                        }
 
                         // Reset the state of QuizAnswersNotifier when navigating back.
                         ref.read(quizAnswersNotifierProvider.notifier).reset();
