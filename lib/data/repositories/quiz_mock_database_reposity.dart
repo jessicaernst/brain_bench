@@ -425,4 +425,58 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
       _logger.severe('Error marking topic $topicId as done: $e');
     }
   }
+
+  /// Updates a [Category] object in the mock database.
+  ///
+  /// This method updates the `progress` property of a category in the `categories.json` file.
+  ///
+  /// Parameters:
+  ///   - [category]: The [Category] object to update.
+  ///
+  /// Returns:
+  ///   A [Future] that completes when the category has been updated.
+  ///   Logs an error if an exception occurs.
+  @override
+  Future<void> updateCategory(Category category) async {
+    try {
+      // Load the categories JSON file from the documents directory
+      final file = File(categoriesPath);
+      final String jsonString = await file.readAsString();
+      final Map<String, dynamic> jsonMap = json.decode(jsonString);
+      final List<dynamic> jsonData = jsonMap['categories'];
+
+      // Find the category to update
+      final categoryIndex =
+          jsonData.indexWhere((cat) => cat['id'] == category.id);
+
+      if (categoryIndex == -1) {
+        _logger.warning('Category with ID ${category.id} not found.');
+        return;
+      }
+
+      // Update the category data
+      jsonData[categoryIndex] = {
+        'id': category.id,
+        'nameEn': category.nameEn,
+        'nameDe': category.nameDe,
+        'subtitleEn': category.subtitleEn,
+        'subtitleDe': category.subtitleDe,
+        'descriptionEn': category.descriptionEn,
+        'descriptionDe': category.descriptionDe,
+        'progress': category.progress,
+      };
+
+      // Write the updated JSON data back to the file
+      await file.writeAsString(jsonEncode(jsonMap), flush: true);
+
+      _logger.info(
+          'Category ${category.id} updated in categories.json successfully!');
+    } on FileSystemException catch (e) {
+      _logger.severe('FileSystemException in updateCategory: $e');
+    } on FormatException catch (e) {
+      _logger.severe('FormatException in updateCategory: $e');
+    } catch (e) {
+      _logger.severe('Error updating category ${category.id}: $e');
+    }
+  }
 }

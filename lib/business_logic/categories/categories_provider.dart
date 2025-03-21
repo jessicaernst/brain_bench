@@ -1,3 +1,6 @@
+import 'package:brain_bench/data/models/category/category.dart';
+import 'package:brain_bench/data/providers/quiz/category_providers.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -25,4 +28,21 @@ class SelectedCategoryNotifier extends _$SelectedCategoryNotifier {
   }
 
   bool isCategorySelected() => state != null;
+}
+
+@riverpod
+Future<Category> categoryById(
+    Ref ref, String categoryId, String languageCode) async {
+  logger.info(
+      '🔄 Fetching category by ID: $categoryId for language: $languageCode');
+  final categories = await ref.watch(categoriesProvider(languageCode).future);
+  try {
+    final category =
+        categories.firstWhere((category) => category.id == categoryId);
+    logger.info('✅ Category found: ${category.nameEn}');
+    return category;
+  } catch (e) {
+    logger.severe('❌ Category not found for ID: $categoryId');
+    rethrow;
+  }
 }

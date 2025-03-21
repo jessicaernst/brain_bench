@@ -75,6 +75,14 @@ abstract class QuizDatabaseRepository {
   ///
   /// Returns:
   ///   A [Future] that completes when the topic has been marked as done.
-  Future<void> markTopicAsDone(
-      String topicId); // Neu: markTopicAsDone hinzugefügt
+  Future<void> markTopicAsDone(String topicId);
+
+  /// Updates a [Category] object.
+  ///
+  /// Parameters:
+  ///   - [category]: The [Category] object to update.
+  ///
+  /// Returns:
+  ///   A [Future] that completes when the category has been updated.
+  Future<void> updateCategory(Category category);
 }

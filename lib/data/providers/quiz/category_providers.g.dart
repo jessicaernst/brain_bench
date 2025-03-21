@@ -6,7 +6,7 @@ part of 'category_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$categoriesHash() => r'f39dafed31b15d6905f666f3dbc900ad05cd4418';
+String _$categoriesHash() => r'16b4ebfb8f4369ae559c7700be7f93d08302e26c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,16 +29,25 @@ class _SystemHash {
   }
 }
 
-/// See also [categories].
-@ProviderFor(categories)
+abstract class _$Categories
+    extends BuildlessAutoDisposeAsyncNotifier<List<Category>> {
+  late final String languageCode;
+
+  FutureOr<List<Category>> build(
+    String languageCode,
+  );
+}
+
+/// See also [Categories].
+@ProviderFor(Categories)
 const categoriesProvider = CategoriesFamily();
 
-/// See also [categories].
+/// See also [Categories].
 class CategoriesFamily extends Family<AsyncValue<List<Category>>> {
-  /// See also [categories].
+  /// See also [Categories].
   const CategoriesFamily();
 
-  /// See also [categories].
+  /// See also [Categories].
   CategoriesProvider call(
     String languageCode,
   ) {
@@ -71,16 +80,14 @@ class CategoriesFamily extends Family<AsyncValue<List<Category>>> {
   String? get name => r'categoriesProvider';
 }
 
-/// See also [categories].
-class CategoriesProvider extends AutoDisposeFutureProvider<List<Category>> {
-  /// See also [categories].
+/// See also [Categories].
+class CategoriesProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<Categories, List<Category>> {
+  /// See also [Categories].
   CategoriesProvider(
     String languageCode,
   ) : this._internal(
-          (ref) => categories(
-            ref as CategoriesRef,
-            languageCode,
-          ),
+          () => Categories()..languageCode = languageCode,
           from: categoriesProvider,
           name: r'categoriesProvider',
           debugGetCreateSourceHash:
@@ -106,13 +113,20 @@ class CategoriesProvider extends AutoDisposeFutureProvider<List<Category>> {
   final String languageCode;
 
   @override
-  Override overrideWith(
-    FutureOr<List<Category>> Function(CategoriesRef provider) create,
+  FutureOr<List<Category>> runNotifierBuild(
+    covariant Categories notifier,
   ) {
+    return notifier.build(
+      languageCode,
+    );
+  }
+
+  @override
+  Override overrideWith(Categories Function() create) {
     return ProviderOverride(
       origin: this,
       override: CategoriesProvider._internal(
-        (ref) => create(ref as CategoriesRef),
+        () => create()..languageCode = languageCode,
         from: from,
         name: null,
         dependencies: null,
@@ -124,7 +138,8 @@ class CategoriesProvider extends AutoDisposeFutureProvider<List<Category>> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<Category>> createElement() {
+  AutoDisposeAsyncNotifierProviderElement<Categories, List<Category>>
+      createElement() {
     return _CategoriesProviderElement(this);
   }
 
@@ -144,13 +159,13 @@ class CategoriesProvider extends AutoDisposeFutureProvider<List<Category>> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin CategoriesRef on AutoDisposeFutureProviderRef<List<Category>> {
+mixin CategoriesRef on AutoDisposeAsyncNotifierProviderRef<List<Category>> {
   /// The parameter `languageCode` of this provider.
   String get languageCode;
 }
 
 class _CategoriesProviderElement
-    extends AutoDisposeFutureProviderElement<List<Category>>
+    extends AutoDisposeAsyncNotifierProviderElement<Categories, List<Category>>
     with CategoriesRef {
   _CategoriesProviderElement(super.provider);
 

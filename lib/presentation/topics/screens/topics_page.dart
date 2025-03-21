@@ -1,3 +1,4 @@
+import 'package:brain_bench/business_logic/categories/categories_provider.dart';
 import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
 import 'package:brain_bench/core/component_widgets/no_data_available_view.dart';
 import 'package:brain_bench/core/component_widgets/progress_indicator_bar_view.dart';
@@ -37,6 +38,9 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
     final topicsAsync =
         ref.watch(topicsProvider(widget.categoryId, languageCode));
 
+    final categoryAsync =
+        ref.watch(categoryByIdProvider(widget.categoryId, languageCode));
+
     return Scaffold(
       appBar: BackNavAppBar(
         title: localizations.topicsTitle,
@@ -46,8 +50,11 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
       ),
       body: Column(
         children: [
-          const ProgressIndicatorBarView(
-            progress: 0.5,
+          categoryAsync.when(
+            data: (category) =>
+                ProgressIndicatorBarView(progress: category.progress),
+            loading: () => const ProgressIndicatorBarView(progress: 0),
+            error: (error, stack) => const SizedBox.shrink(),
           ),
           Expanded(
             child: topicsAsync.when(
