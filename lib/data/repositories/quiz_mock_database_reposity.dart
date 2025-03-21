@@ -147,9 +147,10 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
       return jsonData.where((e) => e['categoryId'] == categoryId).map((e) {
         return Topic(
           id: e['id'],
-          name: languageCode == 'de' ? e['nameDe'] : e['nameEn'],
-          description:
-              languageCode == 'de' ? e['descriptionDe'] : e['descriptionEn'],
+          nameEn: e['nameEn'], // ✅ Use nameEn
+          nameDe: e['nameDe'], // ✅ Use nameDe
+          descriptionEn: e['descriptionEn'], // ✅ Use descriptionEn
+          descriptionDe: e['descriptionDe'], // ✅ Use descriptionDe
           categoryId: e['categoryId'],
           progress: (e['progress'] as num?)?.toDouble() ?? 0.0,
           isDone: e['isDone'] ?? false,

@@ -22,8 +22,10 @@ class Topic with _$Topic {
   ///   - [isDone]: Whether the topic is marked as done.
   factory Topic({
     required String id,
-    required String name,
-    required String description,
+    required String nameEn,
+    required String nameDe,
+    required String descriptionEn,
+    required String descriptionDe,
     required String categoryId,
     @Default(0.0) double progress,
     @Default(false) bool isDone,
@@ -39,14 +41,18 @@ class Topic with _$Topic {
   ///   - [description]: The description of the topic.
   ///   - [categoryId]: The ID of the category the topic belongs to.
   factory Topic.create({
-    required String name,
-    required String description,
+    required String nameEn,
+    required String nameDe,
+    required String descriptionEn,
+    required String descriptionDe,
     required String categoryId,
   }) {
     return Topic(
       id: const Uuid().v4(),
-      name: name,
-      description: description,
+      nameEn: nameEn,
+      nameDe: nameDe,
+      descriptionEn: descriptionEn,
+      descriptionDe: descriptionDe,
       categoryId: categoryId,
     );
   }

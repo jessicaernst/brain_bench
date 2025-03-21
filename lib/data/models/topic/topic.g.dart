@@ -8,8 +8,10 @@ part of 'topic.dart';
 
 _$TopicImpl _$$TopicImplFromJson(Map<String, dynamic> json) => _$TopicImpl(
       id: json['id'] as String,
-      name: json['name'] as String,
-      description: json['description'] as String,
+      nameEn: json['nameEn'] as String,
+      nameDe: json['nameDe'] as String,
+      descriptionEn: json['descriptionEn'] as String,
+      descriptionDe: json['descriptionDe'] as String,
       categoryId: json['categoryId'] as String,
       progress: (json['progress'] as num?)?.toDouble() ?? 0.0,
       isDone: json['isDone'] as bool? ?? false,
@@ -18,8 +20,10 @@ _$TopicImpl _$$TopicImplFromJson(Map<String, dynamic> json) => _$TopicImpl(
 Map<String, dynamic> _$$TopicImplToJson(_$TopicImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'name': instance.name,
-      'description': instance.description,
+      'nameEn': instance.nameEn,
+      'nameDe': instance.nameDe,
+      'descriptionEn': instance.descriptionEn,
+      'descriptionDe': instance.descriptionDe,
       'categoryId': instance.categoryId,
       'progress': instance.progress,
       'isDone': instance.isDone,

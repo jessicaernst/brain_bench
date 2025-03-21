@@ -56,24 +56,27 @@ class _TopicCardState extends State<TopicCard> with EnsureVisibleMixin {
 
   @override
   Widget build(BuildContext context) {
+    final String languageCode = Localizations.localeOf(context).languageCode;
     // Check if the app is in dark mode to style the card accordingly.
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    logger.fine('build called for topic: ${widget.topic.name}');
+    logger.fine('build called for topic: ${widget.topic.nameEn}');
     return Column(
       key: cardKey,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // The main card area that displays the topic title and handles expansion.
         TopicMainCard(
-          title: widget.topic.name,
+          title: languageCode == 'de'
+              ? widget.topic.nameDe
+              : widget.topic.nameEn, // ✅ Use nameEn or nameDe
           isExpanded: widget.isExpanded,
           onTap: () {
-            logger.fine('tapped topic: ${widget.topic.name}');
+            logger.fine('tapped topic: ${widget.topic.nameEn}');
             widget
                 .onToggle(); // Notify the parent widget that the card was tapped to expand/collapse.
             // If the card is not expanded (meaning it was just tapped to expand), ensure it's visible.
             if (!widget.isExpanded) {
-              ensureCardIsVisible(cardName: widget.topic.name);
+              ensureCardIsVisible(cardName: widget.topic.nameEn);
             }
           },
           isDarkMode: isDarkMode,
@@ -82,10 +85,15 @@ class _TopicCardState extends State<TopicCard> with EnsureVisibleMixin {
         Padding(
           padding: const EdgeInsets.only(left: 16, right: 16),
           child: TopicCardExpandable(
-            description: widget.topic.description,
+            description: languageCode == 'de'
+                ? widget.topic.descriptionDe
+                : widget.topic
+                    .descriptionEn, // ✅ Use descriptionEn or descriptionDe
             onPressed: widget.onPressed, // Pass the callback to start the quiz.
             isExpanded: widget.isExpanded,
-            title: widget.topic.name,
+            title: languageCode == 'de'
+                ? widget.topic.nameDe
+                : widget.topic.nameEn, // ✅ Use nameEn or nameDe
           ),
         ),
       ],

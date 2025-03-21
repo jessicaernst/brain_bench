@@ -205,7 +205,7 @@ class _$CategoryImpl implements _Category {
       required this.subtitleDe,
       required this.descriptionEn,
       required this.descriptionDe,
-      required this.progress});
+      this.progress = 0.0});
 
   factory _$CategoryImpl.fromJson(Map<String, dynamic> json) =>
       _$$CategoryImplFromJson(json);
@@ -225,6 +225,7 @@ class _$CategoryImpl implements _Category {
   @override
   final String descriptionDe;
   @override
+  @JsonKey()
   final double progress;
 
   @override
@@ -282,7 +283,7 @@ abstract class _Category implements Category {
       required final String subtitleDe,
       required final String descriptionEn,
       required final String descriptionDe,
-      required final double progress}) = _$CategoryImpl;
+      final double progress}) = _$CategoryImpl;
 
   factory _Category.fromJson(Map<String, dynamic> json) =
       _$CategoryImpl.fromJson;

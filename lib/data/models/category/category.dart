@@ -16,7 +16,7 @@ class Category with _$Category {
     required String subtitleDe,
     required String descriptionEn,
     required String descriptionDe,
-    required double progress,
+    @Default(0.0) double progress,
   }) = _Category;
 
   // A custom factory constructor named `create`, designed to generate a `Category` object
