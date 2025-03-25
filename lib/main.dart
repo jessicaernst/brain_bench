@@ -56,8 +56,12 @@ Future<void> main() async {
     FirebaseEnvironment.dev => dev.DefaultFirebaseOptions.currentPlatform,
   };
 
-  // Initialize Firebase
-  await Firebase.initializeApp(options: firebaseOptions);
+  // Initialize Firebase safely (prevent duplicate-app error on hot restart)
+  try {
+    await Firebase.initializeApp(options: firebaseOptions);
+  } on FirebaseException catch (e) {
+    if (e.code != 'duplicate-app') rethrow;
+  }
 
   // Lock orientation to portrait mode
   await SystemChrome.setPreferredOrientations([
