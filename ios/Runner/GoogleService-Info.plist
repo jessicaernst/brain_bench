@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyCf4JpoEl-0MCJYWJyKnr6g818zR3_vagI</string>
+	<string>AIzaSyD46-MQcTH51U87VVi14zpzv1NcpaIFJGA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>47140537639</string>
+	<string>110713674115</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.brainBench</string>
 	<key>PROJECT_ID</key>
-	<string>brainbench-prod</string>
+	<string>brainbench-test</string>
 	<key>STORAGE_BUCKET</key>
-	<string>brainbench-prod.firebasestorage.app</string>
+	<string>brainbench-test.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:47140537639:ios:9d5f3efa6cbfc5e67ad502</string>
+	<string>1:110713674115:ios:48dd2762a0153c652ffeb6</string>
 </dict>
 </plist>
