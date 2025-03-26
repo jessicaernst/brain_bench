@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "110713674115",
-    "project_id": "brainbench-test",
-    "storage_bucket": "brainbench-test.firebasestorage.app"
+    "project_number": "47140537639",
+    "project_id": "brainbench-prod",
+    "storage_bucket": "brainbench-prod.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:110713674115:android:b92908ea7324fd912ffeb6",
+        "mobilesdk_app_id": "1:47140537639:android:8c9bd96f6d256dfa7ad502",
         "android_client_info": {
           "package_name": "com.example.brain_bench"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDLM3TBilk2IWhGRU2uX2yHpcXnAvxXflk"
+          "current_key": "AIzaSyAb1CzSZ9yBg3abwJK2QKyJxgh45SHRGnA"
         }
       ],
       "services": {
