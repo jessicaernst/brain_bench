@@ -1,11 +1,13 @@
+import 'dart:async';
 import 'package:brain_bench/app/app.dart';
 import 'package:brain_bench/services/logging_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 // Import all Firebase config files
 import 'package:brain_bench/services/firebase_options_dev.dart' as dev;
@@ -62,6 +64,16 @@ Future<void> main() async {
   } on FirebaseException catch (e) {
     if (e.code != 'duplicate-app') rethrow;
   }
+
+  // ✅ Initialize Crashlytics
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 
   // Lock orientation to portrait mode
   await SystemChrome.setPreferredOrientations([
