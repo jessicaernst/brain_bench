@@ -54,3 +54,6 @@ app.*.map.json
 .VSCodeCounter/2025-02-05_17-28-54/results.md
 .VSCodeCounter/2025-02-05_17-28-54/results.txt
 .VSCodeCounter/
+
+# Firebase configuration
+lib/services/firebase_options_*.dart
