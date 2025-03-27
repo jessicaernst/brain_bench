@@ -57,6 +57,8 @@ dependencies:
   firebase_auth: ^5.5.1
   firebase_crashlytics: ^4.3.4
   firebase_analytics: ^11.4.4
+  google_sign_in: ^6.3.0
+  sign_in_with_apple: ^6.1.4
 
 
 dev_dependencies:

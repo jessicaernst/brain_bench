@@ -28,7 +28,7 @@ class TopicsPage extends ConsumerStatefulWidget {
 class _TopicsPageState extends ConsumerState<TopicsPage> {
   // ✅ Map to hold the expanded state of each TopicCard, keyed by topicId
   final Map<String, bool> _expandedStates = {};
-  bool _showDoneTopics = false; // ✅ State for the "Done" section
+  bool _showDoneTopics = false;
 
   @override
   Widget build(BuildContext context) {
