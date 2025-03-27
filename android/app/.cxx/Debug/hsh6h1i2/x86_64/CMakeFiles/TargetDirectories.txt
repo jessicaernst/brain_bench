@@ -1,0 +1,2 @@
+/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/CMakeFiles/edit_cache.dir
+/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/CMakeFiles/rebuild_cache.dir

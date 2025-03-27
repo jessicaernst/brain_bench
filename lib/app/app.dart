@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/theme_data.dart';
 import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,6 +14,18 @@ class BrainBenchApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(goRouterProvider);
+    final brightness = MediaQuery.platformBrightnessOf(context);
+    final isDarkMode = brightness == Brightness.dark;
+
+    if (Platform.isAndroid) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness:
+              isDarkMode ? Brightness.light : Brightness.dark,
+        ),
+      );
+    }
 
     return MaterialApp.router(
       title: 'Brain Bench',
