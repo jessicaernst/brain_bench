@@ -1,5 +1,6 @@
 import 'package:brain_bench/data/models/auth/app_user.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'auth_repository.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -11,6 +12,12 @@ final Logger _logger = Logger('FirebaseAuthRepository');
 
 class FirebaseAuthRepository implements AuthRepository {
   final fb.FirebaseAuth _auth = fb.FirebaseAuth.instance;
+
+  // for firebase sending email in correct languages for the user
+  FirebaseAuthRepository() {
+    final locale = WidgetsBinding.instance.platformDispatcher.locale;
+    fb.FirebaseAuth.instance.setLanguageCode(locale.languageCode);
+  }
 
   /// Map Firebase [User] to [AppUser]
   AppUser _mapFirebaseUser(fb.User user) {
