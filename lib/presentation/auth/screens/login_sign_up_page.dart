@@ -1,3 +1,4 @@
+import 'package:brain_bench/presentation/auth/widgets/login_card_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,7 @@ class LoginSignUpPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return const Scaffold(
         body: Center(
-      child: Text('test'),
+      child: LoginCardView(),
     ));
   }
 }

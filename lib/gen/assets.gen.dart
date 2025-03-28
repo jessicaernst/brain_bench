@@ -123,6 +123,26 @@ class $AssetsImagesGen {
       ];
 }
 
+class $AssetsSocialLoginsGen {
+  const $AssetsSocialLoginsGen();
+
+  /// File path: assets/social_logins/appleid_button_black.png
+  AssetGenImage get appleidButtonBlack =>
+      const AssetGenImage('assets/social_logins/appleid_button_black.png');
+
+  /// File path: assets/social_logins/appleid_button_white.png
+  AssetGenImage get appleidButtonWhite =>
+      const AssetGenImage('assets/social_logins/appleid_button_white.png');
+
+  /// File path: assets/social_logins/google_logo.png
+  AssetGenImage get googleLogo =>
+      const AssetGenImage('assets/social_logins/google_logo.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values =>
+      [appleidButtonBlack, appleidButtonWhite, googleLogo];
+}
+
 class $LibDataGen {
   const $LibDataGen();
 
@@ -158,6 +178,7 @@ class Assets {
   static const $AssetsAppIconsGen appIcons = $AssetsAppIconsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsSocialLoginsGen socialLogins = $AssetsSocialLoginsGen();
   static const $LibGen lib = $LibGen();
 }
 

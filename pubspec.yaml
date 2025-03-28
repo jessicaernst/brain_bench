@@ -96,6 +96,7 @@ flutter:
     - assets/images/
     - assets/backgrounds/
     - assets/icons/
+    - assets/social_logins/
     - lib/data/data_source/
 
 

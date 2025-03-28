@@ -9,18 +9,21 @@ class DarkmodeBtn extends StatelessWidget {
     required this.onPressed,
     required this.isActive,
     this.padding = const EdgeInsets.symmetric(horizontal: 48),
+    this.width,
   });
 
   final String title;
   final VoidCallback onPressed;
   final bool isActive;
   final EdgeInsetsGeometry padding;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
     return GradientDesignBtn(
       isActive: isActive,
       enableBlur: true,
+      width: width,
       blurSigma: 15,
       padding: padding,
       title: Text(

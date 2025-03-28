@@ -8,25 +8,29 @@ class LightDarkSwitchBtn extends StatelessWidget {
     required this.title,
     required this.isActive,
     required this.onPressed,
+    this.width,
   });
 
   final String title;
   final bool isActive;
   final VoidCallback onPressed;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return isDarkMode
-        ? LightmodeBtn(
+        ? DarkmodeBtn(
             title: title,
+            width: width,
             onPressed:
                 isActive ? onPressed : () => debugPrint('Button inactive'),
             isActive: isActive,
           )
-        : DarkmodeBtn(
+        : LightmodeBtn(
             title: title,
+            width: width,
             onPressed:
                 isActive ? onPressed : () => debugPrint('Button inactive'),
             isActive: isActive,

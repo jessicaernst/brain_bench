@@ -1,3 +1,4 @@
+import 'package:brain_bench/core/styles/text_styles.dart';
 import 'package:brain_bench/core/styles/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'colors.dart';
@@ -68,6 +69,35 @@ class BrainBenchTheme {
           collapsedShape: Border(),
           shape: Border(),
         ),
+        inputDecorationTheme: InputDecorationTheme(
+          hintStyle: BrainBenchTextStyles.bodyRegular().copyWith(
+            color: BrainBenchColors.deepDive.withAlpha((0.6 * 255).toInt()),
+          ),
+          filled: true,
+          fillColor: BrainBenchColors.cloudCanvas,
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: const Color.fromARGB(255, 60, 60, 67)
+                  .withAlpha((0.29 * 255).toInt()),
+              width: 0.7,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: const Color.fromARGB(255, 60, 60, 67)
+                  .withAlpha((0.29 * 255).toInt()),
+              width: 1.2,
+            ),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+        ),
       );
 
   static ThemeData get darkTheme => ThemeData(
@@ -130,6 +160,35 @@ class BrainBenchTheme {
           childrenPadding: EdgeInsets.only(left: 16, right: 16, bottom: 8),
           collapsedShape: Border(),
           shape: Border(),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          hintStyle: BrainBenchTextStyles.bodyRegular().copyWith(
+            color: BrainBenchColors.deepDive.withAlpha((0.6 * 255).toInt()),
+          ),
+          filled: true,
+          fillColor: BrainBenchColors.cloudCanvas,
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: const Color.fromARGB(255, 60, 60, 67)
+                  .withAlpha((0.29 * 255).toInt()),
+              width: 0.7,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: const Color.fromARGB(255, 60, 60, 67)
+                  .withAlpha((0.29 * 255).toInt()),
+              width: 1.2,
+            ),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
         ),
       );
 }
