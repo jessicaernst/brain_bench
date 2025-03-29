@@ -20,7 +20,6 @@ class LoginSignUpPage extends HookConsumerWidget {
     final passwordController = useTextEditingController();
     final isButtonEnabled = useState(false);
 
-    // Validierungslogik
     useEffect(() {
       void validate() {
         isButtonEnabled.value = emailController.text.isNotEmpty &&
@@ -44,6 +43,26 @@ class LoginSignUpPage extends HookConsumerWidget {
       final password = passwordController.text;
 
       debugPrint('Logging in with $email / $password');
+    }
+
+    void onSignUpPressed() {
+      // TODO: Handle sign-up logic here
+      debugPrint('Sign Up pressed');
+    }
+
+    void onResetPasswordPressed() {
+      // TODO: Handle reset password logic here
+      debugPrint('Reset Password pressed');
+    }
+
+    void onGoogleLoginPressed() {
+      // TODO: Handle Google login logic here
+      debugPrint('Google Login pressed');
+    }
+
+    void onAppleLoginPressed() {
+      // TODO: Handle Apple login logic here
+      debugPrint('Apple Login pressed');
     }
 
     return Scaffold(
@@ -82,6 +101,10 @@ class LoginSignUpPage extends HookConsumerWidget {
                           passwordController: passwordController,
                           isButtonEnabled: isButtonEnabled.value,
                           onLoginPressed: onLoginPressed,
+                          onSignUpPressed: onSignUpPressed,
+                          onResetPasswordPressed: onResetPasswordPressed,
+                          onGoogleLoginPressed: () {},
+                          onAppleLoginPressed: () {},
                         ),
                       ),
                     ),

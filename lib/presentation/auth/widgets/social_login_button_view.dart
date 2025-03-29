@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 class SocialLoginButtonView extends StatelessWidget {
   const SocialLoginButtonView({
     super.key,
+    required this.onGoogleLoginPressed,
+    required this.onAppleLoginPressed,
   });
+
+  final VoidCallback onGoogleLoginPressed;
+  final VoidCallback onAppleLoginPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +21,14 @@ class SocialLoginButtonView extends StatelessWidget {
       children: [
         SocialImageButton(
           imagePath: Assets.socialLogins.googleLogo.path,
-          onPressed: () {},
+          onPressed: onGoogleLoginPressed,
         ),
         const SizedBox(width: 48),
         SocialImageButton(
           imagePath: isDarkMode
               ? Assets.socialLogins.appleidButtonWhite.path
               : Assets.socialLogins.appleidButtonBlack.path,
-          onPressed: () {},
+          onPressed: onAppleLoginPressed,
         ),
       ],
     );

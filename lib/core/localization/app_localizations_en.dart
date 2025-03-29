@@ -100,4 +100,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get topicsTitle => 'Topics';
+
+  @override
+  String get authEmail => 'E-Mail';
+
+  @override
+  String get authPassword => 'Password';
+
+  @override
+  String get authLoginTitle => 'Login';
+
+  @override
+  String get authRegisterTitle => 'Sign Up';
+
+  @override
+  String get authLoginBtnLbl => 'Login';
+
+  @override
+  String get authRegisterBtnLbl => 'Register';
+
+  @override
+  String get authSignUpTextBtnLbl => 'Sign Up here';
+
+  @override
+  String get authSignUpText => 'Don\'t have an account? ';
+
+  @override
+  String get authLoginTextBtnLbl => 'Login';
+
+  @override
+  String get authLoginText => 'Already have an account? ';
+
+  @override
+  String get authPwdForgottenText => 'Forgot your password? ';
+
+  @override
+  String get authPwdForgottenBtnLbl => 'Reset here';
+
+  @override
+  String get authDividerLoginText => 'Or Login with';
+
+  @override
+  String get authDividerRegisterText => 'Or Sign in with';
 }

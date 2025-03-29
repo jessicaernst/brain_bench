@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:brain_bench/core/styles/colors.dart';
+import 'package:brain_bench/core/styles/gradient_colors.dart';
 import 'package:flutter/material.dart';
 
 class AuthCardView extends StatelessWidget {
@@ -9,6 +10,8 @@ class AuthCardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Center(
       child: SizedBox(
         width: 350,
@@ -19,9 +22,11 @@ class AuthCardView extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(24),
-                  color: BrainBenchColors.cloudCanvas
-                      .withAlpha((0.7 * 255).toInt()),
-                  boxShadow: _shadows,
+                  color: isDarkMode
+                      ? BrainBenchColors.deepDive
+                      : BrainBenchColors.cloudCanvas
+                          .withAlpha((0.7 * 255).toInt()),
+                  boxShadow: isDarkMode ? [] : _shadows,
                 ),
               ),
             ),
@@ -33,19 +38,12 @@ class AuthCardView extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(24),
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        BrainBenchColors.blueprintBlue
-                            .withAlpha((0.4 * 255).toInt()),
-                        BrainBenchColors.blueprintBlue
-                            .withAlpha((0.1 * 255).toInt()),
-                      ],
-                    ),
+                    gradient: isDarkMode
+                        ? BrainBenchGradients.authCardGradientDark
+                        : BrainBenchGradients.authCardGradientLight,
                     border: Border.all(
-                      color: Colors.white.withAlpha((0.7 * 255).toInt()),
-                      width: 1,
+                      color: BrainBenchColors.btnStroke,
+                      width: 0.7,
                     ),
                   ),
                   padding: const EdgeInsets.all(32),

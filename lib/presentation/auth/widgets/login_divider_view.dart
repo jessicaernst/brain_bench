@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 class LoginDividerView extends StatelessWidget {
   const LoginDividerView({
     super.key,
+    required this.title,
   });
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class LoginDividerView extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Text(
-          'Or Login with',
+          title,
           style: TextTheme.of(context).bodySmall,
         ),
         const SizedBox(width: 12),

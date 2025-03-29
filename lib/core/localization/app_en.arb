@@ -123,5 +123,61 @@
     "topicsTitle": "Topics",
     "@topicsTitle": {
         "description": "The title of the topics page"
+    },
+    "authEmail": "E-Mail",
+    "@authEmail": {
+        "description": "The label for the email input field"
+    },
+    "authPassword": "Password",
+    "@authPassword": {
+        "description": "The label for the password input field"
+    },
+    "authLoginTitle": "Login",
+    "@authLoginTitle": {
+        "description": "The title of the login page"
+    },
+    "authRegisterTitle": "Sign Up",
+    "@authRegisterTitle": {
+        "description": "The title of the register page"
+    },
+    "authLoginBtnLbl": "Login",
+    "@authLoginBtnLbl": {
+        "description": "The label of the login button"
+    },
+    "authRegisterBtnLbl": "Register",
+    "@authRegisterBtnLbl": {
+        "description": "The label of the register button"
+    },
+    "authSignUpTextBtnLbl": "Sign Up here",
+    "@authSignUpTextBtnLbl": {
+        "description": "The label of the sign up text button"
+    },
+    "authSignUpText": "Don't have an account? ",
+    "@authSignUpText": {
+        "description": "The text of the sign up text"
+    },
+    "authLoginTextBtnLbl": "Login",
+    "@authLoginTextBtnLbl": {
+        "description": "The label of the login text button"
+    },
+    "authLoginText": "Already have an account? ",
+    "@authLoginText": {
+        "description": "The text of the login text"
+    },
+    "authPwdForgottenText": "Forgot your password? ",
+    "@authPwdForgottenText": {
+        "description": "The text of the password forgotten text"
+    },
+    "authPwdForgottenBtnLbl": "Reset here",
+    "@authPwdForgottenBtnLbl": {
+        "description": "The label of the password forgotten button"
+    },
+    "authDividerLoginText": "Or Login with",
+    "@authDividerLoginText": {
+        "description": "The text of the divider"
+    },
+    "authDividerRegisterText": "Or Sign in with",
+    "@authDividerRegisterText": {
+        "description": "The text of the divider"
     }
 }

@@ -1,30 +1,44 @@
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
+import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/presentation/auth/widgets/login_divider_view.dart';
 import 'package:brain_bench/presentation/auth/widgets/social_login_button_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class LoginContentView extends StatelessWidget {
+class LoginContentView extends HookWidget {
   const LoginContentView({
     super.key,
     required this.emailController,
     required this.passwordController,
     required this.isButtonEnabled,
     required this.onLoginPressed,
+    required this.onSignUpPressed,
+    required this.onResetPasswordPressed,
+    required this.onGoogleLoginPressed,
+    required this.onAppleLoginPressed,
   });
 
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final bool isButtonEnabled;
   final VoidCallback onLoginPressed;
+  final VoidCallback onSignUpPressed;
+  final VoidCallback onResetPasswordPressed;
+  final VoidCallback onGoogleLoginPressed;
+  final VoidCallback onAppleLoginPressed;
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(context)!;
+    final showPassword = useState(false);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Login',
+          localizations.authLoginTitle,
           style: TextTheme.of(context).displayLarge,
           textAlign: TextAlign.start,
         ),
@@ -36,8 +50,11 @@ class LoginContentView extends StatelessWidget {
                 height: 36,
                 child: TextField(
                   controller: emailController,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  decoration: const InputDecoration(hintText: 'Email'),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: BrainBenchColors.deepDive,
+                      ),
+                  decoration:
+                      InputDecoration(hintText: localizations.authEmail),
                   autofillHints: const [AutofillHints.email],
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
@@ -48,11 +65,28 @@ class LoginContentView extends StatelessWidget {
                 height: 36,
                 child: TextField(
                   controller: passwordController,
-                  obscureText: true,
+                  obscureText: !showPassword.value,
                   enableSuggestions: false,
                   autocorrect: false,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  decoration: const InputDecoration(hintText: 'Password'),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: BrainBenchColors.deepDive,
+                      ),
+                  decoration: InputDecoration(
+                    hintText: localizations.authPassword,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        size: 20,
+                        color: BrainBenchColors.deepDive
+                            .withAlpha((0.6 * 255).toInt()),
+                        showPassword.value
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        showPassword.value = !showPassword.value;
+                      },
+                    ),
+                  ),
                   autofillHints: const [AutofillHints.password],
                   textInputAction: TextInputAction.done,
                 ),
@@ -67,14 +101,14 @@ class LoginContentView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: onSignUpPressed, // Call the callback
                 child: Text.rich(
                   TextSpan(
-                    text: "Don't have an account? ",
+                    text: localizations.authSignUpText,
                     style: TextTheme.of(context).titleMedium,
                     children: [
                       TextSpan(
-                        text: 'Sign Up here',
+                        text: localizations.authSignUpTextBtnLbl,
                         style: TextTheme.of(context).titleSmall,
                       ),
                     ],
@@ -82,14 +116,14 @@ class LoginContentView extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: onResetPasswordPressed, // Call the callback
                 child: Text.rich(
                   TextSpan(
-                    text: 'Forgot your password? ',
+                    text: localizations.authPwdForgottenText,
                     style: TextTheme.of(context).titleMedium,
                     children: [
                       TextSpan(
-                        text: 'Reset here',
+                        text: localizations.authPwdForgottenBtnLbl,
                         style: TextTheme.of(context).titleSmall,
                       ),
                     ],
@@ -102,16 +136,21 @@ class LoginContentView extends StatelessWidget {
         const SizedBox(height: 32),
         Center(
           child: LightDarkSwitchBtn(
-            title: 'Login',
+            title: localizations.authLoginBtnLbl,
             width: double.infinity,
             isActive: isButtonEnabled,
             onPressed: onLoginPressed,
           ),
         ),
         const SizedBox(height: 32),
-        const LoginDividerView(),
+        LoginDividerView(
+          title: localizations.authDividerLoginText,
+        ), // Remove title parameter
         const SizedBox(height: 24),
-        const SocialLoginButtonView(),
+        SocialLoginButtonView(
+          onGoogleLoginPressed: onGoogleLoginPressed,
+          onAppleLoginPressed: onAppleLoginPressed,
+        ),
       ],
     );
   }

@@ -195,4 +195,22 @@ abstract class BrainBenchGradients {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
+
+  static final LinearGradient authCardGradientLight = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      BrainBenchColors.lightModeGlass40,
+      BrainBenchColors.lightModeGlass10,
+    ],
+  );
+
+  static final LinearGradient authCardGradientDark = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      BrainBenchColors.darkModeGlass40,
+      BrainBenchColors.darkModeGlass10,
+    ],
+  );
 }

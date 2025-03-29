@@ -280,6 +280,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Topics'**
   String get topicsTitle;
+
+  /// The label for the email input field
+  ///
+  /// In en, this message translates to:
+  /// **'E-Mail'**
+  String get authEmail;
+
+  /// The label for the password input field
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get authPassword;
+
+  /// The title of the login page
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get authLoginTitle;
+
+  /// The title of the register page
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get authRegisterTitle;
+
+  /// The label of the login button
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get authLoginBtnLbl;
+
+  /// The label of the register button
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get authRegisterBtnLbl;
+
+  /// The label of the sign up text button
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up here'**
+  String get authSignUpTextBtnLbl;
+
+  /// The text of the sign up text
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account? '**
+  String get authSignUpText;
+
+  /// The label of the login text button
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get authLoginTextBtnLbl;
+
+  /// The text of the login text
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? '**
+  String get authLoginText;
+
+  /// The text of the password forgotten text
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot your password? '**
+  String get authPwdForgottenText;
+
+  /// The label of the password forgotten button
+  ///
+  /// In en, this message translates to:
+  /// **'Reset here'**
+  String get authPwdForgottenBtnLbl;
+
+  /// The text of the divider
+  ///
+  /// In en, this message translates to:
+  /// **'Or Login with'**
+  String get authDividerLoginText;
+
+  /// The text of the divider
+  ///
+  /// In en, this message translates to:
+  /// **'Or Sign in with'**
+  String get authDividerRegisterText;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
