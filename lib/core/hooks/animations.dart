@@ -20,7 +20,7 @@ Animation<Offset> useSlideInFromBottom({
 
   final animation = useMemoized(() {
     return Tween<Offset>(
-      begin: const Offset(0, 1),
+      begin: const Offset(0, 4),
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: controller, curve: curve));
   }, [controller]);
