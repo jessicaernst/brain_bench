@@ -60,19 +60,25 @@ class LoginCardView extends StatelessWidget {
                         textAlign: TextAlign.start,
                       ),
                       const SizedBox(height: 24),
-                      TextField(
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        decoration: const InputDecoration(
-                          hintText: 'Email',
+                      SizedBox(
+                        height: 36,
+                        child: TextField(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          decoration: const InputDecoration(
+                            hintText: 'Email',
+                          ),
                         ),
                       ),
                       const SizedBox(height: 16),
-                      TextField(
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        decoration: const InputDecoration(
-                          hintText: 'Password',
+                      SizedBox(
+                        height: 36,
+                        child: TextField(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          decoration: const InputDecoration(
+                            hintText: 'Password',
+                          ),
+                          obscureText: true,
                         ),
-                        obscureText: true,
                       ),
                       const SizedBox(height: 8),
                       Align(
@@ -118,7 +124,7 @@ class LoginCardView extends StatelessWidget {
                         child: LightDarkSwitchBtn(
                             title: 'Login',
                             width: double.infinity,
-                            isActive: true,
+                            isActive: false,
                             onPressed: () {}),
                       ),
                       const SizedBox(height: 32),
