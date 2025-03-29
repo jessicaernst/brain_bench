@@ -10,6 +10,7 @@ class LoginSignUpPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final slideAnimation = useSlideInFromBottom();
     final fadeAnimation = useFadeIn();
+
     final mediaQuery = MediaQuery.of(context);
     final isKeyboardVisible = mediaQuery.viewInsets.bottom > 0;
 
@@ -19,7 +20,9 @@ class LoginSignUpPage extends HookConsumerWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
+              physics: isKeyboardVisible
+                  ? const ClampingScrollPhysics()
+                  : const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.only(
                 left: 24,
                 right: 24,
@@ -35,6 +38,7 @@ class LoginSignUpPage extends HookConsumerWidget {
                   mainAxisAlignment: isKeyboardVisible
                       ? MainAxisAlignment.start
                       : MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SlideTransition(
                       position: slideAnimation,
