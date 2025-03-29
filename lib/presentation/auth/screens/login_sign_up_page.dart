@@ -34,20 +34,19 @@ class LoginSignUpPage extends HookConsumerWidget {
                 constraints: BoxConstraints(
                   minHeight: constraints.maxHeight,
                 ),
-                child: Column(
-                  mainAxisAlignment: isKeyboardVisible
-                      ? MainAxisAlignment.start
-                      : MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SlideTransition(
-                      position: slideAnimation,
-                      child: FadeTransition(
-                        opacity: fadeAnimation,
-                        child: const LoginCardView(),
-                      ),
+                child: AnimatedAlign(
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeOutCubic,
+                  alignment: isKeyboardVisible
+                      ? Alignment.topCenter
+                      : Alignment.center,
+                  child: SlideTransition(
+                    position: slideAnimation,
+                    child: FadeTransition(
+                      opacity: fadeAnimation,
+                      child: const LoginCardView(),
                     ),
-                  ],
+                  ),
                 ),
               ),
             );
