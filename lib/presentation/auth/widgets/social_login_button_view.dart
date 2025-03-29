@@ -1,0 +1,31 @@
+import 'package:brain_bench/gen/assets.gen.dart';
+import 'package:brain_bench/presentation/auth/widgets/social_image_button.dart';
+import 'package:flutter/material.dart';
+
+class SocialLoginButtonView extends StatelessWidget {
+  const SocialLoginButtonView({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SocialImageButton(
+          imagePath: Assets.socialLogins.googleLogo.path,
+          onPressed: () {},
+        ),
+        const SizedBox(width: 48),
+        SocialImageButton(
+          imagePath: isDarkMode
+              ? Assets.socialLogins.appleidButtonWhite.path
+              : Assets.socialLogins.appleidButtonBlack.path,
+          onPressed: () {},
+        ),
+      ],
+    );
+  }
+}

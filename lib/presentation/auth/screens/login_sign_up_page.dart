@@ -1,5 +1,7 @@
 import 'package:brain_bench/core/hooks/animations.dart';
-import 'package:brain_bench/presentation/auth/widgets/login_card_view.dart';
+import 'package:brain_bench/presentation/auth/widgets/auth_card_view.dart';
+import 'package:brain_bench/presentation/auth/widgets/login_content_view.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +15,36 @@ class LoginSignUpPage extends HookConsumerWidget {
 
     final mediaQuery = MediaQuery.of(context);
     final isKeyboardVisible = mediaQuery.viewInsets.bottom > 0;
+
+    final emailController = useTextEditingController();
+    final passwordController = useTextEditingController();
+    final isButtonEnabled = useState(false);
+
+    // Validierungslogik
+    useEffect(() {
+      void validate() {
+        isButtonEnabled.value = emailController.text.isNotEmpty &&
+            passwordController.text.isNotEmpty;
+      }
+
+      emailController.addListener(validate);
+      passwordController.addListener(validate);
+
+      return () {
+        emailController.removeListener(validate);
+        passwordController.removeListener(validate);
+      };
+    }, [emailController, passwordController]);
+
+    void onLoginPressed() {
+      if (!isButtonEnabled.value) return;
+
+      // TODO: Handle login logic here
+      final email = emailController.text.trim();
+      final password = passwordController.text;
+
+      debugPrint('Logging in with $email / $password');
+    }
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -44,7 +76,14 @@ class LoginSignUpPage extends HookConsumerWidget {
                     position: slideAnimation,
                     child: FadeTransition(
                       opacity: fadeAnimation,
-                      child: const LoginCardView(),
+                      child: AuthCardView(
+                        content: LoginContentView(
+                          emailController: emailController,
+                          passwordController: passwordController,
+                          isButtonEnabled: isButtonEnabled.value,
+                          onLoginPressed: onLoginPressed,
+                        ),
+                      ),
                     ),
                   ),
                 ),

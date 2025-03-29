@@ -71,7 +71,7 @@ class BrainBenchTheme {
         ),
         inputDecorationTheme: InputDecorationTheme(
           hintStyle: BrainBenchTextStyles.bodyRegular().copyWith(
-            color: BrainBenchColors.deepDive.withAlpha((0.6 * 255).toInt()),
+            color: BrainBenchColors.deepDive.withAlpha((0.5 * 255).toInt()),
           ),
           filled: true,
           fillColor: BrainBenchColors.cloudCanvas,
@@ -80,16 +80,14 @@ class BrainBenchTheme {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: const Color.fromARGB(255, 60, 60, 67)
-                  .withAlpha((0.29 * 255).toInt()),
+              color: BrainBenchColors.deepDive.withAlpha((0.29 * 255).toInt()),
               width: 0.7,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: const Color.fromARGB(255, 60, 60, 67)
-                  .withAlpha((0.29 * 255).toInt()),
+              color: BrainBenchColors.deepDive.withAlpha((0.5 * 255).toInt()),
               width: 1.2,
             ),
           ),
@@ -172,16 +170,14 @@ class BrainBenchTheme {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: const Color.fromARGB(255, 60, 60, 67)
-                  .withAlpha((0.29 * 255).toInt()),
+              color: BrainBenchColors.deepDive.withAlpha((0.29 * 255).toInt()),
               width: 0.7,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: const Color.fromARGB(255, 60, 60, 67)
-                  .withAlpha((0.29 * 255).toInt()),
+              color: BrainBenchColors.deepDive.withAlpha((0.5 * 255).toInt()),
               width: 1.2,
             ),
           ),
