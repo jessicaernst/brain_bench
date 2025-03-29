@@ -132,7 +132,7 @@
     "@authPassword": {
         "description": "The label for the password input field"
     },
-    "authLoginTitle": "Login",
+    "authLoginTitle": "Anmelden",
     "@authLoginTitle": {
         "description": "The title of the login page"
     },
@@ -140,7 +140,7 @@
     "@authRegisterTitle": {
         "description": "The title of the register page"
     },
-    "authLoginBtnLbl": "Login",
+    "authLoginBtnLbl": "Anmelden",
     "@authLoginBtnLbl": {
         "description": "The label of the login button"
     },
@@ -156,7 +156,7 @@
     "@authSignUpText": {
         "description": "The text of the sign up text"
     },
-    "authLoginTextBtnLbl": "Login",
+    "authLoginTextBtnLbl": "Anmelden",
     "@authLoginTextBtnLbl": {
         "description": "The label of the login text button"
     },

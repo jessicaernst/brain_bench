@@ -108,13 +108,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get authPassword => 'Passwort';
 
   @override
-  String get authLoginTitle => 'Login';
+  String get authLoginTitle => 'Anmelden';
 
   @override
   String get authRegisterTitle => 'Registrieren';
 
   @override
-  String get authLoginBtnLbl => 'Login';
+  String get authLoginBtnLbl => 'Anmelden';
 
   @override
   String get authRegisterBtnLbl => 'Registrieren';
@@ -126,7 +126,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get authSignUpText => 'Noch kein Account? ';
 
   @override
-  String get authLoginTextBtnLbl => 'Login';
+  String get authLoginTextBtnLbl => 'Anmelden';
 
   @override
   String get authLoginText => 'Du hast schon einen Account? ';
