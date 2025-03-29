@@ -132,6 +132,10 @@
     "@authPassword": {
         "description": "The label for the password input field"
     },
+    "authRepeatPassword": "Repeat Password",
+    "@authRepeatPassword": {
+        "description": "The label for the repeated password input field"
+    },
     "authLoginTitle": "Login",
     "@authLoginTitle": {
         "description": "The title of the login page"
@@ -144,7 +148,7 @@
     "@authLoginBtnLbl": {
         "description": "The label of the login button"
     },
-    "authRegisterBtnLbl": "Register",
+    "authRegisterBtnLbl": "Sign Up",
     "@authRegisterBtnLbl": {
         "description": "The label of the register button"
     },

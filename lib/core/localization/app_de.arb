@@ -132,6 +132,10 @@
     "@authPassword": {
         "description": "The label for the password input field"
     },
+    "authRepeatPassword": "Passwort wiederholen",
+    "@authRepeatPassword": {
+        "description": "The label for the repeated password input field"
+    },
     "authLoginTitle": "Anmelden",
     "@authLoginTitle": {
         "description": "The title of the login page"

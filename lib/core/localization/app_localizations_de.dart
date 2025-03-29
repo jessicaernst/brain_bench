@@ -108,6 +108,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get authPassword => 'Passwort';
 
   @override
+  String get authRepeatPassword => 'Passwort wiederholen';
+
+  @override
   String get authLoginTitle => 'Anmelden';
 
   @override

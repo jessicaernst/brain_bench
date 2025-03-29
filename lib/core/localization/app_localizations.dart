@@ -293,6 +293,12 @@ abstract class AppLocalizations {
   /// **'Password'**
   String get authPassword;
 
+  /// The label for the repeated password input field
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat Password'**
+  String get authRepeatPassword;
+
   /// The title of the login page
   ///
   /// In en, this message translates to:
@@ -314,7 +320,7 @@ abstract class AppLocalizations {
   /// The label of the register button
   ///
   /// In en, this message translates to:
-  /// **'Register'**
+  /// **'Sign Up'**
   String get authRegisterBtnLbl;
 
   /// The label of the sign up text button

@@ -1,6 +1,7 @@
 import 'package:brain_bench/core/hooks/animations.dart';
 import 'package:brain_bench/presentation/auth/widgets/auth_card_view.dart';
 import 'package:brain_bench/presentation/auth/widgets/login_content_view.dart';
+import 'package:brain_bench/presentation/auth/widgets/sign_up_content_view.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,13 @@ class LoginSignUpPage extends HookConsumerWidget {
 
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
+    final emailSignUpController = useTextEditingController();
+    final passwordSignUpController = useTextEditingController();
     final isButtonEnabled = useState(false);
+    final isLogin = useState(true);
+    final previousIsLogin = usePrevious(isLogin.value);
+    final isSwitchingToLogin =
+        previousIsLogin == false && isLogin.value == true;
 
     useEffect(() {
       void validate() {
@@ -38,7 +45,6 @@ class LoginSignUpPage extends HookConsumerWidget {
     void onLoginPressed() {
       if (!isButtonEnabled.value) return;
 
-      // TODO: Handle login logic here
       final email = emailController.text.trim();
       final password = passwordController.text;
 
@@ -46,22 +52,22 @@ class LoginSignUpPage extends HookConsumerWidget {
     }
 
     void onSignUpPressed() {
-      // TODO: Handle sign-up logic here
-      debugPrint('Sign Up pressed');
+      isLogin.value = false;
+    }
+
+    void onBackToLoginPressed() {
+      isLogin.value = true;
     }
 
     void onResetPasswordPressed() {
-      // TODO: Handle reset password logic here
       debugPrint('Reset Password pressed');
     }
 
     void onGoogleLoginPressed() {
-      // TODO: Handle Google login logic here
       debugPrint('Google Login pressed');
     }
 
     void onAppleLoginPressed() {
-      // TODO: Handle Apple login logic here
       debugPrint('Apple Login pressed');
     }
 
@@ -95,17 +101,58 @@ class LoginSignUpPage extends HookConsumerWidget {
                     position: slideAnimation,
                     child: FadeTransition(
                       opacity: fadeAnimation,
-                      child: AuthCardView(
-                        content: LoginContentView(
-                          emailController: emailController,
-                          passwordController: passwordController,
-                          isButtonEnabled: isButtonEnabled.value,
-                          onLoginPressed: onLoginPressed,
-                          onSignUpPressed: onSignUpPressed,
-                          onResetPasswordPressed: onResetPasswordPressed,
-                          onGoogleLoginPressed: onGoogleLoginPressed,
-                          onAppleLoginPressed: onAppleLoginPressed,
-                        ),
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 500),
+                        transitionBuilder: (child, animation) {
+                          final offsetAnimation = Tween<Offset>(
+                            begin: Offset(isSwitchingToLogin ? -1 : 1, 0),
+                            end: Offset.zero,
+                          ).animate(CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.easeOutCubic,
+                          ));
+
+                          final fade = CurvedAnimation(
+                            parent: animation,
+                            curve: Curves.easeInOut,
+                          );
+
+                          return SlideTransition(
+                            position: offsetAnimation,
+                            child: FadeTransition(
+                              opacity: fade,
+                              child: child,
+                            ),
+                          );
+                        },
+                        child: isLogin.value
+                            ? AuthCardView(
+                                key: const ValueKey('login'),
+                                content: LoginContentView(
+                                  emailController: emailController,
+                                  passwordController: passwordController,
+                                  isButtonEnabled: isButtonEnabled.value,
+                                  onLoginPressed: onLoginPressed,
+                                  onSignUpPressed: onSignUpPressed,
+                                  onResetPasswordPressed:
+                                      onResetPasswordPressed,
+                                  onGoogleLoginPressed: onGoogleLoginPressed,
+                                  onAppleLoginPressed: onAppleLoginPressed,
+                                ),
+                              )
+                            : AuthCardView(
+                                key: const ValueKey('signup'),
+                                content: SignUpContentView(
+                                  emailController: emailSignUpController,
+                                  passwordController: passwordSignUpController,
+                                  isButtonEnabled: isButtonEnabled.value,
+                                  onBackPressed: onBackToLoginPressed,
+                                  onLoginPressed: onLoginPressed,
+                                  onSignUpPressed: onSignUpPressed,
+                                  onGoogleLoginPressed: onGoogleLoginPressed,
+                                  onAppleLoginPressed: onAppleLoginPressed,
+                                ),
+                              ),
                       ),
                     ),
                   ),

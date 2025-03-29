@@ -108,6 +108,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authPassword => 'Password';
 
   @override
+  String get authRepeatPassword => 'Repeat Password';
+
+  @override
   String get authLoginTitle => 'Login';
 
   @override
@@ -117,7 +120,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authLoginBtnLbl => 'Login';
 
   @override
-  String get authRegisterBtnLbl => 'Register';
+  String get authRegisterBtnLbl => 'Sign Up';
 
   @override
   String get authSignUpTextBtnLbl => 'Sign Up here';
