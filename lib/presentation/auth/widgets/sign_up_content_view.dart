@@ -32,10 +32,10 @@ class SignUpContentView extends HookWidget {
   Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
     final showPassword = useState(false);
-    final emailError = useState<String?>(null); // Add emailError
-    final passwordError = useState<String?>(null); // Add passwordError
-    final repeatPasswordError =
-        useState<String?>(null); // Add repeatPasswordError
+    final showRepeatPassword = useState(false);
+    final emailError = useState<String?>(null);
+    final passwordError = useState<String?>(null);
+    final repeatPasswordError = useState<String?>(null);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -57,13 +57,12 @@ class SignUpContentView extends HookWidget {
                     ),
                 decoration: InputDecoration(
                   hintText: localizations.authEmail,
-                  errorText: emailError.value, // Add errorText
+                  errorText: emailError.value,
                 ),
                 autofillHints: const [AutofillHints.email],
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
-                onChanged: (_) =>
-                    emailError.value = null, // Clear error on change
+                onChanged: (_) => emailError.value = null,
               ),
               const SizedBox(height: 16),
               TextField(
@@ -76,7 +75,7 @@ class SignUpContentView extends HookWidget {
                     ),
                 decoration: InputDecoration(
                   hintText: localizations.authPassword,
-                  errorText: passwordError.value, // Add errorText
+                  errorText: passwordError.value,
                   suffixIcon: IconButton(
                     icon: Icon(
                       size: 20,
@@ -93,13 +92,12 @@ class SignUpContentView extends HookWidget {
                 ),
                 autofillHints: const [AutofillHints.password],
                 textInputAction: TextInputAction.next,
-                onChanged: (_) =>
-                    passwordError.value = null, // Clear error on change
+                onChanged: (_) => passwordError.value = null,
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: repeatPasswordController,
-                obscureText: !showPassword.value,
+                obscureText: !showRepeatPassword.value,
                 enableSuggestions: false,
                 autocorrect: false,
                 style: TextTheme.of(context).bodyMedium?.copyWith(
@@ -113,12 +111,12 @@ class SignUpContentView extends HookWidget {
                       size: 20,
                       color: BrainBenchColors.deepDive
                           .withAlpha((0.6 * 255).toInt()),
-                      showPassword.value
+                      showRepeatPassword.value
                           ? Icons.visibility
                           : Icons.visibility_off,
                     ),
                     onPressed: () {
-                      showPassword.value = !showPassword.value;
+                      showRepeatPassword.value = !showRepeatPassword.value;
                     },
                   ),
                 ),
