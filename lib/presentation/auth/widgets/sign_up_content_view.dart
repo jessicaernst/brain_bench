@@ -37,6 +37,11 @@ class SignUpContentView extends HookWidget {
     final passwordError = useState<String?>(null);
     final repeatPasswordError = useState<String?>(null);
 
+    // Create FocusNodes
+    final emailFocusNode = useFocusNode();
+    final passwordFocusNode = useFocusNode();
+    final repeatPasswordFocusNode = useFocusNode();
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +57,9 @@ class SignUpContentView extends HookWidget {
             children: [
               TextField(
                 controller: emailController,
+                focusNode: emailFocusNode,
                 style: TextTheme.of(context).bodyMedium?.copyWith(
+                      // Changed here
                       color: BrainBenchColors.deepDive,
                     ),
                 decoration: InputDecoration(
@@ -63,14 +70,17 @@ class SignUpContentView extends HookWidget {
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 onChanged: (_) => emailError.value = null,
+                onSubmitted: (_) => passwordFocusNode.requestFocus(),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: passwordController,
+                focusNode: passwordFocusNode,
                 obscureText: !showPassword.value,
                 enableSuggestions: false,
                 autocorrect: false,
                 style: TextTheme.of(context).bodyMedium?.copyWith(
+                      // Changed here
                       color: BrainBenchColors.deepDive,
                     ),
                 decoration: InputDecoration(
@@ -93,10 +103,12 @@ class SignUpContentView extends HookWidget {
                 autofillHints: const [AutofillHints.password],
                 textInputAction: TextInputAction.next,
                 onChanged: (_) => passwordError.value = null,
+                onSubmitted: (_) => repeatPasswordFocusNode.requestFocus(),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: repeatPasswordController,
+                focusNode: repeatPasswordFocusNode,
                 obscureText: !showRepeatPassword.value,
                 enableSuggestions: false,
                 autocorrect: false,
@@ -138,7 +150,7 @@ class SignUpContentView extends HookWidget {
                 child: Text.rich(
                   TextSpan(
                     text: localizations.authLoginText,
-                    style: TextTheme.of(context).titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium,
                     children: [
                       TextSpan(
                         text: localizations.authLoginTextBtnLbl,
