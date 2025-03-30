@@ -38,6 +38,25 @@ class $AssetsAppIconsGen {
   List<AssetGenImage> get values => [evo1, evo2, evo3, evo4];
 }
 
+class $AssetsBackgroundsGen {
+  const $AssetsBackgroundsGen();
+
+  /// File path: assets/backgrounds/LightMode.png
+  AssetGenImage get lightMode =>
+      const AssetGenImage('assets/backgrounds/LightMode.png');
+
+  /// File path: assets/backgrounds/SignUp.png
+  AssetGenImage get signUp =>
+      const AssetGenImage('assets/backgrounds/SignUp.png');
+
+  /// File path: assets/backgrounds/bg_LoginSignUp_darkmode.png
+  AssetGenImage get bgLoginSignUpDarkmode =>
+      const AssetGenImage('assets/backgrounds/bg_LoginSignUp_darkmode.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [lightMode, signUp, bgLoginSignUpDarkmode];
+}
+
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
@@ -176,6 +195,7 @@ class Assets {
   Assets._();
 
   static const $AssetsAppIconsGen appIcons = $AssetsAppIconsGen();
+  static const $AssetsBackgroundsGen backgrounds = $AssetsBackgroundsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsSocialLoginsGen socialLogins = $AssetsSocialLoginsGen();
