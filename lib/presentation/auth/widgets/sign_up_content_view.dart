@@ -42,6 +42,9 @@ class SignUpContentView extends HookWidget {
     final passwordFocusNode = useFocusNode();
     final repeatPasswordFocusNode = useFocusNode();
 
+    final emailRegex = RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,7 +180,7 @@ class SignUpContentView extends HookWidget {
 
               if (emailController.text.isEmpty) {
                 emailError.value = localizations.authEmailEmptyError;
-              } else if (!emailController.text.contains('@')) {
+              } else if (!emailRegex.hasMatch(emailController.text)) {
                 emailError.value = localizations.authEmailInvalidError;
               }
 
