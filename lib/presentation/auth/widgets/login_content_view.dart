@@ -50,7 +50,7 @@ class LoginContentView extends HookWidget {
             children: [
               TextField(
                 controller: emailController,
-                style: TextTheme.of(context).bodyMedium?.copyWith(
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: BrainBenchColors.deepDive,
                     ),
                 decoration: InputDecoration(
@@ -68,7 +68,7 @@ class LoginContentView extends HookWidget {
                 obscureText: !showPassword.value,
                 enableSuggestions: false,
                 autocorrect: false,
-                style: TextTheme.of(context).bodyMedium?.copyWith(
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: BrainBenchColors.deepDive,
                     ),
                 decoration: InputDecoration(
@@ -102,15 +102,15 @@ class LoginContentView extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               TextButton(
-                onPressed: onSignUpPressed,
+                onPressed: onSignUpPressed, // Changed here
                 child: Text.rich(
                   TextSpan(
                     text: localizations.authSignUpText,
-                    style: TextTheme.of(context).titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium,
                     children: [
                       TextSpan(
                         text: localizations.authSignUpTextBtnLbl,
-                        style: TextTheme.of(context).titleSmall,
+                        style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ],
                   ),
@@ -121,11 +121,11 @@ class LoginContentView extends HookWidget {
                 child: Text.rich(
                   TextSpan(
                     text: localizations.authPwdForgottenText,
-                    style: TextTheme.of(context).titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium,
                     children: [
                       TextSpan(
                         text: localizations.authPwdForgottenBtnLbl,
-                        style: TextTheme.of(context).titleSmall,
+                        style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ],
                   ),

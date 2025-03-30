@@ -1,3 +1,5 @@
+import 'package:brain_bench/business_logic/auth/auth_view_model.dart';
+import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +39,13 @@ class HomePage extends ConsumerWidget {
                 'Home coming soon . . .',
                 style: TextTheme.of(context).displaySmall,
               ),
+              const SizedBox(height: 20),
+              LightDarkSwitchBtn(
+                  title: 'Logout',
+                  isActive: true,
+                  onPressed: () {
+                    ref.read(authViewModelProvider.notifier).signOut(context);
+                  })
             ],
           ),
         ),

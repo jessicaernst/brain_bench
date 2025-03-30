@@ -47,13 +47,11 @@ class FirebaseAuthRepository implements AuthRepository {
     } on fb.FirebaseAuthException catch (e) {
       // Handle Firebase Authentication exceptions
       _logger.severe('Firebase Auth Exception: ${e.code} - ${e.message}');
-      throw Exception(
-          'Fehler beim Anmelden: ${e.message}'); // Re-throw or handle as needed
+      throw Exception('Fehler beim Anmelden: ${e.message}');
     } catch (e) {
       // Handle other exceptions
       _logger.severe('Unexpected error during sign-in: $e');
-      throw Exception(
-          'Ein unerwarteter Fehler ist aufgetreten.'); // Re-throw or handle as needed
+      throw Exception('Ein unerwarteter Fehler ist aufgetreten.');
     }
   }
 

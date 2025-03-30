@@ -1,3 +1,4 @@
+import 'package:brain_bench/business_logic/auth/auth_view_model.dart';
 import 'package:brain_bench/core/hooks/animations.dart';
 import 'package:brain_bench/presentation/auth/widgets/auth_card_view.dart';
 import 'package:brain_bench/presentation/auth/widgets/login_content_view.dart';
@@ -28,6 +29,7 @@ class LoginSignUpPage extends HookConsumerWidget {
     final previousIsLogin = usePrevious(isLogin.value);
     final isSwitchingToLogin =
         previousIsLogin == false && isLogin.value == true;
+    final authNotifier = ref.read(authViewModelProvider.notifier);
 
     useEffect(() {
       void validate() {
@@ -70,20 +72,29 @@ class LoginSignUpPage extends HookConsumerWidget {
 
     void onLoginPressed() {
       if (!isButtonEnabled.value) return;
-
-      final email = emailController.text.trim();
-      final password = passwordController.text;
-
-      debugPrint('Logging in with $email / $password');
+      authNotifier.signIn(
+        email: emailController.text.trim(),
+        password: passwordController.text,
+        context: context,
+      );
     }
 
     void onSignUpPressed() {
+      if (!isButtonEnabled.value) return;
+      authNotifier.signUp(
+        email: emailSignUpController.text.trim(),
+        password: passwordSignUpController.text,
+        context: context,
+      );
+    }
+
+    void onLoginTxtBtnPressed() {
+      emailController.clear();
+      passwordController.clear();
       isLogin.value = false;
     }
 
     void onBackPressed() {
-      emailController.clear();
-      passwordController.clear();
       emailSignUpController.clear();
       passwordSignUpController.clear();
       repeatPasswordSignUpController.clear();
@@ -91,15 +102,18 @@ class LoginSignUpPage extends HookConsumerWidget {
     }
 
     void onResetPasswordPressed() {
-      debugPrint('Reset Password pressed');
+      authNotifier.sendPasswordResetEmail(
+        email: emailController.text.trim(),
+        context: context,
+      );
     }
 
     void onGoogleLoginPressed() {
-      debugPrint('Google Login pressed');
+      authNotifier.signInWithGoogle(context);
     }
 
     void onAppleLoginPressed() {
-      debugPrint('Apple Login pressed');
+      authNotifier.signInWithApple(context);
     }
 
     return Scaffold(
@@ -164,7 +178,7 @@ class LoginSignUpPage extends HookConsumerWidget {
                                   passwordController: passwordController,
                                   isButtonEnabled: isButtonEnabled.value,
                                   onLoginPressed: onLoginPressed,
-                                  onSignUpPressed: onSignUpPressed,
+                                  onSignUpPressed: onLoginTxtBtnPressed,
                                   onResetPasswordPressed:
                                       onResetPasswordPressed,
                                   onGoogleLoginPressed: onGoogleLoginPressed,
