@@ -32,6 +32,10 @@ class SignUpContentView extends HookWidget {
   Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
     final showPassword = useState(false);
+    final emailError = useState<String?>(null); // Add emailError
+    final passwordError = useState<String?>(null); // Add passwordError
+    final repeatPasswordError =
+        useState<String?>(null); // Add repeatPasswordError
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -39,88 +43,88 @@ class SignUpContentView extends HookWidget {
       children: [
         Text(
           localizations.authRegisterTitle,
-          style: TextTheme.of(context).displayLarge,
+          style: Theme.of(context).textTheme.displayLarge,
           textAlign: TextAlign.start,
         ),
         const SizedBox(height: 24),
         AutofillGroup(
           child: Column(
             children: [
-              SizedBox(
-                height: 36,
-                child: TextField(
-                  controller: emailController,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: BrainBenchColors.deepDive,
-                      ),
-                  decoration:
-                      InputDecoration(hintText: localizations.authEmail),
-                  autofillHints: const [AutofillHints.email],
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
+              TextField(
+                controller: emailController,
+                style: TextTheme.of(context).bodyMedium?.copyWith(
+                      color: BrainBenchColors.deepDive,
+                    ),
+                decoration: InputDecoration(
+                  hintText: localizations.authEmail,
+                  errorText: emailError.value, // Add errorText
                 ),
+                autofillHints: const [AutofillHints.email],
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+                onChanged: (_) =>
+                    emailError.value = null, // Clear error on change
               ),
               const SizedBox(height: 16),
-              SizedBox(
-                height: 36,
-                child: TextField(
-                  controller: passwordController,
-                  obscureText: !showPassword.value,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: BrainBenchColors.deepDive,
-                      ),
-                  decoration: InputDecoration(
-                    hintText: localizations.authPassword,
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        size: 20,
-                        color: BrainBenchColors.deepDive
-                            .withAlpha((0.6 * 255).toInt()),
-                        showPassword.value
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        showPassword.value = !showPassword.value;
-                      },
+              TextField(
+                controller: passwordController,
+                obscureText: !showPassword.value,
+                enableSuggestions: false,
+                autocorrect: false,
+                style: TextTheme.of(context).bodyMedium?.copyWith(
+                      color: BrainBenchColors.deepDive,
                     ),
+                decoration: InputDecoration(
+                  hintText: localizations.authPassword,
+                  errorText: passwordError.value, // Add errorText
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      size: 20,
+                      color: BrainBenchColors.deepDive
+                          .withAlpha((0.6 * 255).toInt()),
+                      showPassword.value
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      showPassword.value = !showPassword.value;
+                    },
                   ),
-                  autofillHints: const [AutofillHints.password],
-                  textInputAction: TextInputAction.next,
                 ),
+                autofillHints: const [AutofillHints.password],
+                textInputAction: TextInputAction.next,
+                onChanged: (_) =>
+                    passwordError.value = null, // Clear error on change
               ),
               const SizedBox(height: 16),
-              SizedBox(
-                height: 36,
-                child: TextField(
-                  controller: repeatPasswordController,
-                  obscureText: !showPassword.value,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: BrainBenchColors.deepDive,
-                      ),
-                  decoration: InputDecoration(
-                    hintText: localizations.authRepeatPassword,
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        size: 20,
-                        color: BrainBenchColors.deepDive
-                            .withAlpha((0.6 * 255).toInt()),
-                        showPassword.value
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        showPassword.value = !showPassword.value;
-                      },
+              TextField(
+                controller: repeatPasswordController,
+                obscureText: !showPassword.value,
+                enableSuggestions: false,
+                autocorrect: false,
+                style: TextTheme.of(context).bodyMedium?.copyWith(
+                      color: BrainBenchColors.deepDive,
                     ),
+                decoration: InputDecoration(
+                  hintText: localizations.authRepeatPassword,
+                  errorText: repeatPasswordError.value,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      size: 20,
+                      color: BrainBenchColors.deepDive
+                          .withAlpha((0.6 * 255).toInt()),
+                      showPassword.value
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      showPassword.value = !showPassword.value;
+                    },
                   ),
-                  autofillHints: const [AutofillHints.password],
-                  textInputAction: TextInputAction.done,
                 ),
+                autofillHints: const [AutofillHints.password],
+                textInputAction: TextInputAction.done,
+                onChanged: (_) => repeatPasswordError.value = null,
               ),
             ],
           ),
@@ -155,13 +159,45 @@ class SignUpContentView extends HookWidget {
             title: localizations.authRegisterBtnLbl,
             width: double.infinity,
             isActive: isButtonEnabled,
-            onPressed: onSignUpPressed,
+            onPressed: () {
+              // Manual validation
+              emailError.value = null;
+              passwordError.value = null;
+              repeatPasswordError.value = null;
+
+              if (emailController.text.isEmpty) {
+                emailError.value = localizations.authEmailEmptyError;
+              } else if (!emailController.text.contains('@')) {
+                emailError.value = localizations.authEmailInvalidError;
+              }
+
+              if (passwordController.text.isEmpty) {
+                passwordError.value = localizations.authPasswordEmptyError;
+              } else if (passwordController.text.length < 6) {
+                passwordError.value = localizations.authPasswordShortError;
+              }
+
+              if (repeatPasswordController.text.isEmpty) {
+                repeatPasswordError.value =
+                    localizations.authPasswordEmptyError;
+              } else if (repeatPasswordController.text !=
+                  passwordController.text) {
+                repeatPasswordError.value =
+                    localizations.authPasswordNotMatchError;
+              }
+
+              if (emailError.value == null &&
+                  passwordError.value == null &&
+                  repeatPasswordError.value == null) {
+                onSignUpPressed();
+              }
+            },
           ),
         ),
         const SizedBox(height: 32),
         LoginDividerView(
           title: localizations.authDividerRegisterText,
-        ), // Remove title parameter
+        ),
         const SizedBox(height: 24),
         SocialLoginButtonView(
           onGoogleLoginPressed: onGoogleLoginPressed,

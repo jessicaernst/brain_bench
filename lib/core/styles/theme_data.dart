@@ -75,6 +75,8 @@ class BrainBenchTheme {
           ),
           filled: true,
           fillColor: BrainBenchColors.cloudCanvas,
+          errorStyle:
+              const TextStyle(color: BrainBenchColors.falseQuestionGlass),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
           enabledBorder: OutlineInputBorder(
@@ -165,6 +167,8 @@ class BrainBenchTheme {
           ),
           filled: true,
           fillColor: BrainBenchColors.cloudCanvas,
+          errorStyle:
+              const TextStyle(color: BrainBenchColors.falseQuestionGlass),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
           enabledBorder: OutlineInputBorder(

@@ -32,6 +32,8 @@ class LoginContentView extends HookWidget {
   Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
     final showPassword = useState(false);
+    final emailError = useState<String?>(null);
+    final passwordError = useState<String?>(null);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -39,57 +41,56 @@ class LoginContentView extends HookWidget {
       children: [
         Text(
           localizations.authLoginTitle,
-          style: TextTheme.of(context).displayLarge,
+          style: Theme.of(context).textTheme.displayLarge,
           textAlign: TextAlign.start,
         ),
         const SizedBox(height: 24),
         AutofillGroup(
           child: Column(
             children: [
-              SizedBox(
-                height: 36,
-                child: TextField(
-                  controller: emailController,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: BrainBenchColors.deepDive,
-                      ),
-                  decoration:
-                      InputDecoration(hintText: localizations.authEmail),
-                  autofillHints: const [AutofillHints.email],
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
+              TextField(
+                controller: emailController,
+                style: TextTheme.of(context).bodyMedium?.copyWith(
+                      color: BrainBenchColors.deepDive,
+                    ),
+                decoration: InputDecoration(
+                  hintText: localizations.authEmail,
+                  errorText: emailError.value,
                 ),
+                autofillHints: const [AutofillHints.email],
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+                onChanged: (_) => emailError.value = null,
               ),
               const SizedBox(height: 16),
-              SizedBox(
-                height: 36,
-                child: TextField(
-                  controller: passwordController,
-                  obscureText: !showPassword.value,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: BrainBenchColors.deepDive,
-                      ),
-                  decoration: InputDecoration(
-                    hintText: localizations.authPassword,
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        size: 20,
-                        color: BrainBenchColors.deepDive
-                            .withAlpha((0.6 * 255).toInt()),
-                        showPassword.value
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        showPassword.value = !showPassword.value;
-                      },
+              TextField(
+                controller: passwordController,
+                obscureText: !showPassword.value,
+                enableSuggestions: false,
+                autocorrect: false,
+                style: TextTheme.of(context).bodyMedium?.copyWith(
+                      color: BrainBenchColors.deepDive,
                     ),
+                decoration: InputDecoration(
+                  hintText: localizations.authPassword,
+                  errorText: passwordError.value,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      size: 20,
+                      color: BrainBenchColors.deepDive
+                          .withAlpha((0.6 * 255).toInt()),
+                      showPassword.value
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      showPassword.value = !showPassword.value;
+                    },
                   ),
-                  autofillHints: const [AutofillHints.password],
-                  textInputAction: TextInputAction.done,
                 ),
+                autofillHints: const [AutofillHints.password],
+                textInputAction: TextInputAction.done,
+                onChanged: (_) => passwordError.value = null,
               ),
             ],
           ),
@@ -101,7 +102,7 @@ class LoginContentView extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               TextButton(
-                onPressed: onSignUpPressed, // Call the callback
+                onPressed: onSignUpPressed,
                 child: Text.rich(
                   TextSpan(
                     text: localizations.authSignUpText,
@@ -116,7 +117,7 @@ class LoginContentView extends HookWidget {
                 ),
               ),
               TextButton(
-                onPressed: onResetPasswordPressed, // Call the callback
+                onPressed: onResetPasswordPressed,
                 child: Text.rich(
                   TextSpan(
                     text: localizations.authPwdForgottenText,
@@ -139,13 +140,33 @@ class LoginContentView extends HookWidget {
             title: localizations.authLoginBtnLbl,
             width: double.infinity,
             isActive: isButtonEnabled,
-            onPressed: onLoginPressed,
+            onPressed: () {
+              // Manual validation
+              emailError.value = null;
+              passwordError.value = null;
+
+              if (emailController.text.isEmpty) {
+                emailError.value = localizations.authEmailEmptyError;
+              } else if (!emailController.text.contains('@')) {
+                emailError.value = localizations.authEmailInvalidError;
+              }
+
+              if (passwordController.text.isEmpty) {
+                passwordError.value = localizations.authPasswordEmptyError;
+              } else if (passwordController.text.length < 6) {
+                passwordError.value = localizations.authPasswordShortError;
+              }
+
+              if (emailError.value == null && passwordError.value == null) {
+                onLoginPressed();
+              }
+            },
           ),
         ),
         const SizedBox(height: 32),
         LoginDividerView(
           title: localizations.authDividerLoginText,
-        ), // Remove title parameter
+        ),
         const SizedBox(height: 24),
         SocialLoginButtonView(
           onGoogleLoginPressed: onGoogleLoginPressed,
