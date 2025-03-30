@@ -21,6 +21,8 @@ class LoginSignUpPage extends HookConsumerWidget {
     final passwordController = useTextEditingController();
     final emailSignUpController = useTextEditingController();
     final passwordSignUpController = useTextEditingController();
+    final repeatPasswordSignUpController = useTextEditingController();
+
     final isButtonEnabled = useState(false);
     final isLogin = useState(true);
     final previousIsLogin = usePrevious(isLogin.value);
@@ -29,18 +31,42 @@ class LoginSignUpPage extends HookConsumerWidget {
 
     useEffect(() {
       void validate() {
-        isButtonEnabled.value = emailController.text.isNotEmpty &&
+        // Check for Login fields
+        final isLoginFieldsFilled = emailController.text.isNotEmpty &&
             passwordController.text.isNotEmpty;
+
+        // Check for SignUp fields
+        final isSignUpFieldsFilled = emailSignUpController.text.isNotEmpty &&
+            passwordSignUpController.text.isNotEmpty &&
+            repeatPasswordSignUpController.text.isNotEmpty;
+
+        // Update isButtonEnabled based on the current view
+        isButtonEnabled.value =
+            isLogin.value ? isLoginFieldsFilled : isSignUpFieldsFilled;
       }
 
+      // Listen to all controllers
       emailController.addListener(validate);
       passwordController.addListener(validate);
+      emailSignUpController.addListener(validate);
+      passwordSignUpController.addListener(validate);
+      repeatPasswordSignUpController.addListener(validate);
 
       return () {
+        // Remove all listeners
         emailController.removeListener(validate);
         passwordController.removeListener(validate);
+        emailSignUpController.removeListener(validate);
+        passwordSignUpController.removeListener(validate);
+        repeatPasswordSignUpController.removeListener(validate);
       };
-    }, [emailController, passwordController]);
+    }, [
+      emailController,
+      passwordController,
+      emailSignUpController,
+      passwordSignUpController,
+      repeatPasswordSignUpController
+    ]);
 
     void onLoginPressed() {
       if (!isButtonEnabled.value) return;
@@ -55,7 +81,12 @@ class LoginSignUpPage extends HookConsumerWidget {
       isLogin.value = false;
     }
 
-    void onBackToLoginPressed() {
+    void onBackPressed() {
+      emailController.clear();
+      passwordController.clear();
+      emailSignUpController.clear();
+      passwordSignUpController.clear();
+      repeatPasswordSignUpController.clear();
       isLogin.value = true;
     }
 
@@ -145,9 +176,10 @@ class LoginSignUpPage extends HookConsumerWidget {
                                 content: SignUpContentView(
                                   emailController: emailSignUpController,
                                   passwordController: passwordSignUpController,
+                                  repeatPasswordController:
+                                      repeatPasswordSignUpController,
                                   isButtonEnabled: isButtonEnabled.value,
-                                  onBackPressed: onBackToLoginPressed,
-                                  onLoginPressed: onLoginPressed,
+                                  onBackPressed: onBackPressed,
                                   onSignUpPressed: onSignUpPressed,
                                   onGoogleLoginPressed: onGoogleLoginPressed,
                                   onAppleLoginPressed: onAppleLoginPressed,

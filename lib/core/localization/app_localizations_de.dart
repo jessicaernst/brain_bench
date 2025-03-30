@@ -145,4 +145,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get authDividerRegisterText => 'Oder registrieren mit';
+
+  @override
+  String get authEmailEmptyError => 'Die E-Mail-Adresse darf nicht leer sein.';
+
+  @override
+  String get authEmailInvalidError => 'Die E-Mail-Adresse ist ungültig.';
+
+  @override
+  String get authPasswordEmptyError => 'Das Passwort darf nicht leer sein.';
+
+  @override
+  String get authPasswordShortError => 'Das Passwort muss mindestens 6 Zeichen lang sein.';
+
+  @override
+  String get authPasswordNotMatchError => 'Die Passwörter stimmen nicht überein.';
 }

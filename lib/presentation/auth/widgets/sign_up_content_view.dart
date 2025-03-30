@@ -11,8 +11,8 @@ class SignUpContentView extends HookWidget {
     super.key,
     required this.emailController,
     required this.passwordController,
+    required this.repeatPasswordController,
     required this.isButtonEnabled,
-    required this.onLoginPressed,
     required this.onSignUpPressed,
     required this.onBackPressed,
     required this.onGoogleLoginPressed,
@@ -21,8 +21,8 @@ class SignUpContentView extends HookWidget {
 
   final TextEditingController emailController;
   final TextEditingController passwordController;
+  final TextEditingController repeatPasswordController;
   final bool isButtonEnabled;
-  final VoidCallback onLoginPressed;
   final VoidCallback onSignUpPressed;
   final VoidCallback onBackPressed;
   final VoidCallback onGoogleLoginPressed;
@@ -88,14 +88,14 @@ class SignUpContentView extends HookWidget {
                     ),
                   ),
                   autofillHints: const [AutofillHints.password],
-                  textInputAction: TextInputAction.done,
+                  textInputAction: TextInputAction.next,
                 ),
               ),
               const SizedBox(height: 16),
               SizedBox(
                 height: 36,
                 child: TextField(
-                  controller: passwordController,
+                  controller: repeatPasswordController,
                   obscureText: !showPassword.value,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -132,7 +132,7 @@ class SignUpContentView extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               TextButton(
-                onPressed: onBackPressed, // Call the callback
+                onPressed: onBackPressed,
                 child: Text.rich(
                   TextSpan(
                     text: localizations.authLoginText,
@@ -155,7 +155,7 @@ class SignUpContentView extends HookWidget {
             title: localizations.authRegisterBtnLbl,
             width: double.infinity,
             isActive: isButtonEnabled,
-            onPressed: onLoginPressed,
+            onPressed: onSignUpPressed,
           ),
         ),
         const SizedBox(height: 32),

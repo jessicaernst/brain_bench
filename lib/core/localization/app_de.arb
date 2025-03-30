@@ -183,5 +183,25 @@
     "authDividerRegisterText": "Oder registrieren mit",
     "@authDividerRegisterText": {
         "description": "The text of the divider"
+    },
+    "authEmailEmptyError": "Die E-Mail-Adresse darf nicht leer sein.",
+    "@authEmailEmptyError": {
+        "description": "The error message displayed when the email input field is empty"
+    },
+    "authEmailInvalidError": "Die E-Mail-Adresse ist ungültig.",
+    "@authEmailInvalidError": {
+        "description": "The error message displayed when the email input field is invalid"
+    },
+    "authPasswordEmptyError": "Das Passwort darf nicht leer sein.",
+    "@authPasswordEmptyError": {
+        "description": "The error message displayed when the password input field is empty"
+    },
+    "authPasswordShortError": "Das Passwort muss mindestens 6 Zeichen lang sein.",
+    "@authPasswordShortError": {
+        "description": "The error message displayed when the password when the password is to short"
+    },
+    "authPasswordNotMatchError": "Die Passwörter stimmen nicht überein.",
+    "@authPasswordNotMatchError": {
+        "description": "The error message displayed when the passwords do not match"
     }
 }

@@ -183,5 +183,25 @@
     "authDividerRegisterText": "Or Sign in with",
     "@authDividerRegisterText": {
         "description": "The text of the divider"
+    },
+    "authEmailEmptyError": "Email cannot be empty.",
+    "@authEmailEmptyError": {
+        "description": "The error message displayed when the email input field is empty"
+    },
+    "authEmailInvalidError": "Email is invalid.",
+    "@authEmailInvalidError": {
+        "description": "The error message displayed when the email input field is invalid"
+    },
+    "authPasswordEmptyError": "Password cannot be empty.",
+    "@authPasswordEmptyError": {
+        "description": "The error message displayed when the password input field is empty"
+    },
+    "authPasswordShortError": "Password must be at least 6 characters long.",
+    "@authPasswordShortError": {
+        "description": "The error message displayed when the password when the password is to short"
+    },
+    "authPasswordNotMatchError": "Passwords do not match.",
+    "@authPasswordNotMatchError": {
+        "description": "The error message displayed when the passwords do not match"
     }
 }

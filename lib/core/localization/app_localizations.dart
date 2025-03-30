@@ -370,6 +370,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Or Sign in with'**
   String get authDividerRegisterText;
+
+  /// The error message displayed when the email input field is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Email cannot be empty.'**
+  String get authEmailEmptyError;
+
+  /// The error message displayed when the email input field is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Email is invalid.'**
+  String get authEmailInvalidError;
+
+  /// The error message displayed when the password input field is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Password cannot be empty.'**
+  String get authPasswordEmptyError;
+
+  /// The error message displayed when the password when the password is to short
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters long.'**
+  String get authPasswordShortError;
+
+  /// The error message displayed when the passwords do not match
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match.'**
+  String get authPasswordNotMatchError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

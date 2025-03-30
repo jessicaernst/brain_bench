@@ -145,4 +145,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authDividerRegisterText => 'Or Sign in with';
+
+  @override
+  String get authEmailEmptyError => 'Email cannot be empty.';
+
+  @override
+  String get authEmailInvalidError => 'Email is invalid.';
+
+  @override
+  String get authPasswordEmptyError => 'Password cannot be empty.';
+
+  @override
+  String get authPasswordShortError => 'Password must be at least 6 characters long.';
+
+  @override
+  String get authPasswordNotMatchError => 'Passwords do not match.';
 }
