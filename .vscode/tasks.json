@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "use-firebase-dev",
+            "type": "shell",
+            "command": "./scripts/use_firebase_env.sh dev",
+            "problemMatcher": []
+        },
+        {
+            "label": "use-firebase-test",
+            "type": "shell",
+            "command": "./scripts/use_firebase_env.sh test",
+            "problemMatcher": []
+        },
+        {
+            "label": "use-firebase-prod",
+            "type": "shell",
+            "command": "./scripts/use_firebase_env.sh prod",
+            "problemMatcher": []
+        }
+    ]
+}

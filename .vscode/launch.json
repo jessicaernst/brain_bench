@@ -11,7 +11,8 @@
             "program": "lib/main.dart",
             "args": [
                 "--dart-define=FIREBASE_ENV=dev"
-            ]
+            ],
+            "preLaunchTask": "use-firebase-dev"
         },
         {
             "name": "BrainBench TEST",
@@ -20,7 +21,8 @@
             "program": "lib/main.dart",
             "args": [
                 "--dart-define=FIREBASE_ENV=test"
-            ]
+            ],
+            "preLaunchTask": "use-firebase-test"
         },
         {
             "name": "BrainBench PROD",
@@ -29,7 +31,8 @@
             "program": "lib/main.dart",
             "args": [
                 "--dart-define=FIREBASE_ENV=prod"
-            ]
+            ],
+            "preLaunchTask": "use-firebase-prod"
         }
     ]
 }

@@ -60,3 +60,9 @@ lib/services/firebase_options_*.dart
 firebase.json
 **/google-services.json
 **/GoogleService-Info.plist
+ios/Runner/GoogleService-Info-dev.plist
+ios/Runner/GoogleService-Info-prod.plist
+ios/Runner/GoogleService-Info-test.plist
+android/app/google-services-dev.json
+android/app/google-services-prod.json
+android/app/google-services-test.json
