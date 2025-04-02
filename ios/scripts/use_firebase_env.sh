@@ -20,6 +20,3 @@ cp "ios/Runner/info-$ENV.plist" "ios/Runner/Info.plist"
 
 echo "✅ Firebase and Info.plist copied for '$ENV'"
 
-# Am Ende des Scripts
-flutter clean
-flutter pub get

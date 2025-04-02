@@ -70,3 +70,6 @@ android/app/google-services-test.json
 ios/Runner/info-dev.plist
 ios/Runner/info-prod.plist
 ios/Runner/info-test.plist
+
+**/TARGET@v11_hash=*
+**/WORKSPACE@v11_hash=*
