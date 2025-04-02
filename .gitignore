@@ -55,6 +55,7 @@ app.*.map.json
 .VSCodeCounter/2025-02-05_17-28-54/results.txt
 .VSCodeCounter/
 
+# --- Firebase Staging: Generated + Secrets (do not commit) ---
 # Firebase configuration
 lib/services/firebase_options_*.dart
 firebase.json
@@ -66,3 +67,6 @@ ios/Runner/GoogleService-Info-test.plist
 android/app/google-services-dev.json
 android/app/google-services-prod.json
 android/app/google-services-test.json
+ios/Runner/info-dev.plist
+ios/Runner/info-prod.plist
+ios/Runner/info-test.plist
