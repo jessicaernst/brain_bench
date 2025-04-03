@@ -40,6 +40,7 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
 
     final categoryAsync =
         ref.watch(categoryByIdProvider(widget.categoryId, languageCode));
+    final String? userImageUrl = null;
 
     return Scaffold(
       appBar: BackNavAppBar(
@@ -47,6 +48,10 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
         onBack: () {
           context.go('/categories');
         },
+        userImageUrl: userImageUrl,
+        profilePressed: () {},
+        settingsPressed: () {},
+        logoutPressed: () {},
       ),
       body: Column(
         children: [

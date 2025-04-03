@@ -3,6 +3,7 @@ import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/data/providers/quiz/category_providers.dart';
 import 'package:brain_bench/presentation/categories/widgets/category_row_view.dart';
+import 'package:brain_bench/presentation/home/widgets/profile_button_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -18,6 +19,7 @@ class CategoriesPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
     final String languageCode = Localizations.localeOf(context).languageCode;
+    final String? userImageUrl = null;
 
     // Fetch categories using the provider
     final categoriesAsync = ref.watch(categoriesProvider(languageCode));
@@ -42,9 +44,27 @@ class CategoriesPage extends ConsumerWidget {
             'Categories loaded successfully. Total: ${categories.length}');
         return Scaffold(
           appBar: AppBar(
-            title: Text(
-              localizations.appBarTitleCategories,
+            automaticallyImplyLeading: false,
+            titleSpacing: 0.0,
+            title: const SizedBox(),
+            flexibleSpace: Padding(
+              padding: const EdgeInsets.only(top: 56),
+              child: Center(
+                child: Text(
+                  localizations.appBarTitleCategories,
+                  style: TextTheme.of(context).headlineSmall,
+                ),
+              ),
             ),
+            actions: [
+              // Dropdown Menu for Profile/Settings/Logout
+              ProfileButtonView(
+                userImageUrl: userImageUrl,
+                profilePressed: () {},
+                settingsPressed: () {},
+              ),
+              const SizedBox(width: 16),
+            ],
           ),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

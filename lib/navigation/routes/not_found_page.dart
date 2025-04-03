@@ -12,10 +12,16 @@ class NotFoundPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String? userImageUrl = null;
+
     return Scaffold(
       appBar: BackNavAppBar(
         title: 'Page Not Found',
         onBack: onBack,
+        userImageUrl: userImageUrl,
+        profilePressed: () {},
+        settingsPressed: () {},
+        logoutPressed: () {},
       ),
       body: Center(
         child: Column(

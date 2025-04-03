@@ -1,7 +1,6 @@
-import 'package:brain_bench/business_logic/auth/auth_view_model.dart';
-import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
+import 'package:brain_bench/presentation/home/widgets/profile_button_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,14 +10,31 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
+    const String? userImageUrl = null;
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(
-          localizations.appBarTitleHome,
-          style: TextTheme.of(context).displaySmall,
+        titleSpacing: 0.0,
+        title: const SizedBox(),
+        flexibleSpace: Padding(
+          padding: const EdgeInsets.only(top: 56),
+          child: Center(
+            child: Text(
+              localizations.appBarTitleHome,
+              style: TextTheme.of(context).displaySmall,
+            ),
+          ),
         ),
+        actions: [
+          // Dropdown Menu for Profile/Settings/Logout
+          ProfileButtonView(
+            userImageUrl: userImageUrl,
+            profilePressed: () {},
+            settingsPressed: () {},
+          ),
+          const SizedBox(width: 16),
+        ],
       ),
       body: SafeArea(
         child: Center(
@@ -40,12 +56,6 @@ class HomePage extends ConsumerWidget {
                 style: TextTheme.of(context).displaySmall,
               ),
               const SizedBox(height: 20),
-              LightDarkSwitchBtn(
-                  title: 'Logout',
-                  isActive: true,
-                  onPressed: () {
-                    ref.read(authViewModelProvider.notifier).signOut(context);
-                  })
             ],
           ),
         ),

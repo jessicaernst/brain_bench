@@ -165,6 +165,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
         ref.read(quizViewModelProvider.notifier);
     final AsyncValue questionsAsync =
         ref.watch(questionsProvider(widget.topicId, languageCode));
+    final String? userImageUrl = null;
 
     return Scaffold(
       appBar: BackNavAppBar(
@@ -176,6 +177,10 @@ class _QuizPageState extends ConsumerState<QuizPage> {
             extra: widget.categoryId, // Pass only the categoryId
           );
         },
+        userImageUrl: userImageUrl,
+        profilePressed: () {},
+        settingsPressed: () {},
+        logoutPressed: () {},
       ),
       body: questionsAsync.when(
         data: (questions) {

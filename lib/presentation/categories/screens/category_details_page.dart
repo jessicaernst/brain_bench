@@ -23,6 +23,7 @@ class CategoryDetailsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final String languageCode = Localizations.localeOf(context).languageCode;
     final AppLocalizations localizations = AppLocalizations.of(context)!;
+    final String? userImageUrl = null;
 
     // If no category is selected, show an error message
     if (category == null) {
@@ -32,6 +33,10 @@ class CategoryDetailsPage extends ConsumerWidget {
           onBack: () {
             context.go('/categories');
           },
+          userImageUrl: userImageUrl,
+          profilePressed: () {},
+          settingsPressed: () {},
+          logoutPressed: () {},
         ),
         body: const NoDataAvailableView(
           text: '❌ No category selected. Please go back and select a category.',
@@ -54,6 +59,10 @@ class CategoryDetailsPage extends ConsumerWidget {
         onBack: () {
           context.go('/categories');
         },
+        userImageUrl: userImageUrl,
+        profilePressed: () {},
+        settingsPressed: () {},
+        logoutPressed: () {},
       ),
       body: Stack(
         children: [
