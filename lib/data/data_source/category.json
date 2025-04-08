@@ -7,8 +7,7 @@
             "subtitleEn": "Mindset, Agile, and Mobile App Development",
             "subtitleDe": "Mindset, Agile und Mobile App Entwicklung",
             "descriptionEn": "Explore the foundations of agile project management, mindset for software teams, and a broad understanding of the mobile app development ecosystem.",
-            "descriptionDe": "Erkunde die Grundlagen des agilen Projektmanagements, das Mindset für Software-Teams und ein breites Verständnis des Ökosystems der Mobile-App-Entwicklung.",
-            "progress": 0.0
+            "descriptionDe": "Erkunde die Grundlagen des agilen Projektmanagements, das Mindset für Software-Teams und ein breites Verständnis des Ökosystems der Mobile-App-Entwicklung."
         },
         {
             "id": "2b3c4d5e-design-002",
@@ -17,8 +16,7 @@
             "subtitleEn": "Why design matters for developers?",
             "subtitleDe": "Warum Design für Entwickler wichtig ist?",
             "descriptionEn": "Mastering design as a Flutter developer empowers you to create more intuitive and visually appealing apps. Understanding key design principles enhances user experience by enabling more logical and accessible interfaces. This knowledge facilitates seamless integration of design and code, ensuring a coherent and user-friendly application. It boosts your capability to deliver on project aesthetics and functionality, significantly elevating user engagement and satisfaction.",
-            "descriptionDe": "Das Beherrschen von Design als Flutter-Entwickler befähigt dich, intuitivere und visuell ansprechendere Apps zu erstellen. Das Verständnis grundlegender Designprinzipien verbessert die Benutzererfahrung, indem es logischere und zugänglichere Benutzeroberflächen ermöglicht. Dieses Wissen erleichtert die nahtlose Integration von Design und Code und stellt sicher, dass die Anwendung kohärent und benutzerfreundlich ist. Es steigert deine Fähigkeit, sowohl die ästhetischen als auch funktionalen Anforderungen eines Projekts zu erfüllen, was die Nutzerbindung und Zufriedenheit erheblich erhöht.",
-            "progress": 0.0
+            "descriptionDe": "Das Beherrschen von Design als Flutter-Entwickler befähigt dich, intuitivere und visuell ansprechendere Apps zu erstellen. Das Verständnis grundlegender Designprinzipien verbessert die Benutzererfahrung, indem es logischere und zugänglichere Benutzeroberflächen ermöglicht. Dieses Wissen erleichtert die nahtlose Integration von Design und Code und stellt sicher, dass die Anwendung kohärent und benutzerfreundlich ist. Es steigert deine Fähigkeit, sowohl die ästhetischen als auch funktionalen Anforderungen eines Projekts zu erfüllen, was die Nutzerbindung und Zufriedenheit erheblich erhöht."
         },
         {
             "id": "f711e799-3ebe-46d3-9d78-722e2d024cec",
@@ -27,8 +25,7 @@
             "subtitleEn": "Learn coding fundamentals with Dart",
             "subtitleDe": "Lerne die Grundlagen der Programmierung mit Dart",
             "descriptionEn": "Topics covering Dart programming and OOP basics.",
-            "descriptionDe": "Themen rund um Dart-Programmierung und OOP-Grundlagen.",
-            "progress": 0.0
+            "descriptionDe": "Themen rund um Dart-Programmierung und OOP-Grundlagen."
         },
         {
             "id": "3c4d5e6f-flutter-003",
@@ -37,8 +34,7 @@
             "subtitleEn": "Build beautiful native apps with Flutter",
             "subtitleDe": "Erstelle schöne native Apps mit Flutter",
             "descriptionEn": "Learn to develop cross-platform mobile apps using Flutter. Topics include state management, widgets, animations, and responsive design.",
-            "descriptionDe": "Lerne, plattformübergreifende mobile Apps mit Flutter zu entwickeln. Themen sind State Management, Widgets, Animationen und responsives Design.",
-            "progress": 0.0
+            "descriptionDe": "Lerne, plattformübergreifende mobile Apps mit Flutter zu entwickeln. Themen sind State Management, Widgets, Animationen und responsives Design."
         }
     ]
 }

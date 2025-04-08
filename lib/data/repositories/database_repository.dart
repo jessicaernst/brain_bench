@@ -3,7 +3,7 @@ import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/result/result.dart';
-import 'package:brain_bench/data/models/user/user.dart' as model;
+import 'package:brain_bench/data/models/user/app_user.dart';
 
 /// An abstract class defining the contract for a quiz database repository.
 ///
@@ -94,7 +94,7 @@ abstract class DatabaseRepository {
   ///
   /// Returns:
   ///   A [Future] that completes with a [UserModel] object.
-  Future<model.User?> getUser(String userId);
+  Future<AppUser?> getUser(String userId);
 
   /// Updates a [UserModel] object.
   ///
@@ -103,7 +103,7 @@ abstract class DatabaseRepository {
   ///
   /// Returns:
   ///   A [Future] that completes when the user has been updated.
-  Future<void> updateUser(model.User user);
+  Future<void> updateUser(AppUser user);
 
   /// Deletes a [UserModel] object.
   ///
@@ -121,5 +121,5 @@ abstract class DatabaseRepository {
   ///
   /// Returns:
   ///   A [Future] that completes when the user has been saved.
-  Future<void> saveUser(model.User user);
+  Future<void> saveUser(AppUser user);
 }

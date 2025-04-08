@@ -6,11 +6,11 @@ part of 'current_user_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentUserHash() => r'b85c4abd51802f94ea62ec2ea21cf1752ea5d568';
+String _$currentUserHash() => r'ef84f36cf0f0a84c87be2c3efa1bf6b624c72256';
 
 /// See also [currentUser].
 @ProviderFor(currentUser)
-final currentUserProvider = AutoDisposeStreamProvider<AppUser?>.internal(
+final currentUserProvider = AutoDisposeStreamProvider<model.AppUser?>.internal(
   currentUser,
   name: r'currentUserProvider',
   debugGetCreateSourceHash:
@@ -21,6 +21,6 @@ final currentUserProvider = AutoDisposeStreamProvider<AppUser?>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef CurrentUserRef = AutoDisposeStreamProviderRef<AppUser?>;
+typedef CurrentUserRef = AutoDisposeStreamProviderRef<model.AppUser?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

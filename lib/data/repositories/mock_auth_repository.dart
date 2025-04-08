@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:brain_bench/data/models/auth/app_user.dart';
+import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/repositories/auth_repository.dart';
 import 'package:logging/logging.dart';
 import 'package:uuid/uuid.dart';

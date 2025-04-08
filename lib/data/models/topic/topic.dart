@@ -19,7 +19,6 @@ class Topic with _$Topic {
   ///   - [description]: The description of the topic.
   ///   - [categoryId]: The ID of the category the topic belongs to.
   ///   - [progress]: The progress of the topic (a value between 0.0 and 1.0).
-  ///   - [isDone]: Whether the topic is marked as done.
   factory Topic({
     required String id,
     required String nameEn,
@@ -28,7 +27,6 @@ class Topic with _$Topic {
     required String descriptionDe,
     required String categoryId,
     @Default(0.0) double progress,
-    @Default(false) bool isDone,
   }) = _Topic;
 
   /// Creates a [Topic] object with a new unique ID.

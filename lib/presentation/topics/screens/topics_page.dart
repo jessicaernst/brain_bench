@@ -78,10 +78,13 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
                 }
 
                 // ✅ Split topics into done and undone
+                final user = ref.watch(currentUserModelProvider).valueOrNull;
+                final topicDoneMap = user?.isTopicDone[widget.categoryId] ?? {};
+
                 final List<Topic> doneTopics =
-                    topics.where((t) => t.isDone).toList();
+                    topics.where((t) => topicDoneMap[t.id] == true).toList();
                 final List<Topic> undoneTopics =
-                    topics.where((t) => !t.isDone).toList();
+                    topics.where((t) => topicDoneMap[t.id] != true).toList();
 
                 return ListView(
                   key: const PageStorageKey('topicList'),

@@ -1,4 +1,4 @@
-import 'package:brain_bench/data/models/auth/app_user.dart';
+import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';

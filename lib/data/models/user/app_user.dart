@@ -10,7 +10,12 @@ class AppUser with _$AppUser {
     required String email,
     String? displayName,
     String? photoUrl,
-  }) = _AppUser;
+    String? profileImageUrl,
+    @Default('system') String themeMode,
+    @Default('en') String language,
+    @Default({}) Map<String, double> categoryProgress,
+    @Default({}) Map<String, Map<String, bool>> isTopicDone,
+  }) = _User;
 
   factory AppUser.fromJson(Map<String, dynamic> json) =>
       _$AppUserFromJson(json);

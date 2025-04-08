@@ -8,7 +8,7 @@ import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/result/result.dart';
 import 'package:logging/logging.dart';
 import 'database_repository.dart';
-import 'package:brain_bench/data/models/user/user.dart' as model;
+import 'package:brain_bench/data/models/user/app_user.dart' as model;
 
 final Logger _logger = Logger('QuizMockDatabaseRepository');
 
@@ -157,7 +157,6 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
           descriptionDe: e['descriptionDe'], // ✅ Use descriptionDe
           categoryId: e['categoryId'],
           progress: (e['progress'] as num?)?.toDouble() ?? 0.0,
-          isDone: e['isDone'] ?? false,
         );
       }).toList();
     } on FileSystemException catch (e) {
@@ -504,7 +503,7 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Future<model.User?> getUser(String userId) async {
+  Future<model.AppUser?> getUser(String userId) async {
     try {
       final file = File(userPath);
       if (!await file.exists()) return null;
@@ -514,7 +513,7 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       final List users = jsonMap['users'] ?? [];
 
       final userList = users
-          .map((e) => model.User.fromJson(e))
+          .map((e) => model.AppUser.fromJson(e))
           .where((u) => u.uid == userId)
           .toList();
 
@@ -526,7 +525,7 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Future<void> updateUser(model.User user) async {
+  Future<void> updateUser(model.AppUser user) async {
     try {
       final file = File(userPath);
       if (!file.existsSync()) return;
@@ -550,7 +549,7 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Future<void> saveUser(model.User user) async {
+  Future<void> saveUser(model.AppUser user) async {
     try {
       final file = File(userPath);
       Map<String, dynamic> jsonMap = {'users': []};

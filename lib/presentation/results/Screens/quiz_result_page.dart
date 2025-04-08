@@ -212,8 +212,16 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                       onPressed: () async {
                         _logger.info('End Quiz button pressed');
                         // ✅ Save the quiz result
-                        await notifier.saveQuizResult(widget.categoryId,
-                            widget.topicId, 'mock-user-1234', ref);
+                        final user =
+                            ref.read(currentUserModelProvider).valueOrNull;
+                        if (user == null) {
+                          _logger.warning('❌ Kein eingeloggter User gefunden.');
+                          return;
+                        }
+
+                        // ✅ Save result
+                        await notifier.saveQuizResult(
+                            widget.categoryId, widget.topicId, user.uid, ref);
 
                         // ✅ Mark the topic as done ONLY if the quiz was passed
                         if (isPassed) {
@@ -223,15 +231,18 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                               topicsProvider(widget.categoryId, languageCode)
                                   .future);
 
-                          final passedTopicsCount =
-                              topics.where((t) => t.isDone).length;
-                          final progress = topics.isEmpty
-                              ? 0.0
-                              : passedTopicsCount / topics.length;
-
                           final user =
                               ref.read(currentUserModelProvider).valueOrNull;
                           if (user != null) {
+                            final topicDoneMap =
+                                user.isTopicDone[widget.categoryId] ?? {};
+                            final passedTopicsCount = topics
+                                .where((t) => topicDoneMap[t.id] == true)
+                                .length;
+                            final progress = topics.isEmpty
+                                ? 0.0
+                                : passedTopicsCount / topics.length;
+
                             final updatedUser = user.copyWith(
                               categoryProgress: {
                                 ...user.categoryProgress,

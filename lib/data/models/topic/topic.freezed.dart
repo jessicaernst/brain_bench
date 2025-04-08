@@ -27,7 +27,6 @@ mixin _$Topic {
   String get descriptionDe => throw _privateConstructorUsedError;
   String get categoryId => throw _privateConstructorUsedError;
   double get progress => throw _privateConstructorUsedError;
-  bool get isDone => throw _privateConstructorUsedError;
 
   /// Serializes this Topic to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,8 +49,7 @@ abstract class $TopicCopyWith<$Res> {
       String descriptionEn,
       String descriptionDe,
       String categoryId,
-      double progress,
-      bool isDone});
+      double progress});
 }
 
 /// @nodoc
@@ -76,7 +74,6 @@ class _$TopicCopyWithImpl<$Res, $Val extends Topic>
     Object? descriptionDe = null,
     Object? categoryId = null,
     Object? progress = null,
-    Object? isDone = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -107,10 +104,6 @@ class _$TopicCopyWithImpl<$Res, $Val extends Topic>
           ? _value.progress
           : progress // ignore: cast_nullable_to_non_nullable
               as double,
-      isDone: null == isDone
-          ? _value.isDone
-          : isDone // ignore: cast_nullable_to_non_nullable
-              as bool,
     ) as $Val);
   }
 }
@@ -129,8 +122,7 @@ abstract class _$$TopicImplCopyWith<$Res> implements $TopicCopyWith<$Res> {
       String descriptionEn,
       String descriptionDe,
       String categoryId,
-      double progress,
-      bool isDone});
+      double progress});
 }
 
 /// @nodoc
@@ -153,7 +145,6 @@ class __$$TopicImplCopyWithImpl<$Res>
     Object? descriptionDe = null,
     Object? categoryId = null,
     Object? progress = null,
-    Object? isDone = null,
   }) {
     return _then(_$TopicImpl(
       id: null == id
@@ -184,10 +175,6 @@ class __$$TopicImplCopyWithImpl<$Res>
           ? _value.progress
           : progress // ignore: cast_nullable_to_non_nullable
               as double,
-      isDone: null == isDone
-          ? _value.isDone
-          : isDone // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -202,8 +189,7 @@ class _$TopicImpl implements _Topic {
       required this.descriptionEn,
       required this.descriptionDe,
       required this.categoryId,
-      this.progress = 0.0,
-      this.isDone = false});
+      this.progress = 0.0});
 
   factory _$TopicImpl.fromJson(Map<String, dynamic> json) =>
       _$$TopicImplFromJson(json);
@@ -223,13 +209,10 @@ class _$TopicImpl implements _Topic {
   @override
   @JsonKey()
   final double progress;
-  @override
-  @JsonKey()
-  final bool isDone;
 
   @override
   String toString() {
-    return 'Topic(id: $id, nameEn: $nameEn, nameDe: $nameDe, descriptionEn: $descriptionEn, descriptionDe: $descriptionDe, categoryId: $categoryId, progress: $progress, isDone: $isDone)';
+    return 'Topic(id: $id, nameEn: $nameEn, nameDe: $nameDe, descriptionEn: $descriptionEn, descriptionDe: $descriptionDe, categoryId: $categoryId, progress: $progress)';
   }
 
   @override
@@ -247,14 +230,13 @@ class _$TopicImpl implements _Topic {
             (identical(other.categoryId, categoryId) ||
                 other.categoryId == categoryId) &&
             (identical(other.progress, progress) ||
-                other.progress == progress) &&
-            (identical(other.isDone, isDone) || other.isDone == isDone));
+                other.progress == progress));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, nameEn, nameDe,
-      descriptionEn, descriptionDe, categoryId, progress, isDone);
+      descriptionEn, descriptionDe, categoryId, progress);
 
   /// Create a copy of Topic
   /// with the given fields replaced by the non-null parameter values.
@@ -280,8 +262,7 @@ abstract class _Topic implements Topic {
       required final String descriptionEn,
       required final String descriptionDe,
       required final String categoryId,
-      final double progress,
-      final bool isDone}) = _$TopicImpl;
+      final double progress}) = _$TopicImpl;
 
   factory _Topic.fromJson(Map<String, dynamic> json) = _$TopicImpl.fromJson;
 
@@ -299,8 +280,6 @@ abstract class _Topic implements Topic {
   String get categoryId;
   @override
   double get progress;
-  @override
-  bool get isDone;
 
   /// Create a copy of Topic
   /// with the given fields replaced by the non-null parameter values.

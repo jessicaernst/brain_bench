@@ -14,7 +14,6 @@ _$TopicImpl _$$TopicImplFromJson(Map<String, dynamic> json) => _$TopicImpl(
       descriptionDe: json['descriptionDe'] as String,
       categoryId: json['categoryId'] as String,
       progress: (json['progress'] as num?)?.toDouble() ?? 0.0,
-      isDone: json['isDone'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$TopicImplToJson(_$TopicImpl instance) =>
@@ -26,5 +25,4 @@ Map<String, dynamic> _$$TopicImplToJson(_$TopicImpl instance) =>
       'descriptionDe': instance.descriptionDe,
       'categoryId': instance.categoryId,
       'progress': instance.progress,
-      'isDone': instance.isDone,
     };

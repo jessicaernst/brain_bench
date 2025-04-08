@@ -1,4 +1,4 @@
-import 'package:brain_bench/data/models/auth/app_user.dart';
+import 'package:brain_bench/data/models/user/app_user.dart';
 
 abstract class AuthRepository {
   Stream<AppUser?> authStateChanges();

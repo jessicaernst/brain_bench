@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of 'app_user.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -8,6 +8,9 @@ part of 'user.dart';
 
 _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       uid: json['uid'] as String,
+      email: json['email'] as String,
+      displayName: json['displayName'] as String?,
+      photoUrl: json['photoUrl'] as String?,
       profileImageUrl: json['profileImageUrl'] as String?,
       themeMode: json['themeMode'] as String? ?? 'system',
       language: json['language'] as String? ?? 'en',
@@ -25,6 +28,9 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
+      'email': instance.email,
+      'displayName': instance.displayName,
+      'photoUrl': instance.photoUrl,
       'profileImageUrl': instance.profileImageUrl,
       'themeMode': instance.themeMode,
       'language': instance.language,
