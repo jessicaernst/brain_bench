@@ -3,6 +3,7 @@ import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/result/result.dart';
+import 'package:brain_bench/data/models/user/user.dart' as model;
 
 /// An abstract class defining the contract for a quiz database repository.
 ///
@@ -10,7 +11,7 @@ import 'package:brain_bench/data/models/result/result.dart';
 /// quiz database repository must provide. It includes methods for retrieving
 /// categories, topics, questions, answers, and results, as well as for saving
 /// results and marking topics as done.
-abstract class QuizDatabaseRepository {
+abstract class DatabaseRepository {
   /// Retrieves a list of [Category] objects.
   ///
   /// Parameters:
@@ -85,4 +86,40 @@ abstract class QuizDatabaseRepository {
   /// Returns:
   ///   A [Future] that completes when the category has been updated.
   Future<void> updateCategory(Category category);
+
+  /// Retrieves a [UserModel] object for a given user.
+  ///
+  /// Parameters:
+  ///   - [userId]: The ID of the user to retrieve.
+  ///
+  /// Returns:
+  ///   A [Future] that completes with a [UserModel] object.
+  Future<model.User?> getUser(String userId);
+
+  /// Updates a [UserModel] object.
+  ///
+  /// Parameters:
+  ///   - [user]: The [UserModel] object to update.
+  ///
+  /// Returns:
+  ///   A [Future] that completes when the user has been updated.
+  Future<void> updateUser(model.User user);
+
+  /// Deletes a [UserModel] object.
+  ///
+  /// Parameters:
+  ///   - [userId]: The ID of the user to delete.
+  ///
+  /// Returns:
+  ///   A [Future] that completes when the user has been deleted.
+  Future<void> deleteUser(String userId);
+
+  /// Saves a [UserModel] object.
+  ///
+  /// Parameters:
+  ///   - [user]: The [UserModel] object to save.
+  ///
+  /// Returns:
+  ///   A [Future] that completes when the user has been saved.
+  Future<void> saveUser(model.User user);
 }

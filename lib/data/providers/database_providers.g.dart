@@ -7,7 +7,7 @@ part of 'database_providers.dart';
 // **************************************************************************
 
 String _$quizMockDatabaseRepositoryHash() =>
-    r'b511894257522889fd8e09c97fe10d0e5d65b4b5';
+    r'73735476e81c14a5269ef8cabea221cdcd942b93';
 
 /// See also [quizMockDatabaseRepository].
 @ProviderFor(quizMockDatabaseRepository)

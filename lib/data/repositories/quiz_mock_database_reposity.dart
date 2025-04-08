@@ -7,7 +7,8 @@ import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/result/result.dart';
 import 'package:logging/logging.dart';
-import 'quiz_database_repository.dart';
+import 'database_repository.dart';
+import 'package:brain_bench/data/models/user/user.dart' as model;
 
 final Logger _logger = Logger('QuizMockDatabaseRepository');
 
@@ -17,14 +18,23 @@ final Logger _logger = Logger('QuizMockDatabaseRepository');
 /// used to simulate a user ID for all results.
 const String _mockUserId = 'mock-user-1234';
 
-/// A mock implementation of the [QuizDatabaseRepository] interface.
+/// A mock implementation of the [DatabaseRepository] interface.
 ///
 /// This class simulates a database by reading and writing data to JSON files.
 /// It provides methods to retrieve categories, topics, questions, answers, and
 /// results, as well as to save results and mark topics as done. It is intended
 /// for development and testing purposes and should not be used in a production
 /// environment.
-class QuizMockDatabaseRepository implements QuizDatabaseRepository {
+class QuizMockDatabaseRepository implements DatabaseRepository {
+  QuizMockDatabaseRepository({
+    required this.resultsPath,
+    required this.categoriesPath,
+    required this.topicsPath,
+    required this.questionsPath,
+    required this.answersPath,
+    required this.userPath,
+  });
+
   /// The file path for the results data.
   final String resultsPath;
 
@@ -40,13 +50,7 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
   /// The file path for the answers data.
   final String answersPath;
 
-  QuizMockDatabaseRepository({
-    required this.resultsPath,
-    required this.categoriesPath,
-    required this.topicsPath,
-    required this.questionsPath,
-    required this.answersPath,
-  });
+  final String userPath;
 
   /// Copies the JSON asset files from the app bundle to the documents directory.
   Future<void> copyAssetsToDocuments() async {
@@ -59,6 +63,7 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
         'lib/data/data_source/questions.json', questionsPath);
     await _copyAssetToDocument(
         'lib/data/data_source/answers.json', answersPath);
+    await _copyAssetToDocument('lib/data/data_source/user.json', userPath);
   }
 
   /// Copies a single asset file to the documents directory.
@@ -477,6 +482,94 @@ class QuizMockDatabaseRepository implements QuizDatabaseRepository {
       _logger.severe('FormatException in updateCategory: $e');
     } catch (e) {
       _logger.severe('Error updating category ${category.id}: $e');
+    }
+  }
+
+  @override
+  Future<void> deleteUser(String userId) async {
+    try {
+      final file = File(userPath);
+      if (!file.existsSync()) return;
+
+      final jsonString = await file.readAsString();
+      final jsonMap = json.decode(jsonString);
+      final users = (jsonMap['users'] as List<dynamic>)
+          .where((e) => e['uid'] != userId)
+          .toList();
+
+      jsonMap['users'] = users;
+      await file.writeAsString(jsonEncode(jsonMap), flush: true);
+      _logger.info('🗑️ User gelöscht: $userId');
+    } catch (e) {
+      _logger.severe('Fehler in deleteUser: $e');
+    }
+  }
+
+  @override
+  Future<model.User?> getUser(String userId) async {
+    try {
+      final file = File(userPath);
+      if (!await file.exists()) return null;
+
+      final jsonString = await file.readAsString();
+      final jsonMap = json.decode(jsonString);
+      final List users = jsonMap['users'] ?? [];
+
+      final userList = users
+          .map((e) => model.User.fromJson(e))
+          .where((u) => u.uid == userId)
+          .toList();
+
+      return userList.isNotEmpty ? userList.first : null;
+    } catch (e) {
+      _logger.severe('Fehler in getUser (async): $e');
+      return null;
+    }
+  }
+
+  @override
+  Future<void> updateUser(model.User user) async {
+    try {
+      final file = File(userPath);
+      if (!file.existsSync()) return;
+
+      final jsonString = await file.readAsString();
+      final jsonMap = json.decode(jsonString);
+      final List<dynamic> users = jsonMap['users'];
+
+      final index = users.indexWhere((e) => e['uid'] == user.uid);
+      if (index == -1) {
+        _logger.warning('User nicht gefunden: ${user.uid}');
+        return;
+      }
+
+      users[index] = user.toJson();
+      await file.writeAsString(jsonEncode(jsonMap), flush: true);
+      _logger.info('✅ User aktualisiert: ${user.uid}');
+    } catch (e) {
+      _logger.severe('Fehler in updateUser: $e');
+    }
+  }
+
+  @override
+  Future<void> saveUser(model.User user) async {
+    try {
+      final file = File(userPath);
+      Map<String, dynamic> jsonMap = {'users': []};
+
+      if (file.existsSync()) {
+        final content = await file.readAsString();
+        jsonMap = json.decode(content);
+
+        jsonMap['users'] ??= [];
+      }
+
+      (jsonMap['users'] as List).add(user.toJson());
+
+      await file.writeAsString(jsonEncode(jsonMap), flush: true);
+      _logger.info('🆕 User gespeichert: ${user.uid}');
+    } catch (e) {
+      _logger.severe('Fehler in saveUser: $e');
     }
   }
 }

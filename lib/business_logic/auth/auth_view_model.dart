@@ -1,3 +1,4 @@
+import 'package:brain_bench/core/utils/ensure_user_exists.dart';
 import 'package:brain_bench/data/providers/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -18,7 +19,10 @@ class AuthViewModel extends _$AuthViewModel {
     state = const AsyncLoading();
     try {
       final repo = ref.read(authRepositoryProvider);
-      await repo.signInWithEmail(email, password);
+      final appUser = await repo.signInWithEmail(email, password);
+
+      await ensureUserExistsIfNeeded(ref, appUser);
+
       if (context.mounted) {
         context.go('/home');
       }
@@ -36,7 +40,10 @@ class AuthViewModel extends _$AuthViewModel {
     state = const AsyncLoading();
     try {
       final repo = ref.read(authRepositoryProvider);
-      await repo.signUpWithEmail(email, password);
+      final appUser = await repo.signUpWithEmail(email, password);
+
+      await ensureUserExistsIfNeeded(ref, appUser);
+
       if (context.mounted) {
         context.go('/home');
       }
@@ -50,7 +57,10 @@ class AuthViewModel extends _$AuthViewModel {
     state = const AsyncLoading();
     try {
       final repo = ref.read(authRepositoryProvider);
-      await repo.signInWithGoogle();
+      final appUser = await repo.signInWithGoogle();
+
+      await ensureUserExistsIfNeeded(ref, appUser);
+
       if (context.mounted) context.go('/home');
     } catch (e, st) {
       state = AsyncError(e, st);
@@ -62,7 +72,10 @@ class AuthViewModel extends _$AuthViewModel {
     state = const AsyncLoading();
     try {
       final repo = ref.read(authRepositoryProvider);
-      await repo.signInWithApple();
+      final appUser = await repo.signInWithApple();
+
+      await ensureUserExistsIfNeeded(ref, appUser);
+
       if (context.mounted) context.go('/home');
     } catch (e, st) {
       state = AsyncError(e, st);

@@ -187,8 +187,12 @@ class $LibDataDataSourceGen {
   /// File path: lib/data/data_source/topics.json
   String get topics => 'lib/data/data_source/topics.json';
 
+  /// File path: lib/data/data_source/user.json
+  String get user => 'lib/data/data_source/user.json';
+
   /// List of all assets
-  List<String> get values => [answers, category, questions, results, topics];
+  List<String> get values =>
+      [answers, category, questions, results, topics, user];
 }
 
 class Assets {

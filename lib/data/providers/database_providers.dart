@@ -13,6 +13,7 @@ Future<QuizMockDatabaseRepository> quizMockDatabaseRepository(Ref ref) async {
   final topicsPath = '${directory.path}/topics.json';
   final questionsPath = '${directory.path}/questions.json';
   final answersPath = '${directory.path}/answers.json';
+  final userPath = '${directory.path}/user.json';
 
   final repo = QuizMockDatabaseRepository(
     resultsPath: resultsPath,
@@ -20,6 +21,7 @@ Future<QuizMockDatabaseRepository> quizMockDatabaseRepository(Ref ref) async {
     topicsPath: topicsPath,
     questionsPath: questionsPath,
     answersPath: answersPath,
+    userPath: userPath,
   );
   await repo.copyAssetsToDocuments();
   return repo;
