@@ -27,7 +27,6 @@ mixin _$Category {
   String get subtitleDe => throw _privateConstructorUsedError;
   String get descriptionEn => throw _privateConstructorUsedError;
   String get descriptionDe => throw _privateConstructorUsedError;
-  double get progress => throw _privateConstructorUsedError;
 
   /// Serializes this Category to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,8 +50,7 @@ abstract class $CategoryCopyWith<$Res> {
       String subtitleEn,
       String subtitleDe,
       String descriptionEn,
-      String descriptionDe,
-      double progress});
+      String descriptionDe});
 }
 
 /// @nodoc
@@ -77,7 +75,6 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
     Object? subtitleDe = null,
     Object? descriptionEn = null,
     Object? descriptionDe = null,
-    Object? progress = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -108,10 +105,6 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
           ? _value.descriptionDe
           : descriptionDe // ignore: cast_nullable_to_non_nullable
               as String,
-      progress: null == progress
-          ? _value.progress
-          : progress // ignore: cast_nullable_to_non_nullable
-              as double,
     ) as $Val);
   }
 }
@@ -131,8 +124,7 @@ abstract class _$$CategoryImplCopyWith<$Res>
       String subtitleEn,
       String subtitleDe,
       String descriptionEn,
-      String descriptionDe,
-      double progress});
+      String descriptionDe});
 }
 
 /// @nodoc
@@ -155,7 +147,6 @@ class __$$CategoryImplCopyWithImpl<$Res>
     Object? subtitleDe = null,
     Object? descriptionEn = null,
     Object? descriptionDe = null,
-    Object? progress = null,
   }) {
     return _then(_$CategoryImpl(
       id: null == id
@@ -186,10 +177,6 @@ class __$$CategoryImplCopyWithImpl<$Res>
           ? _value.descriptionDe
           : descriptionDe // ignore: cast_nullable_to_non_nullable
               as String,
-      progress: null == progress
-          ? _value.progress
-          : progress // ignore: cast_nullable_to_non_nullable
-              as double,
     ));
   }
 }
@@ -204,8 +191,7 @@ class _$CategoryImpl implements _Category {
       required this.subtitleEn,
       required this.subtitleDe,
       required this.descriptionEn,
-      required this.descriptionDe,
-      this.progress = 0.0});
+      required this.descriptionDe});
 
   factory _$CategoryImpl.fromJson(Map<String, dynamic> json) =>
       _$$CategoryImplFromJson(json);
@@ -224,13 +210,10 @@ class _$CategoryImpl implements _Category {
   final String descriptionEn;
   @override
   final String descriptionDe;
-  @override
-  @JsonKey()
-  final double progress;
 
   @override
   String toString() {
-    return 'Category(id: $id, nameEn: $nameEn, nameDe: $nameDe, subtitleEn: $subtitleEn, subtitleDe: $subtitleDe, descriptionEn: $descriptionEn, descriptionDe: $descriptionDe, progress: $progress)';
+    return 'Category(id: $id, nameEn: $nameEn, nameDe: $nameDe, subtitleEn: $subtitleEn, subtitleDe: $subtitleDe, descriptionEn: $descriptionEn, descriptionDe: $descriptionDe)';
   }
 
   @override
@@ -248,15 +231,13 @@ class _$CategoryImpl implements _Category {
             (identical(other.descriptionEn, descriptionEn) ||
                 other.descriptionEn == descriptionEn) &&
             (identical(other.descriptionDe, descriptionDe) ||
-                other.descriptionDe == descriptionDe) &&
-            (identical(other.progress, progress) ||
-                other.progress == progress));
+                other.descriptionDe == descriptionDe));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, nameEn, nameDe, subtitleEn,
-      subtitleDe, descriptionEn, descriptionDe, progress);
+      subtitleDe, descriptionEn, descriptionDe);
 
   /// Create a copy of Category
   /// with the given fields replaced by the non-null parameter values.
@@ -282,8 +263,7 @@ abstract class _Category implements Category {
       required final String subtitleEn,
       required final String subtitleDe,
       required final String descriptionEn,
-      required final String descriptionDe,
-      final double progress}) = _$CategoryImpl;
+      required final String descriptionDe}) = _$CategoryImpl;
 
   factory _Category.fromJson(Map<String, dynamic> json) =
       _$CategoryImpl.fromJson;
@@ -302,8 +282,6 @@ abstract class _Category implements Category {
   String get descriptionEn;
   @override
   String get descriptionDe;
-  @override
-  double get progress;
 
   /// Create a copy of Category
   /// with the given fields replaced by the non-null parameter values.

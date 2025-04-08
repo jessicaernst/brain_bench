@@ -4,6 +4,7 @@ import 'package:brain_bench/core/component_widgets/no_data_available_view.dart';
 import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/component_widgets/dash_evolution_progress_dircle_view.dart';
+import 'package:brain_bench/data/providers/user/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -44,6 +45,9 @@ class CategoryDetailsPage extends ConsumerWidget {
       );
     }
 
+    final user = ref.watch(currentUserModelProvider).valueOrNull;
+    final progress = user?.categoryProgress[category!.id] ?? 0.0;
+
     // Extract localized strings for category details
     final String name =
         languageCode == 'de' ? category!.nameDe : category!.nameEn;
@@ -74,7 +78,7 @@ class CategoryDetailsPage extends ConsumerWidget {
               children: [
                 const SizedBox(height: 24),
                 DashEvolutionProgressCircleView(
-                  progress: category!.progress,
+                  progress: progress,
                   size: 180,
                 ),
                 const SizedBox(height: 48),

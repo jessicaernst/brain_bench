@@ -2,6 +2,7 @@ import 'package:brain_bench/business_logic/categories/categories_provider.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/data/providers/quiz/category_providers.dart';
+import 'package:brain_bench/data/providers/user/user_provider.dart';
 import 'package:brain_bench/presentation/categories/widgets/category_row_view.dart';
 import 'package:brain_bench/presentation/home/widgets/profile_button_view.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,7 @@ class CategoriesPage extends ConsumerWidget {
       data: (categories) {
         _logger.info(
             'Categories loaded successfully. Total: ${categories.length}');
+        final user = ref.watch(currentUserModelProvider).valueOrNull;
         return Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -79,13 +81,16 @@ class CategoriesPage extends ConsumerWidget {
                           ? category.nameDe
                           : category.nameEn;
 
+                      final progress =
+                          user?.categoryProgress[category.id] ?? 0.0;
+
                       return Padding(
                         key: ValueKey(category.id),
                         padding: const EdgeInsets.only(bottom: 32),
                         child: CategoryRowView(
                           categoryId: category.id,
                           categoryTitle: categoryName,
-                          progress: category.progress,
+                          progress: progress,
                         ),
                       );
                     }).toList(),

@@ -5,6 +5,7 @@ import 'package:brain_bench/core/component_widgets/progress_indicator_bar_view.d
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/providers/quiz/topic_providers.dart';
+import 'package:brain_bench/data/providers/user/user_provider.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
@@ -56,8 +57,12 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
       body: Column(
         children: [
           categoryAsync.when(
-            data: (category) =>
-                ProgressIndicatorBarView(progress: category.progress),
+            data: (category) {
+              final user = ref.watch(currentUserModelProvider).valueOrNull;
+              final progress = user?.categoryProgress[category.id] ?? 0.0;
+
+              return ProgressIndicatorBarView(progress: progress);
+            },
             loading: () => const ProgressIndicatorBarView(progress: 0),
             error: (error, stack) => const SizedBox.shrink(),
           ),

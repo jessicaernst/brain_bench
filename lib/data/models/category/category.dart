@@ -16,7 +16,6 @@ class Category with _$Category {
     required String subtitleDe,
     required String descriptionEn,
     required String descriptionDe,
-    @Default(0.0) double progress,
   }) = _Category;
 
   // A custom factory constructor named `create`, designed to generate a `Category` object
@@ -28,7 +27,6 @@ class Category with _$Category {
     required String subtitleDe,
     required String descriptionEn,
     required String descriptionDe,
-    required double progress,
   }) {
     // Here we generate a new UUID for the category's ID.
     return Category(
@@ -39,7 +37,6 @@ class Category with _$Category {
       subtitleDe: subtitleDe,
       descriptionEn: descriptionEn,
       descriptionDe: descriptionDe,
-      progress: progress,
     );
   }
 

@@ -15,7 +15,6 @@ _$CategoryImpl _$$CategoryImplFromJson(Map<String, dynamic> json) =>
       subtitleDe: json['subtitleDe'] as String,
       descriptionEn: json['descriptionEn'] as String,
       descriptionDe: json['descriptionDe'] as String,
-      progress: (json['progress'] as num?)?.toDouble() ?? 0.0,
     );
 
 Map<String, dynamic> _$$CategoryImplToJson(_$CategoryImpl instance) =>
@@ -27,5 +26,4 @@ Map<String, dynamic> _$$CategoryImplToJson(_$CategoryImpl instance) =>
       'subtitleDe': instance.subtitleDe,
       'descriptionEn': instance.descriptionEn,
       'descriptionDe': instance.descriptionDe,
-      'progress': instance.progress,
     };

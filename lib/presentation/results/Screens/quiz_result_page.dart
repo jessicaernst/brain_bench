@@ -5,7 +5,9 @@ import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/core/styles/text_styles.dart';
-import 'package:brain_bench/data/providers/quiz/category_providers.dart';
+import 'package:brain_bench/data/providers/database_providers.dart';
+import 'package:brain_bench/data/providers/quiz/topic_providers.dart';
+import 'package:brain_bench/data/providers/user/user_provider.dart';
 import 'package:brain_bench/presentation/results/widgets/quiz_result_expanded_view.dart';
 import 'package:brain_bench/presentation/results/widgets/toggle_button.dart';
 import 'package:flutter/material.dart';
@@ -216,10 +218,34 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                         // ✅ Mark the topic as done ONLY if the quiz was passed
                         if (isPassed) {
                           await notifier.markTopicAsDone(widget.topicId, ref);
-                          await ref
-                              .read(categoriesProvider(languageCode).notifier)
-                              .updateCategoryProgress(
-                                  widget.categoryId, languageCode);
+
+                          final topics = await ref.read(
+                              topicsProvider(widget.categoryId, languageCode)
+                                  .future);
+
+                          final passedTopicsCount =
+                              topics.where((t) => t.isDone).length;
+                          final progress = topics.isEmpty
+                              ? 0.0
+                              : passedTopicsCount / topics.length;
+
+                          final user =
+                              ref.read(currentUserModelProvider).valueOrNull;
+                          if (user != null) {
+                            final updatedUser = user.copyWith(
+                              categoryProgress: {
+                                ...user.categoryProgress,
+                                widget.categoryId: progress,
+                              },
+                            );
+
+                            await ref
+                                .read(quizMockDatabaseRepositoryProvider.future)
+                                .then((repo) => repo.updateUser(updatedUser));
+
+                            _logger.info(
+                                '✅ User progress updated: ${progress * 100}%');
+                          }
                         }
 
                         // Reset the state of QuizAnswersNotifier when navigating back.

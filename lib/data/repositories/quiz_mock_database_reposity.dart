@@ -110,7 +110,6 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
                 subtitleDe: e['subtitleDe'],
                 descriptionEn: e['descriptionEn'],
                 descriptionDe: e['descriptionDe'],
-                progress: (e['progress'] as num?)?.toDouble() ?? 0.0,
               ))
           .toList();
     } on FileSystemException catch (e) {
@@ -468,7 +467,6 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
         'subtitleDe': category.subtitleDe,
         'descriptionEn': category.descriptionEn,
         'descriptionDe': category.descriptionDe,
-        'progress': category.progress,
       };
 
       // Write the updated JSON data back to the file
