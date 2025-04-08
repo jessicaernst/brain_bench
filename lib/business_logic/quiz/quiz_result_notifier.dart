@@ -1,7 +1,10 @@
 import 'package:brain_bench/business_logic/quiz/quiz_result_state.dart';
 import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
 import 'package:brain_bench/data/models/result/result.dart';
+import 'package:brain_bench/data/providers/database_providers.dart';
+import 'package:brain_bench/data/providers/quiz/topic_providers.dart';
 import 'package:brain_bench/data/providers/results/result_providers.dart';
+import 'package:brain_bench/data/providers/user/user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -218,20 +221,54 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     _logger.info('Quiz result saved successfully.');
   }
 
-  /// Marks a topic as done in the mock database.
+  /// Marks a topic as done and updates category progress in the mock database.
   ///
-  /// This method uses the `saveResultNotifierProvider` to mark a
-  /// topic as done.
+  /// This method:
+  /// - Marks the specified topic as done for the current user.
+  /// - Loads all topics in the category to calculate the completion progress.
+  /// - Updates the `categoryProgress` in the user's data accordingly.
+  /// - Saves the updated user in the database and invalidates the user provider.
   ///
   /// Parameters:
   ///   - [topicId]: The ID of the topic to mark as done.
-  ///   - [ref]: The `WidgetRef` to access other providers.
-  Future<void> markTopicAsDone(String topicId, WidgetRef ref) async {
-    _logger.info('markTopicAsDone() called for topicId: $topicId');
-    await ref
-        .read(saveResultNotifierProvider.notifier)
-        .markTopicAsDone(topicId);
-    _logger.info('Topic $topicId marked as done.');
+  ///   - [categoryId]: The ID of the category the topic belongs to.
+  Future<void> markTopicAsDone(String topicId, String categoryId) async {
+    final user = ref.read(currentUserModelProvider).valueOrNull;
+    if (user == null) return;
+
+    final repo = await ref.read(quizMockDatabaseRepositoryProvider.future);
+
+    final updatedUser = user.copyWith(
+      isTopicDone: {
+        ...user.isTopicDone,
+        categoryId: {
+          ...user.isTopicDone[categoryId] ?? {},
+          topicId: true,
+        },
+      },
+    );
+
+    final topics = await ref.read(topicsProvider(categoryId, 'en').future);
+    final topicDoneMap = updatedUser.isTopicDone[categoryId] ?? {};
+    final passedTopicsCount =
+        topics.where((t) => topicDoneMap[t.id] == true).length;
+    final progress = topics.isEmpty ? 0.0 : passedTopicsCount / topics.length;
+
+    final userWithProgress = updatedUser.copyWith(
+      categoryProgress: {
+        ...updatedUser.categoryProgress,
+        categoryId: progress,
+      },
+    );
+
+    await repo.updateUser(userWithProgress);
+
+    ref.invalidate(currentUserModelProvider);
+
+    _logger
+        .info('✅ Topic $topicId als "done" markiert für category $categoryId');
+    _logger.info(
+        '✅ Fortschritt für $categoryId: ${(progress * 100).toStringAsFixed(1)}%');
   }
 }
 

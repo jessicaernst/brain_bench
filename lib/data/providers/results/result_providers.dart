@@ -1,51 +1,56 @@
+import 'package:brain_bench/data/models/result/result.dart';
 import 'package:brain_bench/data/providers/database_providers.dart';
+import 'package:brain_bench/data/providers/user/user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:brain_bench/data/models/result/result.dart';
 
 part 'result_providers.g.dart';
 
-/// Provides a list of [Result] objects for a specific user.
-///
-/// This provider uses the [quizMockDatabaseRepositoryProvider] to fetch the
-/// results from the mock database.
+/// Provides a list of [Result] objects for the currently logged-in user.
 @riverpod
 Future<List<Result>> results(Ref ref) async {
   final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
-  return repo.getResults('mock-user-1234'); // Mocked user ID
+  final user = ref.watch(currentUserModelProvider).valueOrNull;
+
+  if (user == null) {
+    throw Exception('❌ Kein eingeloggter User in [resultsProvider]');
+  }
+
+  return repo.getResults(user.uid);
 }
 
 /// A notifier that handles saving quiz results and marking topics as done.
 ///
 /// This notifier uses the [quizMockDatabaseRepositoryProvider] to interact
-/// with the mock database.
+/// with the database.
 @riverpod
 class SaveResultNotifier extends _$SaveResultNotifier {
-  /// Initializes the notifier.
   @override
   FutureOr<void> build() {}
 
-  /// Saves a [Result] object to the mock database.
-  ///
-  /// This method uses the [quizMockDatabaseRepositoryProvider] to save the
-  /// result.
-  ///
-  /// Parameters:
-  ///   - [result]: The [Result] object to save.
+  /// Saves a [Result] object to the database.
   Future<void> saveResult(Result result) async {
     final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
     await repo.saveResult(result);
   }
 
-  /// Marks a topic as done in the mock database.
+  /// Marks a topic as done and updates user progress.
   ///
-  /// This method uses the [quizMockDatabaseRepositoryProvider] to mark the
-  /// topic as done.
-  ///
-  /// Parameters:
-  ///   - [topicId]: The ID of the topic to mark as done.
-  Future<void> markTopicAsDone(String topicId) async {
+  /// Requires [topicId], [categoryId], and the [user] to update `isTopicDone` + `categoryProgress`.
+  Future<void> markTopicAsDone({
+    required String topicId,
+    required String categoryId,
+  }) async {
     final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
-    await repo.markTopicAsDone(topicId);
+    final user = ref.read(currentUserModelProvider).valueOrNull;
+
+    if (user == null) {
+      throw Exception('❌ Kein eingeloggter User in markTopicAsDone');
+    }
+
+    await repo.markTopicAsDone(topicId, categoryId, user);
+
+    // ✅ User-Provider aktualisieren
+    ref.invalidate(currentUserModelProvider);
   }
 }

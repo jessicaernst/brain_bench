@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:flutter/services.dart';
 import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
@@ -395,37 +396,58 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   ///   A [Future] that completes when the topic has been marked as done.
   ///   Logs an error if an exception occurs.
   @override
-  Future<void> markTopicAsDone(String topicId) async {
+  Future<void> markTopicAsDone(
+      String topicId, String categoryId, AppUser user) async {
     try {
-      // Load the topics JSON file from the documents directory
+      // ✅ Step 1: Update local topics.json (wie gehabt)
       final file = File(topicsPath);
-      final String jsonString =
-          await file.readAsString(); // ✅ Use readAsString() and File
+      final String jsonString = await file.readAsString();
       final Map<String, dynamic> jsonMap = json.decode(jsonString);
       final List<dynamic> jsonData = jsonMap['topics'];
 
-      // Find the topic to update
       final topicIndex = jsonData.indexWhere((topic) => topic['id'] == topicId);
-
-      if (topicIndex == -1) {
-        _logger.warning('Topic with ID $topicId not found.');
-        return;
+      if (topicIndex != -1) {
+        jsonData[topicIndex]['isDone'] = true;
+        await file.writeAsString(jsonEncode(jsonMap), flush: true);
+        _logger.info('✅ Topic $topicId marked as done in topics.json');
       }
 
-      // Update the isDone property
-      jsonData[topicIndex]['isDone'] = true;
+      // ✅ Step 2: Update user.isTopicDone
+      final updatedMap = {
+        ...user.isTopicDone,
+        categoryId: {
+          ...(user.isTopicDone[categoryId] ?? {}),
+          topicId: true,
+        }
+      };
 
-      // Write the updated JSON data back to the file
-      await file.writeAsString(jsonEncode(jsonMap), flush: true);
+      // ✅ Step 3: Berechne neuen Fortschritt
+      final fileTopics =
+          jsonData.where((topic) => topic['categoryId'] == categoryId).toList();
 
-      _logger
-          .info('Topic $topicId marked as done in topics.json successfully!');
-    } on FileSystemException catch (e) {
-      _logger.severe('FileSystemException in markTopicAsDone: $e');
-    } on FormatException catch (e) {
-      _logger.severe('FormatException in markTopicAsDone: $e');
+      final passedCount = fileTopics
+          .where((topic) => updatedMap[categoryId]?[topic['id']] == true)
+          .length;
+
+      final progress =
+          fileTopics.isEmpty ? 0.0 : passedCount / fileTopics.length;
+
+      // ✅ Step 4: Update user model
+      final updatedUser = user.copyWith(
+        isTopicDone: updatedMap,
+        categoryProgress: {
+          ...user.categoryProgress,
+          categoryId: progress,
+        },
+      );
+
+      _logger.info(
+          '🔁 Fortschritt berechnet: ${(progress * 100).toStringAsFixed(1)}%');
+
+      // ✅ Step 5: Speichern
+      await updateUser(updatedUser);
     } catch (e) {
-      _logger.severe('Error marking topic $topicId as done: $e');
+      _logger.severe('Error in markTopicAsDone: $e');
     }
   }
 

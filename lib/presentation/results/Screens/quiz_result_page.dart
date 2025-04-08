@@ -5,8 +5,6 @@ import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/core/styles/text_styles.dart';
-import 'package:brain_bench/data/providers/database_providers.dart';
-import 'package:brain_bench/data/providers/quiz/topic_providers.dart';
 import 'package:brain_bench/data/providers/user/user_provider.dart';
 import 'package:brain_bench/presentation/results/widgets/quiz_result_expanded_view.dart';
 import 'package:brain_bench/presentation/results/widgets/toggle_button.dart';
@@ -88,7 +86,6 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
 
     // Access app-wide localizations for text.
     final AppLocalizations localizations = AppLocalizations.of(context)!;
-    final String languageCode = Localizations.localeOf(context).languageCode;
 
     // Get the filtered list of answers from the notifier based on the current state.
     final List<QuizAnswer> filteredAnswers = notifier.getFilteredAnswers();
@@ -207,72 +204,46 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                   padding: const EdgeInsets.fromLTRB(
                       _defaultPadding, 16, _defaultPadding, 32),
                   child: LightDarkSwitchBtn(
-                      title: localizations.quizResultBtnLbl,
-                      isActive: true,
-                      onPressed: () async {
-                        _logger.info('End Quiz button pressed');
-                        // ✅ Save the quiz result
-                        final user =
-                            ref.read(currentUserModelProvider).valueOrNull;
-                        if (user == null) {
-                          _logger.warning('❌ Kein eingeloggter User gefunden.');
-                          return;
-                        }
+                    title: localizations.quizResultBtnLbl,
+                    isActive: true,
+                    onPressed: () async {
+                      _logger.info('End Quiz button pressed');
 
-                        // ✅ Save result
-                        await notifier.saveQuizResult(
-                            widget.categoryId, widget.topicId, user.uid, ref);
+                      final user =
+                          await ref.watch(currentUserModelProvider.future);
+                      if (user == null) {
+                        _logger.warning('❌ Kein eingeloggter User gefunden.');
+                        return;
+                      }
 
-                        // ✅ Mark the topic as done ONLY if the quiz was passed
-                        if (isPassed) {
-                          await notifier.markTopicAsDone(widget.topicId, ref);
+                      // ✅ Quiz-Ergebnis speichern
+                      await notifier.saveQuizResult(
+                        widget.categoryId,
+                        widget.topicId,
+                        user.uid,
+                        ref,
+                      );
 
-                          final topics = await ref.read(
-                              topicsProvider(widget.categoryId, languageCode)
-                                  .future);
+                      // ✅ Fortschritt speichern (inkl. Topic und categoryProgress)
+                      if (isPassed) {
+                        await notifier.markTopicAsDone(
+                            widget.topicId, widget.categoryId);
+                        _logger.info(
+                            '✅ Fortschritt & Topic als "done" gespeichert.');
+                      }
 
-                          final user =
-                              ref.read(currentUserModelProvider).valueOrNull;
-                          if (user != null) {
-                            final topicDoneMap =
-                                user.isTopicDone[widget.categoryId] ?? {};
-                            final passedTopicsCount = topics
-                                .where((t) => topicDoneMap[t.id] == true)
-                                .length;
-                            final progress = topics.isEmpty
-                                ? 0.0
-                                : passedTopicsCount / topics.length;
+                      // ✅ Zustände zurücksetzen
+                      ref.read(quizAnswersNotifierProvider.notifier).reset();
+                      ref.read(quizViewModelProvider.notifier).resetQuiz(ref);
+                      notifier.toggleView(SelectedView.none, ref);
 
-                            final updatedUser = user.copyWith(
-                              categoryProgress: {
-                                ...user.categoryProgress,
-                                widget.categoryId: progress,
-                              },
-                            );
-
-                            await ref
-                                .read(quizMockDatabaseRepositoryProvider.future)
-                                .then((repo) => repo.updateUser(updatedUser));
-
-                            _logger.info(
-                                '✅ User progress updated: ${progress * 100}%');
-                          }
-                        }
-
-                        // Reset the state of QuizAnswersNotifier when navigating back.
-                        ref.read(quizAnswersNotifierProvider.notifier).reset();
-
-                        // Reset the state of QuizViewModel when navigating back.
-                        ref.read(quizViewModelProvider.notifier).resetQuiz(ref);
-
-                        // Reset the selected view to none.
-                        notifier.toggleView(SelectedView.none, ref);
-
-                        if (context.mounted) {
-                          context.go('/categories/details/topics',
-                              extra: widget.categoryId);
-                        }
-                      }),
+                      // ✅ Navigation zurück zur Topic-Übersicht
+                      if (context.mounted) {
+                        context.go('/categories/details/topics',
+                            extra: widget.categoryId);
+                      }
+                    },
+                  ),
                 )
               ],
             ),

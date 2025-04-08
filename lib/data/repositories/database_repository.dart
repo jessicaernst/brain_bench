@@ -76,7 +76,7 @@ abstract class DatabaseRepository {
   ///
   /// Returns:
   ///   A [Future] that completes when the topic has been marked as done.
-  Future<void> markTopicAsDone(String topicId);
+  Future<void> markTopicAsDone(String topicId, String categoryId, AppUser user);
 
   /// Updates a [Category] object.
   ///

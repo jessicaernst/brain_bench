@@ -6,12 +6,9 @@ part of 'result_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$resultsHash() => r'f9ee3d9baeb873ad68cfd0787f7ea1c8e937cc49';
+String _$resultsHash() => r'fb69eaf7cbdb44997d449fcc52df47bb51f20d95';
 
-/// Provides a list of [Result] objects for a specific user.
-///
-/// This provider uses the [quizMockDatabaseRepositoryProvider] to fetch the
-/// results from the mock database.
+/// Provides a list of [Result] objects for the currently logged-in user.
 ///
 /// Copied from [results].
 @ProviderFor(results)
@@ -28,12 +25,12 @@ final resultsProvider = AutoDisposeFutureProvider<List<Result>>.internal(
 // ignore: unused_element
 typedef ResultsRef = AutoDisposeFutureProviderRef<List<Result>>;
 String _$saveResultNotifierHash() =>
-    r'fe0ca9d9f54c02abc1a93562117661bc090ca2e3';
+    r'ca849314bcc8bd32ded979e74fdb577bd6ea7185';
 
 /// A notifier that handles saving quiz results and marking topics as done.
 ///
 /// This notifier uses the [quizMockDatabaseRepositoryProvider] to interact
-/// with the mock database.
+/// with the database.
 ///
 /// Copied from [SaveResultNotifier].
 @ProviderFor(SaveResultNotifier)

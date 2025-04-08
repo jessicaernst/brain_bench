@@ -7,7 +7,7 @@ part of 'quiz_result_notifier.dart';
 // **************************************************************************
 
 String _$quizResultNotifierHash() =>
-    r'6309901c5637a3bb9c6eda59c8e3a32e82f88b55';
+    r'061d3be2233d4eb86ac8468375957b2af8b4b107';
 
 /// A Riverpod notifier that manages the state of the quiz result page.
 ///
