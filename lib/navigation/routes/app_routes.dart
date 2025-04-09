@@ -1,4 +1,4 @@
-// /Users/jessicaernst/Projects/brain_bench/lib/navigation/routes/app_routes.dart
+import 'package:brain_bench/navigation/transitions/app_transitions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:brain_bench/data/models/category/category.dart';
@@ -23,130 +23,180 @@ final goRouterProvider = Provider<GoRouter>((ref) {
   final routerRefresh = ref.watch(routerRefreshProvider);
 
   return GoRouter(
-    // The initial location to navigate to when the app starts.
     initialLocation: '/home',
-
-    // Listen to auth changes via notifier
     refreshListenable: routerRefresh,
-
-    // Redirect based on auth state
     redirect: (context, state) {
       final user = userAsync.asData?.value;
-      // Check if the target route is the login page.
       final isPublicPage = state.matchedLocation == '/login';
 
-      // If the user is not logged in and not trying to access the login page, redirect to login.
       if (user == null && !isPublicPage) return '/login';
-
-      // If the user is logged in and trying to access the login page, redirect to home.
-      if (user != null && isPublicPage) {
-        return '/home'; // Changed state.matchedLocation to isPublicPage for consistency
-      }
-
-      // No redirect needed in other cases (logged in user accessing any allowed page,
-      // or unauthenticated user accessing the login page).
+      if (user != null && isPublicPage) return '/home';
       return null;
     },
-
     routes: [
-      // Login page (shown if not authenticated)
+      // Login Page Route (Cupertino Slide)
       GoRoute(
         path: '/login',
-        builder: (_, __) => const LoginSignUpPage(),
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const LoginSignUpPage(),
+          transitionsBuilder: buildCupertinoSlideTransition,
+          transitionDuration: transitionDuration,
+          reverseTransitionDuration: reverseTransitionDuration,
+        ),
       ),
 
-      // --- Routes WITHOUT Bottom Nav Bar ---
+      // Profile Page Route (Slide Up)
       GoRoute(
-        path: '/profile', // Define the path for the profile page
-        builder: (_, __) => const ProfilePage(),
+        path: '/profile',
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const ProfilePage(),
+          transitionsBuilder: buildSlideUpTransition,
+          transitionDuration: transitionDuration,
+          reverseTransitionDuration: reverseTransitionDuration,
+        ),
       ),
+
+      // Settings Page Route (Slide Up)
       GoRoute(
-        path: '/settings', // Define the path for the settings page
-        builder: (_, __) => const SettingsPage(),
+        path: '/settings',
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const SettingsPage(),
+          transitionsBuilder: buildSlideUpTransition,
+          transitionDuration: transitionDuration,
+          reverseTransitionDuration: reverseTransitionDuration,
+        ),
       ),
-      // --- End Routes WITHOUT Bottom Nav Bar ---
 
       // StatefulShellRoute with persistent bottom navigation bar
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
+          // The shell itself doesn't animate with these transitions
           return TabsPage(navigationShell: navigationShell);
         },
         branches: [
-          // The first branch represents the 'Home' tab.
+          // Home Tab Branch (Cupertino Slide)
           StatefulShellBranch(
             routes: [
-              GoRoute(path: '/home', builder: (_, __) => const HomePage()),
+              GoRoute(
+                path: '/home',
+                pageBuilder: (context, state) => CustomTransitionPage(
+                  key: state.pageKey,
+                  child: const HomePage(),
+                  transitionsBuilder: buildCupertinoSlideTransition,
+                  transitionDuration: transitionDuration,
+                  reverseTransitionDuration: reverseTransitionDuration,
+                ),
+              ),
             ],
           ),
-
-          // The second branch represents the 'Categories' tab.
+          // Categories Tab Branch (Cupertino Slide)
           StatefulShellBranch(
             routes: [
               GoRoute(
                 path: '/categories',
-                builder: (_, __) => const CategoriesPage(),
+                pageBuilder: (context, state) => CustomTransitionPage(
+                  key: state.pageKey,
+                  child: const CategoriesPage(),
+                  transitionsBuilder: buildCupertinoSlideTransition,
+                  transitionDuration: transitionDuration,
+                  reverseTransitionDuration: reverseTransitionDuration,
+                ),
               ),
               GoRoute(
                 path: '/categories/details',
-                builder: (_, state) {
+                pageBuilder: (context, state) {
                   final category = state.extra as Category?;
-                  return category != null
-                      ? CategoryDetailsPage(category: category)
-                      : const NotFoundPage();
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: category != null
+                        ? CategoryDetailsPage(category: category)
+                        : const NotFoundPage(onBack: null),
+                    transitionsBuilder: buildCupertinoSlideTransition,
+                    transitionDuration: transitionDuration,
+                    reverseTransitionDuration: reverseTransitionDuration,
+                  );
                 },
               ),
               GoRoute(
                 path: '/categories/details/topics',
-                builder: (_, state) {
+                pageBuilder: (context, state) {
                   final categoryId = state.extra as String?;
-                  return categoryId != null
-                      ? TopicsPage(categoryId: categoryId)
-                      : const NotFoundPage();
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: categoryId != null
+                        ? TopicsPage(categoryId: categoryId)
+                        : const NotFoundPage(onBack: null),
+                    transitionsBuilder: buildCupertinoSlideTransition,
+                    transitionDuration: transitionDuration,
+                    reverseTransitionDuration: reverseTransitionDuration,
+                  );
                 },
               ),
             ],
           ),
-
-          // The third branch represents the 'Results' tab.
+          // Results Tab Branch (Cupertino Slide)
           StatefulShellBranch(
             routes: [
-              GoRoute(path: '/results', builder: (_, __) => const ResultPage()),
+              GoRoute(
+                path: '/results',
+                pageBuilder: (context, state) => CustomTransitionPage(
+                  key: state.pageKey,
+                  child: const ResultPage(),
+                  transitionsBuilder: buildCupertinoSlideTransition,
+                  transitionDuration: transitionDuration,
+                  reverseTransitionDuration: reverseTransitionDuration,
+                ),
+              ),
             ],
           ),
         ],
       ),
 
-      // The route for the quiz page (outside of bottom nav)
+      // Quiz Page Route (Cupertino Slide)
       GoRoute(
         path: '/categories/details/topics/quiz',
-        builder: (_, state) {
+        pageBuilder: (context, state) {
           final extra = state.extra as Map<String, String>?;
           final topicId = extra?['topicId'];
           final categoryId = extra?['categoryId'];
-
-          return topicId != null && categoryId != null
-              ? QuizPage(topicId: topicId, categoryId: categoryId)
-              : const NotFoundPage();
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: topicId != null && categoryId != null
+                ? QuizPage(topicId: topicId, categoryId: categoryId)
+                : const NotFoundPage(onBack: null),
+            transitionsBuilder: buildCupertinoSlideTransition,
+            transitionDuration: transitionDuration,
+            reverseTransitionDuration: reverseTransitionDuration,
+          );
         },
       ),
 
-      // The route for the quiz result page
+      // Quiz Result Page Route (Cupertino Slide)
       GoRoute(
         path: '/categories/details/topics/quiz/result',
-        builder: (_, state) {
+        pageBuilder: (context, state) {
           final extra = state.extra as Map<String, String>?;
           final categoryId = extra?['categoryId'];
           final topicId = extra?['topicId'];
-
-          return categoryId != null && topicId != null
-              ? QuizResultPage(categoryId: categoryId, topicId: topicId)
-              : const NotFoundPage();
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: categoryId != null && topicId != null
+                ? QuizResultPage(categoryId: categoryId, topicId: topicId)
+                : const NotFoundPage(onBack: null),
+            transitionsBuilder: buildCupertinoSlideTransition,
+            transitionDuration: transitionDuration,
+            reverseTransitionDuration: reverseTransitionDuration,
+          );
         },
       ),
     ],
-    // Optional: Add an error builder for better debugging
+    // errorBuilder uses default transition unless customized
     errorBuilder: (context, state) => NotFoundPage(
       error: state.error,
+      onBack: () => context.go('/home'),
     ),
   );
 });
