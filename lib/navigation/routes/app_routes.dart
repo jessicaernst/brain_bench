@@ -1,3 +1,4 @@
+// /Users/jessicaernst/Projects/brain_bench/lib/navigation/routes/app_routes.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:brain_bench/data/models/category/category.dart';
@@ -6,6 +7,8 @@ import 'package:brain_bench/presentation/auth/screens/login_sign_up_page.dart';
 import 'package:brain_bench/presentation/categories/screens/category_details_page.dart';
 import 'package:brain_bench/presentation/categories/screens/categories_page.dart';
 import 'package:brain_bench/presentation/home/screens/home_page.dart';
+import 'package:brain_bench/presentation/profile/screens/profile_page.dart';
+import 'package:brain_bench/presentation/settings/screens/settings_page.dart';
 import 'package:brain_bench/presentation/quiz/screens/quiz_page.dart';
 import 'package:brain_bench/presentation/results/Screens/quiz_result_page.dart';
 import 'package:brain_bench/presentation/results/screens/result_page.dart';
@@ -29,10 +32,19 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     // Redirect based on auth state
     redirect: (context, state) {
       final user = userAsync.asData?.value;
-      final isOnLogin = state.matchedLocation == '/login';
+      // Check if the target route is the login page.
+      final isPublicPage = state.matchedLocation == '/login';
 
-      if (user == null && !isOnLogin) return '/login';
-      if (user != null && isOnLogin) return '/home';
+      // If the user is not logged in and not trying to access the login page, redirect to login.
+      if (user == null && !isPublicPage) return '/login';
+
+      // If the user is logged in and trying to access the login page, redirect to home.
+      if (user != null && isPublicPage) {
+        return '/home'; // Changed state.matchedLocation to isPublicPage for consistency
+      }
+
+      // No redirect needed in other cases (logged in user accessing any allowed page,
+      // or unauthenticated user accessing the login page).
       return null;
     },
 
@@ -42,6 +54,17 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/login',
         builder: (_, __) => const LoginSignUpPage(),
       ),
+
+      // --- Routes WITHOUT Bottom Nav Bar ---
+      GoRoute(
+        path: '/profile', // Define the path for the profile page
+        builder: (_, __) => const ProfilePage(),
+      ),
+      GoRoute(
+        path: '/settings', // Define the path for the settings page
+        builder: (_, __) => const SettingsPage(),
+      ),
+      // --- End Routes WITHOUT Bottom Nav Bar ---
 
       // StatefulShellRoute with persistent bottom navigation bar
       StatefulShellRoute.indexedStack(
@@ -121,5 +144,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         },
       ),
     ],
+    // Optional: Add an error builder for better debugging
+    errorBuilder: (context, state) => NotFoundPage(
+      error: state.error,
+    ),
   );
 });

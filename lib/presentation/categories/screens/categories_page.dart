@@ -20,7 +20,6 @@ class CategoriesPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
     final String languageCode = Localizations.localeOf(context).languageCode;
-    final String? userImageUrl = null;
 
     // Fetch categories using the provider
     final categoriesAsync = ref.watch(categoriesProvider(languageCode));
@@ -58,14 +57,10 @@ class CategoriesPage extends ConsumerWidget {
                 ),
               ),
             ),
-            actions: [
+            actions: const [
               // Dropdown Menu for Profile/Settings/Logout
-              ProfileButtonView(
-                userImageUrl: userImageUrl,
-                profilePressed: () {},
-                settingsPressed: () {},
-              ),
-              const SizedBox(width: 16),
+              ProfileButtonView(),
+              SizedBox(width: 16),
             ],
           ),
           body: Column(

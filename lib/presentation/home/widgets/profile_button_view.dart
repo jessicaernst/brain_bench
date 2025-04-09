@@ -1,25 +1,27 @@
 import 'package:brain_bench/business_logic/auth/auth_view_model.dart';
+import 'package:brain_bench/data/providers/user/user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileButtonView extends ConsumerWidget {
   const ProfileButtonView({
     super.key,
-    required this.userImageUrl,
-    required this.profilePressed,
-    required this.settingsPressed,
   });
-
-  final String? userImageUrl;
-  final VoidCallback profilePressed;
-  final VoidCallback settingsPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    final userAsyncValue = ref.watch(currentUserModelProvider);
+    final String? userImageUrl = userAsyncValue.when(
+      data: (user) => user?.photoUrl,
+      loading: () => null,
+      error: (err, stack) => null,
+    );
 
     return PopupMenuButton<String>(
       offset: const Offset(0, 50),
@@ -35,7 +37,7 @@ class ProfileButtonView extends ConsumerWidget {
         child: CircleAvatar(
           radius: 18,
           backgroundImage: userImageUrl != null
-              ? NetworkImage(userImageUrl!) as ImageProvider
+              ? NetworkImage(userImageUrl) as ImageProvider
               : Assets.images.evolution4.provider(),
           onBackgroundImageError: (exception, stackTrace) {
             // Handle image loading error if needed
@@ -46,9 +48,9 @@ class ProfileButtonView extends ConsumerWidget {
       onSelected: (String value) {
         switch (value) {
           case 'profile':
-            profilePressed();
+            context.push('/profile');
           case 'settings':
-            settingsPressed();
+            context.push('/settings');
           case 'logout':
             ref.read(authViewModelProvider.notifier).signOut(context);
         }

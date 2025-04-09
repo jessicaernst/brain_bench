@@ -10,7 +10,6 @@ class ResultPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
-    final String? userImageUrl = null;
 
     return Scaffold(
       appBar: AppBar(
@@ -26,14 +25,10 @@ class ResultPage extends ConsumerWidget {
             ),
           ),
         ),
-        actions: [
+        actions: const [
           // Dropdown Menu for Profile/Settings/Logout
-          ProfileButtonView(
-            userImageUrl: userImageUrl,
-            profilePressed: () {},
-            settingsPressed: () {},
-          ),
-          const SizedBox(width: 16),
+          ProfileButtonView(),
+          SizedBox(width: 16),
         ],
       ),
       body: SafeArea(
