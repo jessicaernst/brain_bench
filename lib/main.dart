@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:brain_bench/app/app.dart';
-import 'package:brain_bench/data/providers/auth/auth_repository.dart';
+import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
 import 'package:brain_bench/data/repositories/firebase_auth_repository.dart';
 import 'package:brain_bench/services/logging_service.dart';
 import 'package:flutter/foundation.dart';

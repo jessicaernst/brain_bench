@@ -1,5 +1,5 @@
 import 'package:brain_bench/business_logic/auth/auth_view_model.dart';
-import 'package:brain_bench/data/providers/user/user_provider.dart';
+import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/gen/assets.gen.dart';

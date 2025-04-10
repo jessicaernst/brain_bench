@@ -1,8 +1,8 @@
 import 'package:brain_bench/business_logic/categories/categories_provider.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
-import 'package:brain_bench/data/providers/quiz/category_providers.dart';
-import 'package:brain_bench/data/providers/user/user_provider.dart';
+import 'package:brain_bench/data/infrastructure/quiz/category_providers.dart';
+import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/presentation/categories/widgets/category_row_view.dart';
 import 'package:brain_bench/presentation/home/widgets/profile_button_view.dart';
 import 'package:flutter/material.dart';

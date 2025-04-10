@@ -1,10 +1,10 @@
 import 'package:brain_bench/business_logic/quiz/quiz_result_state.dart';
 import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
 import 'package:brain_bench/data/models/result/result.dart';
-import 'package:brain_bench/data/providers/database_providers.dart';
-import 'package:brain_bench/data/providers/quiz/topic_providers.dart';
-import 'package:brain_bench/data/providers/results/result_providers.dart';
-import 'package:brain_bench/data/providers/user/user_provider.dart';
+import 'package:brain_bench/data/infrastructure/database_providers.dart';
+import 'package:brain_bench/data/infrastructure/quiz/topic_providers.dart';
+import 'package:brain_bench/data/infrastructure/results/result_providers.dart';
+import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

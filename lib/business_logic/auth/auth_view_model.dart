@@ -1,5 +1,5 @@
 import 'package:brain_bench/core/utils/ensure_user_exists.dart';
-import 'package:brain_bench/data/providers/auth/auth_repository.dart';
+import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

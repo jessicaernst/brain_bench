@@ -1,5 +1,5 @@
 import 'package:brain_bench/data/models/category/category.dart';
-import 'package:brain_bench/data/providers/quiz/category_providers.dart';
+import 'package:brain_bench/data/infrastructure/quiz/category_providers.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

@@ -4,7 +4,7 @@ import 'package:brain_bench/core/component_widgets/no_data_available_view.dart';
 import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/component_widgets/dash_evolution_progress_dircle_view.dart';
-import 'package:brain_bench/data/providers/user/user_provider.dart';
+import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

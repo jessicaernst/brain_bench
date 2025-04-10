@@ -1,6 +1,6 @@
 import 'package:brain_bench/business_logic/auth/current_user_provider.dart';
 import 'package:brain_bench/data/models/user/app_user.dart' as model;
-import 'package:brain_bench/data/providers/database_providers.dart';
+import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

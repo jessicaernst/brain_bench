@@ -1,4 +1,4 @@
-import 'package:brain_bench/data/providers/database_providers.dart';
+import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
