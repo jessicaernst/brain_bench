@@ -17,7 +17,6 @@ class AuthCardView extends StatelessWidget {
         width: 350,
         child: Stack(
           children: [
-            // 1. Shadow-Ebene mit weißer Hintergrundschicht
             Positioned.fill(
               child: Container(
                 decoration: BoxDecoration(
@@ -30,7 +29,6 @@ class AuthCardView extends StatelessWidget {
                 ),
               ),
             ),
-            // 2. Obere Glass/Gradient-Schicht mit Blur
             ClipRRect(
               borderRadius: BorderRadius.circular(24),
               child: BackdropFilter(

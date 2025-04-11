@@ -6,7 +6,6 @@ class AuthBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Determine if dark mode is active
     final bool isDarkMode =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Stack(
@@ -16,12 +15,12 @@ class AuthBackground extends StatelessWidget {
           child: isDarkMode
               ? Assets.backgrounds.bgLoginSignUpDarkmode.image()
               : Assets.backgrounds.signUp.image(
-                  fit: BoxFit.cover, // Cover the entire area
+                  fit: BoxFit.cover,
                 ),
         ),
-        // Positioned Dash logo (adjust positioning as needed)
+        // Positioned Dash logo
         Positioned(
-          top: -40, // Example positioning
+          top: -55, // Example positioning
           child: Assets.images.dashLogo.image(
             width: 545,
             height: 500,

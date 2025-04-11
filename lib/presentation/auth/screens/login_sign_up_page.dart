@@ -81,8 +81,6 @@ class LoginSignUpPage extends HookConsumerWidget {
       isLogin.value // Crucial to re-validate when switching views
     ]);
 
-    // --- Callback Functions ---
-    // Clearly named functions for actions
     void handleLogin() {
       if (!isButtonEnabled.value) {
         return; // Prevent action if button is disabled
@@ -106,14 +104,14 @@ class LoginSignUpPage extends HookConsumerWidget {
     }
 
     void switchToSignUp() {
-      emailController.clear(); // Clear login fields
+      emailController.clear();
       passwordController.clear();
       isLogin.value = false; // Switch state
       // isButtonEnabled will be re-validated by the useEffect hook
     }
 
     void switchToLogin() {
-      emailSignUpController.clear(); // Clear sign-up fields
+      emailSignUpController.clear();
       passwordSignUpController.clear();
       repeatPasswordSignUpController.clear();
       isLogin.value = true; // Switch state
@@ -138,8 +136,6 @@ class LoginSignUpPage extends HookConsumerWidget {
     void handleGoogleLogin() => authNotifier.signInWithGoogle(context);
     void handleAppleLogin() => authNotifier.signInWithApple(context);
 
-    // --- UI Build ---
-    // The build method is now much cleaner, focusing on structure
     return Scaffold(
       resizeToAvoidBottomInset: true, // Adjusts view when keyboard appears
       body: Stack(
