@@ -1,4 +1,5 @@
 import 'package:brain_bench/navigation/transitions/app_transitions.dart';
+import 'package:brain_bench/presentation/splash/screens/splash_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:brain_bench/data/models/category/category.dart';
@@ -19,21 +20,75 @@ import 'package:brain_bench/business_logic/navigation/router_refresh_provider.da
 
 /// The main router for the BrainBench application, defining all navigation routes.
 final goRouterProvider = Provider<GoRouter>((ref) {
-  final userAsync = ref.watch(currentUserProvider);
+  // Watch the authentication state
+  final userAsyncValue = ref.watch(currentUserProvider);
+  // Used to refresh the router when auth state changes (handled by listen in SplashPage now)
   final routerRefresh = ref.watch(routerRefreshProvider);
 
   return GoRouter(
-    initialLocation: '/home',
-    refreshListenable: routerRefresh,
+    initialLocation: '/splash', // Always start at the splash screen
+    refreshListenable:
+        routerRefresh, // Listens for auth changes (though SplashPage handles exit)
     redirect: (context, state) {
-      final user = userAsync.asData?.value;
-      final isPublicPage = state.matchedLocation == '/login';
+      // Get current location details
+      final isSplashPage = state.matchedLocation == '/splash';
+      final isLoginPage = state.matchedLocation == '/login';
 
-      if (user == null && !isPublicPage) return '/login';
-      if (user != null && isPublicPage) return '/home';
+      // Determine auth state details
+      final authIsLoading = userAsyncValue is AsyncLoading;
+      final user = userAsyncValue.valueOrNull;
+
+      // --- Refined Redirection Logic ---
+
+      // 1. If auth is still loading FOR THE VERY FIRST TIME (we are on /splash):
+      //    Stay on splash. Let SplashPage handle the exit via context.replace.
+      if (isSplashPage && authIsLoading) {
+        // This condition is primarily for the initial app start.
+        // If we somehow land on /splash later while auth is loading,
+        // this also prevents an immediate redirect away.
+        return null;
+      }
+
+      // 2. If we are on splash, BUT auth has already resolved:
+      //    This means SplashPage is about to navigate or has just navigated.
+      //    Return null to let SplashPage's context.replace finish its job without interference.
+      if (isSplashPage && !authIsLoading) {
+        return null;
+      }
+
+      // --- At this point, we are GUARANTEED NOT to be on /splash ---
+
+      // 3. If auth is still loading AFTER leaving splash (unlikely but possible):
+      //    Do nothing and wait for auth to resolve. Avoids unnecessary redirects.
+      if (authIsLoading) {
+        return null;
+      }
+
+      // --- At this point, auth is resolved, and we are NOT on /splash ---
+
+      // 4. Apply standard redirection rules:
+      // Rule 4a: User is logged out, but NOT on the login page? -> Redirect to login.
+      if (user == null && !isLoginPage) {
+        return '/login';
+      }
+      // Rule 4b: User is logged in, but IS on the login page? -> Redirect to home.
+      if (user != null && isLoginPage) {
+        return '/home';
+      }
+
+      // 5. Default Case: No redirection needed.
+      //    (User logged in and on a protected page, or user logged out and on login page)
       return null;
     },
+
     routes: [
+      // Splash Screen Route
+      GoRoute(
+        path: '/splash',
+        // Use simple builder, no transition needed for the initial screen
+        builder: (context, state) => const SplashPage(),
+      ),
+
       // Login Page Route (Cupertino Slide)
       GoRoute(
         path: '/login',
@@ -111,9 +166,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   final category = state.extra as Category?;
                   return CustomTransitionPage(
                     key: state.pageKey,
+                    // Handle case where category might be null if navigated incorrectly
                     child: category != null
                         ? CategoryDetailsPage(category: category)
-                        : const NotFoundPage(onBack: null),
+                        : NotFoundPage(
+                            onBack: () => context
+                                .go('/categories')), // Provide a way back
                     transitionsBuilder: buildCupertinoSlideTransition,
                     transitionDuration: transitionDuration,
                     reverseTransitionDuration: reverseTransitionDuration,
@@ -126,9 +184,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   final categoryId = state.extra as String?;
                   return CustomTransitionPage(
                     key: state.pageKey,
+                    // Handle case where categoryId might be null
                     child: categoryId != null
                         ? TopicsPage(categoryId: categoryId)
-                        : const NotFoundPage(onBack: null),
+                        : NotFoundPage(
+                            onBack: () => context
+                                .go('/categories')), // Provide a way back
                     transitionsBuilder: buildCupertinoSlideTransition,
                     transitionDuration: transitionDuration,
                     reverseTransitionDuration: reverseTransitionDuration,
@@ -164,9 +225,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           final categoryId = extra?['categoryId'];
           return CustomTransitionPage(
             key: state.pageKey,
+            // Handle case where extras might be null or incomplete
             child: topicId != null && categoryId != null
                 ? QuizPage(topicId: topicId, categoryId: categoryId)
-                : const NotFoundPage(onBack: null),
+                // Navigate back to topics if data is missing
+                : NotFoundPage(
+                    onBack: () => context.go('/categories/details/topics',
+                        extra: categoryId)),
             transitionsBuilder: buildCupertinoSlideTransition,
             transitionDuration: transitionDuration,
             reverseTransitionDuration: reverseTransitionDuration,
@@ -183,9 +248,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           final topicId = extra?['topicId'];
           return CustomTransitionPage(
             key: state.pageKey,
+            // Handle case where extras might be null or incomplete
             child: categoryId != null && topicId != null
                 ? QuizResultPage(categoryId: categoryId, topicId: topicId)
-                : const NotFoundPage(onBack: null),
+                // Navigate back to topics if data is missing
+                : NotFoundPage(
+                    onBack: () => context.go('/categories/details/topics',
+                        extra: categoryId)),
             transitionsBuilder: buildCupertinoSlideTransition,
             transitionDuration: transitionDuration,
             reverseTransitionDuration: reverseTransitionDuration,
@@ -193,9 +262,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         },
       ),
     ],
-    // errorBuilder uses default transition unless customized
+    // Error page: Define where the back button should lead
     errorBuilder: (context, state) => NotFoundPage(
       error: state.error,
+      // Go back to home seems like a reasonable default for unexpected errors
       onBack: () => context.go('/home'),
     ),
   );

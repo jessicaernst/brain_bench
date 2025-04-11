@@ -46,7 +46,11 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
       appBar: BackNavAppBar(
         title: localizations.topicsTitle,
         onBack: () {
-          context.go('/categories');
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go('/categories');
+          }
         },
       ),
       body: Column(

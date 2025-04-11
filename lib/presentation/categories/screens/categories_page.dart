@@ -107,7 +107,7 @@ class CategoriesPage extends ConsumerWidget {
                           'Navigating to category details for categoryId: ${selectedCategory.id}');
 
                       // ✅ Übergebe das gesamte Category-Objekt
-                      context.go('/categories/details',
+                      context.push('/categories/details',
                           extra: selectedCategory);
                     } else {
                       _logger.warning('No category selected for navigation.');

@@ -142,6 +142,16 @@ class $AssetsImagesGen {
       ];
 }
 
+class $AssetsRiveGen {
+  const $AssetsRiveGen();
+
+  /// File path: assets/rive/hello_dash.riv
+  String get helloDash => 'assets/rive/hello_dash.riv';
+
+  /// List of all assets
+  List<String> get values => [helloDash];
+}
+
 class $AssetsSocialLoginsGen {
   const $AssetsSocialLoginsGen();
 
@@ -202,6 +212,7 @@ class Assets {
   static const $AssetsBackgroundsGen backgrounds = $AssetsBackgroundsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsRiveGen rive = $AssetsRiveGen();
   static const $AssetsSocialLoginsGen socialLogins = $AssetsSocialLoginsGen();
   static const $LibGen lib = $LibGen();
 }

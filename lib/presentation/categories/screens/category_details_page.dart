@@ -56,7 +56,7 @@ class CategoryDetailsPage extends ConsumerWidget {
       appBar: BackNavAppBar(
         title: name,
         onBack: () {
-          context.go('/categories');
+          context.pop();
         },
       ),
       body: Stack(
@@ -96,7 +96,7 @@ class CategoryDetailsPage extends ConsumerWidget {
               title: localizations.catgoryBtnLbl,
               isActive: true,
               onPressed: () {
-                context.go('/categories/details/topics', extra: category?.id);
+                context.push('/categories/details/topics', extra: category?.id);
               },
             ),
           ),

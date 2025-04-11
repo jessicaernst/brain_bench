@@ -15,6 +15,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:brain_bench/services/firebase_options_dev.dart' as dev;
 import 'package:brain_bench/services/firebase_options_test.dart' as test;
 import 'package:brain_bench/services/firebase_options_prod.dart' as prod;
+import 'package:rive/rive.dart';
 
 // Define the available Firebase environments
 enum FirebaseEnvironment { dev, test, prod }
@@ -65,6 +66,15 @@ Future<void> main() async {
     await Firebase.initializeApp(options: firebaseOptions);
   } on FirebaseException catch (e) {
     if (e.code != 'duplicate-app') rethrow;
+  }
+
+  try {
+    _log.info('Initializing Rive runtime...');
+    await RiveFile.initialize();
+    _log.info('✅ Rive runtime initialized successfully.');
+  } catch (e, s) {
+    _log.severe('❌ Error initializing Rive runtime.', e, s);
+    rethrow;
   }
 
   // ✅ Initialize Crashlytics
