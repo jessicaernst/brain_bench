@@ -1,80 +1,92 @@
 import 'package:brain_bench/business_logic/auth/auth_view_model.dart';
 import 'package:brain_bench/core/hooks/animations.dart';
-import 'package:brain_bench/presentation/auth/widgets/auth_card_view.dart';
-import 'package:brain_bench/presentation/auth/widgets/login_content_view.dart';
-import 'package:brain_bench/presentation/auth/widgets/sign_up_content_view.dart';
+import 'package:brain_bench/presentation/auth/widgets/auth_background.dart';
+import 'package:brain_bench/presentation/auth/widgets/auth_content.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:brain_bench/gen/assets.gen.dart';
 
+// Main Widget: LoginSignUpPage
 class LoginSignUpPage extends HookConsumerWidget {
   const LoginSignUpPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isDarkMode =
-        MediaQuery.of(context).platformBrightness == Brightness.dark;
-    final slideAnimation = useSlideInFromBottom();
-    final fadeAnimation = useFadeIn();
+    // --- Hooks for State and Controllers ---
+    // State for toggling between Login and SignUp views
+    final isLogin = useState(true);
+    final previousIsLogin = usePrevious(isLogin.value);
+    // Used for the AnimatedSwitcher transition direction
+    final isSwitchingToLogin =
+        previousIsLogin == false && isLogin.value == true;
 
-    final mediaQuery = MediaQuery.of(context);
-    final isKeyboardVisible = mediaQuery.viewInsets.bottom > 0;
-
+    // Text Editing Controllers
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final emailSignUpController = useTextEditingController();
     final passwordSignUpController = useTextEditingController();
     final repeatPasswordSignUpController = useTextEditingController();
 
+    // State for enabling/disabling the main action button
     final isButtonEnabled = useState(false);
-    final isLogin = useState(true);
-    final previousIsLogin = usePrevious(isLogin.value);
-    final isSwitchingToLogin =
-        previousIsLogin == false && isLogin.value == true;
+
+    // Animation Hooks
+    final slideAnimation = useSlideInFromBottom(); // For initial page slide-in
+    final fadeAnimation = useFadeIn(); // For initial page fade-in
+
+    // Access the AuthViewModel Notifier
     final authNotifier = ref.read(authViewModelProvider.notifier);
 
-    void validate() {
-      // Check for Login fields
-      final isLoginFieldsFilled =
-          emailController.text.isNotEmpty && passwordController.text.isNotEmpty;
+    // --- Logic and Callbacks ---
 
-      // Check for SignUp fields
-      final isSignUpFieldsFilled = emailSignUpController.text.isNotEmpty &&
-          passwordSignUpController.text.isNotEmpty &&
-          repeatPasswordSignUpController.text.isNotEmpty;
-
-      // Update isButtonEnabled based on the current view
-      isButtonEnabled.value =
-          isLogin.value ? isLoginFieldsFilled : isSignUpFieldsFilled;
-    }
-
+    // Validation logic encapsulated in useEffect
     useEffect(() {
-      // Listen to all controllers
+      void validate() {
+        // Check if fields for the current view (Login or SignUp) are filled
+        final isLoginFieldsFilled = emailController.text.isNotEmpty &&
+            passwordController.text.isNotEmpty;
+        final isSignUpFieldsFilled = emailSignUpController.text.isNotEmpty &&
+            passwordSignUpController.text.isNotEmpty &&
+            repeatPasswordSignUpController.text.isNotEmpty;
+        // Update the button enabled state based on the current view
+        isButtonEnabled.value =
+            isLogin.value ? isLoginFieldsFilled : isSignUpFieldsFilled;
+      }
+
+      // Add listeners to all relevant controllers
       emailController.addListener(validate);
       passwordController.addListener(validate);
       emailSignUpController.addListener(validate);
       passwordSignUpController.addListener(validate);
       repeatPasswordSignUpController.addListener(validate);
 
+      // Perform initial validation
+      validate();
+
+      // Cleanup: Remove listeners when the widget disposes or dependencies change
       return () {
-        // Remove all listeners
         emailController.removeListener(validate);
         passwordController.removeListener(validate);
         emailSignUpController.removeListener(validate);
         passwordSignUpController.removeListener(validate);
         repeatPasswordSignUpController.removeListener(validate);
       };
+      // Dependencies: Re-run effect if any controller or the isLogin state changes
     }, [
       emailController,
       passwordController,
       emailSignUpController,
       passwordSignUpController,
-      repeatPasswordSignUpController
+      repeatPasswordSignUpController,
+      isLogin.value // Crucial to re-validate when switching views
     ]);
 
-    void onLoginPressed() {
-      if (!isButtonEnabled.value) return;
+    // --- Callback Functions ---
+    // Clearly named functions for actions
+    void handleLogin() {
+      if (!isButtonEnabled.value) {
+        return; // Prevent action if button is disabled
+      }
       authNotifier.signIn(
         email: emailController.text.trim(),
         password: passwordController.text,
@@ -82,8 +94,10 @@ class LoginSignUpPage extends HookConsumerWidget {
       );
     }
 
-    void onSignUpPressed() {
-      if (!isButtonEnabled.value) return;
+    void handleSignUp() {
+      if (!isButtonEnabled.value) {
+        return; // Prevent action if button is disabled
+      }
       authNotifier.signUp(
         email: emailSignUpController.text.trim(),
         password: passwordSignUpController.text,
@@ -91,146 +105,67 @@ class LoginSignUpPage extends HookConsumerWidget {
       );
     }
 
-    void onLoginTxtBtnPressed() {
-      emailController.clear();
+    void switchToSignUp() {
+      emailController.clear(); // Clear login fields
       passwordController.clear();
-      isLogin.value = false;
+      isLogin.value = false; // Switch state
+      // isButtonEnabled will be re-validated by the useEffect hook
     }
 
-    void onBackPressed() {
-      emailSignUpController.clear();
+    void switchToLogin() {
+      emailSignUpController.clear(); // Clear sign-up fields
       passwordSignUpController.clear();
       repeatPasswordSignUpController.clear();
-      isLogin.value = true;
-      validate();
+      isLogin.value = true; // Switch state
+      // isButtonEnabled will be re-validated by the useEffect hook
     }
 
-    void onResetPasswordPressed() {
-      authNotifier.sendPasswordResetEmail(
-        email: emailController.text.trim(),
-        context: context,
-      );
+    void handlePasswordReset() {
+      // Only proceed if the email field in the login form is not empty
+      if (emailController.text.trim().isNotEmpty) {
+        authNotifier.sendPasswordResetEmail(
+          email: emailController.text.trim(),
+          context: context,
+        );
+      } else {
+        // Optional: Show a message if the email field is empty
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please enter your email first.')),
+        );
+      }
     }
 
-    void onGoogleLoginPressed() {
-      authNotifier.signInWithGoogle(context);
-    }
+    void handleGoogleLogin() => authNotifier.signInWithGoogle(context);
+    void handleAppleLogin() => authNotifier.signInWithApple(context);
 
-    void onAppleLoginPressed() {
-      authNotifier.signInWithApple(context);
-    }
-
+    // --- UI Build ---
+    // The build method is now much cleaner, focusing on structure
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: true, // Adjusts view when keyboard appears
       body: Stack(
         children: [
-          Positioned.fill(
-            child: isDarkMode
-                ? Assets.backgrounds.bgLoginSignUpDarkmode.image()
-                : Assets.backgrounds.signUp.image(
-                    fit: BoxFit.cover,
-                  ),
-          ),
-          Positioned(
-            top: -40,
-            child: Assets.images.dashLogo.image(
-              width: 545,
-              height: 500,
-            ),
-          ),
-          SafeArea(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return SingleChildScrollView(
-                  physics: isKeyboardVisible
-                      ? const ClampingScrollPhysics()
-                      : const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.only(
-                    left: 24,
-                    right: 24,
-                    top: 32,
-                    bottom: isKeyboardVisible
-                        ? mediaQuery.viewInsets.bottom + 16
-                        : 32,
-                  ),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
-                    ),
-                    child: AnimatedAlign(
-                      duration: const Duration(milliseconds: 400),
-                      curve: Curves.easeOutCubic,
-                      alignment: isKeyboardVisible
-                          ? Alignment.topCenter
-                          : Alignment.center,
-                      child: SlideTransition(
-                        position: slideAnimation,
-                        child: FadeTransition(
-                          opacity: fadeAnimation,
-                          child: AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 500),
-                            transitionBuilder: (child, animation) {
-                              final offsetAnimation = Tween<Offset>(
-                                begin: Offset(isSwitchingToLogin ? -1 : 1, 0),
-                                end: Offset.zero,
-                              ).animate(CurvedAnimation(
-                                parent: animation,
-                                curve: Curves.easeOutCubic,
-                              ));
-
-                              final fade = CurvedAnimation(
-                                parent: animation,
-                                curve: Curves.easeInOut,
-                              );
-
-                              return SlideTransition(
-                                position: offsetAnimation,
-                                child: FadeTransition(
-                                  opacity: fade,
-                                  child: child,
-                                ),
-                              );
-                            },
-                            child: isLogin.value
-                                ? AuthCardView(
-                                    key: const ValueKey('login'),
-                                    content: LoginContentView(
-                                      emailController: emailController,
-                                      passwordController: passwordController,
-                                      isButtonEnabled: isButtonEnabled.value,
-                                      onLoginPressed: onLoginPressed,
-                                      onSignUpPressed: onLoginTxtBtnPressed,
-                                      onResetPasswordPressed:
-                                          onResetPasswordPressed,
-                                      onGoogleLoginPressed:
-                                          onGoogleLoginPressed,
-                                      onAppleLoginPressed: onAppleLoginPressed,
-                                    ),
-                                  )
-                                : AuthCardView(
-                                    key: const ValueKey('signup'),
-                                    content: SignUpContentView(
-                                      emailController: emailSignUpController,
-                                      passwordController:
-                                          passwordSignUpController,
-                                      repeatPasswordController:
-                                          repeatPasswordSignUpController,
-                                      isButtonEnabled: isButtonEnabled.value,
-                                      onBackPressed: onBackPressed,
-                                      onSignUpPressed: onSignUpPressed,
-                                      onGoogleLoginPressed:
-                                          onGoogleLoginPressed,
-                                      onAppleLoginPressed: onAppleLoginPressed,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
+          const AuthBackground(),
+          AuthContent(
+            // Pass state and controllers
+            isLogin: isLogin.value,
+            isSwitchingToLogin: isSwitchingToLogin,
+            emailController: emailController,
+            passwordController: passwordController,
+            emailSignUpController: emailSignUpController,
+            passwordSignUpController: passwordSignUpController,
+            repeatPasswordSignUpController: repeatPasswordSignUpController,
+            isButtonEnabled: isButtonEnabled.value,
+            // Pass animations
+            slideAnimation: slideAnimation,
+            fadeAnimation: fadeAnimation,
+            // Pass callbacks
+            onLoginPressed: handleLogin,
+            onSignUpPressed: handleSignUp,
+            onSwitchToSignUpPressed: switchToSignUp,
+            onSwitchToLoginPressed: switchToLogin,
+            onResetPasswordPressed: handlePasswordReset,
+            onGoogleLoginPressed: handleGoogleLogin,
+            onAppleLoginPressed: handleAppleLogin,
           ),
         ],
       ),

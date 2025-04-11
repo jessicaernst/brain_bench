@@ -15,8 +15,6 @@ class NotFoundPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-// TODO: Get user image if needed/possible here
-
     final VoidCallback effectiveOnBack = onBack ??
         () {
           if (context.canPop()) {
