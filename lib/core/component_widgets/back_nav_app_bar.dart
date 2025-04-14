@@ -1,4 +1,4 @@
-import 'package:brain_bench/presentation/home/widgets/profile_button_view.dart';
+import 'package:brain_bench/core/component_widgets/profile_button_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;

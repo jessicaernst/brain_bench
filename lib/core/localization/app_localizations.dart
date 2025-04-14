@@ -400,6 +400,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Passwords do not match.'**
   String get authPasswordNotMatchError;
+
+  /// Menu item text for navigating to the user profile screen
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileMenuProfile;
+
+  /// Menu item text for navigating to the settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get profileMenuSettings;
+
+  /// Menu item text for logging the user out
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get profileMenuLogout;
+
+  /// App bar title for the 404 error page
+  ///
+  /// In en, this message translates to:
+  /// **'Page Not Found'**
+  String get notFoundAppBarTitle;
+
+  /// Main heading displayed on the 404 error page
+  ///
+  /// In en, this message translates to:
+  /// **'404 - Page Not Found'**
+  String get notFoundHeading;
+
+  /// Label preceding the technical error details on the 404 page
+  ///
+  /// In en, this message translates to:
+  /// **'Error details:'**
+  String get notFoundErrorDetailsLabel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

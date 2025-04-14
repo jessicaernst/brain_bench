@@ -73,7 +73,7 @@ class SplashPage extends HookConsumerWidget {
           // State machine names are defined in the Rive editor.
           final stateMachineController = StateMachineController.fromArtboard(
             artboard,
-            'State Machine 1', // Make sure this matches the name in your Rive file
+            'State Machine 1',
           );
 
           if (stateMachineController != null) {

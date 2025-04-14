@@ -203,5 +203,29 @@
     "authPasswordNotMatchError": "Passwords do not match.",
     "@authPasswordNotMatchError": {
         "description": "The error message displayed when the passwords do not match"
+    },
+    "profileMenuProfile": "Profile",
+    "@profileMenuProfile": {
+        "description": "Menu item text for navigating to the user profile screen"
+    },
+    "profileMenuSettings": "Settings",
+    "@profileMenuSettings": {
+        "description": "Menu item text for navigating to the settings screen"
+    },
+    "profileMenuLogout": "Logout",
+    "@profileMenuLogout": {
+        "description": "Menu item text for logging the user out"
+    },
+    "notFoundAppBarTitle": "Page Not Found",
+    "@notFoundAppBarTitle": {
+        "description": "App bar title for the 404 error page"
+    },
+    "notFoundHeading": "404 - Page Not Found",
+    "@notFoundHeading": {
+        "description": "Main heading displayed on the 404 error page"
+    },
+    "notFoundErrorDetailsLabel": "Error details:",
+    "@notFoundErrorDetailsLabel": {
+        "description": "Label preceding the technical error details on the 404 page"
     }
 }

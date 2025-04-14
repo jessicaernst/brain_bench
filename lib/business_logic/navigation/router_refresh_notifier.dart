@@ -62,7 +62,7 @@ class RouterRefreshNotifier extends ChangeNotifier {
 ///   This is crucial because GoRouter needs this listener to persist throughout
 ///   the app's lifecycle to react to auth changes at any time.
 @Riverpod(keepAlive: true)
-RouterRefreshNotifier routerRefreshNotifier(RouterRefreshNotifierRef ref) {
+RouterRefreshNotifier routerRefreshNotifier(Ref ref) {
   // Create and return the RouterRefreshNotifier instance, passing the ref
   // so it can listen to other providers.
   return RouterRefreshNotifier(ref);

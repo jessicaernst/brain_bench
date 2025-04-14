@@ -1,4 +1,5 @@
 import 'package:brain_bench/business_logic/auth/auth_view_model.dart';
+import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:brain_bench/core/styles/colors.dart';
@@ -6,8 +7,11 @@ import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logging/logging.dart';
 
-class ProfileButtonView extends ConsumerWidget {
+final Logger _logger = Logger('ProfileButtonView');
+
+final class ProfileButtonView extends ConsumerWidget {
   const ProfileButtonView({
     super.key,
   });
@@ -15,6 +19,7 @@ class ProfileButtonView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final AppLocalizations localizations = AppLocalizations.of(context)!;
 
     final userAsyncValue = ref.watch(currentUserModelProvider);
     final String? userImageUrl = userAsyncValue.when(
@@ -41,7 +46,7 @@ class ProfileButtonView extends ConsumerWidget {
               : Assets.images.evolution4.provider(),
           onBackgroundImageError: (exception, stackTrace) {
             // Handle image loading error if needed
-            debugPrint('Error loading user image: $exception');
+            _logger.warning('Error loading user image: $exception');
           },
         ),
       ),
@@ -66,7 +71,7 @@ class ProfileButtonView extends ConsumerWidget {
                   : BrainBenchColors.deepDive,
             ),
             title: Text(
-              'Profile',
+              localizations.profileMenuProfile,
               style: TextTheme.of(context).bodyLarge,
             ),
           ),
@@ -81,7 +86,7 @@ class ProfileButtonView extends ConsumerWidget {
                   : BrainBenchColors.deepDive,
             ),
             title: Text(
-              'Settings',
+              localizations.profileMenuSettings,
               style: TextTheme.of(context).bodyLarge,
             ),
           ),
@@ -96,7 +101,7 @@ class ProfileButtonView extends ConsumerWidget {
                   : BrainBenchColors.deepDive,
             ),
             title: Text(
-              'Logout',
+              localizations.profileMenuLogout,
               style: TextTheme.of(context).bodyLarge,
             ),
           ),

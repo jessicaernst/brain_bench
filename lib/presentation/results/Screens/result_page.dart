@@ -1,6 +1,6 @@
+import 'package:brain_bench/core/component_widgets/profile_button_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
-import 'package:brain_bench/presentation/home/widgets/profile_button_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

@@ -160,4 +160,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authPasswordNotMatchError => 'Passwords do not match.';
+
+  @override
+  String get profileMenuProfile => 'Profile';
+
+  @override
+  String get profileMenuSettings => 'Settings';
+
+  @override
+  String get profileMenuLogout => 'Logout';
+
+  @override
+  String get notFoundAppBarTitle => 'Page Not Found';
+
+  @override
+  String get notFoundHeading => '404 - Page Not Found';
+
+  @override
+  String get notFoundErrorDetailsLabel => 'Error details:';
 }

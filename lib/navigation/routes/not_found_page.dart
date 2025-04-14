@@ -1,4 +1,5 @@
 import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
+import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -15,6 +16,8 @@ class NotFoundPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(context)!;
+
     final VoidCallback effectiveOnBack = onBack ??
         () {
           if (context.canPop()) {
@@ -26,7 +29,7 @@ class NotFoundPage extends StatelessWidget {
 
     return Scaffold(
       appBar: BackNavAppBar(
-        title: 'Page Not Found',
+        title: localizations.notFoundAppBarTitle,
         onBack: effectiveOnBack,
       ),
       body: Center(
@@ -42,7 +45,7 @@ class NotFoundPage extends StatelessWidget {
               ),
               const SizedBox(height: 48),
               Text(
-                '404 - Page Not Found',
+                localizations.notFoundHeading,
                 style: TextTheme.of(context).headlineMedium?.copyWith(
                       color: Theme.of(context).colorScheme.error,
                     ),
@@ -51,7 +54,7 @@ class NotFoundPage extends StatelessWidget {
               if (error != null) ...[
                 const SizedBox(height: 16),
                 Text(
-                  'Error details:',
+                  localizations.notFoundErrorDetailsLabel,
                   style: TextTheme.of(context).titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),

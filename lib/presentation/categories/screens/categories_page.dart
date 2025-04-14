@@ -4,7 +4,7 @@ import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/data/infrastructure/quiz/category_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/presentation/categories/widgets/category_row_view.dart';
-import 'package:brain_bench/presentation/home/widgets/profile_button_view.dart';
+import 'package:brain_bench/core/component_widgets/profile_button_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

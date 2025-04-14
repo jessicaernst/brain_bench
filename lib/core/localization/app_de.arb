@@ -203,5 +203,29 @@
     "authPasswordNotMatchError": "Die Passwörter stimmen nicht überein.",
     "@authPasswordNotMatchError": {
         "description": "The error message displayed when the passwords do not match"
+    },
+    "profileMenuProfile": "Profil",
+    "@profileMenuProfile": {
+        "description": "Menüpunkttext für die Navigation zum Benutzerprofilbildschirm"
+    },
+    "profileMenuSettings": "Einstellungen",
+    "@profileMenuSettings": {
+        "description": "Menüpunkttext für die Navigation zum Einstellungsbildschirm"
+    },
+    "profileMenuLogout": "Abmelden",
+    "@profileMenuLogout": {
+        "description": "Menüpunkttext zum Abmelden des Benutzers"
+    },
+    "notFoundAppBarTitle": "Seite nicht gefunden",
+    "@notFoundAppBarTitle": {
+        "description": "AppBar-Titel für die 404-Fehlerseite"
+    },
+    "notFoundHeading": "404 - Seite nicht gefunden",
+    "@notFoundHeading": {
+        "description": "Hauptüberschrift auf der 404-Fehlerseite"
+    },
+    "notFoundErrorDetailsLabel": "Fehlerdetails:",
+    "@notFoundErrorDetailsLabel": {
+        "description": "Beschriftung vor den technischen Fehlerdetails auf der 404-Seite"
     }
 }

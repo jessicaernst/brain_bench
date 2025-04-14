@@ -160,4 +160,22 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get authPasswordNotMatchError => 'Die Passwörter stimmen nicht überein.';
+
+  @override
+  String get profileMenuProfile => 'Profil';
+
+  @override
+  String get profileMenuSettings => 'Einstellungen';
+
+  @override
+  String get profileMenuLogout => 'Abmelden';
+
+  @override
+  String get notFoundAppBarTitle => 'Seite nicht gefunden';
+
+  @override
+  String get notFoundHeading => '404 - Seite nicht gefunden';
+
+  @override
+  String get notFoundErrorDetailsLabel => 'Fehlerdetails:';
 }

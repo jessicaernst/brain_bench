@@ -7,7 +7,7 @@ part of 'router_refresh_notifier.dart';
 // **************************************************************************
 
 String _$routerRefreshNotifierHash() =>
-    r'fe1e47d6281423b2b0b864c6d9a61503e395924d';
+    r'5bb9ae0e3a979ddefccef0aab2a8ff5b815450bd';
 
 /// Provides the singleton instance of [RouterRefreshNotifier].
 ///
