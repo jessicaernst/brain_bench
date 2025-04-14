@@ -178,4 +178,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get notFoundErrorDetailsLabel => 'Fehlerdetails:';
+
+  @override
+  String get settingsAppBarTitle => 'Einstellungen';
+
+  @override
+  String get profileAppBarTitle => 'Profil';
 }

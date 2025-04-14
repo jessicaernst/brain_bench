@@ -436,6 +436,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error details:'**
   String get notFoundErrorDetailsLabel;
+
+  /// Title of the app bar for settings
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsAppBarTitle;
+
+  /// Title of the app bar for the profile
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileAppBarTitle;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

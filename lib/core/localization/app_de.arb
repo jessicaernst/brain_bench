@@ -227,5 +227,13 @@
     "notFoundErrorDetailsLabel": "Fehlerdetails:",
     "@notFoundErrorDetailsLabel": {
         "description": "Beschriftung vor den technischen Fehlerdetails auf der 404-Seite"
+    },
+    "settingsAppBarTitle": "Einstellungen",
+    "@settingsAppBarTitle": {
+        "description": "Titel der App-Bar für die Einstellungen"
+    },
+    "profileAppBarTitle": "Profil",
+    "@profileAppBarTitle": {
+        "description": "Titel der App-Bar für das Profil"
     }
 }

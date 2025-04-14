@@ -41,6 +41,7 @@ final class ProfileButtonView extends ConsumerWidget {
         ),
         child: CircleAvatar(
           radius: 18,
+          backgroundColor: Colors.transparent,
           backgroundImage: userImageUrl != null
               ? NetworkImage(userImageUrl) as ImageProvider
               : Assets.images.evolution4.provider(),

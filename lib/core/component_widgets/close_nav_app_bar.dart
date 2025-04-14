@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
-class BackNavAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const BackNavAppBar({
+class CloseNavAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CloseNavAppBar({
     super.key,
     required this.title,
     required this.onBack,
@@ -23,8 +23,8 @@ class BackNavAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: IconButton(
         icon: Icon(
           defaultTargetPlatform == TargetPlatform.iOS
-              ? CupertinoIcons.chevron_back
-              : Icons.arrow_back,
+              ? CupertinoIcons.clear
+              : Icons.close,
         ),
         onPressed: onBack,
       ),
