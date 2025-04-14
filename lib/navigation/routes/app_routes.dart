@@ -1,3 +1,4 @@
+import 'package:brain_bench/business_logic/navigation/router_refresh_notifier.dart';
 import 'package:brain_bench/navigation/transitions/app_transitions.dart';
 import 'package:brain_bench/presentation/splash/screens/splash_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,20 +17,20 @@ import 'package:brain_bench/presentation/results/screens/result_page.dart';
 import 'package:brain_bench/presentation/topics/screens/topics_page.dart';
 import 'package:brain_bench/navigation/tabs/screens/tabs_page.dart';
 import 'package:brain_bench/business_logic/auth/current_user_provider.dart';
-import 'package:brain_bench/business_logic/navigation/router_refresh_provider.dart';
+import 'package:logging/logging.dart';
+
+final Logger _logger = Logger('AuthRouter');
 
 /// The main router for the BrainBench application, defining all navigation routes.
 final goRouterProvider = Provider<GoRouter>((ref) {
-  // Watch the authentication state
-  final userAsyncValue = ref.watch(currentUserProvider);
-  // Used to refresh the router when auth state changes (handled by listen in SplashPage now)
-  final routerRefresh = ref.watch(routerRefreshProvider);
+  final routerRefreshListenable = ref.watch(routerRefreshNotifierProvider);
 
   return GoRouter(
-    initialLocation: '/splash', // Always start at the splash screen
-    refreshListenable:
-        routerRefresh, // Listens for auth changes (though SplashPage handles exit)
+    initialLocation: '/splash',
+    //routerRefresh, // Listens for auth changes (though SplashPage handles exit)
+    refreshListenable: routerRefreshListenable,
     redirect: (context, state) {
+      final userAsyncValue = ref.read(currentUserProvider);
       // Get current location details
       final isSplashPage = state.matchedLocation == '/splash';
       final isLoginPage = state.matchedLocation == '/login';
@@ -37,6 +38,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       // Determine auth state details
       final authIsLoading = userAsyncValue is AsyncLoading;
       final user = userAsyncValue.valueOrNull;
+
+      _logger.fine(
+          'Redirect Check: Location="${state.matchedLocation}", isSplash=$isSplashPage, isLogin=$isLoginPage, authLoading=$authIsLoading, userPresent=${user != null}');
 
       // --- Refined Redirection Logic ---
 
@@ -46,6 +50,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         // This condition is primarily for the initial app start.
         // If we somehow land on /splash later while auth is loading,
         // this also prevents an immediate redirect away.
+        _logger.fine('Redirect Result: null (Rule 1: Initial Splash Load)');
         return null;
       }
 
@@ -53,6 +58,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       //    This means SplashPage is about to navigate or has just navigated.
       //    Return null to let SplashPage's context.replace finish its job without interference.
       if (isSplashPage && !authIsLoading) {
+        _logger.fine(
+            'Redirect Result: null (Rule 2: Splash resolved, let SplashPage navigate)');
         return null;
       }
 
@@ -61,6 +68,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       // 3. If auth is still loading AFTER leaving splash (unlikely but possible):
       //    Do nothing and wait for auth to resolve. Avoids unnecessary redirects.
       if (authIsLoading) {
+        _logger.fine(
+            'Redirect Result: null (Rule 3: Not on Splash, Auth loading)');
         return null;
       }
 
@@ -69,15 +78,19 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       // 4. Apply standard redirection rules:
       // Rule 4a: User is logged out, but NOT on the login page? -> Redirect to login.
       if (user == null && !isLoginPage) {
+        _logger.info(
+            'Redirect Result: "/login" (Rule 4a: Logged out, not on login)');
         return '/login';
       }
       // Rule 4b: User is logged in, but IS on the login page? -> Redirect to home.
       if (user != null && isLoginPage) {
+        _logger.info('Redirect Result: "/home" (Rule 4b: Logged in, on login)');
         return '/home';
       }
 
       // 5. Default Case: No redirection needed.
       //    (User logged in and on a protected page, or user logged out and on login page)
+      _logger.fine('Redirect Result: null (Rule 5: No redirect needed)');
       return null;
     },
 

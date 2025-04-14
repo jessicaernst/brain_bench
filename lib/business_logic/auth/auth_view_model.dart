@@ -1,7 +1,6 @@
 import 'package:brain_bench/core/utils/ensure_user_exists.dart';
 import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_view_model.g.dart';
@@ -22,10 +21,6 @@ class AuthViewModel extends _$AuthViewModel {
       final appUser = await repo.signInWithEmail(email, password);
 
       await ensureUserExistsIfNeeded(ref, appUser);
-
-      if (context.mounted) {
-        context.go('/home');
-      }
     } catch (e, st) {
       state = AsyncError(e, st);
       if (context.mounted) _showError(context, e);
@@ -43,10 +38,6 @@ class AuthViewModel extends _$AuthViewModel {
       final appUser = await repo.signUpWithEmail(email, password);
 
       await ensureUserExistsIfNeeded(ref, appUser);
-
-      if (context.mounted) {
-        context.go('/home');
-      }
     } catch (e, st) {
       state = AsyncError(e, st);
       if (context.mounted) _showError(context, e);
@@ -60,8 +51,6 @@ class AuthViewModel extends _$AuthViewModel {
       final appUser = await repo.signInWithGoogle();
 
       await ensureUserExistsIfNeeded(ref, appUser);
-
-      if (context.mounted) context.go('/home');
     } catch (e, st) {
       state = AsyncError(e, st);
       if (context.mounted) _showError(context, e);
@@ -75,8 +64,6 @@ class AuthViewModel extends _$AuthViewModel {
       final appUser = await repo.signInWithApple();
 
       await ensureUserExistsIfNeeded(ref, appUser);
-
-      if (context.mounted) context.go('/home');
     } catch (e, st) {
       state = AsyncError(e, st);
       if (context.mounted) _showError(context, e);
@@ -108,9 +95,7 @@ class AuthViewModel extends _$AuthViewModel {
     try {
       final repo = ref.read(authRepositoryProvider);
       await repo.signOut();
-      if (context.mounted) {
-        context.go('/login');
-      }
+      state = const AsyncData(null);
     } catch (e, st) {
       state = AsyncError(e, st);
       if (context.mounted) _showError(context, e);
