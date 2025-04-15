@@ -1,9 +1,12 @@
 import 'package:brain_bench/core/utils/ensure_user_exists.dart';
 import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_view_model.g.dart';
+
+final Logger _logger = Logger('AuthViewModel');
 
 @riverpod
 class AuthViewModel extends _$AuthViewModel {
@@ -19,6 +22,8 @@ class AuthViewModel extends _$AuthViewModel {
     try {
       final repo = ref.read(authRepositoryProvider);
       final appUser = await repo.signInWithEmail(email, password);
+      _logger.info('AuthViewModel received from repo after Email Sign-In: '
+          'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
 
       await ensureUserExistsIfNeeded(ref, appUser);
     } catch (e, st) {
@@ -36,6 +41,8 @@ class AuthViewModel extends _$AuthViewModel {
     try {
       final repo = ref.read(authRepositoryProvider);
       final appUser = await repo.signUpWithEmail(email, password);
+      _logger.info('AuthViewModel received from repo after Email Sign-Up: '
+          'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
 
       await ensureUserExistsIfNeeded(ref, appUser);
     } catch (e, st) {
@@ -49,6 +56,8 @@ class AuthViewModel extends _$AuthViewModel {
     try {
       final repo = ref.read(authRepositoryProvider);
       final appUser = await repo.signInWithGoogle();
+      _logger.info('AuthViewModel received from repo after Google Sign-In: '
+          'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
 
       await ensureUserExistsIfNeeded(ref, appUser);
     } catch (e, st) {
@@ -62,6 +71,8 @@ class AuthViewModel extends _$AuthViewModel {
     try {
       final repo = ref.read(authRepositoryProvider);
       final appUser = await repo.signInWithApple();
+      _logger.info('AuthViewModel received from repo after Apple Sign-In: '
+          'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
 
       await ensureUserExistsIfNeeded(ref, appUser);
     } catch (e, st) {

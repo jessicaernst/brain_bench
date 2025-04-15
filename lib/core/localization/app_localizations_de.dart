@@ -184,4 +184,16 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get profileAppBarTitle => 'Profil';
+
+  @override
+  String get profileUserNotFound => 'Benutzerdaten nicht gefunden.';
+
+  @override
+  String get profileNoUsername => 'Benutzernamen hinzufügen';
+
+  @override
+  String get profileNoEmail => 'Keine E-Mail verfügbar';
+
+  @override
+  String get profileErrorLoading => 'Fehler beim Laden der Profildaten.';
 }

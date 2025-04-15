@@ -235,5 +235,21 @@
     "profileAppBarTitle": "Profil",
     "@profileAppBarTitle": {
         "description": "Titel der App-Bar für das Profil"
+    },
+    "profileUserNotFound": "Benutzerdaten nicht gefunden.",
+    "@profileUserNotFound": {
+        "description": "Nachricht, die angezeigt wird, wenn die Benutzerdaten null sind"
+    },
+    "profileNoUsername": "Benutzernamen hinzufügen",
+    "@profileNoUsername": {
+        "description": "Fallback text if the user has no display name"
+    },
+    "profileNoEmail": "Keine E-Mail verfügbar",
+    "@profileNoEmail": {
+        "description": "Fallback text if the user has no email address"
+    },
+    "profileErrorLoading": "Fehler beim Laden der Profildaten.",
+    "@profileErrorLoading": {
+        "description": "Fehlermeldung, die angezeigt wird, wenn Benutzerdaten fehlschlagen"
     }
 }

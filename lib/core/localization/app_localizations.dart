@@ -448,6 +448,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile'**
   String get profileAppBarTitle;
+
+  /// Message shown on profile page if the user data is null
+  ///
+  /// In en, this message translates to:
+  /// **'User data not found.'**
+  String get profileUserNotFound;
+
+  /// Fallback text if the user has no display name
+  ///
+  /// In en, this message translates to:
+  /// **'Add username'**
+  String get profileNoUsername;
+
+  /// Fallback text if the user has no email address
+  ///
+  /// In en, this message translates to:
+  /// **'No email available'**
+  String get profileNoEmail;
+
+  /// Error message shown on profile page if user data fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading profile data.'**
+  String get profileErrorLoading;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

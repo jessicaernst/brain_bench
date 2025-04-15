@@ -235,5 +235,21 @@
     "profileAppBarTitle": "Profile",
     "@profileAppBarTitle": {
         "description": "Title of the app bar for the profile"
+    },
+    "profileUserNotFound": "User data not found.",
+    "@profileUserNotFound": {
+        "description": "Message shown on profile page if the user data is null"
+    },
+    "profileNoUsername": "Add username",
+    "@profileNoUsername": {
+        "description": "Fallback text if the user has no display name"
+    },
+    "profileNoEmail": "No email available",
+    "@profileNoEmail": {
+        "description": "Fallback text if the user has no email address"
+    },
+    "profileErrorLoading": "Error loading profile data.",
+    "@profileErrorLoading": {
+        "description": "Error message shown on profile page if user data fails to load"
     }
 }

@@ -1,4 +1,4 @@
-import 'package:brain_bench/presentation/auth/widgets/auth_card_view.dart';
+import 'package:brain_bench/core/component_widgets/glass_card_view.dart';
 import 'package:brain_bench/presentation/auth/widgets/login_content_view.dart';
 import 'package:brain_bench/presentation/auth/widgets/sign_up_content_view.dart';
 import 'package:flutter/material.dart';
@@ -120,7 +120,7 @@ class AuthContent extends StatelessWidget {
                       },
                       // The child widget to display, based on the `isLogin` state
                       child: isLogin
-                          ? AuthCardView(
+                          ? GlassCardView(
                               // Unique key for AnimatedSwitcher to identify the child
                               key: const ValueKey('login'),
                               content: LoginContentView(
@@ -135,7 +135,7 @@ class AuthContent extends StatelessWidget {
                                 onAppleLoginPressed: onAppleLoginPressed,
                               ),
                             )
-                          : AuthCardView(
+                          : GlassCardView(
                               // Unique key for AnimatedSwitcher
                               key: const ValueKey('signup'),
                               content: SignUpContentView(

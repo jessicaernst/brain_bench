@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
+		1D517DB32DAE9D60003B2572 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1D517DAE2DAE9D60003B2572 /* InfoPlist.strings */; };
+		1D517DB42DAE9D60003B2572 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1D517DB12DAE9D60003B2572 /* InfoPlist.strings */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
@@ -45,6 +47,8 @@
 /* Begin PBXFileReference section */
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
+		1D517DAD2DAE9D60003B2572 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = InfoPlist.strings; sourceTree = "<group>"; };
+		1D517DB52DAE9D78003B2572 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ../en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1D986BDE2D9576E1006FAD19 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +74,20 @@
 		E1DC03D03ECDD97DB049BA14 /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		1D517DA52DAE9A64003B2572 /* channels */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = channels;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		1756936A4EF9D1FC6BB48B9A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -90,6 +108,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1D517DAF2DAE9D60003B2572 /* de.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				1D517DAE2DAE9D60003B2572 /* InfoPlist.strings */,
+			);
+			path = de.lproj;
+			sourceTree = "<group>";
+		};
+		1D517DB22DAE9D60003B2572 /* en 2.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				1D517DB12DAE9D60003B2572 /* InfoPlist.strings */,
+			);
+			path = "en 2.lproj";
+			sourceTree = "<group>";
+		};
 		331C8082294A63A400263BE5 /* RunnerTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -156,6 +190,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				1D517DA52DAE9A64003B2572 /* channels */,
 				1D986BDE2D9576E1006FAD19 /* Runner.entitlements */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
@@ -165,6 +200,8 @@
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
+				1D517DAF2DAE9D60003B2572 /* de.lproj */,
+				1D517DB22DAE9D60003B2572 /* en 2.lproj */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -211,6 +248,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				1D517DA52DAE9A64003B2572 /* channels */,
+			);
 			name = Runner;
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
@@ -243,6 +283,8 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
+				"en 2",
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
@@ -269,6 +311,8 @@
 			files = (
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
+				1D517DB32DAE9D60003B2572 /* InfoPlist.strings in Resources */,
+				1D517DB42DAE9D60003B2572 /* InfoPlist.strings in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 				DE1E63A64982FC97752DE4A6 /* GoogleService-Info.plist in Resources */,
@@ -453,6 +497,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		1D517DAE2DAE9D60003B2572 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1D517DAD2DAE9D60003B2572 /* de */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		1D517DB12DAE9D60003B2572 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1D517DB52DAE9D78003B2572 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		97C146FA1CF9000F007C117D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
