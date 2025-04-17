@@ -211,4 +211,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileEditBtnLbl => 'Save';
+
+  @override
+  String get profilePickFromGallery => 'Pick from Gallery';
+
+  @override
+  String get profilePickFromCamera => 'Take a photo';
+
+  @override
+  String get profileImagePickerError => 'Error selecting an image.';
 }

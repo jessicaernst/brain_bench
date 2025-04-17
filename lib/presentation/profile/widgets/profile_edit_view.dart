@@ -1,9 +1,13 @@
+import 'dart:io'; // Import für File hinzugefügt
+
 import 'package:brain_bench/core/component_widgets/glass_card_view.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
@@ -19,6 +23,8 @@ class ProfileEditView extends StatelessWidget {
     required this.theme,
     required this.userImageUrl,
     required this.onPressed,
+    this.onImageSelected,
+    this.selectedImageFile,
   });
 
   final TextEditingController displayNameController;
@@ -28,9 +34,99 @@ class ProfileEditView extends StatelessWidget {
   final ThemeData theme;
   final String? userImageUrl;
   final VoidCallback onPressed;
+  final Function(XFile)? onImageSelected;
+  final XFile? selectedImageFile;
+
+  Future<void> _pickImage(BuildContext context) async {
+    final ImagePicker picker = ImagePicker();
+    final bool isDarkMode =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
+
+    try {
+      final source = await showModalBottomSheet<ImageSource>(
+        context: context,
+        builder: (BuildContext sheetContext) {
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Wrap(
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(
+                      defaultTargetPlatform == TargetPlatform.iOS
+                          ? CupertinoIcons.photo_fill_on_rectangle_fill
+                          : Icons.photo_library,
+                      color: isDarkMode
+                          ? BrainBenchColors.cloudCanvas
+                          : BrainBenchColors.deepDive,
+                    ),
+                    title: Text(
+                      localizations.profilePickFromGallery,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    onTap: () =>
+                        Navigator.of(sheetContext).pop(ImageSource.gallery),
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      defaultTargetPlatform == TargetPlatform.iOS
+                          ? CupertinoIcons.camera_fill
+                          : Icons.camera_alt,
+                      color: isDarkMode
+                          ? BrainBenchColors.cloudCanvas
+                          : BrainBenchColors.deepDive,
+                    ),
+                    title: Text(localizations.profilePickFromCamera),
+                    onTap: () =>
+                        Navigator.of(sheetContext).pop(ImageSource.camera),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+
+      if (source == null) {
+        _logger.info('Image source selection cancelled.');
+        return;
+      }
+
+      final XFile? pickedFile = await picker.pickImage(
+        source: source,
+        imageQuality: 80,
+        maxWidth: 1024,
+      );
+
+      if (pickedFile != null && onImageSelected != null) {
+        _logger.info('Image selected: ${pickedFile.path}');
+        onImageSelected!(pickedFile);
+      } else {
+        _logger.info('Image selection cancelled or failed.');
+      }
+    } catch (e) {
+      _logger.severe('Error picking image: $e');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(localizations.profileImagePickerError),
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    ImageProvider? displayImage;
+    if (selectedImageFile != null) {
+      displayImage = FileImage(File(selectedImageFile!.path));
+    } else if (userImageUrl != null && userImageUrl!.isNotEmpty) {
+      displayImage = NetworkImage(userImageUrl!);
+    } else {
+      displayImage = Assets.images.evolution4.provider();
+    }
+
     return GlassCardView(
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -38,7 +134,6 @@ class ProfileEditView extends StatelessWidget {
         children: [
           Center(
             child: Stack(
-              // Use Stack to overlay edit button on avatar
               alignment: Alignment.bottomRight,
               children: [
                 Container(
@@ -52,22 +147,23 @@ class ProfileEditView extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 80,
                     backgroundColor: Colors.transparent,
-                    // Same image logic as in ProfileView
-                    backgroundImage: userImageUrl != null
-                        ? NetworkImage(userImageUrl!) as ImageProvider
-                        : Assets.images.evolution4.provider(),
+                    backgroundImage: displayImage,
                     onBackgroundImageError: (exception, stackTrace) {
-                      _logger.warning('Error loading user image: $exception');
+                      if (displayImage is NetworkImage) {
+                        _logger
+                            .warning('Error loading network image: $exception');
+                      } else if (displayImage is FileImage) {
+                        _logger.warning('Error loading file image: $exception');
+                      }
                     },
                   ),
                 ),
-                // Button to change picture (Placeholder)
                 Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: CircleAvatar(
                     radius: 24,
                     backgroundColor: theme.colorScheme.surface
-                        .withAlpha((0.87 * 255).toInt()),
+                        .withAlpha((0.95 * 255).toInt()),
                     child: IconButton(
                       icon: Icon(
                         defaultTargetPlatform == TargetPlatform.iOS
@@ -77,10 +173,7 @@ class ProfileEditView extends StatelessWidget {
                       ),
                       iconSize: 24,
                       tooltip: localizations.profileChangePictureTooltip,
-                      onPressed: () {
-                        // TODO: Implement image picker logic
-                        _logger.info('Change profile picture tapped');
-                      },
+                      onPressed: () => _pickImage(context),
                     ),
                   ),
                 ),
@@ -88,34 +181,31 @@ class ProfileEditView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 64),
-          // Display Name TextField
           TextField(
             controller: displayNameController,
-            style: textTheme.headlineSmall,
+            style:
+                textTheme.bodyLarge?.copyWith(color: BrainBenchColors.deepDive),
             textAlign: TextAlign.start,
             decoration: InputDecoration(
               hintText: localizations.profileDisplayNameLabel,
-              // Remove border for a cleaner look until focused
               border: InputBorder.none,
-              // Center the label text when focused/floating
               floatingLabelAlignment: FloatingLabelAlignment.center,
-              // Optional: Add hint text if needed
-              // hintText: localizations.profileDisplayNameHint,
             ),
             keyboardType: TextInputType.name,
             textCapitalization: TextCapitalization.words,
           ),
           const SizedBox(height: 16),
-          // Email TextField (Read-Only)
           TextField(
             controller: emailController,
+            readOnly: true,
+            style: textTheme.bodyLarge?.copyWith(
+                color:
+                    BrainBenchColors.deepDive.withAlpha((0.6 * 255).toInt())),
             textAlign: TextAlign.start,
             decoration: InputDecoration(
-              hintText: localizations.profileEmailLabel, // Add localization
+              hintText: localizations.profileEmailLabel,
               border: InputBorder.none,
               floatingLabelAlignment: FloatingLabelAlignment.center,
-              // Optional: Add an icon to indicate it's locked/verified
-              // suffixIcon: Icon(Icons.lock, size: 16, color: theme.disabledColor),
             ),
           ),
           const SizedBox(height: 48),

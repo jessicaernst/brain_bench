@@ -65,5 +65,12 @@
 	</array>
 	<key>GIDClientID</key>
 	<string>280860007604-3c8us5lra624f1pklv60hu0lt506p6hp.apps.googleusercontent.com</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Wir benötigen Zugriff auf Ihre Fotobibliothek, damit Sie ein neues Profilbild auswählen können.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Wir benötigen Zugriff auf Ihre Kamera, damit Sie ein neues Profilbild aufnehmen können.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Wir benötigen Zugriff auf Ihr Mikrofon, falls Sie ein Video als Profilbild aufnehmen möchten (optional).</string>
+
 </dict>
 </plist>

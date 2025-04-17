@@ -2,6 +2,7 @@ import 'package:brain_bench/core/component_widgets/close_nav_app_bar.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:brain_bench/presentation/profile/widgets/profile_edit_view.dart';
 import 'package:brain_bench/presentation/profile/widgets/profile_page_background.dart';
 import 'package:brain_bench/presentation/profile/widgets/profile_view.dart';
@@ -15,6 +16,9 @@ import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
 final Logger _logger = Logger('ProfilePage');
 
+// TODO: Create a ViewModel/Provider for profile updates
+// final profileViewModelProvider = StateNotifierProvider<ProfileViewModel, ProfileState>(...);
+
 class ProfilePage extends HookConsumerWidget {
   const ProfilePage({super.key});
 
@@ -26,24 +30,21 @@ class ProfilePage extends HookConsumerWidget {
 
     // --- State for Edit Mode ---
     final isEditing = useState(false);
-    // Track previous state for animation direction (optional but nice)
     final previousIsEditing = usePrevious(isEditing.value);
+    // --- State for selected image ---
+    final selectedImage = useState<XFile?>(null); // <-- NEU
 
     final userAsyncValue = ref.watch(currentUserModelProvider);
-
     final displayNameController = useTextEditingController();
     final emailController = useTextEditingController();
     final bool isDarkMode =
         MediaQuery.of(context).platformBrightness == Brightness.dark;
+    // --- This color will be passed down ---
     final Color iconColor = isDarkMode
         ? BrainBenchColors.flutterSky
         : BrainBenchColors.deepDive.withAlpha((0.6 * 255).toInt());
 
-    // Populate controllers when user data is available and we switch to edit mode
-    // This useEffect ensures controllers are updated if user data changes
-    // while the page is open, BEFORE entering edit mode.
     useEffect(() {
-      // Function to update controllers from user data
       void updateControllers(user) {
         if (user != null) {
           displayNameController.text = user.displayName ?? '';
@@ -54,48 +55,85 @@ class ProfilePage extends HookConsumerWidget {
         }
       }
 
-      // Listen to user data changes
       userAsyncValue.whenData(updateControllers);
-
-      // Return null because we don't need a cleanup function here
       return null;
-      // Depend on userAsyncValue to re-run when data changes
     }, [userAsyncValue]);
 
-    // Extract image URL separately
     final String? userImageUrl = userAsyncValue.when(
       data: (user) => user?.photoUrl,
       loading: () => null,
       error: (err, stack) => null,
     );
 
+    // --- Image Selection Handler ---
+    void handleImageSelection(XFile imageFile) {
+      // <-- NEU
+      _logger.info('Image selected in ProfilePage: ${imageFile.path}');
+      // Set the selected image in state so it can be displayed
+      selectedImage.value = imageFile;
+      // TODO: Add image upload logic here (e.g., via ViewModel)
+      // This is where you'd trigger the upload if you want immediate upload,
+      // or just store it until 'Save' is pressed.
+    }
+
     // --- Save Profile Logic ---
     void handleSaveChanges() {
-      // TODO: Implement actual profile update logic
-      // Example: Call a view model method
-      // ref.read(profileViewModelProvider.notifier).updateProfile(
-      //   displayName: displayNameController.text.trim(),
-      //   // email usually isn't updated here, but depends on your logic
-      // );
       _logger.info(
           'Save changes pressed. Display Name: ${displayNameController.text}');
-      // After saving (or attempting to save), switch back to view mode
-      isEditing.value = false;
+
+      // TODO: Implement actual profile update logic
+      // 1. Check if a new image was selected (selectedImage.value != null)
+      // 2. If yes, upload the image (e.g., via ViewModel)
+      //    - Wait for the new URL from storage
+      //    - Then update the user profile (e.g., in Firestore/Auth) with name AND new URL
+      // 3. If no, update only the user profile with the name
+      // Example call:
+      // ref.read(profileViewModelProvider.notifier).updateProfile(
+      //   displayName: displayNameController.text.trim(),
+      //   newImageFile: selectedImage.value, // Pass the file to the ViewModel
+      // );
+
+      // --- IMPORTANT: Reset temporary image state after saving ---
+      selectedImage.value = null; // <-- NEU
+      isEditing.value = false; // Switch back to view mode
     }
 
     // --- Toggle Edit Mode ---
     void toggleEditMode() {
-      // If switching *to* edit mode, ensure controllers have the latest data
       if (!isEditing.value) {
+        // When switching *to* edit mode: Fill controllers
         userAsyncValue.whenData((user) {
           if (user != null) {
             displayNameController.text = user.displayName ?? '';
             emailController.text = user.email;
           }
         });
+        // Ensure no old selected image is shown from a previous edit session
+        selectedImage.value = null;
+      } else {
+        // When switching *out* of edit mode (without saving): Discard selection
+        selectedImage.value = null;
       }
       // Toggle the state
       isEditing.value = !isEditing.value;
+    }
+
+    // --- Back Action ---
+    void backAction() {
+      if (isEditing.value) {
+        // When leaving edit mode (without saving) via back button: Discard selection
+        selectedImage.value = null;
+        isEditing.value = false;
+      } else {
+        context.pop(); // Close page
+      }
+    }
+
+    IconData? leadingAppBarIcon;
+    if (isEditing.value) {
+      leadingAppBarIcon = defaultTargetPlatform == TargetPlatform.iOS
+          ? CupertinoIcons.chevron_back
+          : Icons.arrow_back;
     }
 
     return Scaffold(
@@ -104,17 +142,11 @@ class ProfilePage extends HookConsumerWidget {
         title: isEditing.value
             ? localizations.profileEditAppBarTitle
             : localizations.profileAppBarTitle,
-        onBack: () {
-          if (isEditing.value) {
-            isEditing.value = false;
-          } else {
-            context.pop();
-          }
-        },
+        onBack: backAction,
         leadingIconColor: iconColor,
+        leadingIcon: leadingAppBarIcon,
         actions: [
           IconButton(
-            // Change icon based on mode
             icon: isEditing.value
                 ? (defaultTargetPlatform == TargetPlatform.iOS
                     ? Icon(CupertinoIcons.floppy_disk, color: iconColor)
@@ -122,9 +154,7 @@ class ProfilePage extends HookConsumerWidget {
                 : (defaultTargetPlatform == TargetPlatform.iOS
                     ? Icon(CupertinoIcons.pencil, color: iconColor)
                     : Icon(Icons.edit, color: iconColor)),
-            onPressed: isEditing.value
-                ? handleSaveChanges
-                : toggleEditMode, // Change action based on mode
+            onPressed: isEditing.value ? handleSaveChanges : toggleEditMode,
           ),
         ],
       ),
@@ -134,19 +164,14 @@ class ProfilePage extends HookConsumerWidget {
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(32, 48, 32, 0),
-              // --- Animated Switcher ---
               child: Center(
                 child: AnimatedSwitcher(
-                  duration: const Duration(
-                      milliseconds: 400), // Adjust duration as needed
-                  // Define the transition (e.g., slide and fade)
+                  duration: const Duration(milliseconds: 400),
                   transitionBuilder:
                       (Widget child, Animation<double> animation) {
-                    // Determine slide direction based on previous state
                     final bool enteringEditMode =
                         (previousIsEditing == false && isEditing.value == true);
                     final offsetAnimation = Tween<Offset>(
-                      // Slide in from right when entering edit, from left when exiting
                       begin: Offset(enteringEditMode ? 1.0 : -1.0, 0.0),
                       end: Offset.zero,
                     ).animate(CurvedAnimation(
@@ -156,11 +181,10 @@ class ProfilePage extends HookConsumerWidget {
                       opacity: animation,
                       child: SlideTransition(
                         position: offsetAnimation,
-                        child: child, // The incoming widget
+                        child: child,
                       ),
                     );
                   },
-                  // The child depends on the isEditing state
                   child: isEditing.value
                       ? ProfileEditView(
                           key: const ValueKey('profile_edit_view'),
@@ -171,6 +195,8 @@ class ProfilePage extends HookConsumerWidget {
                           theme: theme,
                           userImageUrl: userImageUrl,
                           onPressed: handleSaveChanges,
+                          onImageSelected: handleImageSelection,
+                          selectedImageFile: selectedImage.value,
                         )
                       : ProfileView(
                           key: const ValueKey('profile_view'),

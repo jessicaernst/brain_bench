@@ -271,5 +271,17 @@
     "profileEditBtnLbl": "Save",
     "@profileEditBtnLbl": {
         "description": "Label for the save button"
+    },
+    "profilePickFromGallery": "Pick from Gallery",
+    "@profilePickFromGallery": {
+        "description": "Option in the bottom sheet to select an image from the device gallery."
+    },
+    "profilePickFromCamera": "Take a photo",
+    "@profilePickFromCamera": {
+        "description": "Option in the bottom sheet to take a new photo with the camera."
+    },
+    "profileImagePickerError": "Error selecting an image.",
+    "@profileImagePickerError": {
+        "description": "Error message shown on profile page if image selection fails"
     }
 }

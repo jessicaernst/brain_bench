@@ -502,6 +502,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get profileEditBtnLbl;
+
+  /// Option in the bottom sheet to select an image from the device gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick from Gallery'**
+  String get profilePickFromGallery;
+
+  /// Option in the bottom sheet to take a new photo with the camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo'**
+  String get profilePickFromCamera;
+
+  /// Error message shown on profile page if image selection fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error selecting an image.'**
+  String get profileImagePickerError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

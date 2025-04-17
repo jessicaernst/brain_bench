@@ -271,5 +271,17 @@
     "profileEditBtnLbl": "Speichern",
     "@profileEditBtnLbl": {
         "description": "Label für den Speichern-Button"
+    },
+    "profilePickFromGallery": "Aus Galerie wählen",
+    "@profilePickFromGallery": {
+        "description": "Option im Bottom Sheet, um ein Bild aus der Gerätegalerie auszuwählen."
+    },
+    "profilePickFromCamera": "Foto aufnehmen",
+    "@profilePickFromCamera": {
+        "description": "Option im Bottom Sheet, um ein neues Foto mit der Kamera aufzunehmen."
+    },
+    "profileImagePickerError": "Fehler bei der Bildauswahl.",
+    "@profileImagePickerError": {
+        "description": "Fehlermeldung, die angezeigt wird, wenn die Bildauswahl fehlschlägt."
     }
 }
