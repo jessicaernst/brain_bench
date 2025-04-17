@@ -72,7 +72,7 @@ class AuthViewModel extends _$AuthViewModel {
       final repo = ref.read(authRepositoryProvider);
       final appUser = await repo.signInWithApple();
       _logger.info('AuthViewModel received from repo after Apple Sign-In: '
-          'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
+          'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}, Email=${appUser.email}');
 
       await ensureUserExistsIfNeeded(ref, appUser);
     } catch (e, st) {
