@@ -2,9 +2,9 @@ import 'package:brain_bench/core/component_widgets/close_nav_app_bar.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
-import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:brain_bench/presentation/profile/widgets/profile_edit_view.dart';
-import 'package:brain_bench/presentation/profile/widgets/profile_view.dart'; // Import the new view
+import 'package:brain_bench/presentation/profile/widgets/profile_page_background.dart';
+import 'package:brain_bench/presentation/profile/widgets/profile_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -130,20 +130,7 @@ class ProfilePage extends HookConsumerWidget {
       ),
       body: Stack(
         children: [
-          Positioned.fill(
-            child: isDarkMode
-                ? Assets.backgrounds.bgLoginSignUpDarkmode.image()
-                : Assets.backgrounds.signUp.image(
-                    fit: BoxFit.cover,
-                  ),
-          ),
-          Positioned(
-            top: 30,
-            child: Assets.images.dashLogo.image(
-              width: 565,
-              height: 480,
-            ),
-          ),
+          const ProfilePageBackground(),
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(32, 48, 32, 0),
