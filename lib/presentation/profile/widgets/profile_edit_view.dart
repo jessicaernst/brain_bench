@@ -76,7 +76,10 @@ class ProfileEditView extends StatelessWidget {
                           ? BrainBenchColors.cloudCanvas
                           : BrainBenchColors.deepDive,
                     ),
-                    title: Text(localizations.profilePickFromCamera),
+                    title: Text(
+                      localizations.profilePickFromCamera,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
                     onTap: () =>
                         Navigator.of(sheetContext).pop(ImageSource.camera),
                   ),

@@ -2,7 +2,6 @@ import 'package:brain_bench/core/component_widgets/glass_card_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
