@@ -251,5 +251,25 @@
     "profileErrorLoading": "Fehler beim Laden der Profildaten.",
     "@profileErrorLoading": {
         "description": "Fehlermeldung, die angezeigt wird, wenn Benutzerdaten fehlschlagen"
+    },
+    "profileChangePictureTooltip": "Profilbild ändern",
+    "@profileChangePictureTooltip": {
+        "description": "Tooltip-Text für das Ändern des Profilbildes"
+    },
+    "profileDisplayNameLabel": "Benutzername",
+    "@profileDisplayNameLabel": {
+        "description": "Label für das Benutzername-Eingabefeld"
+    },
+    "profileEmailLabel": "E-Mail",
+    "@profileEmailLabel": {
+        "description": "Label für die E-Mail-Adresse-Eingabefeld"
+    },
+    "profileEditAppBarTitle": "Profil bearbeiten",
+    "@profileEditAppBarTitle": {
+        "description": "Titel der App-Bar für das Bearbeiten des Profils"
+    },
+    "profileEditBtnLbl": "Speichern",
+    "@profileEditBtnLbl": {
+        "description": "Label für den Speichern-Button"
     }
 }

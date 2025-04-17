@@ -53,9 +53,6 @@ class LoginContentView extends HookWidget {
             children: [
               TextField(
                 controller: emailController,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: BrainBenchColors.deepDive,
-                    ),
                 decoration: InputDecoration(
                   hintText: localizations.authEmail,
                   errorText: emailError.value,
@@ -71,9 +68,6 @@ class LoginContentView extends HookWidget {
                 obscureText: !showPassword.value,
                 enableSuggestions: false,
                 autocorrect: false,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: BrainBenchColors.deepDive,
-                    ),
                 decoration: InputDecoration(
                   hintText: localizations.authPassword,
                   errorText: passwordError.value,

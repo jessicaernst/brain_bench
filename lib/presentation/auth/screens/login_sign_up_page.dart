@@ -141,27 +141,29 @@ class LoginSignUpPage extends HookConsumerWidget {
       body: Stack(
         children: [
           const AuthBackground(),
-          AuthContent(
-            // Pass state and controllers
-            isLogin: isLogin.value,
-            isSwitchingToLogin: isSwitchingToLogin,
-            emailController: emailController,
-            passwordController: passwordController,
-            emailSignUpController: emailSignUpController,
-            passwordSignUpController: passwordSignUpController,
-            repeatPasswordSignUpController: repeatPasswordSignUpController,
-            isButtonEnabled: isButtonEnabled.value,
-            // Pass animations
-            slideAnimation: slideAnimation,
-            fadeAnimation: fadeAnimation,
-            // Pass callbacks
-            onLoginPressed: handleLogin,
-            onSignUpPressed: handleSignUp,
-            onSwitchToSignUpPressed: switchToSignUp,
-            onSwitchToLoginPressed: switchToLogin,
-            onResetPasswordPressed: handlePasswordReset,
-            onGoogleLoginPressed: handleGoogleLogin,
-            onAppleLoginPressed: handleAppleLogin,
+          SafeArea(
+            child: AuthContent(
+              // Pass state and controllers
+              isLogin: isLogin.value,
+              isSwitchingToLogin: isSwitchingToLogin,
+              emailController: emailController,
+              passwordController: passwordController,
+              emailSignUpController: emailSignUpController,
+              passwordSignUpController: passwordSignUpController,
+              repeatPasswordSignUpController: repeatPasswordSignUpController,
+              isButtonEnabled: isButtonEnabled.value,
+              // Pass animations
+              slideAnimation: slideAnimation,
+              fadeAnimation: fadeAnimation,
+              // Pass callbacks
+              onLoginPressed: handleLogin,
+              onSignUpPressed: handleSignUp,
+              onSwitchToSignUpPressed: switchToSignUp,
+              onSwitchToLoginPressed: switchToLogin,
+              onResetPasswordPressed: handlePasswordReset,
+              onGoogleLoginPressed: handleGoogleLogin,
+              onAppleLoginPressed: handleAppleLogin,
+            ),
           ),
         ],
       ),

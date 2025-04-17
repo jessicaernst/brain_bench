@@ -472,6 +472,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error loading profile data.'**
   String get profileErrorLoading;
+
+  /// Tooltip text for changing the profile picture
+  ///
+  /// In en, this message translates to:
+  /// **'Change profile picture'**
+  String get profileChangePictureTooltip;
+
+  /// Label for the display name input field
+  ///
+  /// In en, this message translates to:
+  /// **'Display name'**
+  String get profileDisplayNameLabel;
+
+  /// Label for the email input field
+  ///
+  /// In en, this message translates to:
+  /// **'E-Mail'**
+  String get profileEmailLabel;
+
+  /// Title of the app bar for editing the profile
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get profileEditAppBarTitle;
+
+  /// Label for the save button
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get profileEditBtnLbl;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

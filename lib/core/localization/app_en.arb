@@ -251,5 +251,25 @@
     "profileErrorLoading": "Error loading profile data.",
     "@profileErrorLoading": {
         "description": "Error message shown on profile page if user data fails to load"
+    },
+    "profileChangePictureTooltip": "Change profile picture",
+    "@profileChangePictureTooltip": {
+        "description": "Tooltip text for changing the profile picture"
+    },
+    "profileDisplayNameLabel": "Display name",
+    "@profileDisplayNameLabel": {
+        "description": "Label for the display name input field"
+    },
+    "profileEmailLabel": "E-Mail",
+    "@profileEmailLabel": {
+        "description": "Label for the email input field"
+    },
+    "profileEditAppBarTitle": "Edit Profile",
+    "@profileEditAppBarTitle": {
+        "description": "Title of the app bar for editing the profile"
+    },
+    "profileEditBtnLbl": "Save",
+    "@profileEditBtnLbl": {
+        "description": "Label for the save button"
     }
 }

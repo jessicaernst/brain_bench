@@ -98,6 +98,12 @@ class BrainBenchTheme {
             borderSide: BorderSide.none,
           ),
         ),
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: BrainBenchColors.blueprintBlue,
+          selectionColor:
+              BrainBenchColors.blueprintBlue.withAlpha((0.3 * 255).toInt()),
+          selectionHandleColor: BrainBenchColors.blueprintBlue,
+        ),
       );
 
   static ThemeData get darkTheme => ThemeData(
@@ -189,6 +195,12 @@ class BrainBenchTheme {
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
           ),
+        ),
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: BrainBenchColors.flutterSky,
+          selectionColor:
+              BrainBenchColors.flutterSky.withAlpha((0.3 * 255).toInt()),
+          selectionHandleColor: BrainBenchColors.flutterSky,
         ),
       );
 }

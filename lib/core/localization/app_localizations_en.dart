@@ -196,4 +196,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileErrorLoading => 'Error loading profile data.';
+
+  @override
+  String get profileChangePictureTooltip => 'Change profile picture';
+
+  @override
+  String get profileDisplayNameLabel => 'Display name';
+
+  @override
+  String get profileEmailLabel => 'E-Mail';
+
+  @override
+  String get profileEditAppBarTitle => 'Edit Profile';
+
+  @override
+  String get profileEditBtnLbl => 'Save';
 }
