@@ -55,7 +55,8 @@ Future<void> ensureUserExistsIfNeeded(Ref ref, model.AppUser? appUser) async {
 
       // Start with data from the authentication provider
       String? finalDisplayName = appUser.displayName;
-      String? finalPhotoUrl = appUser.photoUrl; // Keep original URL for now
+      final String? finalPhotoUrl =
+          appUser.photoUrl; // Keep original URL for now
 
       // --- TODO (Post-Firestore Migration & Security Setup) ---
       // Description: Upload the profile image from device contacts (iOS only)
@@ -69,7 +70,6 @@ Future<void> ensureUserExistsIfNeeded(Ref ref, model.AppUser? appUser) async {
       //    c. Assign the returned download URL to `finalPhotoUrl`.
       //    d. Handle potential errors during upload gracefully (e.g., log warning, proceed without image).
       // Requires: Firestore setup, Security Rules, App Check, StorageRepository implementation.
-      // --- End TODO ---
 
       // --- Use device contact name ONLY if auth provider didn't supply one ---
       if (Platform.isIOS && // Check platform again for safety
@@ -85,7 +85,7 @@ Future<void> ensureUserExistsIfNeeded(Ref ref, model.AppUser? appUser) async {
       final newUser = appUser.copyWith(
         displayName: finalDisplayName,
         photoUrl:
-            finalPhotoUrl, // Use original URL or potentially updated one from TODO above
+            finalPhotoUrl, // Use original URL or potentially updated one from todo above
         // Initialize other fields with defaults from the model or empty maps.
         categoryProgress: {},
         isTopicDone: {},
@@ -134,7 +134,6 @@ Future<void> ensureUserExistsIfNeeded(Ref ref, model.AppUser? appUser) async {
       //    c. If upload is successful, set `updates['photoUrl'] = newUrl` and `needsUpdate = true`.
       //    d. Handle potential errors during upload gracefully.
       // Requires: Firestore setup, Security Rules, App Check, StorageRepository implementation.
-      // --- End TODO ---
 
       // 3. Check displayName from Device Contact (iOS only):
       //    Use it ONLY if the current name (considering potential update from step 1) is still null or empty.
