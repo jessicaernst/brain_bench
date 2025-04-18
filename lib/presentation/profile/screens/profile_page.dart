@@ -5,7 +5,7 @@ import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/presentation/profile/widgets/profile_content_view.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:brain_bench/presentation/profile/widgets/profile_page_background.dart';
+import 'package:brain_bench/core/component_widgets/profile_settings_page_background.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -224,7 +224,7 @@ class ProfilePage extends HookConsumerWidget {
       ),
       body: Stack(
         children: [
-          const ProfilePageBackground(),
+          const ProfileSettingsPageBackground(),
           SafeArea(
             child: ProfileContentView(
               previousIsEditing: previousIsEditing,

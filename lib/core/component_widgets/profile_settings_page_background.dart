@@ -1,8 +1,8 @@
 import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
-class ProfilePageBackground extends StatelessWidget {
-  const ProfilePageBackground({super.key});
+class ProfileSettingsPageBackground extends StatelessWidget {
+  const ProfileSettingsPageBackground({super.key});
 
   @override
   Widget build(BuildContext context) {
