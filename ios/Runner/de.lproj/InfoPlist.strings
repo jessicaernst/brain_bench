@@ -1,1 +1,3 @@
 "NSContactsUsageDescription" = "Wir benötigen Zugriff auf deine Kontakte, um dein Profilbild automatisch anzeigen zu können.";
+"NSPhotoLibraryUsageDescription" = "Wir benötigen Zugriff auf Ihre Fotobibliothek, damit Sie ein neues Profilbild auswählen können.";
+"NSCameraUsageDescription" = "Wir benötigen Zugriff auf Ihre Kamera, damit Sie ein neues Profilbild aufnehmen können.";
