@@ -283,5 +283,25 @@
     "profileImagePickerError": "Error selecting an image.",
     "@profileImagePickerError": {
         "description": "Error message shown on profile page if image selection fails"
+    },
+    "profileUpdateError": "Error updating profile",
+    "@profileUpdateError": {
+        "description": "Error message shown when profile update fails"
+    },
+    "profileUpdateSuccess": "Profile updated successfully!",
+    "@profileUpdateSuccess": {
+        "description": "Success message shown when profile update succeeds"
+    },
+    "profileDisplayNameEmptyError": "Display name cannot be empty.",
+    "@profileDisplayNameEmptyError": {
+        "description": "Validation error message when the display name field is empty during profile save"
+    },
+    "profileSaveTooltip": "Save changes",
+    "@profileSaveTooltip": {
+        "description": "Tooltip for the save button on the profile page AppBar"
+    },
+    "profileEditTooltip": "Edit profile",
+    "@profileEditTooltip": {
+        "description": "Tooltip for the edit button on the profile page AppBar"
     }
 }

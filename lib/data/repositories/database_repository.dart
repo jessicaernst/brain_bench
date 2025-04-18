@@ -122,4 +122,24 @@ abstract class DatabaseRepository {
   /// Returns:
   ///   A [Future] that completes when the user has been saved.
   Future<void> saveUser(AppUser user);
+
+  /// Updates specific profile details for a user.
+  ///
+  /// Typically used for fields editable by the user on their profile screen.
+  /// Implementations should aim to update only the provided fields.
+  ///
+  /// Parameters:
+  ///   - [userId]: The ID of the user to update.
+  ///   - [displayName]: The new display name for the user.
+  ///   - [photoUrl]: The new photo URL for the user (optional).
+  ///                 Passing null might be ignored or might clear the field,
+  ///                 depending on the specific implementation.
+  ///
+  /// Returns:
+  ///   A [Future] that completes when the profile data has been updated.
+  Future<void> updateUserProfile({
+    required String userId,
+    required String displayName,
+    String? photoUrl, // Optional für später
+  });
 }

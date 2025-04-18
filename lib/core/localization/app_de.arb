@@ -283,5 +283,25 @@
     "profileImagePickerError": "Fehler bei der Bildauswahl.",
     "@profileImagePickerError": {
         "description": "Fehlermeldung, die angezeigt wird, wenn die Bildauswahl fehlschlägt."
+    },
+    "profileUpdateError": "Fehler beim Aktualisieren des Profils",
+    "@profileUpdateError": {
+        "description": "Error message shown when profile update fails"
+    },
+    "profileUpdateSuccess": "Profil erfolgreich aktualisiert!",
+    "@profileUpdateSuccess": {
+        "description": "Success message shown when profile update succeeds"
+    },
+    "profileDisplayNameEmptyError": "Der Benutzername darf nicht leer sein.",
+    "@profileDisplayNameEmptyError": {
+        "description": "Validierungsfehlermeldung, wenn das Benutzername-Feld leer ist während des Profilspeichers"
+    },
+    "profileSaveTooltip": "Änderungen speichern",
+    "@profileSaveTooltip": {
+        "description": "Tooltip for the save button on the profile page AppBar"
+    },
+    "profileEditTooltip": "Profil bearbeiten",
+    "@profileEditTooltip": {
+        "description": "Tooltip for the edit button on the profile page AppBar"
     }
 }

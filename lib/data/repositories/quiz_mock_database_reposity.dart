@@ -591,4 +591,77 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       _logger.severe('Fehler in saveUser: $e');
     }
   }
+
+  @override
+  Future<void> updateUserProfile(
+      {required String userId,
+      required String displayName,
+      String? photoUrl}) async {
+    try {
+      final file = File(userPath);
+      if (!await file.exists()) {
+        // Use await
+        _logger.warning('User file not found at $userPath for profile update.');
+        return;
+      }
+
+      final jsonString = await file.readAsString();
+      // Handle empty file content
+      if (jsonString.isEmpty) {
+        _logger.warning(
+            'User file is empty, cannot update profile for user $userId.');
+        return;
+      }
+      final jsonMap = json.decode(jsonString);
+      final List<dynamic> users =
+          jsonMap['users'] ?? []; // Ensure 'users' list exists
+
+      final index = users.indexWhere(
+          (e) => e is Map && e['uid'] == userId); // Ensure element is a Map
+
+      if (index == -1) {
+        _logger.warning('User $userId not found for profile update.');
+        return;
+      }
+
+      // Get the existing user data as a Map
+      final Map<String, dynamic> existingUserMap =
+          Map<String, dynamic>.from(users[index]);
+
+      // Create the updated user data
+      // Keep all old fields and only overwrite the new ones
+      final Map<String, dynamic> updatedUserMap = {
+        ...existingUserMap,
+        'displayName': displayName, // Overwrite the display name
+      };
+
+      // Update photoUrl only if a new value was provided (not null)
+      // If photoUrl is null, the old value is kept.
+      if (photoUrl != null) {
+        updatedUserMap['photoUrl'] = photoUrl;
+        _logger.fine('Updating photoUrl for user $userId.');
+      } else {
+        _logger.fine(
+            'No new photoUrl provided for user $userId, keeping existing one.');
+      }
+
+      // Replace the old entry in the list with the new one
+      users[index] = updatedUserMap;
+
+      // Write the entire updated structure back
+      jsonMap['users'] = users;
+      await file.writeAsString(jsonEncode(jsonMap), flush: true);
+      _logger
+          .info('✅ Profile updated for user $userId. New name: $displayName');
+    } on FileSystemException catch (e, stack) {
+      _logger.severe(
+          'FileSystemException in updateUserProfile for $userId: $e', e, stack);
+    } on FormatException catch (e, stack) {
+      _logger.severe(
+          'FormatException in updateUserProfile for $userId: $e', e, stack);
+    } catch (e, stack) {
+      _logger.severe(
+          'Unexpected error updating profile for $userId: $e', e, stack);
+    }
+  }
 }

@@ -520,6 +520,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error selecting an image.'**
   String get profileImagePickerError;
+
+  /// Error message shown when profile update fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error updating profile'**
+  String get profileUpdateError;
+
+  /// Success message shown when profile update succeeds
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated successfully!'**
+  String get profileUpdateSuccess;
+
+  /// Validation error message when the display name field is empty during profile save
+  ///
+  /// In en, this message translates to:
+  /// **'Display name cannot be empty.'**
+  String get profileDisplayNameEmptyError;
+
+  /// Tooltip for the save button on the profile page AppBar
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get profileSaveTooltip;
+
+  /// Tooltip for the edit button on the profile page AppBar
+  ///
+  /// In en, this message translates to:
+  /// **'Edit profile'**
+  String get profileEditTooltip;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

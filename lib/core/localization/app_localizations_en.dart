@@ -220,4 +220,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileImagePickerError => 'Error selecting an image.';
+
+  @override
+  String get profileUpdateError => 'Error updating profile';
+
+  @override
+  String get profileUpdateSuccess => 'Profile updated successfully!';
+
+  @override
+  String get profileDisplayNameEmptyError => 'Display name cannot be empty.';
+
+  @override
+  String get profileSaveTooltip => 'Save changes';
+
+  @override
+  String get profileEditTooltip => 'Edit profile';
 }

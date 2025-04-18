@@ -23,6 +23,7 @@ class ProfileEditView extends StatelessWidget {
     required this.theme,
     required this.userImageUrl,
     required this.onPressed,
+    required this.isActive,
     this.onImageSelected,
     this.selectedImageFile,
   });
@@ -36,6 +37,7 @@ class ProfileEditView extends StatelessWidget {
   final VoidCallback onPressed;
   final Function(XFile)? onImageSelected;
   final XFile? selectedImageFile;
+  final bool isActive;
 
   Future<void> _pickImage(BuildContext context) async {
     final ImagePicker picker = ImagePicker();
@@ -214,7 +216,7 @@ class ProfileEditView extends StatelessWidget {
           const SizedBox(height: 48),
           LightDarkSwitchBtn(
             title: localizations.profileEditBtnLbl,
-            isActive: true,
+            isActive: isActive,
             onPressed: onPressed,
           )
         ],
