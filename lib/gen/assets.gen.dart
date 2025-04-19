@@ -148,14 +148,8 @@ class $AssetsRiveGen {
   /// File path: assets/rive/hello_dash.riv
   String get helloDash => 'assets/rive/hello_dash.riv';
 
-  /// File path: assets/rive/mode_switch_clean.riv
-  String get modeSwitchClean => 'assets/rive/mode_switch_clean.riv';
-
-  /// File path: assets/rive/mode_switch_color.riv
-  String get modeSwitchColor => 'assets/rive/mode_switch_color.riv';
-
   /// List of all assets
-  List<String> get values => [helloDash, modeSwitchClean, modeSwitchColor];
+  List<String> get values => [helloDash];
 }
 
 class $AssetsSocialLoginsGen {

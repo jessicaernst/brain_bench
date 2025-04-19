@@ -15,7 +15,7 @@ import 'package:logging/logging.dart';
 final Logger _logger = Logger('TopicsPage');
 
 class TopicsPage extends ConsumerStatefulWidget {
-  const TopicsPage({
+  TopicsPage({
     super.key,
     required this.categoryId,
   });

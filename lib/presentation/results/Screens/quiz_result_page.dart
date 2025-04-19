@@ -16,7 +16,7 @@ import 'package:logging/logging.dart';
 final Logger _logger = Logger('QuizResultPage');
 
 class QuizResultPage extends ConsumerStatefulWidget {
-  const QuizResultPage({
+  QuizResultPage({
     super.key,
     required this.categoryId,
     required this.topicId,

@@ -14,7 +14,7 @@ import 'package:logging/logging.dart';
 Logger _logger = Logger('CategoriesPage');
 
 class CategoriesPage extends ConsumerWidget {
-  const CategoriesPage({super.key});
+  CategoriesPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

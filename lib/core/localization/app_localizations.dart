@@ -562,6 +562,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Language'**
   String get settingsLanguageLabel;
+
+  /// The name of the English language
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageNameEnglish;
+
+  /// The name of the German language
+  ///
+  /// In en, this message translates to:
+  /// **'German'**
+  String get languageNameGerman;
+
+  /// Label for the 'Done' button in pickers
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get pickerDoneButton;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

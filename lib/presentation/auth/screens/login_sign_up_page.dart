@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 // Main Widget: LoginSignUpPage
 class LoginSignUpPage extends HookConsumerWidget {
-  const LoginSignUpPage({super.key});
+  LoginSignUpPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

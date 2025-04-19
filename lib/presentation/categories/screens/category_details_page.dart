@@ -13,7 +13,7 @@ import 'package:logging/logging.dart';
 Logger logger = Logger('CategoryDetailsPage');
 
 class CategoryDetailsPage extends ConsumerWidget {
-  const CategoryDetailsPage({
+  CategoryDetailsPage({
     super.key,
     required this.category,
   });

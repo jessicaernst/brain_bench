@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:brain_bench/business_logic/locale/locale_provider.dart';
 import 'package:brain_bench/business_logic/theme/theme_provider.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/theme_data.dart';
@@ -7,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
+
+final Logger _logger = Logger('BrainBenchApp');
 
 class BrainBenchApp extends ConsumerWidget {
   const BrainBenchApp({super.key});
@@ -40,6 +44,9 @@ class BrainBenchApp extends ConsumerWidget {
       );
     }
 
+    final currentLocale = ref.watch(localeNotifierProvider);
+    _logger.info('BrainBenchApp build: Watched locale is $currentLocale');
+
     return MaterialApp.router(
       title: 'Brain Bench',
       localizationsDelegates: const [
@@ -48,10 +55,8 @@ class BrainBenchApp extends ConsumerWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('en'),
-        Locale('de'),
-      ],
+      supportedLocales: supportedLanguages.keys.toList(),
+      locale: currentLocale,
       theme: BrainBenchTheme.lightTheme,
       darkTheme: BrainBenchTheme.darkTheme,
       themeMode: currentThemeMode,

@@ -27,7 +27,7 @@ class QuizPage extends ConsumerStatefulWidget {
   ///
   /// The [topicId] and [categoryId] parameters are required and represent the
   /// ID of the topic and category for which the quiz is being taken.
-  const QuizPage({
+  QuizPage({
     super.key,
     required this.topicId,
     required this.categoryId,

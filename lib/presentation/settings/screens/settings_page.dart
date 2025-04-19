@@ -4,6 +4,7 @@ import 'package:brain_bench/core/component_widgets/glass_card_view.dart';
 import 'package:brain_bench/core/component_widgets/profile_settings_page_background.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
+import 'package:brain_bench/presentation/settings/widgets/language_selection_view.dart';
 import 'package:brain_bench/presentation/settings/widgets/light_dark_mode_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +14,7 @@ import 'package:logging/logging.dart';
 final Logger _logger = Logger('SettingsPage');
 
 class SettingsPage extends ConsumerWidget {
-  const SettingsPage({super.key});
+  SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -93,7 +94,8 @@ class SettingsPage extends ConsumerWidget {
                             localizations.settingsLanguageLabel,
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
-                          // TODO: Implement Language Selection UI
+                          const Spacer(),
+                          const LanguageSelectionView(),
                         ],
                       ),
                       const SizedBox(height: 24),

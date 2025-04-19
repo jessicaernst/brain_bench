@@ -241,4 +241,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsLanguageLabel => 'Language';
+
+  @override
+  String get languageNameEnglish => 'English';
+
+  @override
+  String get languageNameGerman => 'German';
+
+  @override
+  String get pickerDoneButton => 'Done';
 }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ResultPage extends ConsumerWidget {
-  const ResultPage({super.key});
+  ResultPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

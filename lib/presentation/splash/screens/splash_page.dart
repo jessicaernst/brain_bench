@@ -19,7 +19,7 @@ final _logger = Logger('SplashPage');
 /// It uses `flutter_hooks` for managing local state and side effects.
 class SplashPage extends HookConsumerWidget {
   /// Creates a SplashPage widget.
-  const SplashPage({super.key});
+  SplashPage({super.key});
 
   /// Defines the minimum duration the splash screen should be visible.
   /// This prevents the splash screen from disappearing too quickly on fast devices

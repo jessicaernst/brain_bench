@@ -17,7 +17,7 @@ import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 final Logger _logger = Logger('ProfilePage');
 
 class ProfilePage extends HookConsumerWidget {
-  const ProfilePage({super.key});
+  ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

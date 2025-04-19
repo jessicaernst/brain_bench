@@ -99,7 +99,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/splash',
         // Use simple builder, no transition needed for the initial screen
-        builder: (context, state) => const SplashPage(),
+        builder: (context, state) => SplashPage(),
       ),
 
       // Login Page Route (Cupertino Slide)
@@ -107,7 +107,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/login',
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
-          child: const LoginSignUpPage(),
+          child: LoginSignUpPage(),
           transitionsBuilder: buildCupertinoSlideTransition,
           transitionDuration: transitionDuration,
           reverseTransitionDuration: reverseTransitionDuration,
@@ -119,7 +119,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/profile',
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
-          child: const ProfilePage(),
+          child: ProfilePage(),
           transitionsBuilder: buildSlideUpTransition,
           transitionDuration: transitionDuration,
           reverseTransitionDuration: reverseTransitionDuration,
@@ -131,7 +131,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/settings',
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
-          child: const SettingsPage(),
+          child: SettingsPage(),
           transitionsBuilder: buildSlideUpTransition,
           transitionDuration: transitionDuration,
           reverseTransitionDuration: reverseTransitionDuration,
@@ -152,7 +152,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 path: '/home',
                 pageBuilder: (context, state) => CustomTransitionPage(
                   key: state.pageKey,
-                  child: const HomePage(),
+                  child: HomePage(),
                   transitionsBuilder: buildCupertinoSlideTransition,
                   transitionDuration: transitionDuration,
                   reverseTransitionDuration: reverseTransitionDuration,
@@ -167,7 +167,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 path: '/categories',
                 pageBuilder: (context, state) => CustomTransitionPage(
                   key: state.pageKey,
-                  child: const CategoriesPage(),
+                  child: CategoriesPage(),
                   transitionsBuilder: buildCupertinoSlideTransition,
                   transitionDuration: transitionDuration,
                   reverseTransitionDuration: reverseTransitionDuration,
@@ -218,7 +218,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 path: '/results',
                 pageBuilder: (context, state) => CustomTransitionPage(
                   key: state.pageKey,
-                  child: const ResultPage(),
+                  child: ResultPage(),
                   transitionsBuilder: buildCupertinoSlideTransition,
                   transitionDuration: transitionDuration,
                   reverseTransitionDuration: reverseTransitionDuration,

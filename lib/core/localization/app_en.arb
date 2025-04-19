@@ -311,5 +311,17 @@
     "settingsLanguageLabel": "Language",
     "@settingsLanguageLabel": {
         "description": "Label for the language selection setting"
+    },
+    "languageNameEnglish": "English",
+    "@languageNameEnglish": {
+        "description": "The name of the English language"
+    },
+    "languageNameGerman": "German",
+    "@languageNameGerman": {
+        "description": "The name of the German language"
+    },
+    "pickerDoneButton": "Done",
+    "@pickerDoneButton": {
+        "description": "Label for the 'Done' button in pickers"
     }
 }
