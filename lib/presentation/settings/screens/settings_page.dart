@@ -23,7 +23,7 @@ class SettingsPage extends ConsumerWidget {
 
     final bool isDarkMode = theme.brightness == Brightness.dark;
     final Color iconColor = isDarkMode
-        ? BrainBenchColors.flutterSky
+        ? BrainBenchColors.flutterSky.withAlpha((0.8 * 255).toInt())
         : BrainBenchColors.deepDive.withAlpha((0.6 * 255).toInt());
     final Color dividerColor = isDarkMode
         ? BrainBenchColors.cloudCanvas.withAlpha((0.5 * 255).toInt())
