@@ -29,46 +29,33 @@ class SettingsPage extends ConsumerWidget {
         ? BrainBenchColors.cloudCanvas.withAlpha((0.5 * 255).toInt())
         : BrainBenchColors.deepDive.withAlpha((0.5 * 255).toInt());
 
-    // --- Handle Async ThemeMode for the Switch ---
     final themeModeAsyncValue = ref.watch(themeModeNotifierProvider);
 
-    // Determine the switch state, providing a fallback during loading/error
-    // Use maybeWhen for a simpler fallback, or .when for explicit handling
     final bool isSwitchOn = themeModeAsyncValue.maybeWhen(
       data: (currentThemeMode) {
-        // Calculate based on loaded data
         switch (currentThemeMode) {
           case ThemeMode.dark:
             return true;
           case ThemeMode.light:
             return false;
           case ThemeMode.system:
-            // Use the current theme's brightness if system is selected
             return isDarkMode;
         }
       },
-      // Fallback: Use current theme's brightness if loading or error
       orElse: () => isDarkMode,
     );
 
-    // Check if the theme provider is currently loading/saving
-    // Note: This checks the provider's overall state, not just saving state
     final bool isThemeBusy = themeModeAsyncValue.isLoading ||
         themeModeAsyncValue.isRefreshing ||
         themeModeAsyncValue.isReloading;
 
-    // Make the handler async because setThemeMode is async
     void handleThemeChange(bool newValue) async {
-      // Prevent changing while busy (optional but good practice)
       if (isThemeBusy) return;
-
       _logger.info('Theme mode toggled via Switch: $newValue');
-      // Use await when calling the async method
       await ref.read(themeModeNotifierProvider.notifier).setThemeMode(
             newValue ? ThemeMode.dark : ThemeMode.light,
           );
     }
-    // --- End Theme Handling ---
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -90,7 +77,6 @@ class SettingsPage extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const SizedBox(height: 24),
-                      // --- Theme Row ---
                       Row(
                         children: [
                           Text(
@@ -98,31 +84,26 @@ class SettingsPage extends ConsumerWidget {
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const Spacer(),
-                          // Optionally show indicator or disable switch when busy
                           if (isThemeBusy)
                             const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child:
-                                    CircularProgressIndicator(strokeWidth: 2))
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
                           else
                             LightDarkModeSwitch(
                               value: isSwitchOn,
-                              // Pass null to onChanged to disable the switch when busy
                               onChanged: isThemeBusy
                                   ? null
-                                  : (value) =>
-                                      handleThemeChange(value), // Changed here
+                                  : (value) => handleThemeChange(value),
                               iconColor: iconColor,
                             ),
                         ],
                       ),
-                      // --- End Theme Row ---
                       Divider(
                         height: 0.7,
                         color: dividerColor,
                       ),
-                      // --- Language Row ---
                       Row(
                         children: [
                           Text(
@@ -130,11 +111,9 @@ class SettingsPage extends ConsumerWidget {
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const Spacer(),
-                          // LanguageSelectionView handles its own AsyncValue internally
                           LanguageSelectionView(),
                         ],
                       ),
-                      // --- End Language Row ---
                       const SizedBox(height: 24),
                     ],
                   ),
