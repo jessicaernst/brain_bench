@@ -129,6 +129,10 @@ class BrainBenchTheme {
                     .labelLarge,
           ),
         ),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: BrainBenchColors.flutterSky,
+          circularTrackColor: BrainBenchColors.deepDive,
+        ),
         colorScheme: const ColorScheme.dark(
           surface: BrainBenchColors.deepDive,
           secondary: BrainBenchColors.flutterSky,
