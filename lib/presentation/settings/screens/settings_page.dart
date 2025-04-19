@@ -26,8 +26,8 @@ class SettingsPage extends ConsumerWidget {
         ? BrainBenchColors.flutterSky.withAlpha((0.8 * 255).toInt())
         : BrainBenchColors.deepDive.withAlpha((0.6 * 255).toInt());
     final Color dividerColor = isDarkMode
-        ? BrainBenchColors.cloudCanvas.withAlpha((0.5 * 255).toInt())
-        : BrainBenchColors.deepDive.withAlpha((0.5 * 255).toInt());
+        ? BrainBenchColors.cloudCanvas.withAlpha((0.3 * 255).toInt())
+        : BrainBenchColors.deepDive.withAlpha((0.3 * 255).toInt());
 
     final themeModeAsyncValue = ref.watch(themeModeNotifierProvider);
 
