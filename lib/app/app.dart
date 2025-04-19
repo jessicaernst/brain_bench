@@ -19,20 +19,24 @@ class BrainBenchApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(goRouterProvider);
 
-    final currentThemeMode = ref.watch(themeModeNotifierProvider);
+    final currentThemeModeAsync = ref.watch(themeModeNotifierProvider);
 
-    Brightness effectiveBrightness;
-    switch (currentThemeMode) {
-      case ThemeMode.light:
-        effectiveBrightness = Brightness.light;
-        break;
-      case ThemeMode.dark:
-        effectiveBrightness = Brightness.dark;
-        break;
-      case ThemeMode.system:
-        effectiveBrightness = MediaQuery.platformBrightnessOf(context);
-    }
-    final bool isAppEffectivelyDark = effectiveBrightness == Brightness.dark;
+    final currentThemeMode =
+        currentThemeModeAsync.valueOrNull ?? ThemeMode.system;
+
+    final Brightness effectiveBrightness = currentThemeModeAsync.when(
+      data: (themeMode) {
+        return switch (themeMode) {
+          ThemeMode.light => Brightness.light,
+          ThemeMode.dark => Brightness.dark,
+          ThemeMode.system => MediaQuery.platformBrightnessOf(context),
+        };
+      },
+      loading: () => MediaQuery.platformBrightnessOf(context),
+      error: (_, __) => MediaQuery.platformBrightnessOf(context),
+    );
+
+    final isAppEffectivelyDark = effectiveBrightness == Brightness.dark;
 
     if (Platform.isAndroid) {
       SystemChrome.setSystemUIOverlayStyle(
@@ -44,23 +48,36 @@ class BrainBenchApp extends ConsumerWidget {
       );
     }
 
-    final currentLocale = ref.watch(localeNotifierProvider);
-    _logger.info('BrainBenchApp build: Watched locale is $currentLocale');
+    final currentLocaleAsync = ref.watch(localeNotifierProvider);
+    _logger.info('BrainBenchApp build: Watched locale is $currentLocaleAsync');
 
-    return MaterialApp.router(
-      title: 'Brain Bench',
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: supportedLanguages.keys.toList(),
-      locale: currentLocale,
-      theme: BrainBenchTheme.lightTheme,
-      darkTheme: BrainBenchTheme.darkTheme,
-      themeMode: currentThemeMode,
-      routerConfig: router,
+    return currentLocaleAsync.when(
+      data: (currentLocale) {
+        return MaterialApp.router(
+          title: 'Brain Bench',
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: supportedLanguages.keys.toList(),
+          locale: currentLocale,
+          theme: BrainBenchTheme.lightTheme,
+          darkTheme: BrainBenchTheme.darkTheme,
+          themeMode: currentThemeMode,
+          routerConfig: router,
+        );
+      },
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      error: (error, stackTrace) {
+        _logger.severe('Error loading locale for app', error, stackTrace);
+        return const Center(
+          child: Icon(Icons.error_outline),
+        );
+      },
     );
   }
 }

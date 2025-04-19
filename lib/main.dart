@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:brain_bench/app/app.dart';
 import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
-import 'package:brain_bench/data/repositories/firebase_auth_repository.dart';
+import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
+import 'package:brain_bench/data/repositories/firebase_auth_repository_impl.dart';
 import 'package:brain_bench/services/logging_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'package:brain_bench/services/firebase_options_dev.dart' as dev;
 import 'package:brain_bench/services/firebase_options_test.dart' as test;
 import 'package:brain_bench/services/firebase_options_prod.dart' as prod;
 import 'package:rive/rive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Define the available Firebase environments
 enum FirebaseEnvironment { dev, test, prod }
@@ -61,6 +63,11 @@ Future<void> main() async {
     FirebaseEnvironment.dev => dev.DefaultFirebaseOptions.currentPlatform,
   };
 
+  // Initialize Shared Prefs
+  _log.info('Initializing SharedPreferences...');
+  final prefs = await SharedPreferences.getInstance();
+  _log.info('SharedPreferences initialized.');
+
   // Initialize Firebase safely (prevent duplicate-app error on hot restart)
   try {
     await Firebase.initializeApp(options: firebaseOptions);
@@ -68,6 +75,7 @@ Future<void> main() async {
     if (e.code != 'duplicate-app') rethrow;
   }
 
+  // Initialize Rive
   try {
     _log.info('Initializing Rive runtime...');
     await RiveFile.initialize();
@@ -77,11 +85,10 @@ Future<void> main() async {
     rethrow;
   }
 
-  // ✅ Initialize Crashlytics
+  // Initialize Crashlytics
   FlutterError.onError = (errorDetails) {
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
   };
-  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
@@ -99,6 +106,9 @@ Future<void> main() async {
   runApp(
     ProviderScope(
       overrides: [
+        // ---> 2. Override the imported provider <---
+        sharedPreferencesProvider
+            .overrideWithValue(prefs), // Correctly overridden
         firebaseEnvProvider.overrideWithValue(firebaseEnv),
         // for using Mockrepository
         authRepositoryProvider.overrideWithValue(FirebaseAuthRepository()),

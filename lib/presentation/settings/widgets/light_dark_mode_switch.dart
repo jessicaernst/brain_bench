@@ -11,7 +11,7 @@ class LightDarkModeSwitch extends StatelessWidget {
   });
 
   final bool value;
-  final ValueChanged<bool> onChanged;
+  final ValueChanged<bool>? onChanged;
   final Color iconColor;
 
   @override

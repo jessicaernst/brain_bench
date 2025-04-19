@@ -1,52 +1,55 @@
+import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
+import 'package:brain_bench/data/repositories/settings_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-// Optional für Persistenz: import 'package:shared_preferences/shared_preferences.dart';
-// Optional für Persistenz: import 'package:brain_bench/data/infrastructure/shared_prefs/shared_prefs_provider.dart'; // Beispielpfad
 
-// Generiert die Provider-Definitionen automatisch
-part 'theme_provider.g.dart'; // Name der generierten Datei
+part 'theme_provider.g.dart';
 
-// Definiert den StateNotifier mit der @riverpod Annotation
+final _logger = Logger('ThemeModeNotifier');
+
 @riverpod
 class ThemeModeNotifier extends _$ThemeModeNotifier {
-  // Beachte _$
-  // Optional: SharedPreferences für Persistenz
-  // late final SharedPreferences _prefs;
+  late final SettingsRepository _repository;
 
-  // build() wird zur Initialisierung verwendet
   @override
-  ThemeMode build() {
-    // Optional: SharedPreferences hier initialisieren (wenn benötigt)
-    // _prefs = ref.watch(sharedPreferencesProvider); // Annahme: Es gibt einen sharedPrefs Provider
-
-    // Lade den initialen Wert (hier: System)
-    return _loadInitialThemeMode();
+  Future<ThemeMode> build() async {
+    _repository = ref.watch(settingsRepositoryProvider);
+    _logger.info('Loading initial ThemeMode from repository...');
+    final initialMode = await _repository.loadThemeMode();
+    _logger.info('Initial ThemeMode loaded: $initialMode');
+    return initialMode;
   }
 
-  // Lädt den initialen Wert
-  ThemeMode _loadInitialThemeMode() {
-    // Hier könntest du aus _prefs laden:
-    // final savedTheme = _prefs.getString('themeMode');
-    // if (savedTheme == 'dark') return ThemeMode.dark;
-    // if (savedTheme == 'light') return ThemeMode.light;
-    return ThemeMode.system; // Standard
-  }
-
-  // Methode zum Setzen des ThemeMode
-  void setThemeMode(ThemeMode mode) {
-    if (state != mode) {
-      state = mode;
-      // Optional: Speichern
-      // _prefs.setString('themeMode', mode.name); // mode.name gibt 'light', 'dark', 'system'
+  Future<void> setThemeMode(ThemeMode mode) async {
+    if (state.hasValue && state.value != mode) {
+      _logger.info('Setting ThemeMode from ${state.value} to $mode');
+      state = AsyncData(mode);
+      try {
+        await _repository.saveThemeMode(mode);
+        _logger.info('ThemeMode $mode saved successfully.');
+      } catch (e, stackTrace) {
+        _logger.severe('Failed to save ThemeMode', e, stackTrace);
+        state = AsyncError(e, stackTrace).copyWithPrevious(state)
+            as AsyncValue<ThemeMode>;
+      }
+    } else if (!state.hasValue) {
+      _logger.warning(
+          'Cannot set ThemeMode while initial state is loading/error.');
+    } else {
+      _logger.fine('Attempted to set the same theme mode again: $mode');
     }
   }
 
-  // Methode zum Umschalten (vereinfacht für den Switch)
-  void toggleTheme() {
-    // Beachte: Wenn ThemeMode.system aktiv ist, entscheidet diese Logik
-    // willkürlich (hier: zu light). Du könntest das anpassen.
-    final newMode =
-        (state == ThemeMode.dark) ? ThemeMode.light : ThemeMode.dark;
-    setThemeMode(newMode);
+  Future<void> toggleTheme() async {
+    if (state.hasValue) {
+      final currentMode = state.value!;
+      final newMode =
+          (currentMode == ThemeMode.dark) ? ThemeMode.light : ThemeMode.dark;
+      await setThemeMode(newMode);
+    } else {
+      _logger
+          .warning('Cannot toggle theme while initial state is loading/error.');
+    }
   }
 }

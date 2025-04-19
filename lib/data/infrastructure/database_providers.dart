@@ -1,4 +1,4 @@
-import 'package:brain_bench/data/repositories/quiz_mock_database_reposity.dart';
+import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:path_provider/path_provider.dart';
