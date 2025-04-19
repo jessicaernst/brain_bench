@@ -18,7 +18,8 @@ final class ProfileButtonView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final bool isDarkMode = theme.brightness == Brightness.dark;
     final AppLocalizations localizations = AppLocalizations.of(context)!;
 
     final userAsyncValue = ref.watch(currentUserModelProvider);

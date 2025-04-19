@@ -235,4 +235,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get profileEditTooltip => 'Profil bearbeiten';
+
+  @override
+  String get settingsThemeToggleLabel => 'Theme';
+
+  @override
+  String get settingsLanguageLabel => 'Sprache';
 }

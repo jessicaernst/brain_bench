@@ -303,5 +303,13 @@
     "profileEditTooltip": "Edit profile",
     "@profileEditTooltip": {
         "description": "Tooltip for the edit button on the profile page AppBar"
+    },
+    "settingsThemeToggleLabel": "Theme",
+    "@settingsThemeToggleLabel": {
+        "description": "Label for the theme (dark/light mode) toggle switch"
+    },
+    "settingsLanguageLabel": "Language",
+    "@settingsLanguageLabel": {
+        "description": "Label for the language selection setting"
     }
 }

@@ -21,7 +21,9 @@ class ToggleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final bool isDarkMode = theme.brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: isActive ? onTap : null,
       child: AnimatedContainer(
@@ -36,7 +38,7 @@ class ToggleButton extends StatelessWidget {
               : null,
           color: isActive
               ? null
-              : isDark
+              : isDarkMode
                   ? BrainBenchColors.inactiveGrayLight10
                   : BrainBenchColors.inactiveGray20,
           borderRadius: BorderRadius.circular(20),

@@ -18,7 +18,8 @@ class LightDarkSwitchBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final bool isDarkMode = theme.brightness == Brightness.dark;
 
     return isDarkMode
         ? DarkmodeBtn(

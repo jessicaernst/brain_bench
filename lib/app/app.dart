@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:brain_bench/business_logic/theme/theme_provider.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/theme_data.dart';
 import 'package:brain_bench/navigation/routes/app_routes.dart';
@@ -14,15 +14,28 @@ class BrainBenchApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(goRouterProvider);
-    final brightness = MediaQuery.platformBrightnessOf(context);
-    final isDarkMode = brightness == Brightness.dark;
+
+    final currentThemeMode = ref.watch(themeModeNotifierProvider);
+
+    Brightness effectiveBrightness;
+    switch (currentThemeMode) {
+      case ThemeMode.light:
+        effectiveBrightness = Brightness.light;
+        break;
+      case ThemeMode.dark:
+        effectiveBrightness = Brightness.dark;
+        break;
+      case ThemeMode.system:
+        effectiveBrightness = MediaQuery.platformBrightnessOf(context);
+    }
+    final bool isAppEffectivelyDark = effectiveBrightness == Brightness.dark;
 
     if (Platform.isAndroid) {
       SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
           statusBarIconBrightness:
-              isDarkMode ? Brightness.light : Brightness.dark,
+              isAppEffectivelyDark ? Brightness.light : Brightness.dark,
         ),
       );
     }
@@ -39,11 +52,9 @@ class BrainBenchApp extends ConsumerWidget {
         Locale('en'),
         Locale('de'),
       ],
-      onGenerateTitle: (BuildContext context) =>
-          AppLocalizations.of(context)!.appTitle,
       theme: BrainBenchTheme.lightTheme,
       darkTheme: BrainBenchTheme.darkTheme,
-      themeMode: ThemeMode.system,
+      themeMode: currentThemeMode,
       routerConfig: router,
     );
   }

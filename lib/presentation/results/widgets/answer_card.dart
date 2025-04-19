@@ -56,7 +56,8 @@ class _AnswerCardState extends ConsumerState<AnswerCard>
         quizResultState.expandedAnswers.contains(widget.answer.questionId);
 
     // Check if the app is in dark mode.
-    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final bool isDarkMode = theme.brightness == Brightness.dark;
 
     // ✅ Use the key in the Column - Assign the GlobalKey to the main widget to identify it.
     return Column(

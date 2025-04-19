@@ -32,8 +32,7 @@ class ProfilePage extends HookConsumerWidget {
     final userAsyncValue = ref.watch(currentUserModelProvider);
     final displayNameController = useTextEditingController();
     final emailController = useTextEditingController();
-    final bool isDarkMode =
-        MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final bool isDarkMode = theme.brightness == Brightness.dark;
     final Color iconColor = isDarkMode
         ? BrainBenchColors.flutterSky
         : BrainBenchColors.deepDive.withAlpha((0.6 * 255).toInt());

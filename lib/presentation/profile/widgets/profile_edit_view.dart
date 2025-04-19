@@ -41,8 +41,8 @@ class ProfileEditView extends StatelessWidget {
 
   Future<void> _pickImage(BuildContext context) async {
     final ImagePicker picker = ImagePicker();
-    final bool isDarkMode =
-        MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final bool isDarkMode = theme.brightness == Brightness.dark;
 
     try {
       final source = await showModalBottomSheet<ImageSource>(

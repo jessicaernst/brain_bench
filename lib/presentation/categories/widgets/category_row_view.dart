@@ -24,7 +24,8 @@ class CategoryRowView extends HookConsumerWidget {
     final isSelected =
         ref.watch(selectedCategoryNotifierProvider) == categoryId;
 
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final bool isDarkMode = theme.brightness == Brightness.dark;
     final Color selectedColor = isDarkMode
         ? BrainBenchColors.flutterSky
         : BrainBenchColors.blueprintBlue;

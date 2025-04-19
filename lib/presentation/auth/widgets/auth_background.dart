@@ -6,8 +6,9 @@ class AuthBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDarkMode =
-        MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final bool isDarkMode = theme.brightness == Brightness.dark;
+
     return Stack(
       children: [
         // Background image filling the screen

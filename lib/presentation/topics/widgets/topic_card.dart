@@ -58,7 +58,8 @@ class _TopicCardState extends State<TopicCard> with EnsureVisibleMixin {
   Widget build(BuildContext context) {
     final String languageCode = Localizations.localeOf(context).languageCode;
     // Check if the app is in dark mode to style the card accordingly.
-    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final bool isDarkMode = theme.brightness == Brightness.dark;
     logger.fine('build called for topic: ${widget.topic.nameEn}');
     return Column(
       key: cardKey,

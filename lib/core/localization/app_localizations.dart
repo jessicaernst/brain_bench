@@ -550,6 +550,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit profile'**
   String get profileEditTooltip;
+
+  /// Label for the theme (dark/light mode) toggle switch
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsThemeToggleLabel;
+
+  /// Label for the language selection setting
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguageLabel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
