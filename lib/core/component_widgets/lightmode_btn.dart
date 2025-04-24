@@ -1,6 +1,6 @@
 import 'package:brain_bench/core/styles/gradient_colors.dart';
-import 'package:brain_bench/core/component_widgets/gradient_design_btn.dart';
 import 'package:flutter/material.dart';
+import 'package:gradient_design_btn/gradient_design_btn.dart';
 
 class LightmodeBtn extends StatelessWidget {
   const LightmodeBtn({

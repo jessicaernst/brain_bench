@@ -658,6 +658,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.12.4+4"
+  gradient_design_btn:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "3700c3faf999fe3ade9c3f39f9085ca093723214"
+      url: "git@github.com:jessicaernst/gradient_design_btn.git"
+    source: git
+    version: "0.0.1"
   graphs:
     dependency: transitive
     description:
@@ -1440,5 +1449,5 @@ packages:
     source: hosted
     version: "3.1.3"
 sdks:
-  dart: ">=3.7.0-0 <4.0.0"
+  dart: ">=3.7.2 <4.0.0"
   flutter: ">=3.27.0"

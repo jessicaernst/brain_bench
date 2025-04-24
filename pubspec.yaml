@@ -63,6 +63,10 @@ dependencies:
   rive: ^0.13.20
   image_picker: ^1.1.2
   shared_preferences: ^2.5.3
+  gradient_design_btn:
+    git:
+      url: git@github.com:jessicaernst/gradient_design_btn.git
+      ref: main
 
 
 dev_dependencies:
