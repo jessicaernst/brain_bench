@@ -16,6 +16,26 @@ final Logger _logger = Logger('SettingsPage');
 class SettingsPage extends ConsumerWidget {
   SettingsPage({super.key});
 
+  // Helper function to determine the switch state based on theme mode and current brightness
+  bool _calculateIsSwitchOn(
+      AsyncValue<ThemeMode> themeModeAsyncValue, bool isDarkMode) {
+    return themeModeAsyncValue.maybeWhen(
+      data: (currentThemeMode) {
+        switch (currentThemeMode) {
+          case ThemeMode.dark:
+            return true;
+          case ThemeMode.light:
+            return false;
+          case ThemeMode.system:
+            // If system is selected, the switch reflects the actual current mode
+            return isDarkMode;
+        }
+      },
+      // Default to reflecting the current mode if data isn't available yet
+      orElse: () => isDarkMode,
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
@@ -31,19 +51,8 @@ class SettingsPage extends ConsumerWidget {
 
     final themeModeAsyncValue = ref.watch(themeModeNotifierProvider);
 
-    final bool isSwitchOn = themeModeAsyncValue.maybeWhen(
-      data: (currentThemeMode) {
-        switch (currentThemeMode) {
-          case ThemeMode.dark:
-            return true;
-          case ThemeMode.light:
-            return false;
-          case ThemeMode.system:
-            return isDarkMode;
-        }
-      },
-      orElse: () => isDarkMode,
-    );
+    final bool isSwitchOn =
+        _calculateIsSwitchOn(themeModeAsyncValue, isDarkMode);
 
     final bool isThemeBusy = themeModeAsyncValue.isLoading ||
         themeModeAsyncValue.isRefreshing ||
@@ -52,9 +61,13 @@ class SettingsPage extends ConsumerWidget {
     void handleThemeChange(bool newValue) async {
       if (isThemeBusy) return;
       _logger.info('Theme mode toggled via Switch: $newValue');
-      await ref.read(themeModeNotifierProvider.notifier).setThemeMode(
-            newValue ? ThemeMode.dark : ThemeMode.light,
-          );
+      try {
+        await ref.read(themeModeNotifierProvider.notifier).setThemeMode(
+              newValue ? ThemeMode.dark : ThemeMode.light,
+            );
+      } catch (e, stack) {
+        _logger.severe('Error updating theme mode: $e', e, stack);
+      }
     }
 
     return Scaffold(
