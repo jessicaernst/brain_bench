@@ -66,7 +66,7 @@ dependencies:
   gradient_design_btn:
     git:
       url: git@github.com:jessicaernst/gradient_design_btn.git
-      ref: main
+      ref: v1.0.0
 
 
 dev_dependencies:

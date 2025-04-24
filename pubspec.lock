@@ -662,7 +662,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: main
+      ref: "v1.0.0"
       resolved-ref: "3700c3faf999fe3ade9c3f39f9085ca093723214"
       url: "git@github.com:jessicaernst/gradient_design_btn.git"
     source: git
