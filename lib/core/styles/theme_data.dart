@@ -34,6 +34,7 @@ class BrainBenchTheme {
         colorScheme: const ColorScheme.light(
           surface: BrainBenchColors.cloudCanvas,
           secondary: BrainBenchColors.blueprintBlue,
+          error: BrainBenchColors.falseQuestionGlass,
         ).copyWith(surface: BrainBenchColors.cloudCanvas),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: BrainBenchColors.cloudCanvas,
@@ -136,6 +137,7 @@ class BrainBenchTheme {
         colorScheme: const ColorScheme.dark(
           surface: BrainBenchColors.deepDive,
           secondary: BrainBenchColors.flutterSky,
+          error: BrainBenchColors.falseQuestionGlass,
         ).copyWith(surface: BrainBenchColors.deepDive),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: BrainBenchColors.deepDive,

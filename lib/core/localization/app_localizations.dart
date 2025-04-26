@@ -580,6 +580,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Done'**
   String get pickerDoneButton;
+
+  /// Message displayed when the theme is refreshed
+  ///
+  /// In en, this message translates to:
+  /// **'Theme refreshed'**
+  String get settingsThemeRefreshed;
+
+  /// Label for the refresh button
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get settingsRefreshButtonLabel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

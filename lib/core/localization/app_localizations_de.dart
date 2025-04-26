@@ -250,4 +250,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get pickerDoneButton => 'Fertig';
+
+  @override
+  String get settingsThemeRefreshed => 'Themen neu geladen';
+
+  @override
+  String get settingsRefreshButtonLabel => 'Aktualisieren';
 }

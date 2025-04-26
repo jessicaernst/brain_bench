@@ -250,4 +250,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pickerDoneButton => 'Done';
+
+  @override
+  String get settingsThemeRefreshed => 'Theme refreshed';
+
+  @override
+  String get settingsRefreshButtonLabel => 'Refresh';
 }
