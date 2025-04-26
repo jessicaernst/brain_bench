@@ -268,4 +268,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get errorGeneric => 'Ein Fehler ist aufgetreten';
+
+  @override
+  String get authPasswordResetEmailPrompt => 'Bitte gib zuerst deine E-Mail-Adresse ein.';
 }

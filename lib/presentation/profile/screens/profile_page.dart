@@ -100,7 +100,7 @@ class ProfilePage extends HookConsumerWidget {
     final currentDisplayName = useListenable(displayNameController).text.trim();
     final nameChanged = currentDisplayName != originalDisplayName;
     // Also listen to selectedImage changes
-    final imageChanged = useListenable(selectedImage).value != null;
+    final imageChanged = selectedImage.value != null;
     final bool hasChanges = nameChanged || imageChanged;
 
     // --- Determine if save buttons should be enabled ---

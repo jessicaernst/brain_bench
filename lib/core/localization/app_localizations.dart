@@ -616,6 +616,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An error occurred'**
   String get errorGeneric;
+
+  /// Message shown when trying to reset password without entering an email address.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email first.'**
+  String get authPasswordResetEmailPrompt;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

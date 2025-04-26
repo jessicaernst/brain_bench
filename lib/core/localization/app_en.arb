@@ -347,5 +347,9 @@
     "errorGeneric": "An error occurred",
     "@errorGeneric": {
         "description": "Generic error message prefix shown before the specific error details"
+    },
+    "authPasswordResetEmailPrompt": "Please enter your email first.",
+    "@authPasswordResetEmailPrompt": {
+        "description": "Message shown when trying to reset password without entering an email address."
     }
 }
