@@ -259,4 +259,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsLocaleRefreshed => 'Locale refreshed';
+
+  @override
+  String get errorCategoryNotFound => 'Category not found';
+
+  @override
+  String get errorNoCategorySelected => 'Category not selected';
+
+  @override
+  String get errorGeneric => 'An error occurred';
 }

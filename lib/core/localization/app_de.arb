@@ -335,5 +335,17 @@
     "settingsLocaleRefreshed": "Sprachen neu geladen",
     "@settingsLocaleRefreshed": {
         "description": "Message displayed when the locale is refreshed"
+    },
+    "errorCategoryNotFound": "Kategorie nicht gefunden",
+    "@errorCategoryNotFound": {
+        "description": "Error message displayed when the category is not found"
+    },
+    "errorNoCategorySelected": "Kategorie nicht ausgewählt",
+    "@errorNoCategorySelected": {
+        "description": "Error message displayed when no category is selected"
+    },
+    "errorGeneric": "Ein Fehler ist aufgetreten",
+    "@errorGeneric": {
+        "description": "Generische Fehlermeldungs-Präfix, die vor den spezifischen Fehlerdetails angezeigt wird"
     }
 }

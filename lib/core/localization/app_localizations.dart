@@ -598,6 +598,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Locale refreshed'**
   String get settingsLocaleRefreshed;
+
+  /// Error message displayed when the category is not found
+  ///
+  /// In en, this message translates to:
+  /// **'Category not found'**
+  String get errorCategoryNotFound;
+
+  /// Error message displayed when no category is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Category not selected'**
+  String get errorNoCategorySelected;
+
+  /// Generic error message prefix shown before the specific error details
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred'**
+  String get errorGeneric;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
