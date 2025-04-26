@@ -28,6 +28,10 @@ class ThemeModeNotifier extends _$ThemeModeNotifier {
 
   @override
   Future<ThemeMode> build() async {
+    // Keeps the state alive after the last listener unsubscribes.
+    // Suitable for global settings like locale.
+    ref.keepAlive();
+
     // Use ref.watch here if you want the provider to rebuild if the
     // repository provider itself changes (less common). Use ref.read
     // if you only need the instance once during initialization.
