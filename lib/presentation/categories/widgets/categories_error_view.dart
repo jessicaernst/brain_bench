@@ -8,7 +8,6 @@ class CategoriesErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Consistent Scaffold structure
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -26,8 +25,8 @@ class CategoriesErrorView extends StatelessWidget {
         actions: const [
           Opacity(
             opacity: 0.5,
+            // Prevents touch events
             child: IgnorePointer(
-              // Prevent interactions
               child: ProfileButtonView(),
             ),
           ),

@@ -7,7 +7,6 @@ class CategoriesLoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Consistent Scaffold structure
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -17,22 +16,19 @@ class CategoriesLoadingView extends StatelessWidget {
           padding: const EdgeInsets.only(top: 56),
           child: Center(
             child: Text(
-              AppLocalizations.of(context)!
-                  .appBarTitleCategories, // Get localizations
+              AppLocalizations.of(context)!.appBarTitleCategories,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           ),
         ),
         actions: const [
-          // --- CORRECTED: Wrap to simulate disabled state ---
           Opacity(
-            opacity: 0.5, // Make it visually less prominent
+            opacity: 0.5,
             child: IgnorePointer(
               // Prevent interactions
               child: ProfileButtonView(),
             ),
           ),
-          // --- END CORRECTION ---
           SizedBox(width: 16),
         ],
       ),
