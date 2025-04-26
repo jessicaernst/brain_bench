@@ -4,6 +4,7 @@ import 'package:brain_bench/core/component_widgets/glass_card_view.dart';
 import 'package:brain_bench/core/component_widgets/profile_settings_page_background.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
+import 'package:brain_bench/presentation/settings/widgets/error_content_view.dart';
 import 'package:brain_bench/presentation/settings/widgets/language_selection_view.dart';
 import 'package:brain_bench/presentation/settings/widgets/light_dark_mode_switch.dart';
 import 'package:flutter/material.dart';
@@ -67,8 +68,9 @@ class SettingsPage extends ConsumerWidget {
 
     // --- Theme Change Handler ---
     void handleThemeChange(bool newValue) async {
-      if (isThemeBusy || hasSaveError)
+      if (isThemeBusy || hasSaveError) {
         return; // Don't change if busy or in error state
+      }
       _logger.info('Theme mode toggled via Switch: $newValue');
       // No try-catch needed here, as the provider handles errors internally
       // and updates the state accordingly (which we watch).
@@ -121,21 +123,11 @@ class SettingsPage extends ConsumerWidget {
                           const Spacer(),
                           // Show different UI based on state: Error > Busy > Switch
                           if (hasSaveError) // Highest priority: Show error and refresh button
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.error_outline,
-                                    color: theme.colorScheme.error, size: 20),
-                                const SizedBox(width: 8),
-                                // Use TextButton for less visual weight than ElevatedButton
-                                TextButton(
-                                  onPressed: isThemeBusy
-                                      ? null
-                                      : handleRefresh, // Disable if refresh is in progress
-                                  child: Text(
-                                      localizations.settingsRefreshButtonLabel),
-                                ),
-                              ],
+                            ErrorContentView(
+                              theme: theme,
+                              isThemeBusy: isThemeBusy,
+                              localizations: localizations,
+                              handleRefresh: handleRefresh,
                             )
                           else if (isThemeBusy) // Next priority: Show loading indicator
                             const SizedBox(
