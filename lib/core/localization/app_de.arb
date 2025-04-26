@@ -331,5 +331,9 @@
     "settingsRefreshButtonLabel": "Aktualisieren",
     "@settingsRefreshButtonLabel": {
         "description": "Label for the refresh button"
+    },
+    "settingsLocaleRefreshed": "Sprachen neu geladen",
+    "@settingsLocaleRefreshed": {
+        "description": "Message displayed when the locale is refreshed"
     }
 }

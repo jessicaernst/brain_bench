@@ -592,6 +592,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Refresh'**
   String get settingsRefreshButtonLabel;
+
+  /// Message displayed when the locale is refreshed
+  ///
+  /// In en, this message translates to:
+  /// **'Locale refreshed'**
+  String get settingsLocaleRefreshed;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

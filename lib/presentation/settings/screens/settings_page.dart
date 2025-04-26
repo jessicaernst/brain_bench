@@ -1,3 +1,4 @@
+import 'package:brain_bench/business_logic/locale/locale_provider.dart'; // Import locale provider
 import 'package:brain_bench/business_logic/theme/theme_provider.dart';
 import 'package:brain_bench/core/component_widgets/close_nav_app_bar.dart';
 import 'package:brain_bench/core/component_widgets/glass_card_view.dart';
@@ -50,45 +51,60 @@ class SettingsPage extends ConsumerWidget {
         ? BrainBenchColors.cloudCanvas.withAlpha((0.3 * 255).toInt())
         : BrainBenchColors.deepDive.withAlpha((0.3 * 255).toInt());
 
-    // Watch the theme state
+    // --- Watch States ---
     final themeModeAsyncValue = ref.watch(themeModeNotifierProvider);
+    final localeAsyncValue =
+        ref.watch(localeNotifierProvider); // Watch locale state
 
-    // Calculate switch state based on potentially optimistic value
+    // --- Calculate Theme States ---
     final bool isSwitchOn =
         _calculateIsSwitchOn(themeModeAsyncValue, isDarkMode);
-
-    // Determine if the theme provider is busy (loading, saving, refreshing)
     final bool isThemeBusy = themeModeAsyncValue.isLoading ||
         themeModeAsyncValue.isRefreshing ||
-        themeModeAsyncValue.isReloading; // isReloading might occur during save
-
-    // Check specifically for the error state after an optimistic update failed
-    final bool hasSaveError =
+        themeModeAsyncValue.isReloading;
+    final bool hasThemeSaveError =
         themeModeAsyncValue is AsyncError && themeModeAsyncValue.hasValue;
+
+    // --- Calculate Locale States ---
+    final bool isLocaleBusy = localeAsyncValue.isLoading ||
+        localeAsyncValue.isRefreshing ||
+        localeAsyncValue.isReloading;
+    final bool hasLocaleSaveError =
+        localeAsyncValue is AsyncError && localeAsyncValue.hasValue;
 
     // --- Theme Change Handler ---
     void handleThemeChange(bool newValue) async {
-      if (isThemeBusy || hasSaveError) {
+      if (isThemeBusy || hasThemeSaveError) {
         return; // Don't change if busy or in error state
       }
       _logger.info('Theme mode toggled via Switch: $newValue');
-      // No try-catch needed here, as the provider handles errors internally
-      // and updates the state accordingly (which we watch).
       await ref.read(themeModeNotifierProvider.notifier).setThemeMode(
             newValue ? ThemeMode.dark : ThemeMode.light,
           );
     }
 
-    // --- Refresh Handler (for error recovery) ---
-    void handleRefresh() async {
+    // --- Theme Refresh Handler (for error recovery) ---
+    void handleThemeRefresh() async {
       if (isThemeBusy) return; // Don't refresh if already busy
       _logger.info('Attempting to refresh theme due to previous error...');
       await ref.read(themeModeNotifierProvider.notifier).refreshTheme();
-      // Optional: Show feedback after refresh attempt
       if (context.mounted) {
-        // Check if widget is still in the tree
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(localizations.settingsThemeRefreshed)),
+        );
+      }
+    }
+
+    // --- Locale Refresh Handler (for error recovery) ---
+    void handleLocaleRefresh() async {
+      if (isLocaleBusy) return; // Don't refresh if already busy
+      _logger.info('Attempting to refresh locale due to previous error...');
+      await ref.read(localeNotifierProvider.notifier).refreshLocale();
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(localizations
+                  .settingsLocaleRefreshed)), // Add this localization string
         );
       }
     }
@@ -122,23 +138,23 @@ class SettingsPage extends ConsumerWidget {
                           ),
                           const Spacer(),
                           // Show different UI based on state: Error > Busy > Switch
-                          if (hasSaveError) // Highest priority: Show error and refresh button
+                          if (hasThemeSaveError)
                             ErrorContentView(
+                              // Using the dedicated widget here
                               theme: theme,
-                              isThemeBusy: isThemeBusy,
+                              isBusy: isThemeBusy, // Pass busy state
                               localizations: localizations,
-                              handleRefresh: handleRefresh,
+                              handleRefresh: handleThemeRefresh,
                             )
-                          else if (isThemeBusy) // Next priority: Show loading indicator
+                          else if (isThemeBusy)
                             const SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
-                          else // Default: Show the switch
+                          else
                             LightDarkModeSwitch(
                               value: isSwitchOn,
-                              // Disable switch if busy (redundant due to outer check, but safe)
                               onChanged: isThemeBusy ? null : handleThemeChange,
                               iconColor: iconColor,
                             ),
@@ -156,7 +172,30 @@ class SettingsPage extends ConsumerWidget {
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const Spacer(),
-                          LanguageSelectionView(),
+                          // Show different UI based on state: Error > Busy > Selection
+                          if (hasLocaleSaveError) // Highest priority: Show error and refresh button
+                            ErrorContentView(
+                              // Re-using the ErrorContentView
+                              theme: theme,
+                              isBusy: isLocaleBusy, // Pass busy state
+                              localizations: localizations,
+                              handleRefresh:
+                                  handleLocaleRefresh, // Use locale refresh handler
+                            )
+                          else if (isLocaleBusy) // Next priority: Show loading indicator
+                            const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          else // Default: Show the language selection view
+                            // Pass disabled state to LanguageSelectionView if needed
+                            // Assuming LanguageSelectionView handles its own internal state
+                            // or accepts an 'enabled' parameter. If not, you might need to adjust it.
+                            LanguageSelectionView(
+                                // Example: Pass enabled state if LanguageSelectionView supports it
+                                // isEnabled: !(isLocaleBusy || hasLocaleSaveError),
+                                ),
                         ],
                       ),
                       const SizedBox(height: 24),

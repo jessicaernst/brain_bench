@@ -256,4 +256,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsRefreshButtonLabel => 'Refresh';
+
+  @override
+  String get settingsLocaleRefreshed => 'Locale refreshed';
 }

@@ -5,13 +5,13 @@ class ErrorContentView extends StatelessWidget {
   const ErrorContentView({
     super.key,
     required this.theme,
-    required this.isThemeBusy,
+    required this.isBusy,
     required this.localizations,
     required this.handleRefresh,
   });
 
   final ThemeData theme;
-  final bool isThemeBusy;
+  final bool isBusy;
   final AppLocalizations localizations;
   final VoidCallback handleRefresh;
 
@@ -23,7 +23,7 @@ class ErrorContentView extends StatelessWidget {
         Icon(Icons.error_outline, color: theme.colorScheme.error, size: 20),
         const SizedBox(width: 8),
         TextButton(
-          onPressed: isThemeBusy
+          onPressed: isBusy
               ? null
               : handleRefresh, // Disable if refresh is in progress
           child: Text(localizations.settingsRefreshButtonLabel),
