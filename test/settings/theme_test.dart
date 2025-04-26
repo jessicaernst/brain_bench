@@ -75,7 +75,7 @@ void main() {
       container.dispose();
     });
 
-    // --- ALL YOUR ThemeModeNotifier TESTS GO HERE ---
+    // --- ThemeModeNotifier Tests ---
     test(
         'build loads initial theme from repository and sets state to AsyncData',
         () async {
