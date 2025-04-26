@@ -102,9 +102,7 @@ class SettingsPage extends ConsumerWidget {
       await ref.read(localeNotifierProvider.notifier).refreshLocale();
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(localizations
-                  .settingsLocaleRefreshed)), // Add this localization string
+          SnackBar(content: Text(localizations.settingsLocaleRefreshed)),
         );
       }
     }
@@ -191,11 +189,7 @@ class SettingsPage extends ConsumerWidget {
                           else // Default: Show the language selection view
                             // Pass disabled state to LanguageSelectionView if needed
                             // Assuming LanguageSelectionView handles its own internal state
-                            // or accepts an 'enabled' parameter. If not, you might need to adjust it.
-                            LanguageSelectionView(
-                                // Example: Pass enabled state if LanguageSelectionView supports it
-                                // isEnabled: !(isLocaleBusy || hasLocaleSaveError),
-                                ),
+                            LanguageSelectionView(),
                         ],
                       ),
                       const SizedBox(height: 24),

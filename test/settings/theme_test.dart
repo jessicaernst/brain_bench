@@ -21,7 +21,6 @@ void main() {
   });
 
   group('getNextThemeModeCycle', () {
-    // --- ADDED TESTS ---
     test('should return ThemeMode.light when current is system', () {
       expect(getNextThemeModeCycle(ThemeMode.system), ThemeMode.light);
     });
@@ -33,7 +32,6 @@ void main() {
     test('should return ThemeMode.system when current is dark', () {
       expect(getNextThemeModeCycle(ThemeMode.dark), ThemeMode.system);
     });
-    // --- END ADDED TESTS ---
   });
 
   // --- Test Group for the ThemeModeNotifier ---
@@ -52,8 +50,7 @@ void main() {
       // Default stub for loading the initial theme
       when(() => mockRepository.loadThemeMode())
           .thenAnswer((_) async => initialThemeMode);
-      // Default stub for saving (can be overridden in specific tests)
-      // This line will now work because a fallback is registered
+      // Default stub for saving
       when(() => mockRepository.saveThemeMode(any()))
           .thenAnswer((_) async {}); // Assume success by default
 
