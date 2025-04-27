@@ -7,8 +7,8 @@ import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:brain_bench/presentation/quiz/widgets/answer_list_view.dart';
 import 'package:flutter/material.dart';
 
-class SingleMulttipleQuestionView extends StatelessWidget {
-  const SingleMulttipleQuestionView({
+class SingleMultipleQuestionView extends StatelessWidget {
+  const SingleMultipleQuestionView({
     super.key,
     required this.progress,
     required this.currentQuestion,

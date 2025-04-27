@@ -134,7 +134,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
       _logger.info('🎉 Quiz completed.');
       // Use ref from ConsumerState for navigation context if needed, but GoRouter uses BuildContext
       context.goNamed(
-        '/categories/details/topics/quiz/result',
+        AppRouteNames.quizResult,
         pathParameters: <String, String>{
           'categoryId': widget.categoryId,
           'topicId': widget.topicId,
@@ -232,7 +232,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
-            child: SingleMulttipleQuestionView(
+            child: SingleMultipleQuestionView(
               progress: progress,
               currentQuestion: currentQuestion,
               isMultipleChoice: isMultipleChoice,

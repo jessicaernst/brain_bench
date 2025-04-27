@@ -103,7 +103,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
 
                       if (context.mounted) {
                         context.goNamed(AppRouteNames.topics,
-                            extra: widget.categoryId);
+                            pathParameters: {'categoryId': widget.categoryId});
                       }
                     },
                   ),
