@@ -87,7 +87,6 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                         widget.categoryId,
                         widget.topicId,
                         user.uid,
-                        ref,
                       );
 
                       if (isPassed) {
@@ -99,7 +98,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
 
                       ref.read(quizAnswersNotifierProvider.notifier).reset();
                       ref.read(quizViewModelProvider.notifier).resetQuiz();
-                      notifier.toggleView(SelectedView.none, ref);
+                      notifier.toggleView(SelectedView.none);
 
                       if (context.mounted) {
                         context.go('/categories/details/topics',

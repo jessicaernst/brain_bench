@@ -24,7 +24,7 @@ class QuizResultToggleButtons extends ConsumerWidget {
             icon: Icons.thumb_up,
             isCorrect: true,
             isActive: hasCorrect,
-            onTap: () => notifier.toggleView(SelectedView.correct, ref),
+            onTap: () => notifier.toggleView(SelectedView.correct),
           ),
           const SizedBox(width: 48),
           ToggleButton(
@@ -32,7 +32,7 @@ class QuizResultToggleButtons extends ConsumerWidget {
             icon: Icons.thumb_down,
             isCorrect: false,
             isActive: hasIncorrect,
-            onTap: () => notifier.toggleView(SelectedView.incorrect, ref),
+            onTap: () => notifier.toggleView(SelectedView.incorrect),
           ),
         ],
       ),

@@ -7,7 +7,7 @@ part of 'quiz_result_notifier.dart';
 // **************************************************************************
 
 String _$quizResultNotifierHash() =>
-    r'061d3be2233d4eb86ac8468375957b2af8b4b107';
+    r'76f1e08dc091553d7b85dd8f6ceb722d6c734383';
 
 /// A Riverpod notifier that manages the state of the quiz result page.
 ///
@@ -17,8 +17,8 @@ String _$quizResultNotifierHash() =>
 /// - Providing a filtered list of answers based on the selected view.
 /// - Calculating the total possible points, user points, and percentage.
 /// - Determining if the quiz was passed.
-/// - Saving the quiz result to the mock database.
-/// - Marking a topic as done in the mock database.
+/// - Saving the quiz result to the database.
+/// - Marking a topic as done in the database.
 ///
 /// Copied from [QuizResultNotifier].
 @ProviderFor(QuizResultNotifier)
