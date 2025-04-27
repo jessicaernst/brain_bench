@@ -14,7 +14,6 @@ import 'quiz_answers_notifier.dart';
 
 part 'quiz_result_notifier.g.dart';
 
-/// Logger instance for the QuizResultNotifier class.
 final Logger _logger = Logger('QuizResultNotifier');
 
 /// A Riverpod notifier that manages the state of the quiz result page.
@@ -100,7 +99,7 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   /// Returns:
   ///   A list of [QuizAnswer] objects.
   List<QuizAnswer> getFilteredAnswers() {
-    _logger.fine(// Changed level
+    _logger.fine(
         'getFilteredAnswers called with current selectedView: ${state.selectedView}');
     return _filterAnswersByView(state.quizAnswers, state.selectedView);
   }

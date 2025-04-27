@@ -33,7 +33,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chooseCategoryBtnLbl => 'Choose Category';
 
   @override
+  String get categoryDetailsTitle => 'Category';
+
+  @override
   String get catgoryBtnLbl => 'Ok';
+
+  @override
+  String get categoryDetailsErrorLoading => 'Error loading category details:';
 
   @override
   String get startQuizBtnLbl => 'Start Quiz';

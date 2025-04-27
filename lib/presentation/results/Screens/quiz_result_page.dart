@@ -4,6 +4,7 @@ import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
+import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:brain_bench/presentation/results/widgets/quiz_result_expanded_view.dart';
 import 'package:brain_bench/presentation/results/widgets/quiz_result_header.dart';
 import 'package:brain_bench/presentation/results/widgets/quiz_result_info_text.dart';
@@ -101,7 +102,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                       notifier.toggleView(SelectedView.none);
 
                       if (context.mounted) {
-                        context.go('/categories/details/topics',
+                        context.goNamed(AppRouteNames.topics,
                             extra: widget.categoryId);
                       }
                     },

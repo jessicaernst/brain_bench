@@ -6,6 +6,7 @@ import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/infrastructure/quiz/topic_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
+import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
           if (context.canPop()) {
             context.pop();
           } else {
-            context.go('/categories');
+            context.goNamed(AppRouteNames.categories);
           }
         },
       ),
@@ -103,9 +104,9 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
                               });
                             },
                             onPressed: () {
-                              context.go(
-                                '/categories/details/topics/quiz',
-                                extra: {
+                              context.goNamed(
+                                AppRouteNames.quiz,
+                                pathParameters: {
                                   'topicId': topic.id,
                                   'categoryId': widget.categoryId,
                                 },
@@ -142,9 +143,9 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
                                 });
                               },
                               onPressed: () {
-                                context.go(
-                                  '/categories/details/topics/quiz',
-                                  extra: {
+                                context.goNamed(
+                                  AppRouteNames.quiz,
+                                  pathParameters: {
                                     'topicId': topic.id,
                                     'categoryId': widget.categoryId,
                                   },

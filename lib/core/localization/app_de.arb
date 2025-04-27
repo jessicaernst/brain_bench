@@ -32,9 +32,17 @@
     "@chooseCategoryBtnLbl": {
         "description": "The label of the button to choose a category"
     },
+    "categoryDetailsTitle": "Kategorie",
+    "@categoryDetailsTitle": {
+        "description": "The title of the category details page"
+    },
     "catgoryBtnLbl": "Ok",
     "@catgoryBtnLbl": {
         "description": "The label of the button to choose a category"
+    },
+    "categoryDetailsErrorLoading": "Fehler beim Laden der Kategorie-Details:",
+    "@categoryDetailsErrorLoading": {
+        "description": "Fehlermeldungspräfix, das angezeigt wird, wenn Kategorie-Details nicht geladen werden können."
     },
     "startQuizBtnLbl": "Quiz starten",
     "@startQuizBtnLbl": {

@@ -143,11 +143,23 @@ abstract class AppLocalizations {
   /// **'Choose Category'**
   String get chooseCategoryBtnLbl;
 
+  /// The title of the category details page
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get categoryDetailsTitle;
+
   /// The label of the button to choose a category
   ///
   /// In en, this message translates to:
   /// **'Ok'**
   String get catgoryBtnLbl;
+
+  /// Error message prefix displayed when category details fail to load.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading category details:'**
+  String get categoryDetailsErrorLoading;
 
   /// The label of the button to start the quiz
   ///

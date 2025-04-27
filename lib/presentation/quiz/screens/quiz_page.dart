@@ -7,10 +7,11 @@ import 'package:brain_bench/core/component_widgets/no_data_available_view.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:brain_bench/data/infrastructure/quiz/question_providers.dart';
+import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:brain_bench/presentation/quiz/widgets/feedback_bottom_sheet_view.dart';
 import 'package:brain_bench/presentation/quiz/widgets/single_multtiple_question_view.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
@@ -132,9 +133,9 @@ class _QuizPageState extends ConsumerState<QuizPage> {
     } else {
       _logger.info('🎉 Quiz completed.');
       // Use ref from ConsumerState for navigation context if needed, but GoRouter uses BuildContext
-      context.go(
+      context.goNamed(
         '/categories/details/topics/quiz/result',
-        extra: <String, String>{
+        pathParameters: <String, String>{
           'categoryId': widget.categoryId,
           'topicId': widget.topicId,
         },
@@ -163,9 +164,9 @@ class _QuizPageState extends ConsumerState<QuizPage> {
           // --- Removed ref from call ---
           quizViewModel.resetQuiz();
           // Use context for navigation
-          context.go(
-            '/categories/details/topics',
-            extra: widget.categoryId,
+          context.goNamed(
+            AppRouteNames.topics,
+            pathParameters: {'categoryId': widget.categoryId},
           );
         },
       ),

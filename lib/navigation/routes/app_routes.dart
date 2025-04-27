@@ -1,12 +1,12 @@
 import 'package:brain_bench/business_logic/navigation/router_refresh_notifier.dart';
 import 'package:brain_bench/navigation/transitions/app_transitions.dart';
+import 'package:brain_bench/presentation/categories/screens/category_details_page.dart';
 import 'package:brain_bench/presentation/splash/screens/splash_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/navigation/routes/not_found_page.dart';
 import 'package:brain_bench/presentation/auth/screens/login_sign_up_page.dart';
-import 'package:brain_bench/presentation/categories/screens/category_details_page.dart';
+
 import 'package:brain_bench/presentation/categories/screens/categories_page.dart';
 import 'package:brain_bench/presentation/home/screens/home_page.dart';
 import 'package:brain_bench/presentation/profile/screens/profile_page.dart';
@@ -21,35 +21,47 @@ import 'package:logging/logging.dart';
 
 final Logger _logger = Logger('AuthRouter');
 
+class AppRouteNames {
+  static const splash = 'splash';
+  static const login = 'login';
+  static const profile = 'profile';
+  static const settings = 'settings';
+  static const home = 'home';
+  static const categories = 'categories';
+  static const categoryDetails = 'categoryDetails';
+  static const topics = 'topics';
+  static const results = 'results';
+  static const quiz = 'quiz';
+  static const quizResult = 'quizResult';
+}
+
 /// The main router for the BrainBench application, defining all navigation routes.
 final goRouterProvider = Provider<GoRouter>((ref) {
   final routerRefreshListenable = ref.watch(routerRefreshNotifierProvider);
 
   return GoRouter(
     initialLocation: '/splash',
-    //routerRefresh, // Listens for auth changes (though SplashPage handles exit)
+    // Listens for auth changes to trigger redirection logic
     refreshListenable: routerRefreshListenable,
     redirect: (context, state) {
       final userAsyncValue = ref.read(currentUserProvider);
-      // Get current location details
-      final isSplashPage = state.matchedLocation == '/splash';
-      final isLoginPage = state.matchedLocation == '/login';
+      // Use state.name for comparison with named routes
+      final currentRouteName = state.name;
+      final isSplashPage = currentRouteName == AppRouteNames.splash;
+      final isLoginPage = currentRouteName == AppRouteNames.login;
 
       // Determine auth state details
       final authIsLoading = userAsyncValue is AsyncLoading;
       final user = userAsyncValue.valueOrNull;
 
       _logger.fine(
-          'Redirect Check: Location="${state.matchedLocation}", isSplash=$isSplashPage, isLogin=$isLoginPage, authLoading=$authIsLoading, userPresent=${user != null}');
+          'Redirect Check: Name="$currentRouteName", Location="${state.matchedLocation}", PathParams="${state.pathParameters}", isSplash=$isSplashPage, isLogin=$isLoginPage, authLoading=$authIsLoading, userPresent=${user != null}');
 
-      // --- Refined Redirection Logic ---
+      // --- Refined Redirection Logic using Names ---
 
       // 1. If auth is still loading FOR THE VERY FIRST TIME (we are on /splash):
       //    Stay on splash. Let SplashPage handle the exit via context.replace.
       if (isSplashPage && authIsLoading) {
-        // This condition is primarily for the initial app start.
-        // If we somehow land on /splash later while auth is loading,
-        // this also prevents an immediate redirect away.
         _logger.fine('Redirect Result: null (Rule 1: Initial Splash Load)');
         return null;
       }
@@ -79,13 +91,15 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       // Rule 4a: User is logged out, but NOT on the login page? -> Redirect to login.
       if (user == null && !isLoginPage) {
         _logger.info(
-            'Redirect Result: "/login" (Rule 4a: Logged out, not on login)');
-        return '/login';
+            'Redirect Result: -> "${AppRouteNames.login}" (Rule 4a: Logged out, not on login)');
+        // Use namedLocation to get the path for the name
+        return state.namedLocation(AppRouteNames.login);
       }
       // Rule 4b: User is logged in, but IS on the login page? -> Redirect to home.
       if (user != null && isLoginPage) {
-        _logger.info('Redirect Result: "/home" (Rule 4b: Logged in, on login)');
-        return '/home';
+        _logger.info(
+            'Redirect Result: -> "${AppRouteNames.home}" (Rule 4b: Logged in, on login)');
+        return state.namedLocation(AppRouteNames.home);
       }
 
       // 5. Default Case: No redirection needed.
@@ -97,6 +111,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     routes: [
       // Splash Screen Route
       GoRoute(
+        name: AppRouteNames.splash,
         path: '/splash',
         // Use simple builder, no transition needed for the initial screen
         builder: (context, state) => SplashPage(),
@@ -104,6 +119,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
       // Login Page Route (Cupertino Slide)
       GoRoute(
+        name: AppRouteNames.login,
         path: '/login',
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
@@ -116,6 +132,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
       // Profile Page Route (Slide Up)
       GoRoute(
+        name: AppRouteNames.profile,
         path: '/profile',
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
@@ -128,6 +145,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
       // Settings Page Route (Slide Up)
       GoRoute(
+        name: AppRouteNames.settings, // Name added
         path: '/settings',
         pageBuilder: (context, state) => CustomTransitionPage(
           key: state.pageKey,
@@ -149,6 +167,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
+                name: AppRouteNames.home,
                 path: '/home',
                 pageBuilder: (context, state) => CustomTransitionPage(
                   key: state.pageKey,
@@ -164,6 +183,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
+                name: AppRouteNames.categories,
                 path: '/categories',
                 pageBuilder: (context, state) => CustomTransitionPage(
                   key: state.pageKey,
@@ -172,42 +192,117 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   transitionDuration: transitionDuration,
                   reverseTransitionDuration: reverseTransitionDuration,
                 ),
-              ),
-              GoRoute(
-                path: '/categories/details',
-                pageBuilder: (context, state) {
-                  final category = state.extra as Category?;
-                  return CustomTransitionPage(
-                    key: state.pageKey,
-                    // Handle case where category might be null if navigated incorrectly
-                    child: category != null
-                        ? CategoryDetailsPage(category: category)
-                        : NotFoundPage(
-                            onBack: () => context
-                                .go('/categories')), // Provide a way back
-                    transitionsBuilder: buildCupertinoSlideTransition,
-                    transitionDuration: transitionDuration,
-                    reverseTransitionDuration: reverseTransitionDuration,
-                  );
-                },
-              ),
-              GoRoute(
-                path: '/categories/details/topics',
-                pageBuilder: (context, state) {
-                  final categoryId = state.extra as String?;
-                  return CustomTransitionPage(
-                    key: state.pageKey,
-                    // Handle case where categoryId might be null
-                    child: categoryId != null
-                        ? TopicsPage(categoryId: categoryId)
-                        : NotFoundPage(
-                            onBack: () => context
-                                .go('/categories')), // Provide a way back
-                    transitionsBuilder: buildCupertinoSlideTransition,
-                    transitionDuration: transitionDuration,
-                    reverseTransitionDuration: reverseTransitionDuration,
-                  );
-                },
+                // --- Sub-routes for Categories using Path Parameters ---
+                routes: [
+                  GoRoute(
+                    name: AppRouteNames.categoryDetails,
+                    path: ':categoryId/details',
+                    pageBuilder: (context, state) {
+                      final categoryId = state.pathParameters['categoryId'];
+                      return CustomTransitionPage(
+                        key: state.pageKey,
+                        child: categoryId != null
+                            ? CategoryDetailsPage(categoryId: categoryId)
+                            : NotFoundPage(
+                                onBack: () =>
+                                    context.goNamed(AppRouteNames.categories)),
+                        transitionsBuilder: buildCupertinoSlideTransition,
+                        transitionDuration: transitionDuration,
+                        reverseTransitionDuration: reverseTransitionDuration,
+                      );
+                    },
+                    routes: [
+                      GoRoute(
+                        name: AppRouteNames.topics,
+                        path: 'topics',
+                        pageBuilder: (context, state) {
+                          // Extract categoryId from path parameters
+                          final categoryId = state.pathParameters['categoryId'];
+                          return CustomTransitionPage(
+                            key: state.pageKey,
+                            // Pass only the ID to the page
+                            child: categoryId != null
+                                ? TopicsPage(categoryId: categoryId)
+                                : NotFoundPage(
+                                    onBack: () => context
+                                        .goNamed(AppRouteNames.categories)),
+                            transitionsBuilder: buildCupertinoSlideTransition,
+                            transitionDuration: transitionDuration,
+                            reverseTransitionDuration:
+                                reverseTransitionDuration,
+                          );
+                        },
+                        routes: [
+                          GoRoute(
+                            name: AppRouteNames.quiz,
+                            path: ':topicId/quiz',
+                            pageBuilder: (context, state) {
+                              // Extract parameters
+                              final categoryId =
+                                  state.pathParameters['categoryId'];
+                              final topicId = state.pathParameters['topicId'];
+                              return CustomTransitionPage(
+                                key: state.pageKey,
+                                // Pass IDs to the page
+                                child: topicId != null && categoryId != null
+                                    ? QuizPage(
+                                        topicId: topicId,
+                                        categoryId: categoryId)
+                                    : NotFoundPage(
+                                        // Back to Topics page for this category
+                                        onBack: () => context.goNamed(
+                                              AppRouteNames.topics,
+                                              pathParameters: {
+                                                'categoryId': categoryId ?? ''
+                                              },
+                                            )),
+                                transitionsBuilder:
+                                    buildCupertinoSlideTransition,
+                                transitionDuration: transitionDuration,
+                                reverseTransitionDuration:
+                                    reverseTransitionDuration,
+                              );
+                            },
+                            routes: [
+                              GoRoute(
+                                name: AppRouteNames.quizResult,
+                                path: 'result',
+                                pageBuilder: (context, state) {
+                                  // Extract parameters
+                                  final categoryId =
+                                      state.pathParameters['categoryId'];
+                                  final topicId =
+                                      state.pathParameters['topicId'];
+                                  return CustomTransitionPage(
+                                    key: state.pageKey,
+                                    // Pass IDs to the page
+                                    child: categoryId != null && topicId != null
+                                        ? QuizResultPage(
+                                            categoryId: categoryId,
+                                            topicId: topicId)
+                                        : NotFoundPage(
+                                            onBack: () => context.goNamed(
+                                                  AppRouteNames.topics,
+                                                  pathParameters: {
+                                                    'categoryId':
+                                                        categoryId ?? ''
+                                                  },
+                                                )),
+                                    transitionsBuilder:
+                                        buildCupertinoSlideTransition,
+                                    transitionDuration: transitionDuration,
+                                    reverseTransitionDuration:
+                                        reverseTransitionDuration,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
@@ -215,6 +310,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
+                name: AppRouteNames.results, // Name added
                 path: '/results',
                 pageBuilder: (context, state) => CustomTransitionPage(
                   key: state.pageKey,
@@ -228,58 +324,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-
-      // Quiz Page Route (Cupertino Slide)
-      GoRoute(
-        path: '/categories/details/topics/quiz',
-        pageBuilder: (context, state) {
-          final extra = state.extra as Map<String, String>?;
-          final topicId = extra?['topicId'];
-          final categoryId = extra?['categoryId'];
-          return CustomTransitionPage(
-            key: state.pageKey,
-            // Handle case where extras might be null or incomplete
-            child: topicId != null && categoryId != null
-                ? QuizPage(topicId: topicId, categoryId: categoryId)
-                // Navigate back to topics if data is missing
-                : NotFoundPage(
-                    onBack: () => context.go('/categories/details/topics',
-                        extra: categoryId)),
-            transitionsBuilder: buildCupertinoSlideTransition,
-            transitionDuration: transitionDuration,
-            reverseTransitionDuration: reverseTransitionDuration,
-          );
-        },
-      ),
-
-      // Quiz Result Page Route (Cupertino Slide)
-      GoRoute(
-        path: '/categories/details/topics/quiz/result',
-        pageBuilder: (context, state) {
-          final extra = state.extra as Map<String, String>?;
-          final categoryId = extra?['categoryId'];
-          final topicId = extra?['topicId'];
-          return CustomTransitionPage(
-            key: state.pageKey,
-            // Handle case where extras might be null or incomplete
-            child: categoryId != null && topicId != null
-                ? QuizResultPage(categoryId: categoryId, topicId: topicId)
-                // Navigate back to topics if data is missing
-                : NotFoundPage(
-                    onBack: () => context.go('/categories/details/topics',
-                        extra: categoryId)),
-            transitionsBuilder: buildCupertinoSlideTransition,
-            transitionDuration: transitionDuration,
-            reverseTransitionDuration: reverseTransitionDuration,
-          );
-        },
-      ),
     ],
     // Error page: Define where the back button should lead
     errorBuilder: (context, state) => NotFoundPage(
       error: state.error,
       // Go back to home seems like a reasonable default for unexpected errors
-      onBack: () => context.go('/home'),
+      onBack: () => context.goNamed(AppRouteNames.home), // Use goNamed
     ),
   );
 });

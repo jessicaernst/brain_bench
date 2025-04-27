@@ -5,6 +5,7 @@ import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
+import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:brain_bench/presentation/categories/widgets/category_row_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,7 +64,10 @@ class CategoriesLoadedView extends ConsumerWidget {
           );
           _logger.info(
               'Navigating to category details for categoryId: ${selectedCategory.id}');
-          context.push('/categories/details', extra: selectedCategory);
+          context.pushNamed(
+            AppRouteNames.categoryDetails,
+            pathParameters: {'categoryId': selectedCategoryId},
+          );
         } catch (e) {
           _logger.severe('Error finding selected category: $e');
           ScaffoldMessenger.of(context).showSnackBar(
