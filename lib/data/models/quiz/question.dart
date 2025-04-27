@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
-import 'answer.dart';
 
 part 'question.freezed.dart';
 part 'question.g.dart';
@@ -14,7 +13,7 @@ class Question with _$Question {
     required String topicId,
     required String question,
     required QuestionType type,
-    required List<Answer> answers,
+    required List<String> answerIds,
     String? explanation,
   }) = _Question;
 
@@ -22,7 +21,7 @@ class Question with _$Question {
     required String topicId,
     required String question,
     required QuestionType type,
-    required List<Answer> answers,
+    required List<String> answerIds,
     String? explanation,
   }) {
     return Question(
@@ -30,7 +29,7 @@ class Question with _$Question {
       topicId: topicId,
       question: question,
       type: type,
-      answers: answers,
+      answerIds: answerIds,
       explanation: explanation,
     );
   }

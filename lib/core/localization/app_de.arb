@@ -351,5 +351,13 @@
     "authPasswordResetEmailPrompt": "Bitte gib zuerst deine E-Mail-Adresse ein.",
     "@authPasswordResetEmailPrompt": {
         "description": "Meldung, die angezeigt wird, wenn versucht wird, das Passwort zurückzusetzen, ohne eine E-Mail-Adresse einzugeben."
+    },
+    "quizNoQuestionsAvailable": "Für dieses Thema sind noch keine Fragen verfügbar.",
+    "@quizNoQuestionsAvailable": {
+        "description": "Meldung, die auf der Quizseite angezeigt wird, wenn keine Fragen für das ausgewählte Thema gefunden wurden."
+    },
+    "quizErrorLoadingQuestions": "Fehler beim Laden der Fragen:",
+    "@quizErrorLoadingQuestions": {
+        "description": "Fehlermeldungspräfix, das angezeigt wird, wenn Fragen auf der Quizseite nicht geladen werden können."
     }
 }

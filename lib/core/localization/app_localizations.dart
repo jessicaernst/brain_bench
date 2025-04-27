@@ -622,6 +622,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter your email first.'**
   String get authPasswordResetEmailPrompt;
+
+  /// Message displayed in the quiz page when no questions are found for the selected topic.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions available for this topic yet.'**
+  String get quizNoQuestionsAvailable;
+
+  /// Error message prefix displayed when questions fail to load in the quiz page.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading questions:'**
+  String get quizErrorLoadingQuestions;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

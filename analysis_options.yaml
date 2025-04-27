@@ -22,6 +22,7 @@ analyzer:
   errors:
     prefer_const_constructors_in_immutables: ignore
     prefer_const_constructors: ignore
+    invalid_annotation_target: ignore
   plugins:
     - custom_lint_rule
 

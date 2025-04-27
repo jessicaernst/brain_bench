@@ -8,14 +8,19 @@ class AnswerRowView extends StatelessWidget {
     required this.selected,
     required this.answer,
     required this.isDarkMode,
+    required this.languageCode,
   });
 
   final bool selected;
   final Answer answer;
   final bool isDarkMode;
+  final String languageCode;
 
   @override
   Widget build(BuildContext context) {
+    final String displayText =
+        languageCode == 'de' ? answer.textDe : answer.textEn;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -26,7 +31,7 @@ class AnswerRowView extends StatelessWidget {
           RoundCheckMarkView(isSelected: selected),
           Expanded(
             child: Text(
-              answer.text,
+              displayText,
               style: selected
                   ? TextTheme.of(context).bodyLarge
                   : TextTheme.of(context).bodyMedium,

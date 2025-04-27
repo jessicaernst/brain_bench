@@ -8,6 +8,7 @@ class QuizState {
     required this.correctAnswers,
     required this.incorrectAnswers,
     required this.missedCorrectAnswers,
+    this.isLoadingAnswers = false,
   });
 
   final List<Question> questions;
@@ -15,6 +16,7 @@ class QuizState {
   final List<Answer> correctAnswers;
   final List<Answer> incorrectAnswers;
   final List<Answer> missedCorrectAnswers;
+  final bool isLoadingAnswers;
 
   factory QuizState.initial() => QuizState(
         questions: [],
@@ -22,6 +24,7 @@ class QuizState {
         correctAnswers: [],
         incorrectAnswers: [],
         missedCorrectAnswers: [],
+        isLoadingAnswers: false,
       );
 
   QuizState copyWith({
@@ -30,6 +33,7 @@ class QuizState {
     List<Answer>? correctAnswers,
     List<Answer>? incorrectAnswers,
     List<Answer>? missedCorrectAnswers,
+    bool? isLoadingAnswers,
   }) {
     return QuizState(
       questions: questions ?? this.questions,
@@ -37,6 +41,7 @@ class QuizState {
       correctAnswers: correctAnswers ?? this.correctAnswers,
       incorrectAnswers: incorrectAnswers ?? this.incorrectAnswers,
       missedCorrectAnswers: missedCorrectAnswers ?? this.missedCorrectAnswers,
+      isLoadingAnswers: isLoadingAnswers ?? this.isLoadingAnswers,
     );
   }
 }

@@ -14,6 +14,7 @@ class FeedbackBottomSheetView extends StatelessWidget {
   /// [missedCorrectAnswers] is a list of correct answers the user did not select.
   /// [btnLbl] is the label for the button, which may be "Next Question" or "Finish Quiz".
   /// [onBtnPressed] is the callback function for when the button is pressed.
+  /// [languageCode] is the current language code ('en' or 'de'). // <-- Hinzugefügt
   const FeedbackBottomSheetView({
     super.key,
     required this.correctAnswers,
@@ -21,6 +22,7 @@ class FeedbackBottomSheetView extends StatelessWidget {
     required this.missedCorrectAnswers,
     required this.btnLbl,
     required this.onBtnPressed,
+    required this.languageCode, // <-- Hinzugefügt
   });
 
   /// The list of correct answers.
@@ -38,10 +40,20 @@ class FeedbackBottomSheetView extends StatelessWidget {
   /// Callback function executed when the action button is pressed.
   final VoidCallback onBtnPressed;
 
+  /// The current language code ('en' or 'de'). // <-- Hinzugefügt
+  final String languageCode; // <-- Hinzugefügt
+
   @override
   Widget build(BuildContext context) {
     // Retrieve the app's localizations for translating text.
     final AppLocalizations localizations = AppLocalizations.of(context)!;
+    final TextTheme textTheme =
+        Theme.of(context).textTheme; // Besser Theme.of verwenden
+
+    // Helper function to get localized text
+    String getLocalizedAnswerText(Answer answer) {
+      return languageCode == 'de' ? answer.textDe : answer.textEn;
+    }
 
     return SingleChildScrollView(
       child: Padding(
@@ -53,109 +65,85 @@ class FeedbackBottomSheetView extends StatelessWidget {
             // Title of the bottom sheet.
             Text(
               localizations.feedBackBottomSheetTitle,
-              style: TextTheme.of(context).headlineMedium,
+              style: textTheme.headlineMedium, // Verwende textTheme
             ),
 
             const SizedBox(height: 16),
 
             // ✅ Correct Answers Section
-            // Conditionally display the section only if there are correct answers.
             if (correctAnswers.isNotEmpty) ...[
               Row(
                 children: [
-                  // Icon to indicate correct answers.
                   const Icon(Icons.check_circle,
                       color: BrainBenchColors.correctAnswerGlass),
-
                   const SizedBox(width: 8),
-                  // Text label for the correct answers section.
                   Text(
                     localizations.feedbackBSheetCorrectAnswers,
-                    style: TextTheme.of(context).bodyLarge,
+                    style: textTheme.bodyLarge, // Verwende textTheme
                   ),
                 ],
               ),
-              // Display each correct answer with a bullet point.
               ...correctAnswers.map(
                 (a) => Padding(
-                  // Add left padding for alignment.
                   padding: const EdgeInsets.only(left: 24.0),
                   child: Text(
-                    '- ${a.text}',
-                    style: TextTheme.of(context)
-                        .bodyMedium
+                    '- ${getLocalizedAnswerText(a)}', // <-- Angepasst
+                    style: textTheme.bodyMedium // Verwende textTheme
                         ?.copyWith(color: BrainBenchColors.correctAnswerGlass),
                   ),
                 ),
               ),
-
               const SizedBox(height: 8),
             ],
 
             // ❌ Incorrect Answers Section
-            // Conditionally display the section only if there are incorrect answers.
             if (incorrectAnswers.isNotEmpty) ...[
               Row(
                 children: [
-                  // Icon to indicate incorrect answers.
                   const Icon(Icons.cancel,
                       color: BrainBenchColors.falseQuestionGlass),
-
                   const SizedBox(width: 8),
-                  // Text label for the incorrect answers section.
                   Text(
                     localizations.feedbackBSheetWrongAnswers,
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: textTheme.bodyLarge, // Verwende textTheme
                   ),
                 ],
               ),
-              // Display each incorrect answer with a bullet point.
               ...incorrectAnswers.map(
                 (a) => Padding(
-                  // Add left padding for alignment.
                   padding: const EdgeInsets.only(left: 24.0),
                   child: Text(
-                    '- ${a.text}',
-                    style: TextTheme.of(context)
-                        .bodyMedium
+                    '- ${getLocalizedAnswerText(a)}', // <-- Angepasst
+                    style: textTheme.bodyMedium // Verwende textTheme
                         ?.copyWith(color: BrainBenchColors.falseQuestionGlass),
                   ),
                 ),
               ),
-
               const SizedBox(height: 8),
             ],
 
             // ⚠️ Missed Correct Answers Section
-            // Conditionally display the section only if there are missed correct answers.
             if (missedCorrectAnswers.isNotEmpty) ...[
               Row(
                 children: [
-                  // Icon to indicate missed correct answers.
                   const Icon(Icons.warning_amber_rounded, color: Colors.orange),
-                  // Spacing between the icon and text.
                   const SizedBox(width: 8),
-                  // Text label for the missed correct answers section.
                   Text(
                     localizations.feedbackBSheetMissedCorrectAnswers,
-                    style: TextTheme.of(context).bodyLarge,
+                    style: textTheme.bodyLarge, // Verwende textTheme
                   ),
                 ],
               ),
-              // Display each missed correct answer with a bullet point.
               ...missedCorrectAnswers.map(
                 (a) => Padding(
-                  // Add left padding for alignment.
                   padding: const EdgeInsets.only(left: 24.0),
                   child: Text(
-                    '- ${a.text}',
-                    style: TextTheme.of(context)
-                        .bodyMedium
+                    '- ${getLocalizedAnswerText(a)}', // <-- Angepasst
+                    style: textTheme.bodyMedium // Verwende textTheme
                         ?.copyWith(color: Colors.orange),
                   ),
                 ),
               ),
-
               const SizedBox(height: 8),
             ],
 

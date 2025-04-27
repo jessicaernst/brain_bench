@@ -12,7 +12,7 @@ final Logger _logger = Logger('AnswersNotifier');
 /// This notifier is responsible for storing and managing the answers for a
 /// single question in a quiz. It keeps track of the answers, their selected
 /// state, and provides methods to initialize, toggle, and reset the answers.
-@riverpod
+@Riverpod(keepAlive: true)
 class AnswersNotifier extends _$AnswersNotifier {
   /// Builds the initial state of the notifier, which is an empty list of
   /// [Answer] objects.

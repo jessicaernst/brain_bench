@@ -24,7 +24,7 @@ mixin _$Question {
   String get topicId => throw _privateConstructorUsedError;
   String get question => throw _privateConstructorUsedError;
   QuestionType get type => throw _privateConstructorUsedError;
-  List<Answer> get answers => throw _privateConstructorUsedError;
+  List<String> get answerIds => throw _privateConstructorUsedError;
   String? get explanation => throw _privateConstructorUsedError;
 
   /// Serializes this Question to a JSON map.
@@ -47,7 +47,7 @@ abstract class $QuestionCopyWith<$Res> {
       String topicId,
       String question,
       QuestionType type,
-      List<Answer> answers,
+      List<String> answerIds,
       String? explanation});
 }
 
@@ -70,7 +70,7 @@ class _$QuestionCopyWithImpl<$Res, $Val extends Question>
     Object? topicId = null,
     Object? question = null,
     Object? type = null,
-    Object? answers = null,
+    Object? answerIds = null,
     Object? explanation = freezed,
   }) {
     return _then(_value.copyWith(
@@ -90,10 +90,10 @@ class _$QuestionCopyWithImpl<$Res, $Val extends Question>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as QuestionType,
-      answers: null == answers
-          ? _value.answers
-          : answers // ignore: cast_nullable_to_non_nullable
-              as List<Answer>,
+      answerIds: null == answerIds
+          ? _value.answerIds
+          : answerIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       explanation: freezed == explanation
           ? _value.explanation
           : explanation // ignore: cast_nullable_to_non_nullable
@@ -115,7 +115,7 @@ abstract class _$$QuestionImplCopyWith<$Res>
       String topicId,
       String question,
       QuestionType type,
-      List<Answer> answers,
+      List<String> answerIds,
       String? explanation});
 }
 
@@ -136,7 +136,7 @@ class __$$QuestionImplCopyWithImpl<$Res>
     Object? topicId = null,
     Object? question = null,
     Object? type = null,
-    Object? answers = null,
+    Object? answerIds = null,
     Object? explanation = freezed,
   }) {
     return _then(_$QuestionImpl(
@@ -156,10 +156,10 @@ class __$$QuestionImplCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as QuestionType,
-      answers: null == answers
-          ? _value._answers
-          : answers // ignore: cast_nullable_to_non_nullable
-              as List<Answer>,
+      answerIds: null == answerIds
+          ? _value._answerIds
+          : answerIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       explanation: freezed == explanation
           ? _value.explanation
           : explanation // ignore: cast_nullable_to_non_nullable
@@ -176,9 +176,9 @@ class _$QuestionImpl implements _Question {
       required this.topicId,
       required this.question,
       required this.type,
-      required final List<Answer> answers,
+      required final List<String> answerIds,
       this.explanation})
-      : _answers = answers;
+      : _answerIds = answerIds;
 
   factory _$QuestionImpl.fromJson(Map<String, dynamic> json) =>
       _$$QuestionImplFromJson(json);
@@ -191,12 +191,12 @@ class _$QuestionImpl implements _Question {
   final String question;
   @override
   final QuestionType type;
-  final List<Answer> _answers;
+  final List<String> _answerIds;
   @override
-  List<Answer> get answers {
-    if (_answers is EqualUnmodifiableListView) return _answers;
+  List<String> get answerIds {
+    if (_answerIds is EqualUnmodifiableListView) return _answerIds;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_answers);
+    return EqualUnmodifiableListView(_answerIds);
   }
 
   @override
@@ -204,7 +204,7 @@ class _$QuestionImpl implements _Question {
 
   @override
   String toString() {
-    return 'Question(id: $id, topicId: $topicId, question: $question, type: $type, answers: $answers, explanation: $explanation)';
+    return 'Question(id: $id, topicId: $topicId, question: $question, type: $type, answerIds: $answerIds, explanation: $explanation)';
   }
 
   @override
@@ -217,7 +217,8 @@ class _$QuestionImpl implements _Question {
             (identical(other.question, question) ||
                 other.question == question) &&
             (identical(other.type, type) || other.type == type) &&
-            const DeepCollectionEquality().equals(other._answers, _answers) &&
+            const DeepCollectionEquality()
+                .equals(other._answerIds, _answerIds) &&
             (identical(other.explanation, explanation) ||
                 other.explanation == explanation));
   }
@@ -225,7 +226,7 @@ class _$QuestionImpl implements _Question {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, topicId, question, type,
-      const DeepCollectionEquality().hash(_answers), explanation);
+      const DeepCollectionEquality().hash(_answerIds), explanation);
 
   /// Create a copy of Question
   /// with the given fields replaced by the non-null parameter values.
@@ -249,7 +250,7 @@ abstract class _Question implements Question {
       required final String topicId,
       required final String question,
       required final QuestionType type,
-      required final List<Answer> answers,
+      required final List<String> answerIds,
       final String? explanation}) = _$QuestionImpl;
 
   factory _Question.fromJson(Map<String, dynamic> json) =
@@ -264,7 +265,7 @@ abstract class _Question implements Question {
   @override
   QuestionType get type;
   @override
-  List<Answer> get answers;
+  List<String> get answerIds;
   @override
   String? get explanation;
 

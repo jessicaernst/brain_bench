@@ -98,7 +98,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                       }
 
                       ref.read(quizAnswersNotifierProvider.notifier).reset();
-                      ref.read(quizViewModelProvider.notifier).resetQuiz(ref);
+                      ref.read(quizViewModelProvider.notifier).resetQuiz();
                       notifier.toggleView(SelectedView.none, ref);
 
                       if (context.mounted) {

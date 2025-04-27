@@ -271,4 +271,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get authPasswordResetEmailPrompt => 'Bitte gib zuerst deine E-Mail-Adresse ein.';
+
+  @override
+  String get quizNoQuestionsAvailable => 'Für dieses Thema sind noch keine Fragen verfügbar.';
+
+  @override
+  String get quizErrorLoadingQuestions => 'Fehler beim Laden der Fragen:';
 }

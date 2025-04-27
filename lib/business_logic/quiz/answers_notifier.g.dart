@@ -6,7 +6,7 @@ part of 'answers_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$answersNotifierHash() => r'd613296dff9a5aa4b5e0e7709b89942212570909';
+String _$answersNotifierHash() => r'd231ee4b4bc7bf4db289de4a79b1ecca89416d2e';
 
 /// A Riverpod notifier that manages a list of [Answer] objects.
 ///
@@ -17,7 +17,7 @@ String _$answersNotifierHash() => r'd613296dff9a5aa4b5e0e7709b89942212570909';
 /// Copied from [AnswersNotifier].
 @ProviderFor(AnswersNotifier)
 final answersNotifierProvider =
-    AutoDisposeNotifierProvider<AnswersNotifier, List<Answer>>.internal(
+    NotifierProvider<AnswersNotifier, List<Answer>>.internal(
   AnswersNotifier.new,
   name: r'answersNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -27,6 +27,6 @@ final answersNotifierProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$AnswersNotifier = AutoDisposeNotifier<List<Answer>>;
+typedef _$AnswersNotifier = Notifier<List<Answer>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

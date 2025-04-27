@@ -1,7 +1,9 @@
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_state.dart';
+import 'package:brain_bench/business_logic/quiz/quiz_answer_evaluator.dart';
+import 'package:brain_bench/data/infrastructure/database_providers.dart';
+import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,83 +15,178 @@ final Logger _logger = Logger('QuizViewModel');
 class QuizViewModel extends _$QuizViewModel {
   @override
   QuizState build() {
-    _logger.info('QuizViewModel initialized with initial state.');
+    _logger.info('QuizViewModel initialized.');
     return QuizState.initial();
   }
 
-  /// Initializes the quiz if not already initialized
-  void initializeQuizIfNeeded(List<Question> questions, WidgetRef ref) {
-    if (state.questions.isEmpty && questions.isNotEmpty) {
-      state = state.copyWith(questions: questions, currentIndex: 0);
-      ref
-          .read(answersNotifierProvider.notifier)
-          .initializeAnswers(questions.first.answers);
-      _logger.info('✅ Quiz initialized with ${questions.length} questions.');
+  /// Fetches answers for the given IDs and updates the AnswersNotifier.
+  /// This method assumes the caller has set isLoadingAnswers = true.
+  /// It will set isLoadingAnswers = false upon completion or error.
+  Future<void> _fetchAndSetAnswers(
+      List<String> answerIds, String languageCode, String questionId) async {
+    // Caller should have set isLoadingAnswers = true
+    final repositoryRead = ref.read(quizMockDatabaseRepositoryProvider.future);
+    try {
+      final repository = await repositoryRead;
+      _logger.fine(
+          'Fetching answers for question ID: $questionId with IDs: $answerIds');
+      final List<Answer> answers =
+          await repository.getAnswers(answerIds, languageCode);
+
+      if (answers.isNotEmpty) {
+        ref.read(answersNotifierProvider.notifier).initializeAnswers(answers);
+        _logger.fine(
+            'Answers loaded for question ID $questionId (${answers.length}).');
+      } else {
+        _logger.warning(
+            '⚠️ Failed to load any answers for question ID: $questionId with IDs: $answerIds');
+        ref.read(answersNotifierProvider.notifier).resetAnswers();
+      }
+    } catch (e, s) {
+      _logger.severe(
+          '❌ Error fetching answers for question ID $questionId: $e', e, s);
+      try {
+        // Attempt to reset answers even on error
+        ref.read(answersNotifierProvider.notifier).resetAnswers();
+      } catch (disposeError) {
+        _logger.warning(
+            'ViewModel potentially disposed before error handling could reset answers: $disposeError');
+      }
+    } finally {
+      // --- Set loading state to false ---
+      try {
+        state = state.copyWith(isLoadingAnswers: false);
+        _logger.fine('Set isLoadingAnswers = false for question $questionId');
+      } catch (e) {
+        _logger.warning(
+            'Failed to set isLoadingAnswers to false, provider might be disposed: $e');
+      }
     }
+  }
+
+  /// Initializes the quiz if not already initialized.
+  Future<void> initializeQuizIfNeeded(
+      List<Question> questions, String languageCode) async {
+    if (state.questions.isNotEmpty || questions.isEmpty) {
+      if (questions.isEmpty) {
+        _logger.warning(
+            '⚠️ initializeQuizIfNeeded called with empty questions list.');
+      } else {
+        _logger.fine('Quiz already initialized, skipping initialization.');
+      }
+      return;
+    }
+
+    _logger.fine('Initializing quiz...');
+    // Set initial state (index 0) and mark as loading answers
+    state = state.copyWith(
+        questions: questions,
+        currentIndex: 0,
+        isLoadingAnswers: true); // <-- Set loading TRUE before await
+    _logger.fine('Set isLoadingAnswers = true for initialization');
+
+    final firstQuestion = questions.first;
+    // Fetch answers (this will set isLoadingAnswers to false in its finally block)
+    await _fetchAndSetAnswers(
+        firstQuestion.answerIds, languageCode, firstQuestion.id);
+
+    // Log overall success *after* fetching attempt
+    _logger.info(
+        '✅ Quiz initialization process complete for ${questions.length} questions.');
   }
 
   /// Returns the quiz progress as a percentage (0.0 to 1.0)
   double getProgress() {
-    if (state.questions.isEmpty) return 0.0;
+    if (state.questions.isEmpty || state.currentIndex < 0) return 0.0;
     return (state.currentIndex + 1) / state.questions.length;
   }
 
   /// Determines if there are more questions left
-  bool hasNextQuestion() => state.currentIndex + 1 < state.questions.length;
+  bool hasNextQuestion() =>
+      state.currentIndex >= 0 &&
+      state.currentIndex + 1 < state.questions.length;
 
-  /// Moves to the next question (if available)
-  void loadNextQuestion(WidgetRef ref) {
+  /// Moves to the next question (if available) and fetches its answers.
+  Future<void> loadNextQuestion(String languageCode) async {
     if (hasNextQuestion()) {
-      state = state.copyWith(currentIndex: state.currentIndex + 1);
-      _logger.info('🔄 Loading next question: Index ${state.currentIndex}');
-      ref
-          .read(answersNotifierProvider.notifier)
-          .initializeAnswers(state.questions[state.currentIndex].answers);
+      final nextIndex = state.currentIndex + 1;
+      // Set new index and mark as loading answers
+      state = state.copyWith(
+          currentIndex: nextIndex,
+          isLoadingAnswers: true); // <-- Set loading TRUE before await
+      _logger.fine(
+          'Loading next question: Index $nextIndex, Set isLoadingAnswers = true');
+
+      final currentQuestion = state.questions[nextIndex];
+      // Fetch answers (this will set isLoadingAnswers to false in its finally block)
+      await _fetchAndSetAnswers(
+          currentQuestion.answerIds, languageCode, currentQuestion.id);
+    } else {
+      _logger.fine('No next question available.');
     }
   }
 
   /// Checks the user's selected answers and updates the state accordingly.
-  /// A question is considered correct **only if** all correct answers are selected
-  /// and **no incorrect answers** are chosen.
-  /// Checks the user's selected answers and updates state accordingly
-  void checkAnswers(WidgetRef ref) {
+  void checkAnswers() {
     final answers = ref.read(answersNotifierProvider);
 
-    // ✅ Keep correctly selected answers (even if user missed some)
-    final correctAnswers =
-        answers.where((a) => a.isSelected && a.isCorrect).toList();
+    if (answers.isEmpty) {
+      _logger.warning(
+          '⚠️ checkAnswers called but AnswersNotifier is empty. Cannot check.');
+      state = state.copyWith(
+        correctAnswers: [],
+        incorrectAnswers: [],
+        missedCorrectAnswers: [],
+      );
+      return;
+    }
 
-    // ❌ Selected answers that are incorrect
-    final incorrectAnswers =
-        answers.where((a) => a.isSelected && !a.isCorrect).toList();
+    _logger.fine('Checking answers...');
 
-    // ⚠️ Missed correct answers (not selected but should have been)
-    final missedCorrectAnswers =
-        answers.where((a) => !a.isSelected && a.isCorrect).toList();
+    // --- Use the extracted evaluator function ---
+    final evaluationResult = evaluateAnswers(answers);
 
-    // Update state, keeping correct answers even if some were missed
+    // Update the state using the results from the evaluator
     state = state.copyWith(
-      correctAnswers: correctAnswers,
-      incorrectAnswers: incorrectAnswers,
-      missedCorrectAnswers: missedCorrectAnswers,
+      correctAnswers: evaluationResult.correct,
+      incorrectAnswers: evaluationResult.incorrect,
+      missedCorrectAnswers: evaluationResult.missed,
     );
+
+    _logger.fine(
+        'Check complete: Correct: ${evaluationResult.correct.length}, Incorrect: ${evaluationResult.incorrect.length}, Missed: ${evaluationResult.missed.length}');
   }
 
-  /// Resets the quiz
-  void resetQuiz(WidgetRef ref) {
+  /// Resets the quiz state and associated notifiers.
+  void resetQuiz() {
+    _logger.info('Resetting quiz state.');
     state = QuizState.initial();
-    ref.read(answersNotifierProvider.notifier).resetAnswers();
+    try {
+      ref.read(answersNotifierProvider.notifier).resetAnswers();
+    } catch (e) {
+      _logger.severe('Error resetting answers notifier during quiz reset: $e');
+    }
   }
 
-  // ✅ New method to get all correct answers for the current question
-  List<String> getAllCorrectAnswersForCurrentQuestion(WidgetRef ref) {
-    final currentQuestion = state.questions[state.currentIndex];
+  /// Gets the localized text of all correct answers for the current question.
+  List<String> getAllCorrectAnswersForCurrentQuestion(String languageCode) {
+    final currentAnswers = ref.read(answersNotifierProvider);
+
+    if (currentAnswers.isEmpty) {
+      _logger.warning(
+          '⚠️ getAllCorrectAnswersForCurrentQuestion called but AnswersNotifier is empty.');
+      return [];
+    }
+
     final allCorrectAnswers = <String>[];
-    for (final answer in currentQuestion.answers) {
+    for (final answer in currentAnswers) {
       if (answer.isCorrect) {
-        allCorrectAnswers.add(answer.text);
+        final text = languageCode == 'de' ? answer.textDe : answer.textEn;
+        allCorrectAnswers.add(text);
       }
     }
+    _logger.fine(
+        'Retrieved ${allCorrectAnswers.length} correct answer texts for the current question.');
     return allCorrectAnswers;
   }
 }

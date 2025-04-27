@@ -12,9 +12,8 @@ _$QuestionImpl _$$QuestionImplFromJson(Map<String, dynamic> json) =>
       topicId: json['topicId'] as String,
       question: json['question'] as String,
       type: $enumDecode(_$QuestionTypeEnumMap, json['type']),
-      answers: (json['answers'] as List<dynamic>)
-          .map((e) => Answer.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      answerIds:
+          (json['answerIds'] as List<dynamic>).map((e) => e as String).toList(),
       explanation: json['explanation'] as String?,
     );
 
@@ -24,7 +23,7 @@ Map<String, dynamic> _$$QuestionImplToJson(_$QuestionImpl instance) =>
       'topicId': instance.topicId,
       'question': instance.question,
       'type': _$QuestionTypeEnumMap[instance.type]!,
-      'answers': instance.answers,
+      'answerIds': instance.answerIds,
       'explanation': instance.explanation,
     };
 

@@ -20,6 +20,7 @@ class AnswerListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final bool isDarkMode = theme.brightness == Brightness.dark;
+    final String languageCode = Localizations.localeOf(context).languageCode;
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -41,6 +42,7 @@ class AnswerListView extends StatelessWidget {
                 selected: isSelected,
                 answer: answer,
                 isDarkMode: isDarkMode,
+                languageCode: languageCode,
               ),
             );
           }).toList(),

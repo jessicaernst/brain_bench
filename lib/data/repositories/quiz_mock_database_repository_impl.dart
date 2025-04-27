@@ -100,8 +100,6 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       final Map<String, dynamic> jsonMap = json.decode(jsonString);
       final List<dynamic> jsonData = jsonMap['categories'];
 
-      await Future.delayed(const Duration(seconds: 1));
-
       return jsonData
           .map((e) => Category(
                 id: e['id'],
@@ -141,21 +139,18 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   @override
   Future<List<Topic>> getTopics(String categoryId, String languageCode) async {
     try {
-      final file = File(topicsPath); // ✅ Use File here
-      final String jsonString =
-          await file.readAsString(); // ✅ Use readAsString()
+      final file = File(topicsPath);
+      final String jsonString = await file.readAsString();
       final Map<String, dynamic> jsonMap = json.decode(jsonString);
       final List<dynamic> jsonData = jsonMap['topics'];
-
-      await Future.delayed(const Duration(seconds: 1));
 
       return jsonData.where((e) => e['categoryId'] == categoryId).map((e) {
         return Topic(
           id: e['id'],
-          nameEn: e['nameEn'], // ✅ Use nameEn
-          nameDe: e['nameDe'], // ✅ Use nameDe
-          descriptionEn: e['descriptionEn'], // ✅ Use descriptionEn
-          descriptionDe: e['descriptionDe'], // ✅ Use descriptionDe
+          nameEn: e['nameEn'],
+          nameDe: e['nameDe'],
+          descriptionEn: e['descriptionEn'],
+          descriptionDe: e['descriptionDe'],
           categoryId: e['categoryId'],
           progress: (e['progress'] as num?)?.toDouble() ?? 0.0,
         );
@@ -190,29 +185,15 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   Future<List<Question>> getQuestions(
       String topicId, String languageCode) async {
     try {
-      await Future.delayed(const Duration(seconds: 1));
-
-      final fileQuestion = File(questionsPath); // ✅ Use File here
-      final String questionJsonString =
-          await fileQuestion.readAsString(); // ✅ Use readAsString()
+      final fileQuestion = File(questionsPath);
+      final String questionJsonString = await fileQuestion.readAsString();
       final Map<String, dynamic> questionJsonMap =
           json.decode(questionJsonString);
       final List<dynamic> questionJsonData = questionJsonMap['questions'];
 
-      final fileAnswer = File(answersPath); // ✅ Use File here
-      final String answerJsonString =
-          await fileAnswer.readAsString(); // ✅ Use readAsString()
-      final Map<String, dynamic> answerJsonMap = json.decode(answerJsonString);
-      final List<dynamic> answerJsonData = answerJsonMap['answers'];
-
-      final Map<String, Answer> answersMap = {
-        for (var e in answerJsonData)
-          e['id']: Answer(
-            id: e['id'],
-            text: languageCode == 'de' ? e['textDe'] : e['textEn'],
-            isCorrect: e['isCorrect'],
-          ),
-      };
+      final fileAnswer = File(answersPath);
+      final String answerJsonString = await fileAnswer.readAsString();
+      json.decode(answerJsonString);
 
       return questionJsonData.where((e) => e['topicId'] == topicId).map((e) {
         return Question(
@@ -222,8 +203,8 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
           type: QuestionType.values.firstWhere(
             (type) => type.toString().split('.').last == e['type'],
           ),
-          answers: (e['answerIds'] as List<dynamic>)
-              .map((answerId) => answersMap[answerId]!)
+          answerIds: (e['answerIds'] as List<dynamic>)
+              .map((id) => id.toString())
               .toList(),
           explanation:
               languageCode == 'de' ? e['explanationDe'] : e['explanationEn'],
@@ -260,13 +241,10 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
     try {
       _logger.info('getAnswers() aufgerufen für: $answerIds');
 
-      final file = File(answersPath); // ✅ Use File here
-      final String jsonString =
-          await file.readAsString(); // ✅ Use readAsString()
+      final file = File(answersPath);
+      final String jsonString = await file.readAsString();
       final Map<String, dynamic> jsonMap = json.decode(jsonString);
       final List<dynamic> jsonData = jsonMap['answers'];
-
-      await Future.delayed(const Duration(seconds: 1));
 
       _logger.info(
           'Geladene Antwortdaten: ${jsonData.length} Antworten gefunden.');
@@ -275,7 +253,8 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
           .where((e) => answerIds.contains(e['id']))
           .map((e) => Answer(
                 id: e['id'],
-                text: languageCode == 'de' ? e['textDe'] : e['textEn'],
+                textEn: e['textEn'],
+                textDe: e['textDe'],
                 isCorrect: e['isCorrect'],
               ))
           .toList();
@@ -312,7 +291,7 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   Future<List<Result>> getResults(String userId) async {
     try {
       // Load the JSON file
-      final file = File(resultsPath); // ✅ Use File here
+      final file = File(resultsPath);
 
       // Check if the file exists, return an empty list if not
       if (!file.existsSync()) {
@@ -321,10 +300,9 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       }
 
       // Read the file content as a string
-      final String jsonString =
-          await file.readAsString(); // ✅ Use readAsString()
+      final String jsonString = await file.readAsString();
       final Map<String, dynamic> jsonMap = json.decode(jsonString);
-      final List<dynamic> jsonData = jsonMap['results']; // Extraktion der Liste
+      final List<dynamic> jsonData = jsonMap['results'];
 
       // Use the mock user ID to filter results
       return jsonData

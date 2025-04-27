@@ -351,5 +351,13 @@
     "authPasswordResetEmailPrompt": "Please enter your email first.",
     "@authPasswordResetEmailPrompt": {
         "description": "Message shown when trying to reset password without entering an email address."
+    },
+    "quizNoQuestionsAvailable": "No questions available for this topic yet.",
+    "@quizNoQuestionsAvailable": {
+        "description": "Message displayed in the quiz page when no questions are found for the selected topic."
+    },
+    "quizErrorLoadingQuestions": "Error loading questions:",
+    "@quizErrorLoadingQuestions": {
+        "description": "Error message prefix displayed when questions fail to load in the quiz page."
     }
 }

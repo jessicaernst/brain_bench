@@ -21,8 +21,10 @@ Answer _$AnswerFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Answer {
   String get id => throw _privateConstructorUsedError;
-  String get text => throw _privateConstructorUsedError;
+  String get textEn => throw _privateConstructorUsedError;
+  String get textDe => throw _privateConstructorUsedError;
   bool get isCorrect => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
   bool get isSelected => throw _privateConstructorUsedError;
 
   /// Serializes this Answer to a JSON map.
@@ -39,7 +41,12 @@ abstract class $AnswerCopyWith<$Res> {
   factory $AnswerCopyWith(Answer value, $Res Function(Answer) then) =
       _$AnswerCopyWithImpl<$Res, Answer>;
   @useResult
-  $Res call({String id, String text, bool isCorrect, bool isSelected});
+  $Res call(
+      {String id,
+      String textEn,
+      String textDe,
+      bool isCorrect,
+      @JsonKey(includeFromJson: false, includeToJson: false) bool isSelected});
 }
 
 /// @nodoc
@@ -58,7 +65,8 @@ class _$AnswerCopyWithImpl<$Res, $Val extends Answer>
   @override
   $Res call({
     Object? id = null,
-    Object? text = null,
+    Object? textEn = null,
+    Object? textDe = null,
     Object? isCorrect = null,
     Object? isSelected = null,
   }) {
@@ -67,9 +75,13 @@ class _$AnswerCopyWithImpl<$Res, $Val extends Answer>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      text: null == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
+      textEn: null == textEn
+          ? _value.textEn
+          : textEn // ignore: cast_nullable_to_non_nullable
+              as String,
+      textDe: null == textDe
+          ? _value.textDe
+          : textDe // ignore: cast_nullable_to_non_nullable
               as String,
       isCorrect: null == isCorrect
           ? _value.isCorrect
@@ -90,7 +102,12 @@ abstract class _$$AnswerImplCopyWith<$Res> implements $AnswerCopyWith<$Res> {
       __$$AnswerImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String text, bool isCorrect, bool isSelected});
+  $Res call(
+      {String id,
+      String textEn,
+      String textDe,
+      bool isCorrect,
+      @JsonKey(includeFromJson: false, includeToJson: false) bool isSelected});
 }
 
 /// @nodoc
@@ -107,7 +124,8 @@ class __$$AnswerImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? text = null,
+    Object? textEn = null,
+    Object? textDe = null,
     Object? isCorrect = null,
     Object? isSelected = null,
   }) {
@@ -116,9 +134,13 @@ class __$$AnswerImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      text: null == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
+      textEn: null == textEn
+          ? _value.textEn
+          : textEn // ignore: cast_nullable_to_non_nullable
+              as String,
+      textDe: null == textDe
+          ? _value.textDe
+          : textDe // ignore: cast_nullable_to_non_nullable
               as String,
       isCorrect: null == isCorrect
           ? _value.isCorrect
@@ -135,10 +157,12 @@ class __$$AnswerImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AnswerImpl implements _Answer {
-  _$AnswerImpl(
+  const _$AnswerImpl(
       {required this.id,
-      required this.text,
+      required this.textEn,
+      required this.textDe,
       required this.isCorrect,
+      @JsonKey(includeFromJson: false, includeToJson: false)
       this.isSelected = false});
 
   factory _$AnswerImpl.fromJson(Map<String, dynamic> json) =>
@@ -147,16 +171,18 @@ class _$AnswerImpl implements _Answer {
   @override
   final String id;
   @override
-  final String text;
+  final String textEn;
+  @override
+  final String textDe;
   @override
   final bool isCorrect;
   @override
-  @JsonKey()
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final bool isSelected;
 
   @override
   String toString() {
-    return 'Answer(id: $id, text: $text, isCorrect: $isCorrect, isSelected: $isSelected)';
+    return 'Answer(id: $id, textEn: $textEn, textDe: $textDe, isCorrect: $isCorrect, isSelected: $isSelected)';
   }
 
   @override
@@ -165,7 +191,8 @@ class _$AnswerImpl implements _Answer {
         (other.runtimeType == runtimeType &&
             other is _$AnswerImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.text, text) || other.text == text) &&
+            (identical(other.textEn, textEn) || other.textEn == textEn) &&
+            (identical(other.textDe, textDe) || other.textDe == textDe) &&
             (identical(other.isCorrect, isCorrect) ||
                 other.isCorrect == isCorrect) &&
             (identical(other.isSelected, isSelected) ||
@@ -174,7 +201,8 @@ class _$AnswerImpl implements _Answer {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, text, isCorrect, isSelected);
+  int get hashCode =>
+      Object.hash(runtimeType, id, textEn, textDe, isCorrect, isSelected);
 
   /// Create a copy of Answer
   /// with the given fields replaced by the non-null parameter values.
@@ -193,10 +221,12 @@ class _$AnswerImpl implements _Answer {
 }
 
 abstract class _Answer implements Answer {
-  factory _Answer(
+  const factory _Answer(
       {required final String id,
-      required final String text,
+      required final String textEn,
+      required final String textDe,
       required final bool isCorrect,
+      @JsonKey(includeFromJson: false, includeToJson: false)
       final bool isSelected}) = _$AnswerImpl;
 
   factory _Answer.fromJson(Map<String, dynamic> json) = _$AnswerImpl.fromJson;
@@ -204,10 +234,13 @@ abstract class _Answer implements Answer {
   @override
   String get id;
   @override
-  String get text;
+  String get textEn;
+  @override
+  String get textDe;
   @override
   bool get isCorrect;
   @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   bool get isSelected;
 
   /// Create a copy of Answer

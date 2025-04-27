@@ -16,27 +16,14 @@ import 'package:logging/logging.dart';
 
 final Logger _logger = Logger('QuizPage');
 
-/// A widget that displays a quiz for a specific topic.
-///
-/// This page fetches questions for a given [topicId] and allows the user to
-/// answer them. It manages the quiz flow, including displaying questions,
-/// handling user input, showing feedback, and navigating to the result page
-/// upon completion.
 class QuizPage extends ConsumerStatefulWidget {
-  /// Creates a [QuizPage].
-  ///
-  /// The [topicId] and [categoryId] parameters are required and represent the
-  /// ID of the topic and category for which the quiz is being taken.
   QuizPage({
     super.key,
     required this.topicId,
     required this.categoryId,
   });
 
-  /// The ID of the topic for which the quiz is being taken.
   final String topicId;
-
-  /// The ID of the category the topic belongs to.
   final String categoryId;
 
   @override
@@ -45,58 +32,59 @@ class QuizPage extends ConsumerStatefulWidget {
 
 class _QuizPageState extends ConsumerState<QuizPage> {
   /// Displays the result bottom sheet after a question is answered.
-  ///
-  /// This method shows a modal bottom sheet that provides feedback on the
-  /// user's answer to the current question. It displays whether the answer
-  /// was correct or incorrect, shows the correct answers, and provides an
-  /// explanation if available. It also allows the user to proceed to the next
-  /// question or finish the quiz.
-  ///
-  /// Parameters:
-  ///   - [context]: The build context.
-  ///   - [ref]: The widget ref to access providers.
-  void _showResultBottomSheet(BuildContext context, WidgetRef ref) {
+  // Removed WidgetRef ref parameter as it's available via ConsumerState
+  void _showResultBottomSheet(BuildContext context, String languageCode) {
+    // Use ref from ConsumerState
     final quizState = ref.read(quizViewModelProvider);
     final quizAnswerNotifier = ref.read(quizAnswersNotifierProvider.notifier);
+    final currentLoadedAnswers = ref.read(answersNotifierProvider);
 
+    if (quizState.questions.isEmpty ||
+        quizState.currentIndex >= quizState.questions.length) {
+      _logger.severe(
+          '❌ Cannot show result bottom sheet: Invalid quiz state or index.');
+      return;
+    }
     final currentQuestion = quizState.questions[quizState.currentIndex];
 
     // User-selected answers
-    final selectedAnswers = ref
-        .read(answersNotifierProvider)
+    final selectedAnswers = currentLoadedAnswers
         .where((answer) => answer.isSelected)
-        .map((answer) => answer.text)
+        .map((answer) => languageCode == 'de' ? answer.textDe : answer.textEn)
         .toList();
 
     // Collect all possible answers for UI representation
-    final allAnswers =
-        currentQuestion.answers.map((answer) => answer.text).toList();
+    final allAnswers = currentLoadedAnswers
+        .map((answer) => languageCode == 'de' ? answer.textDe : answer.textEn)
+        .toList();
 
     // Get the correct answers
-    final correctAnswers = currentQuestion.answers
+    final correctAnswers = currentLoadedAnswers
         .where((answer) => answer.isCorrect)
-        .map((answer) => answer.text)
+        .map((answer) => languageCode == 'de' ? answer.textDe : answer.textEn)
         .toList();
 
     // Get explanation if available
     final explanation = currentQuestion.explanation;
 
-    // ✅ Get all correct answers for the current question
-    final allCorrectAnswers = ref
+    // Get all correct answers text
+    final allCorrectAnswersText = ref
         .read(quizViewModelProvider.notifier)
-        .getAllCorrectAnswersForCurrentQuestion(ref);
+        .getAllCorrectAnswersForCurrentQuestion(languageCode);
+
+    final localizedQuestionText = currentQuestion.question;
 
     // Save answer with all information
     quizAnswerNotifier.addAnswer(
       questionId: currentQuestion.id,
       topicId: currentQuestion.topicId,
       categoryId: widget.categoryId,
-      questionText: currentQuestion.question,
+      questionText: localizedQuestionText,
       givenAnswers: selectedAnswers,
       correctAnswers: correctAnswers,
       allAnswers: allAnswers,
       explanation: explanation,
-      allCorrectAnswers: allCorrectAnswers,
+      allCorrectAnswers: allCorrectAnswersText,
     );
 
     showModalBottomSheet(
@@ -104,21 +92,26 @@ class _QuizPageState extends ConsumerState<QuizPage> {
       isDismissible: false,
       isScrollControlled: true,
       builder: (ctx) {
+        // Use the 'ref' provided by the Consumer builder here
         return Consumer(
-          builder: (context, ref, child) {
-            final quizState = ref.watch(quizViewModelProvider);
+          builder: (context, modalRef, child) {
+            // Use modalRef here
+            final latestQuizState = modalRef.watch(quizViewModelProvider);
 
             return FeedbackBottomSheetView(
-              correctAnswers: quizState.correctAnswers,
-              incorrectAnswers: quizState.incorrectAnswers,
-              missedCorrectAnswers: quizState.missedCorrectAnswers,
-              btnLbl: quizState.currentIndex + 1 < quizState.questions.length
+              correctAnswers: latestQuizState.correctAnswers,
+              incorrectAnswers: latestQuizState.incorrectAnswers,
+              missedCorrectAnswers: latestQuizState.missedCorrectAnswers,
+              btnLbl: latestQuizState.currentIndex + 1 <
+                      latestQuizState.questions.length
                   ? AppLocalizations.of(context)!.nextQuestionBtnLbl
                   : AppLocalizations.of(context)!.finishQuizBtnLbl,
               onBtnPressed: () {
                 Navigator.pop(context);
-                _handleNextQuestionOrFinish(context, ref);
+                // --- Removed ref from call ---
+                _handleNextQuestionOrFinish(context, languageCode);
               },
+              languageCode: languageCode,
             );
           },
         );
@@ -127,22 +120,18 @@ class _QuizPageState extends ConsumerState<QuizPage> {
   }
 
   /// Handles logic to either load the next question or finish the quiz.
-  ///
-  /// This method determines whether to load the next question or navigate to
-  /// the quiz result page based on the current state of the quiz.
-  ///
-  /// Parameters:
-  ///   - [context]: The build context.
-  ///   - [ref]: The widget ref to access providers.
-  void _handleNextQuestionOrFinish(BuildContext context, WidgetRef ref) {
+  // Removed WidgetRef ref parameter
+  Future<void> _handleNextQuestionOrFinish(
+      BuildContext context, String languageCode) async {
+    // Use ref from ConsumerState
     final quizViewModel = ref.read(quizViewModelProvider.notifier);
 
     if (quizViewModel.hasNextQuestion()) {
-      quizViewModel.loadNextQuestion(ref);
+      // --- Removed ref from call ---
+      await quizViewModel.loadNextQuestion(languageCode);
     } else {
       _logger.info('🎉 Quiz completed.');
-
-      // ✅ Pass categoryId and topicId as a Map
+      // Use ref from ConsumerState for navigation context if needed, but GoRouter uses BuildContext
       context.go(
         '/categories/details/topics/quiz/result',
         extra: <String, String>{
@@ -159,77 +148,86 @@ class _QuizPageState extends ConsumerState<QuizPage> {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
 
     _logger.info(
-        '📌 Loading questions for Topic ID: ${widget.topicId}, Language: $languageCode');
+        '📌 Build QuizPage for Topic ID: ${widget.topicId}, Language: $languageCode');
 
+    // Use ref from ConsumerState
     final QuizViewModel quizViewModel =
         ref.read(quizViewModelProvider.notifier);
-    final AsyncValue questionsAsync =
+    final AsyncValue<List<Question>> questionsAsync =
         ref.watch(questionsProvider(widget.topicId, languageCode));
 
     return Scaffold(
       appBar: BackNavAppBar(
         title: localizations.quizAppBarTitle,
         onBack: () {
-          // ✅ Pass only the categoryId as a String
+          // --- Removed ref from call ---
+          quizViewModel.resetQuiz();
+          // Use context for navigation
           context.go(
             '/categories/details/topics',
-            extra: widget.categoryId, // Pass only the categoryId
+            extra: widget.categoryId,
           );
         },
       ),
       body: questionsAsync.when(
         data: (questions) {
-          // Check if the list of questions is empty
           if (questions.isEmpty) {
             _logger.warning(
                 '⚠️ No questions found for Topic ID: ${widget.topicId}');
-            return const NoDataAvailableView(text: '❌ No questions available.');
+            return NoDataAvailableView(
+                text: localizations.quizNoQuestionsAvailable);
           }
 
-          // Initialize the quiz if it's not already set up
-          Future.microtask(() {
-            quizViewModel.initializeQuizIfNeeded(questions, ref);
+          // Initialize the quiz (loads first question's answers)
+          Future.microtask(() async {
+            // Use ref from ConsumerState
+            if (ref.read(quizViewModelProvider).questions.isEmpty) {
+              _logger.info('Triggering quiz initialization...');
+              // --- Removed ref from call ---
+              await quizViewModel.initializeQuizIfNeeded(
+                  questions, languageCode);
+            }
           });
 
+          // Watch the state AFTER potential initialization
+          // Use ref from ConsumerState
           final quizState = ref.watch(quizViewModelProvider);
 
-          // If the questions in the QuizViewModel remain uninitialized, display an error
+          // Check if initialization is still pending or failed
           if (quizState.questions.isEmpty) {
-            _logger
-                .warning('⚠️ Questions list is empty. Check initialization.');
-            return const Center(
-              child: Text(
-                'No questions available.',
-                style: TextStyle(fontSize: 18),
-              ),
-            );
+            _logger.warning(
+                '⚠️ Quiz state questions are still empty. Waiting for initialization or error.');
+            return const Center(child: CircularProgressIndicator());
           }
 
-          // Get the current question and its type
+          // Get the currently loaded answers from the notifier
+          // Use ref from ConsumerState
+          final List<Answer> currentAnswers =
+              ref.watch(answersNotifierProvider);
+
+          // Check if answers for the current question are loaded
+          if (currentAnswers.isEmpty && quizState.questions.isNotEmpty) {
+            _logger.warning(
+                '⚠️ AnswersNotifier is empty, likely loading answers for index ${quizState.currentIndex}...');
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // Get the current question (has only answerIds)
           final Question currentQuestion =
               quizState.questions[quizState.currentIndex];
-          // Determine if the current question is multiple choice
           final bool isMultipleChoice =
               currentQuestion.type == QuestionType.multipleChoice;
-
-          // Get the current progress of the quiz
           final double progress = quizViewModel.getProgress();
 
           _logger.info(
-              '✅ Current question: ${currentQuestion.question} (ID: ${currentQuestion.id}), Type: ${currentQuestion.type}, Progress: ${(progress * 100).toStringAsFixed(1)}%');
+              '✅ Displaying question index: ${quizState.currentIndex}, ID: ${currentQuestion.id}, Type: ${currentQuestion.type}, Progress: ${(progress * 100).toStringAsFixed(1)}%');
+          _logger
+              .fine('Current loaded answers count: ${currentAnswers.length}');
 
-          // Get the list of answers and the answers notifier
-          final List<Answer> answers = ref.watch(answersNotifierProvider);
-          // Get the answers notifier to initialize the answers
+          // Get the notifier instance for the AnswerListView callback
+          // Use ref from ConsumerState
           final AnswersNotifier answersNotifier =
-              ref.watch(answersNotifierProvider.notifier);
-
-          // Ensure the answers are correctly initialized for the current question
-          Future.microtask(() {
-            _logger.info(
-                '🔄 Initializing answers for question at index ${quizState.currentIndex}');
-            answersNotifier.initializeAnswers(currentQuestion.answers);
-          });
+              ref.read(answersNotifierProvider.notifier);
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -239,12 +237,16 @@ class _QuizPageState extends ConsumerState<QuizPage> {
               isMultipleChoice: isMultipleChoice,
               answersNotifier: answersNotifier,
               localizations: localizations,
-              answers: answers,
+              answers: currentAnswers,
               onAnswerSelected: () {
-                if (answers.any((answer) => answer.isSelected)) {
+                // Use ref from ConsumerState
+                final answersForCheck = ref.read(answersNotifierProvider);
+                if (answersForCheck.any((answer) => answer.isSelected)) {
                   _logger.info('🟢 Submit button pressed');
-                  quizViewModel.checkAnswers(ref);
-                  _showResultBottomSheet(context, ref);
+                  // --- Removed ref from call ---
+                  quizViewModel.checkAnswers();
+                  // --- Removed ref from call ---
+                  _showResultBottomSheet(context, languageCode);
                 } else {
                   _logger.warning('⚠️ No answers selected.');
                 }
@@ -257,12 +259,17 @@ class _QuizPageState extends ConsumerState<QuizPage> {
           return const Center(child: CircularProgressIndicator());
         },
         error: (error, stack) {
-          _logger.severe('❌ Error loading questions: $error');
+          _logger.severe('❌ Error loading questions: $error', error, stack);
           return Center(
-            child: Text(
-              'Error loading questions: $error',
-              style: TextTheme.of(context).bodyMedium,
-              textAlign: TextAlign.center,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                '${localizations.quizErrorLoadingQuestions}\n$error',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                textAlign: TextAlign.center,
+              ),
             ),
           );
         },

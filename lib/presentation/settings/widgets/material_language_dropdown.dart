@@ -1,6 +1,5 @@
 import 'package:brain_bench/business_logic/locale/locale_provider.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MaterialLanguageDropdown extends StatelessWidget {

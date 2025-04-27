@@ -6,23 +6,33 @@ part 'answer.g.dart';
 
 @freezed
 class Answer with _$Answer {
-  factory Answer({
+  const factory Answer({
     required String id,
-    required String text,
+    required String textEn,
+    required String textDe,
     required bool isCorrect,
-    @Default(false) bool isSelected,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    @Default(false)
+    bool isSelected,
   }) = _Answer;
 
+  /// Factory for creating a new Answer with a random UUID (for client-side creation).
   factory Answer.create({
-    required String text,
+    required String textEn,
+    required String textDe,
     required bool isCorrect,
   }) {
     return Answer(
       id: const Uuid().v4(),
-      text: text,
+      textEn: textEn,
+      textDe: textDe,
       isCorrect: isCorrect,
     );
   }
 
+  /// Factory for creating an Answer from JSON.
   factory Answer.fromJson(Map<String, dynamic> json) => _$AnswerFromJson(json);
+
+  /// Optional: Get the localized text based on the provided locale.
+  // String getLocalizedText(Locale locale) => locale.languageCode == 'de' ? textDe : textEn;
 }
