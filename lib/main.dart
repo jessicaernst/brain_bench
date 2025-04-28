@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
 import 'package:brain_bench/app/app.dart';
 import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
 import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
@@ -43,6 +44,15 @@ Future<void> main() async {
   // Ensure Flutter bindings are ready
   final WidgetsBinding widgetsBinding =
       WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Hyphenation
+  try {
+    _log.info('Initializing Hyphenation...');
+    await initHyphenation();
+    _log.info('Hyphenation initialized successfully.');
+  } catch (e, s) {
+    _log.severe('Failed to initialize Hyphenation', e, s);
+  }
 
   // Keep splash screen until initialization completes
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);

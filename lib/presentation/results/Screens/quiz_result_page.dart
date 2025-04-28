@@ -48,6 +48,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(localizations.quizResultsAppBarTitle),
+        automaticallyImplyLeading: false,
       ),
       body: state.quizAnswers.isEmpty
           ? Center(child: Text(localizations.quizResultsNotSaved))

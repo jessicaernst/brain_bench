@@ -1,3 +1,4 @@
+import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
 import 'package:brain_bench/business_logic/categories/categories_provider.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
@@ -84,7 +85,7 @@ class CategoryDetailsPage extends ConsumerWidget {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
-                    Text(
+                    AutoHyphenatingText(
                       description,
                       style: Theme.of(context).textTheme.bodyMedium,
                       textAlign: TextAlign.center,

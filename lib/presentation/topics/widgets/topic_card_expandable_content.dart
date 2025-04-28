@@ -1,3 +1,4 @@
+import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class TopicCardExpandableContent extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 24),
-        Text(
+        AutoHyphenatingText(
           description,
           style: Theme.of(context).textTheme.bodyMedium,
           textAlign: TextAlign.center,

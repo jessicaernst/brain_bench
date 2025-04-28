@@ -1,3 +1,4 @@
+import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
@@ -121,7 +122,7 @@ class AnswerExpandableContent extends StatelessWidget {
           // Spacing
           const SizedBox(height: 4),
           // Explanation text, if available, or a default message
-          Text(
+          AutoHyphenatingText(
             answer.explanation ?? localizations.answerExpandableNoExplanation,
             style: TextTheme.of(context).bodyMedium,
           ),

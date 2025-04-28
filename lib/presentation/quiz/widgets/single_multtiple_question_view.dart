@@ -1,3 +1,4 @@
+import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
@@ -34,7 +35,7 @@ class SingleMultipleQuestionView extends StatelessWidget {
         const SizedBox(height: 8),
         ProgressIndicatorBarView(progress: progress),
         const SizedBox(height: 24),
-        Text(
+        AutoHyphenatingText(
           currentQuestion.question,
           textAlign: TextAlign.center,
           style: TextTheme.of(context).bodyMedium,

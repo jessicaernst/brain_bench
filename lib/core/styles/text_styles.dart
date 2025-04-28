@@ -78,7 +78,7 @@ abstract class BrainBenchTextStyles {
 
   static TextStyle brainBench() {
     return GoogleFonts.audiowide(
-      fontSize: 24,
+      fontSize: 26,
       fontWeight: FontWeight.w400,
       letterSpacing: -1.92,
     );
