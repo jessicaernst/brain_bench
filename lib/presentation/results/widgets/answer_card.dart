@@ -57,8 +57,7 @@ class AnswerCard extends StatelessWidget {
           answerText: answer.questionText,
           isCorrect: isCorrect,
           isExpanded: isExpanded, // Use passed parameter
-          onTap:
-              onToggle, // Use passed callback directly to trigger state change in notifier
+          onTap: onToggle,
           isDarkMode: isDarkMode,
         ),
         // The expandable area that contains detailed information about the answer.

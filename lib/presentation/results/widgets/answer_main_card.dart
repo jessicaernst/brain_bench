@@ -23,8 +23,28 @@ class AnswerMainCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color? iconTextColor = Theme.of(context).textTheme.bodySmall?.color;
+    final TextStyle? textStyle = Theme.of(context).textTheme.bodyLarge;
+
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        final bool expanding = !isExpanded;
+
+        onTap();
+
+        if (expanding) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (context.mounted) {
+              Scrollable.ensureVisible(
+                context,
+                alignment: 0.5,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOut,
+              );
+            }
+          });
+        }
+      },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(25),
         child: BackdropFilter(
@@ -44,13 +64,13 @@ class AnswerMainCard extends StatelessWidget {
                   isCorrect
                       ? CupertinoIcons.hand_thumbsup_fill
                       : CupertinoIcons.hand_thumbsdown_fill,
-                  color: TextTheme.of(context).bodySmall!.color,
+                  color: iconTextColor,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: AutoHyphenatingText(
                     answerText,
-                    style: TextTheme.of(context).bodyLarge,
+                    style: textStyle,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -59,7 +79,10 @@ class AnswerMainCard extends StatelessWidget {
                 AnimatedRotation(
                   turns: isExpanded ? 0.5 : 0.0,
                   duration: const Duration(milliseconds: 300),
-                  child: const Icon(Icons.expand_more),
+                  child: Icon(
+                    Icons.expand_more,
+                    color: iconTextColor,
+                  ),
                 ),
               ],
             ),

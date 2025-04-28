@@ -16,16 +16,22 @@ class QuizResultExpandedView extends ConsumerWidget {
 
   final ScrollController _scrollController;
   final List<QuizAnswer> filteredAnswers;
-  final double _defaultPadding;
+  final double _defaultPadding; // Wird für den Separator verwendet
   final Set<String> expandedAnswers;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notifier = ref.read(quizResultNotifierProvider.notifier);
 
+    final double bottomPadding = MediaQuery.of(context).size.height * 0.2;
+
     return Expanded(
       child: ListView.separated(
         controller: _scrollController,
+        padding: EdgeInsets.only(
+          bottom: bottomPadding,
+        ),
+        // ------------------------------------
         itemCount: filteredAnswers.length,
         separatorBuilder: (context, index) => SizedBox(height: _defaultPadding),
         itemBuilder: (context, index) {

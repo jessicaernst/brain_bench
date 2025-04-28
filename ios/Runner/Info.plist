@@ -65,5 +65,12 @@
 	</array>
 	<key>GIDClientID</key>
 	<string>280860007604-3c8us5lra624f1pklv60hu0lt506p6hp.apps.googleusercontent.com</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Required to discover devices on your local network for debugging features like Hot Reload.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_dartobservatory._tcp</string>
+	</array>
+
 </dict>
 </plist>
