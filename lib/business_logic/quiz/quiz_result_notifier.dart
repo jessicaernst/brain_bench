@@ -45,9 +45,8 @@ class QuizResultNotifier extends _$QuizResultNotifier {
 
   /// Toggles the selected view between `none`, `correct`, and `incorrect`.
   ///
-  /// Updates the state immediately. If specific animation timing is needed
-  /// between clearing expansions and changing the view, it should be handled
-  /// in the UI layer based on these state changes.
+  /// Clears expanded answers whenever the view changes to 'correct' or 'incorrect'
+  /// to ensure the new list starts collapsed.
   ///
   /// Parameters:
   ///   - [newView]: The new view to toggle to.
@@ -57,16 +56,17 @@ class QuizResultNotifier extends _$QuizResultNotifier {
         state.selectedView == newView) {
       // If we're currently in correct/incorrect and we tap the same button, go to none
       _logger.info('Toggling to SelectedView.none');
+      // Clear expansions when going back to 'none'
       state =
           state.copyWith(selectedView: SelectedView.none, expandedAnswers: {});
     } else {
-      // Update view and clear expansions simultaneously
-      _logger.info('Toggling view to: $newView, clearing expanded answers');
+      // --- ALWAYS CLEAR EXPANSIONS when switching TO correct/incorrect ---
+      _logger.info('Switching view to: $newView and clearing expanded answers');
       state = state.copyWith(
-          selectedView: newView, // Set the new view
-          expandedAnswers: {} // Clear expansions
+          selectedView: newView,
+          expandedAnswers: {} // Ensure expansions are cleared
           );
-      // Removed Future.delayed. UI should react to state change for animations.
+      // --- END CHANGE ---
     }
   }
 

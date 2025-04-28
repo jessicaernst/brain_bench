@@ -68,6 +68,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                   scrollController: _scrollController,
                   filteredAnswers: filteredAnswers,
                   defaultPadding: 24,
+                  expandedAnswers: state.expandedAnswers,
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),

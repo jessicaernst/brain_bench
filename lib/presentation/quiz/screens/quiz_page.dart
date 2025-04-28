@@ -32,7 +32,6 @@ class QuizPage extends ConsumerStatefulWidget {
 class _QuizPageState extends ConsumerState<QuizPage> {
   /// Gathers quiz answer data, saves it, and shows the result bottom sheet.
   void _prepareAndShowResultBottomSheet(String languageCode) {
-    // Use ref from ConsumerState
     final quizState = ref.read(quizViewModelProvider);
     final quizAnswerNotifier = ref.read(quizAnswersNotifierProvider.notifier);
     final currentLoadedAnswers = ref.read(answersNotifierProvider);
