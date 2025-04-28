@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 AppUser _$AppUserFromJson(Map<String, dynamic> json) {
-  return _User.fromJson(json);
+  return _AppUser.fromJson(json);
 }
 
 /// @nodoc
@@ -31,6 +31,7 @@ mixin _$AppUser {
       throw _privateConstructorUsedError;
   Map<String, Map<String, bool>> get isTopicDone =>
       throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
 
   /// Serializes this AppUser to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -55,7 +56,8 @@ abstract class $AppUserCopyWith<$Res> {
       String themeMode,
       String language,
       Map<String, double> categoryProgress,
-      Map<String, Map<String, bool>> isTopicDone});
+      Map<String, Map<String, bool>> isTopicDone,
+      String id});
 }
 
 /// @nodoc
@@ -82,6 +84,7 @@ class _$AppUserCopyWithImpl<$Res, $Val extends AppUser>
     Object? language = null,
     Object? categoryProgress = null,
     Object? isTopicDone = null,
+    Object? id = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -120,15 +123,19 @@ class _$AppUserCopyWithImpl<$Res, $Val extends AppUser>
           ? _value.isTopicDone
           : isTopicDone // ignore: cast_nullable_to_non_nullable
               as Map<String, Map<String, bool>>,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$UserImplCopyWith<$Res> implements $AppUserCopyWith<$Res> {
-  factory _$$UserImplCopyWith(
-          _$UserImpl value, $Res Function(_$UserImpl) then) =
-      __$$UserImplCopyWithImpl<$Res>;
+abstract class _$$AppUserImplCopyWith<$Res> implements $AppUserCopyWith<$Res> {
+  factory _$$AppUserImplCopyWith(
+          _$AppUserImpl value, $Res Function(_$AppUserImpl) then) =
+      __$$AppUserImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -140,14 +147,16 @@ abstract class _$$UserImplCopyWith<$Res> implements $AppUserCopyWith<$Res> {
       String themeMode,
       String language,
       Map<String, double> categoryProgress,
-      Map<String, Map<String, bool>> isTopicDone});
+      Map<String, Map<String, bool>> isTopicDone,
+      String id});
 }
 
 /// @nodoc
-class __$$UserImplCopyWithImpl<$Res>
-    extends _$AppUserCopyWithImpl<$Res, _$UserImpl>
-    implements _$$UserImplCopyWith<$Res> {
-  __$$UserImplCopyWithImpl(_$UserImpl _value, $Res Function(_$UserImpl) _then)
+class __$$AppUserImplCopyWithImpl<$Res>
+    extends _$AppUserCopyWithImpl<$Res, _$AppUserImpl>
+    implements _$$AppUserImplCopyWith<$Res> {
+  __$$AppUserImplCopyWithImpl(
+      _$AppUserImpl _value, $Res Function(_$AppUserImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of AppUser
@@ -164,8 +173,9 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? language = null,
     Object? categoryProgress = null,
     Object? isTopicDone = null,
+    Object? id = null,
   }) {
-    return _then(_$UserImpl(
+    return _then(_$AppUserImpl(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
@@ -202,14 +212,18 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value._isTopicDone
           : isTopicDone // ignore: cast_nullable_to_non_nullable
               as Map<String, Map<String, bool>>,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$UserImpl implements _User {
-  const _$UserImpl(
+class _$AppUserImpl implements _AppUser {
+  const _$AppUserImpl(
       {required this.uid,
       required this.email,
       this.displayName,
@@ -218,12 +232,13 @@ class _$UserImpl implements _User {
       this.themeMode = 'system',
       this.language = 'en',
       final Map<String, double> categoryProgress = const {},
-      final Map<String, Map<String, bool>> isTopicDone = const {}})
+      final Map<String, Map<String, bool>> isTopicDone = const {},
+      required this.id})
       : _categoryProgress = categoryProgress,
         _isTopicDone = isTopicDone;
 
-  factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
-      _$$UserImplFromJson(json);
+  factory _$AppUserImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AppUserImplFromJson(json);
 
   @override
   final String uid;
@@ -260,15 +275,18 @@ class _$UserImpl implements _User {
   }
 
   @override
+  final String id;
+
+  @override
   String toString() {
-    return 'AppUser(uid: $uid, email: $email, displayName: $displayName, photoUrl: $photoUrl, profileImageUrl: $profileImageUrl, themeMode: $themeMode, language: $language, categoryProgress: $categoryProgress, isTopicDone: $isTopicDone)';
+    return 'AppUser(uid: $uid, email: $email, displayName: $displayName, photoUrl: $photoUrl, profileImageUrl: $profileImageUrl, themeMode: $themeMode, language: $language, categoryProgress: $categoryProgress, isTopicDone: $isTopicDone, id: $id)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UserImpl &&
+            other is _$AppUserImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.displayName, displayName) ||
@@ -284,7 +302,8 @@ class _$UserImpl implements _User {
             const DeepCollectionEquality()
                 .equals(other._categoryProgress, _categoryProgress) &&
             const DeepCollectionEquality()
-                .equals(other._isTopicDone, _isTopicDone));
+                .equals(other._isTopicDone, _isTopicDone) &&
+            (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -299,26 +318,27 @@ class _$UserImpl implements _User {
       themeMode,
       language,
       const DeepCollectionEquality().hash(_categoryProgress),
-      const DeepCollectionEquality().hash(_isTopicDone));
+      const DeepCollectionEquality().hash(_isTopicDone),
+      id);
 
   /// Create a copy of AppUser
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$UserImplCopyWith<_$UserImpl> get copyWith =>
-      __$$UserImplCopyWithImpl<_$UserImpl>(this, _$identity);
+  _$$AppUserImplCopyWith<_$AppUserImpl> get copyWith =>
+      __$$AppUserImplCopyWithImpl<_$AppUserImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$UserImplToJson(
+    return _$$AppUserImplToJson(
       this,
     );
   }
 }
 
-abstract class _User implements AppUser {
-  const factory _User(
+abstract class _AppUser implements AppUser {
+  const factory _AppUser(
       {required final String uid,
       required final String email,
       final String? displayName,
@@ -327,9 +347,10 @@ abstract class _User implements AppUser {
       final String themeMode,
       final String language,
       final Map<String, double> categoryProgress,
-      final Map<String, Map<String, bool>> isTopicDone}) = _$UserImpl;
+      final Map<String, Map<String, bool>> isTopicDone,
+      required final String id}) = _$AppUserImpl;
 
-  factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
+  factory _AppUser.fromJson(Map<String, dynamic> json) = _$AppUserImpl.fromJson;
 
   @override
   String get uid;
@@ -349,11 +370,13 @@ abstract class _User implements AppUser {
   Map<String, double> get categoryProgress;
   @override
   Map<String, Map<String, bool>> get isTopicDone;
+  @override
+  String get id;
 
   /// Create a copy of AppUser
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$UserImplCopyWith<_$UserImpl> get copyWith =>
+  _$$AppUserImplCopyWith<_$AppUserImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

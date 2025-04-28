@@ -46,16 +46,16 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final userAsyncValue = ref.read(currentUserProvider);
       // Use state.name for comparison with named routes
-      final currentRouteName = state.name;
-      final isSplashPage = currentRouteName == AppRouteNames.splash;
-      final isLoginPage = currentRouteName == AppRouteNames.login;
+      final currentLocation = state.matchedLocation;
+      final isSplashPage = currentLocation == '/splash';
+      final isLoginPage = currentLocation == '/login';
 
       // Determine auth state details
       final authIsLoading = userAsyncValue is AsyncLoading;
       final user = userAsyncValue.valueOrNull;
 
       _logger.fine(
-          'Redirect Check: Name="$currentRouteName", Location="${state.matchedLocation}", PathParams="${state.pathParameters}", isSplash=$isSplashPage, isLogin=$isLoginPage, authLoading=$authIsLoading, userPresent=${user != null}');
+          'Redirect Check: Location="$currentLocation", PathParams="${state.pathParameters}", isSplash=$isSplashPage, isLogin=$isLoginPage, authLoading=$authIsLoading, userPresent=${user != null}');
 
       // --- Refined Redirection Logic using Names ---
 

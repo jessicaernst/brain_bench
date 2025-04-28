@@ -15,7 +15,8 @@ class AppUser with _$AppUser {
     @Default('en') String language,
     @Default({}) Map<String, double> categoryProgress,
     @Default({}) Map<String, Map<String, bool>> isTopicDone,
-  }) = _User;
+    required String id,
+  }) = _AppUser;
 
   factory AppUser.fromJson(Map<String, dynamic> json) =>
       _$AppUserFromJson(json);

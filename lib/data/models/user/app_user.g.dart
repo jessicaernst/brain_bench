@@ -6,7 +6,8 @@ part of 'app_user.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
+_$AppUserImpl _$$AppUserImplFromJson(Map<String, dynamic> json) =>
+    _$AppUserImpl(
       uid: json['uid'] as String,
       email: json['email'] as String,
       displayName: json['displayName'] as String?,
@@ -23,9 +24,10 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
             (k, e) => MapEntry(k, Map<String, bool>.from(e as Map)),
           ) ??
           const {},
+      id: json['id'] as String,
     );
 
-Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
+Map<String, dynamic> _$$AppUserImplToJson(_$AppUserImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
       'email': instance.email,
@@ -36,4 +38,5 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'language': instance.language,
       'categoryProgress': instance.categoryProgress,
       'isTopicDone': instance.isTopicDone,
+      'id': instance.id,
     };
