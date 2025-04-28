@@ -13,6 +13,16 @@ An Flutter knowledge check and learning App
 - fluttergen
 - svg
 
+## 🧪 Testing & Code Coverage
+
+Dieses Projekt verwendet Flutter's Built-in Testing sowie automatische Code Coverage Überwachung.
+
+### Voraussetzungen
+
+- Flutter SDK installiert
+- `fswatch` installiert (für macOS):
+  ```bash
+  brew install fswatch
 
 
 

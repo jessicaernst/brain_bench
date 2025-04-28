@@ -1,4 +1,7 @@
-# Miscellaneous
+# -----------------------------
+# 📁 Allgemeines / Sonstiges
+# -----------------------------
+
 *.class
 *.log
 *.pyc
@@ -11,65 +14,124 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
+*.tmp
+*.temp
 
-# IntelliJ related
+# Windows / System Trash
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# -----------------------------
+# 🧠 IDE/Editor spezifisch
+# -----------------------------
+
+# IntelliJ / Android Studio
 *.iml
 *.ipr
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
+# VS Code
+# (Standardmäßig lassen wir .vscode drin für Tasks/LaunchConfigs)
 #.vscode/
+*.code-workspace
+.VSCodeCounter/
 
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
+# VSCodeCounter specific files
+.VSCodeCounter/**
+
+# -----------------------------
+# 🛠 Flutter / Dart spezifisch
+# -----------------------------
+
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
+.flutter-versions
+.flutter_export_environment.sh
+.packages
 .pub-cache/
 .pub/
-/build/
+build/
+
+# Web / Linux / Windows / macOS build
+web/build/
+linux/build/
+windows/build/
+macos/build/
+ios/build/
+
+# Flutter auto-generated plugin symlinks
+.symlinks/
+
+# Flutter generated API docs
+**/doc/api/
+
+# Flutter dependency locks
+pubspec.lock
+
+# -----------------------------
+# 📱 Plattform-spezifisch
+# -----------------------------
+
+# iOS
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+ios/Pods/
+ios/.symlinks/
+ios/Runner.xcworkspace/
+ios/Runner/GeneratedPluginRegistrant.*
+ios/Runner/GoogleService-Info-*.plist
+ios/Runner/info-*.plist
+
+# macOS
+macos/Pods/
+macos/Flutter/ephemeral/
+macos/build/
+
+# Android
+android/.gradle/
+android/build/
+android/local.properties
+android/app/google-services-*.json
+android/app/debug
+android/app/profile
+android/app/release
+
+# -----------------------------
+# 🔥 Firebase/Secrets/Security
+# -----------------------------
+
+# Firebase configuration files
+firebase.json
+lib/services/firebase_options_*.dart
+**/google-services.json
+**/GoogleService-Info.plist
+**/TARGET@v11_hash=*
+**/WORKSPACE@v11_hash=*
+
+# -----------------------------
+# 🧪 Testing / Coverage
+# -----------------------------
+
+coverage/
+lcov.info
+test/**/*.log
+
+# -----------------------------
+# 🚀 Deployment / CI/CD
+# -----------------------------
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
 
 # Symbolication related
 app.*.symbols
 
 # Obfuscation related
 app.*.map.json
-
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
-
-.VSCodeCounter/2025-02-05_17-28-54/details.md
-.VSCodeCounter/2025-02-05_17-28-54/diff-details.md
-.VSCodeCounter/2025-02-05_17-28-54/diff.csv
-.VSCodeCounter/2025-02-05_17-28-54/diff.md
-.VSCodeCounter/2025-02-05_17-28-54/diff.txt
-.VSCodeCounter/2025-02-05_17-28-54/results.csv
-.VSCodeCounter/2025-02-05_17-28-54/results.json
-.VSCodeCounter/2025-02-05_17-28-54/results.md
-.VSCodeCounter/2025-02-05_17-28-54/results.txt
-.VSCodeCounter/
-
-# --- Firebase Staging: Generated + Secrets (do not commit) ---
-# Firebase configuration
-lib/services/firebase_options_*.dart
-firebase.json
-**/google-services.json
-**/GoogleService-Info.plist
-ios/Runner/GoogleService-Info-dev.plist
-ios/Runner/GoogleService-Info-prod.plist
-ios/Runner/GoogleService-Info-test.plist
-android/app/google-services-dev.json
-android/app/google-services-prod.json
-android/app/google-services-test.json
-ios/Runner/info-dev.plist
-ios/Runner/info-prod.plist
-ios/Runner/info-test.plist
-
-**/TARGET@v11_hash=*
-**/WORKSPACE@v11_hash=*

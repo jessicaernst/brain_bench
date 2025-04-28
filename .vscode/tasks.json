@@ -18,6 +18,36 @@
             "type": "shell",
             "command": "./scripts/use_firebase_env.sh prod",
             "problemMatcher": []
+        },
+        {
+            "label": "Flutter Test with Coverage",
+            "type": "shell",
+            "command": "flutter test --coverage",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Flutter Test Watch Coverage",
+            "type": "shell",
+            "command": "fswatch -o lib test | xargs -n1 -I{} bash -c 'flutter test --coverage && echo \"\\033[0;32m✅ All Tests Passed\" || echo \"\\033[0;31m❌ Tests Failed\"'",
+            "isBackground": true,
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            },
+            "problemMatcher": []
         }
     ]
 }
