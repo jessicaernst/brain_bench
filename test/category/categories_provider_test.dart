@@ -25,7 +25,6 @@ import 'package:flutter_test/flutter_test.dart';
 ///     allowing us to test how `categoryByIdProvider` behaves when its dependency
 ///     successfully provides data.
 class MockSuccessCategoriesNotifier extends Categories {
-  // <-- Extends the original Notifier class
   final List<Category> mockData;
   final String expectedLanguageCode;
 
@@ -33,7 +32,6 @@ class MockSuccessCategoriesNotifier extends Categories {
 
   @override
   Future<List<Category>> build(String languageCode) async {
-    // Optional: Verify the correct language code is passed during the test
     expect(languageCode, expectedLanguageCode);
     await Future.delayed(Duration.zero); // Simulate async operation
     return mockData; // Return controlled mock data
