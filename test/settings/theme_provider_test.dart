@@ -12,11 +12,8 @@ import 'package:mocktail/mocktail.dart';
 // Mock the SettingsRepository using mocktail
 class MockSettingsRepository extends Mock implements SettingsRepository {}
 
-// --- ADD A DUMMY ThemeMode FOR FALLBACK ---
 void main() {
-  // --- REGISTER FALLBACK VALUE FOR MOCKTAIL ---
   setUpAll(() {
-    // Register a fallback for ThemeMode
     registerFallbackValue(ThemeMode.system);
   });
 

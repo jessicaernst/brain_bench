@@ -26,6 +26,8 @@ class AuthViewModel extends _$AuthViewModel {
           'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
 
       await ensureUserExistsIfNeeded(ref, appUser);
+
+      state = const AsyncData(null);
     } catch (e, st) {
       state = AsyncError(e, st);
       if (context.mounted) _showError(context, e);
@@ -45,6 +47,8 @@ class AuthViewModel extends _$AuthViewModel {
           'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
 
       await ensureUserExistsIfNeeded(ref, appUser);
+
+      state = const AsyncData(null);
     } catch (e, st) {
       state = AsyncError(e, st);
       if (context.mounted) _showError(context, e);
@@ -60,6 +64,7 @@ class AuthViewModel extends _$AuthViewModel {
           'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
 
       await ensureUserExistsIfNeeded(ref, appUser);
+      state = const AsyncData(null);
     } catch (e, st) {
       state = AsyncError(e, st);
       if (context.mounted) _showError(context, e);
@@ -75,6 +80,8 @@ class AuthViewModel extends _$AuthViewModel {
           'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}, Email=${appUser.email}');
 
       await ensureUserExistsIfNeeded(ref, appUser);
+
+      state = const AsyncData(null);
     } catch (e, st) {
       state = AsyncError(e, st);
       if (context.mounted) _showError(context, e);

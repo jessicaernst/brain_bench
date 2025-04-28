@@ -11,15 +11,12 @@ import 'package:mocktail/mocktail.dart';
 // Mock the SettingsRepository
 class MockSettingsRepository extends Mock implements SettingsRepository {}
 
-// --- ADD A DUMMY LOCALE FOR FALLBACK ---
 class FakeLocale extends Fake implements Locale {}
 
 void main() {
-  // --- REGISTER FALLBACK VALUE FOR MOCKTAIL ---
   setUpAll(() {
     registerFallbackValue(const Locale('en'));
   });
-  // -----------------------------------------
 
   // --- Test Group for the LocaleNotifier ---
   group('LocaleNotifier', () {
@@ -48,10 +45,8 @@ void main() {
         ],
       );
 
-      // Keep the notifier instance for easy access in tests
       notifier = container.read(localeNotifierProvider.notifier);
-      // Listen to keep the provider alive if needed for specific test scenarios,
-      // though keepAlive() in build should handle persistence.
+
       container.listen(localeNotifierProvider, (_, __) {});
     });
 

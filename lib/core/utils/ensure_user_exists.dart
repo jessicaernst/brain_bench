@@ -1,3 +1,4 @@
+// In: lib/core/utils/ensure_user_exists.dart
 import 'dart:io' show Platform;
 import 'package:brain_bench/core/native_channels/contact_channel.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
@@ -7,13 +8,10 @@ import 'package:logging/logging.dart';
 
 final _logger = Logger('EnsureUser');
 
-/// Ensures that a user corresponding to the authenticated AppUser exists in the
-/// application's database.
-/// ... (rest of the doc comment) ...
-/// **iOS Specific Enhancement:** On iOS devices, it attempts to fetch the user's
-/// contact name and image (Base64) from the device's contacts. If a name is found
-/// and the user has no display name, it's used. The image handling is deferred.
-Future<void> ensureUserExistsIfNeeded(Ref ref, model.AppUser? appUser) async {
+// 1. BENENNE DEINE AKTUELLE FUNKTION UM (z.B. mit Unterstrich am Anfang)
+//    Dies ist jetzt die private Implementierungsdetails.
+Future<void> _ensureUserExistsIfNeededImpl(
+    Ref ref, model.AppUser? appUser) async {
   // Ensure the AppUser object (mapped from Auth provider) is not null.
   if (appUser == null) {
     _logger.warning(
@@ -59,17 +57,7 @@ Future<void> ensureUserExistsIfNeeded(Ref ref, model.AppUser? appUser) async {
           appUser.photoUrl; // Keep original URL for now
 
       // --- TODO (Post-Firestore Migration & Security Setup) ---
-      // Description: Upload the profile image from device contacts (iOS only)
-      //              to Firebase Storage if no photoUrl exists from the auth provider.
-      // Steps:
-      // 1. Check if Platform.isIOS and deviceContactInfo?.imageBase64 is valid.
-      // 2. Check if finalPhotoUrl is null or empty.
-      // 3. If both conditions are true:
-      //    a. Get the StorageRepository instance: `ref.read(storageRepositoryProvider)`.
-      //    b. Call `storageRepo.uploadProfileImageBase64(appUser.uid, deviceContactInfo!.imageBase64!)`.
-      //    c. Assign the returned download URL to `finalPhotoUrl`.
-      //    d. Handle potential errors during upload gracefully (e.g., log warning, proceed without image).
-      // Requires: Firestore setup, Security Rules, App Check, StorageRepository implementation.
+      // ... (dein TODO bleibt hier) ...
 
       // --- Use device contact name ONLY if auth provider didn't supply one ---
       if (Platform.isIOS && // Check platform again for safety
@@ -120,20 +108,7 @@ Future<void> ensureUserExistsIfNeeded(Ref ref, model.AppUser? appUser) async {
       }
 
       // --- TODO (Post-Firestore Migration & Security Setup) ---
-      // Description: Upload the profile image from device contacts (iOS only)
-      //              to Firebase Storage if no photoUrl exists after considering
-      //              the auth provider's update.
-      // Steps:
-      // 1. Determine the current effective photo URL:
-      //    `final currentPhotoUrl = updates['photoUrl'] ?? existingDbUser.photoUrl;`
-      // 2. Check if Platform.isIOS and deviceContactInfo?.imageBase64 is valid.
-      // 3. Check if currentPhotoUrl is null or empty.
-      // 4. If conditions 2 and 3 are true:
-      //    a. Get the StorageRepository instance: `ref.read(storageRepositoryProvider)`.
-      //    b. Call `storageRepo.uploadProfileImageBase64(appUser.uid, deviceContactInfo!.imageBase64!)`.
-      //    c. If upload is successful, set `updates['photoUrl'] = newUrl` and `needsUpdate = true`.
-      //    d. Handle potential errors during upload gracefully.
-      // Requires: Firestore setup, Security Rules, App Check, StorageRepository implementation.
+      // ... (dein TODO bleibt hier) ...
 
       // 3. Check displayName from Device Contact (iOS only):
       //    Use it ONLY if the current name (considering potential update from step 1) is still null or empty.
@@ -176,3 +151,8 @@ Future<void> ensureUserExistsIfNeeded(Ref ref, model.AppUser? appUser) async {
     // Consider rethrowing or specific error handling if DB sync is critical.
   }
 }
+
+// 2. FÜGE DIESE ÖFFENTLICHE VARIABLE HINZU
+//    Sie hält die Referenz auf die Implementierungsfunktion.
+//    Dein Test wird DIESE Variable überschreiben.
+var ensureUserExistsIfNeeded = _ensureUserExistsIfNeededImpl;
