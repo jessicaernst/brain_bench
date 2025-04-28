@@ -16,6 +16,8 @@ part 'quiz_result_notifier.g.dart';
 
 final Logger _logger = Logger('QuizResultNotifier');
 
+const Duration _kExpansionAnimationDuration = Duration(milliseconds: 200);
+
 /// A Riverpod notifier that manages the state of the quiz result page.
 ///
 /// This notifier is responsible for:
@@ -45,28 +47,57 @@ class QuizResultNotifier extends _$QuizResultNotifier {
 
   /// Toggles the selected view between `none`, `correct`, and `incorrect`.
   ///
-  /// Clears expanded answers whenever the view changes to 'correct' or 'incorrect'
-  /// to ensure the new list starts collapsed.
+  /// When switching between 'correct' and 'incorrect', it first collapses
+  /// the current view, waits for the animation, then switches the view.
   ///
   /// Parameters:
   ///   - [newView]: The new view to toggle to.
   void toggleView(SelectedView newView) {
     _logger.fine('toggleView called with newView: $newView');
-    if (state.selectedView != SelectedView.none &&
-        state.selectedView == newView) {
-      // If we're currently in correct/incorrect and we tap the same button, go to none
-      _logger.info('Toggling to SelectedView.none');
-      // Clear expansions when going back to 'none'
+
+    final currentView = state.selectedView;
+
+    if (currentView != SelectedView.none && currentView == newView) {
+      // --- Case 1: Same button pressed again -> Switch to 'none' ---
+      _logger.info('Toggling OFF view: $currentView -> none');
+      // Collapse and switch view immediately
       state =
           state.copyWith(selectedView: SelectedView.none, expandedAnswers: {});
+    } else if (currentView != SelectedView.none && currentView != newView) {
+      // --- Case 2: Switch between 'correct' and 'incorrect' ---
+      _logger.info('Switching view: $currentView -> $newView');
+
+      // Step 1: Collapse the current view by clearing expandedAnswers
+      _logger.fine('Switch Step 1: Clearing expanded answers for $currentView');
+      state = state.copyWith(expandedAnswers: {});
+
+      // Step 2: Wait for collapse animation to finish
+      Future.delayed(_kExpansionAnimationDuration, () {
+        // Step 3: Switch the view, but only if the state hasn't changed drastically in the meantime
+        // (e.g., user didn't toggle back to 'none' during the delay)
+        // We check if expandedAnswers is still empty (meaning Step 1 is still relevant)
+        // and if the view hasn't already become the target newView somehow.
+        try {
+          if (state.expandedAnswers.isEmpty && state.selectedView != newView) {
+            _logger.fine('Switch Step 3: Setting selectedView to $newView');
+            state = state.copyWith(selectedView: newView);
+          } else {
+            _logger.fine(
+                'Switch Step 3: Skipped setting view to $newView, state changed during delay.');
+          }
+        } catch (e) {
+          _logger.warning(
+              'Failed to switch view after delay, provider might be disposed: $e');
+        }
+      });
     } else {
-      // --- ALWAYS CLEAR EXPANSIONS when switching TO correct/incorrect ---
-      _logger.info('Switching view to: $newView and clearing expanded answers');
+      // --- Case 3: Switch from 'none' to 'correct' or 'incorrect' ---
+      _logger.info('Switching view: none -> $newView');
+      // Just switch the view, start collapsed (expandedAnswers is already empty or will be set)
       state = state.copyWith(
           selectedView: newView,
-          expandedAnswers: {} // Ensure expansions are cleared
+          expandedAnswers: {} // Ensure it starts collapsed
           );
-      // --- END CHANGE ---
     }
   }
 
