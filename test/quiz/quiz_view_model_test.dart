@@ -1,15 +1,13 @@
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
-// import 'package:brain_bench/business_logic/quiz/quiz_answer_evaluator.dart'; // Keep if needed elsewhere
 import 'package:brain_bench/business_logic/quiz/quiz_state.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
-import 'package:brain_bench/data/models/quiz/answer.dart'; // Your model
-import 'package:brain_bench/data/models/quiz/question.dart'; // Make sure this import is correct
+import 'package:brain_bench/data/models/quiz/answer.dart';
+import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart'
-    hide Answer; // HIDE Answer from mocktail
+import 'package:mocktail/mocktail.dart' hide Answer;
 
 // --- Mocks ---
 
@@ -238,9 +236,6 @@ void main() {
         // Check the state of the overridden notifier
         final answersState = container.read(answersNotifierProvider);
         expect(answersState, mockAnswersQ1);
-        // Optional: Check counters if needed by fetching the fake instance
-        // final fakeNotifier = container.read(answersNotifierProvider.notifier) as FakeAnswersNotifier;
-        // expect(fakeNotifier.initializeAnswersCallCount, 1);
       });
 
       test('Does not initialize if already initialized', () async {
@@ -315,9 +310,6 @@ void main() {
         // Check the state of the overridden notifier (should be reset)
         final answersState = container.read(answersNotifierProvider);
         expect(answersState, isEmpty);
-        // Optional: Check counters if needed
-        // final fakeNotifier = container.read(answersNotifierProvider.notifier) as FakeAnswersNotifier;
-        // expect(fakeNotifier.resetAnswersCallCount, 1);
       });
     });
 
@@ -419,9 +411,6 @@ void main() {
         // Check the state of the overridden notifier
         final answersState = container.read(answersNotifierProvider);
         expect(answersState, mockAnswersQ2);
-        // Optional: Check counters if needed
-        // final fakeNotifier = container.read(answersNotifierProvider.notifier) as FakeAnswersNotifier;
-        // expect(fakeNotifier.initializeAnswersCallCount, 1);
       });
 
       test('loadNextQuestion does nothing if no next question', () async {
@@ -480,17 +469,12 @@ void main() {
         // Check the state of the overridden notifier (should be reset)
         final answersState = container.read(answersNotifierProvider);
         expect(answersState, isEmpty);
-        // Optional: Check counters if needed
-        // final fakeNotifier = container.read(answersNotifierProvider.notifier) as FakeAnswersNotifier;
-        // expect(fakeNotifier.resetAnswersCallCount, 1);
       });
     });
 
     group('checkAnswers', () {
-      // --- Test mit Override für Fake-Zustand ---
       test('Correctly identifies correct, incorrect, and missed answers',
           () async {
-        // Arrange: Definiere den Zustand, den der Fake haben soll
         final testAnswers = [
           Answer(
               id: 'a1',
@@ -518,10 +502,9 @@ void main() {
               isSelected: false),
         ];
 
-        // Erstelle Container mit spezifischem Override für diesen Test
         final container = createContainer(overrides: [
-          answersNotifierProvider.overrideWith(
-              () => FakeAnswersNotifier(testAnswers)), // Übergebe testAnswers
+          answersNotifierProvider
+              .overrideWith(() => FakeAnswersNotifier(testAnswers)),
         ]);
 
         // Arrange: Initialer Zustand des ViewModels
@@ -532,34 +515,23 @@ void main() {
         );
         viewModel.state = initialState;
 
-        // Arrange: Erwarteter Endzustand
         final expectedState = initialState.copyWith(
           correctAnswers: ['a1'],
           incorrectAnswers: ['a2'],
           missedCorrectAnswers: ['a3'],
         );
 
-        // --- DEBUG ---
-        final initialFakeState = container.read(answersNotifierProvider);
-        print(
-            '[Test] FakeNotifier initial state from container: ${initialFakeState.map((a) => '${a.id}(sel:${a.isSelected},cor:${a.isCorrect})')}');
-        // --- END DEBUG ---
-
         // Act
         viewModel.checkAnswers();
         await container.pump(); // Allow state update propagation
 
         // Assert
-        print(
-            'State on viewModel instance after checkAnswers: ${viewModel.state}');
-        // Die internen Logs in checkAnswers sollten jetzt die korrekten Daten zeigen
         expect(viewModel.state, expectedState,
             reason:
                 'The viewModel state should match the expected state after checkAnswers');
       });
 
       test('Handles empty answers list', () async {
-        // Verwende den Standard-Override (leere Liste)
         final container = createContainer();
         final viewModel = container.read(quizViewModelProvider.notifier);
 
@@ -605,14 +577,10 @@ void main() {
       // Assert Interactions (check state of the overridden notifier)
       final answersState = container.read(answersNotifierProvider);
       expect(answersState, isEmpty); // State should be reset
-      // Optional: Check counters if needed
-      // final fakeNotifier = container.read(answersNotifierProvider.notifier) as FakeAnswersNotifier;
-      // expect(fakeNotifier.resetAnswersCallCount, 1);
     });
 
     group('getAllCorrectAnswersForCurrentQuestion', () {
       test('Returns correct answer texts for the specified language', () async {
-        // Arrange: Definiere den Zustand für den Fake
         final testAnswers = [
           Answer(
               id: 'a1',
@@ -633,7 +601,6 @@ void main() {
               isCorrect: true,
               isSelected: false),
         ];
-        // Erstelle Container mit Override
         final container = createContainer(overrides: [
           answersNotifierProvider
               .overrideWith(() => FakeAnswersNotifier(testAnswers)),
@@ -659,7 +626,6 @@ void main() {
       });
 
       test('Returns empty list when answers notifier is empty', () async {
-        // Verwende Standard-Override (leere Liste)
         final container = createContainer();
         final viewModel = container.read(quizViewModelProvider.notifier);
         viewModel.state = QuizState.initial().copyWith(
