@@ -1,5 +1,5 @@
 # -----------------------------
-# 📁 Allgemeines / Sonstiges
+# 📁 General / Miscellaneous
 # -----------------------------
 
 *.class
@@ -24,7 +24,7 @@ Desktop.ini
 $RECYCLE.BIN/
 
 # -----------------------------
-# 🧠 IDE/Editor spezifisch
+# 🧠 IDE/Editor Specific
 # -----------------------------
 
 # IntelliJ / Android Studio
@@ -34,7 +34,7 @@ $RECYCLE.BIN/
 .idea/
 
 # VS Code
-# (Standardmäßig lassen wir .vscode drin für Tasks/LaunchConfigs)
+# (By default, we keep .vscode for Tasks/LaunchConfigs)
 #.vscode/
 *.code-workspace
 .VSCodeCounter/
@@ -43,7 +43,7 @@ $RECYCLE.BIN/
 .VSCodeCounter/**
 
 # -----------------------------
-# 🛠 Flutter / Dart spezifisch
+# 🛠 Flutter / Dart Specific
 # -----------------------------
 
 .dart_tool/
@@ -73,7 +73,7 @@ ios/build/
 pubspec.lock
 
 # -----------------------------
-# 📱 Plattform-spezifisch
+# 📱 Platform-Specific
 # -----------------------------
 
 # iOS
