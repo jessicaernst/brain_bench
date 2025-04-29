@@ -70,6 +70,7 @@ dependencies:
   mocktail: ^1.0.4
   auto_hyphenating_text: ^0.3.0
   equatable: ^2.0.7
+  firebase_core_platform_interface: ^5.4.0
 
 
 dev_dependencies:

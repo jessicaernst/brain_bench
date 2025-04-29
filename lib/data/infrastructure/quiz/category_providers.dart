@@ -1,9 +1,9 @@
 import 'package:brain_bench/business_logic/auth/current_user_provider.dart';
-import 'package:brain_bench/data/models/category/category.dart';
-import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
+import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:brain_bench/data/models/user/app_user.dart';
+import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -15,46 +15,96 @@ final Logger _logger = Logger('Categories');
 class Categories extends _$Categories {
   @override
   Future<List<Category>> build(String languageCode) async {
+    // Use the notifier's 'ref' to watch dependencies
     final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
-    return repo.getCategories(languageCode);
+    _logger.finer('Fetching categories for language: $languageCode');
+    final categories = await repo.getCategories(languageCode);
+    _logger.finer('Fetched ${categories.length} categories.');
+    return categories;
   }
 
   Future<void> updateCategoryProgress(
     String categoryId,
     String languageCode,
-    WidgetRef ref,
+    // WidgetRef ref, // <-- PARAMETER REMOVED
   ) async {
-    final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
-    final allTopics = await repo.getTopics(categoryId, languageCode);
+    // Use the notifier's 'ref' to read dependencies
+    final QuizMockDatabaseRepository repo =
+        await ref.read(quizMockDatabaseRepositoryProvider.future);
+    final AppUser? appUser =
+        await ref.read(currentUserProvider.future); // Read current user state
 
-    final appUser = await ref.read(currentUserProvider.future);
-    final user = await repo.getUser(appUser!.uid);
+    if (appUser == null) {
+      _logger.warning('Cannot update category progress: currentUser is null.');
+      return; // Exit if no authenticated user
+    }
 
-    if (user == null) return;
+    _logger.finer(
+        'Updating progress for category $categoryId, user ${appUser.uid}');
 
-    final double progress =
-        _calculateCategoryProgress(allTopics, user, categoryId);
+    try {
+      // Fetch necessary data using the repository
+      final List<Topic> allTopics =
+          await repo.getTopics(categoryId, languageCode);
+      final AppUser? user =
+          await repo.getUser(appUser.uid); // Fetch user data from DB
 
-    final updatedUser = user.copyWith(
-      categoryProgress: {
-        ...user.categoryProgress,
-        categoryId: progress,
-      },
-    );
+      if (user == null) {
+        _logger.warning(
+            'Cannot update category progress: User ${appUser.uid} not found in DB.');
+        return; // Exit if user data not found in DB
+      }
 
-    await repo.updateUser(updatedUser);
-    _logger.info('✅ categoryProgress aktualisiert für $categoryId: $progress');
+      // Calculate progress using the helper method
+      final double progress =
+          _calculateCategoryProgress(allTopics, user, categoryId);
+
+      // Create the updated user object
+      final updatedUser = user.copyWith(
+        categoryProgress: {
+          ...user
+              .categoryProgress, // Preserve existing progress for other categories
+          categoryId: progress, // Update progress for the current category
+        },
+      );
+
+      // Save the updated user data
+      await repo.updateUser(updatedUser);
+      _logger.info(
+          '✅ Category progress updated for $categoryId: $progress'); // Log in English
+    } catch (e, s) {
+      _logger.severe(
+          '❌ Error updating category progress for $categoryId', e, s);
+      // Re-throw the exception so the caller (e.g., UI) can handle it if needed
+      rethrow;
+    }
   }
 
-  // ✅ Helper method to calculate the category progress
+  // Helper method remains the same
   double _calculateCategoryProgress(
       List<Topic> topics, AppUser user, String categoryId) {
-    if (topics.isEmpty) return 0.0;
+    if (topics.isEmpty) {
+      _logger
+          .finer('No topics found for category $categoryId, progress is 0.0');
+      return 0.0;
+    }
 
     final topicDoneMap = user.isTopicDone[categoryId] ?? {};
-
     final int passedTopicsCount =
         topics.where((t) => topicDoneMap[t.id] == true).length;
-    return passedTopicsCount / topics.length;
+    final progress = passedTopicsCount / topics.length;
+    _logger.finer(
+        'Calculated progress for $categoryId: $passedTopicsCount / ${topics.length} = $progress');
+    return progress;
   }
 }
+
+// categoryById provider remains the same as in business_logic/categories/categories_provider.dart
+// If it was also defined here, it should be removed from this infrastructure file.
+/*
+@riverpod
+Future<Category> categoryById(
+    Ref ref, String categoryId, String languageCode) async {
+  // ... implementation ...
+}
+*/
