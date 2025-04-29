@@ -295,4 +295,25 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get topicsTitle => 'Themen';
+
+  @override
+  String get permissionRequiredTitle => 'Berechtigung erforderlich';
+
+  @override
+  String get permissionPhotosPermanentlyDenied => 'Um Fotos auszuwählen, aktiviere bitte den Fotozugriff für Brain Bench in den Geräteeinstellungen.';
+
+  @override
+  String get permissionCameraPermanentlyDenied => 'Um Fotos aufzunehmen, aktiviere bitte den Kamerazugriff für Brain Bench in den Geräteeinstellungen.';
+
+  @override
+  String get permissionPhotosDenied => 'Fotozugriff verweigert.';
+
+  @override
+  String get permissionCameraDenied => 'Kamerazugriff verweigert.';
+
+  @override
+  String get openSettings => 'Einstellungen öffnen';
+
+  @override
+  String get cancel => 'Abbrechen';
 }

@@ -670,6 +670,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Topics'**
   String get topicsTitle;
+
+  /// Title for dialogs explaining that a permission is needed.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission Required'**
+  String get permissionRequiredTitle;
+
+  /// Message shown when photo library access is permanently denied, prompting the user to go to settings.
+  ///
+  /// In en, this message translates to:
+  /// **'To select photos, please enable Photos access for Brain Bench in your device settings.'**
+  String get permissionPhotosPermanentlyDenied;
+
+  /// Message shown when camera access is permanently denied, prompting the user to go to settings.
+  ///
+  /// In en, this message translates to:
+  /// **'To take photos, please enable Camera access for Brain Bench in your device settings.'**
+  String get permissionCameraPermanentlyDenied;
+
+  /// Brief message shown (e.g., in a SnackBar) when photo library access is denied but can be requested again.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo access denied.'**
+  String get permissionPhotosDenied;
+
+  /// Brief message shown (e.g., in a SnackBar) when camera access is denied but can be requested again.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera access denied.'**
+  String get permissionCameraDenied;
+
+  /// Label for a button that opens the application's settings page in the device settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get openSettings;
+
+  /// Label for a generic cancel button, typically used in dialogs.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

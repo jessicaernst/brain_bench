@@ -383,5 +383,33 @@
     "topicsTitle": "Themen",
     "@topicsTitle": {
         "description": "The title of the topics page"
+    },
+    "permissionRequiredTitle": "Berechtigung erforderlich",
+    "@permissionRequiredTitle": {
+        "description": "Title for dialogs explaining that a permission is needed."
+    },
+    "permissionPhotosPermanentlyDenied": "Um Fotos auszuwählen, aktiviere bitte den Fotozugriff für Brain Bench in den Geräteeinstellungen.",
+    "@permissionPhotosPermanentlyDenied": {
+        "description": "Message shown when photo library access is permanently denied, prompting the user to go to settings."
+    },
+    "permissionCameraPermanentlyDenied": "Um Fotos aufzunehmen, aktiviere bitte den Kamerazugriff für Brain Bench in den Geräteeinstellungen.",
+    "@permissionCameraPermanentlyDenied": {
+        "description": "Message shown when camera access is permanently denied, prompting the user to go to settings."
+    },
+    "permissionPhotosDenied": "Fotozugriff verweigert.",
+    "@permissionPhotosDenied": {
+        "description": "Brief message shown (e.g., in a SnackBar) when photo library access is denied but can be requested again."
+    },
+    "permissionCameraDenied": "Kamerazugriff verweigert.",
+    "@permissionCameraDenied": {
+        "description": "Brief message shown (e.g., in a SnackBar) when camera access is denied but can be requested again."
+    },
+    "openSettings": "Einstellungen öffnen",
+    "@openSettings": {
+        "description": "Label for a button that opens the application's settings page in the device settings."
+    },
+    "cancel": "Abbrechen",
+    "@cancel": {
+        "description": "Label for a generic cancel button, typically used in dialogs."
     }
 }

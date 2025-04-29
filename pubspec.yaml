@@ -71,6 +71,8 @@ dependencies:
   auto_hyphenating_text: ^0.3.0
   equatable: ^2.0.7
   firebase_core_platform_interface: ^5.4.0
+  permission_handler: ^12.0.0+1
+  device_info_plus: ^11.4.0
 
 
 dev_dependencies:

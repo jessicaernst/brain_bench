@@ -383,5 +383,33 @@
     "topicsTitle": "Topics",
     "@topicsTitle": {
         "description": "The title of the topics page"
+    },
+    "permissionRequiredTitle": "Permission Required",
+    "@permissionRequiredTitle": {
+        "description": "Title for dialogs explaining that a permission is needed."
+    },
+    "permissionPhotosPermanentlyDenied": "To select photos, please enable Photos access for Brain Bench in your device settings.",
+    "@permissionPhotosPermanentlyDenied": {
+        "description": "Message shown when photo library access is permanently denied, prompting the user to go to settings."
+    },
+    "permissionCameraPermanentlyDenied": "To take photos, please enable Camera access for Brain Bench in your device settings.",
+    "@permissionCameraPermanentlyDenied": {
+        "description": "Message shown when camera access is permanently denied, prompting the user to go to settings."
+    },
+    "permissionPhotosDenied": "Photo access denied.",
+    "@permissionPhotosDenied": {
+        "description": "Brief message shown (e.g., in a SnackBar) when photo library access is denied but can be requested again."
+    },
+    "permissionCameraDenied": "Camera access denied.",
+    "@permissionCameraDenied": {
+        "description": "Brief message shown (e.g., in a SnackBar) when camera access is denied but can be requested again."
+    },
+    "openSettings": "Open Settings",
+    "@openSettings": {
+        "description": "Label for a button that opens the application's settings page in the device settings."
+    },
+    "cancel": "Cancel",
+    "@cancel": {
+        "description": "Label for a generic cancel button, typically used in dialogs."
     }
 }

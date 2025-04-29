@@ -295,4 +295,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get topicsTitle => 'Topics';
+
+  @override
+  String get permissionRequiredTitle => 'Permission Required';
+
+  @override
+  String get permissionPhotosPermanentlyDenied => 'To select photos, please enable Photos access for Brain Bench in your device settings.';
+
+  @override
+  String get permissionCameraPermanentlyDenied => 'To take photos, please enable Camera access for Brain Bench in your device settings.';
+
+  @override
+  String get permissionPhotosDenied => 'Photo access denied.';
+
+  @override
+  String get permissionCameraDenied => 'Camera access denied.';
+
+  @override
+  String get openSettings => 'Open Settings';
+
+  @override
+  String get cancel => 'Cancel';
 }
