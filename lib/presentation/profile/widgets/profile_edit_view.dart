@@ -15,7 +15,6 @@ import 'package:logging/logging.dart';
 
 final Logger _logger = Logger('ProfileEditView');
 
-// --- Change StatelessWidget to HookWidget ---
 class ProfileEditView extends HookWidget {
   const ProfileEditView({
     super.key,
