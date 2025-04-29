@@ -1,15 +1,16 @@
 import 'package:brain_bench/business_logic/quiz/quiz_result_state.dart';
-import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
-import 'package:brain_bench/data/models/result/result.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/infrastructure/quiz/topic_providers.dart';
 import 'package:brain_bench/data/infrastructure/results/result_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
+import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
+import 'package:brain_bench/data/models/result/result.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import 'quiz_answers_notifier.dart';
 
 part 'quiz_result_notifier.g.dart';
@@ -34,7 +35,7 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   @override
   QuizResultState build() {
     final quizAnswers = ref.watch(quizAnswersNotifierProvider);
-    _logger.fine(// Changed level
+    _logger.fine(
         'QuizResultNotifier build() - initial state: ${quizAnswers.length} answers');
     return QuizResultState(
       selectedView: SelectedView.none,
@@ -60,40 +61,50 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     if (currentView != SelectedView.none && currentView == newView) {
       // --- Case 1: Same button pressed again -> Switch to 'none' ---
       _logger.info('Toggling OFF view: $currentView -> none');
-      // Collapse and switch view immediately
       state =
           state.copyWith(selectedView: SelectedView.none, expandedAnswers: {});
     } else if (currentView != SelectedView.none && currentView != newView) {
       // --- Case 2: Switch between 'correct' and 'incorrect' ---
       _logger.info('Switching view: $currentView -> $newView');
 
-      // Step 1: Collapse the current view by clearing expandedAnswers
-      _logger.fine('Switch Step 1: Clearing expanded answers for $currentView');
-      state = state.copyWith(expandedAnswers: {});
+      final viewBeingSwitchedFrom = currentView;
 
-      // Step 2: Wait for collapse animation to finish
+      _logger.fine('Switch Step 1: Clearing expanded answers for $currentView');
+
       Future.delayed(_kExpansionAnimationDuration, () {
-        // Step 3: Switch the view, but only if the state hasn't changed drastically in the meantime
-        // (e.g., user didn't toggle back to 'none' during the delay)
-        // We check if expandedAnswers is still empty (meaning Step 1 is still relevant)
-        // and if the view hasn't already become the target newView somehow.
         try {
-          if (state.expandedAnswers.isEmpty && state.selectedView != newView) {
-            _logger.fine('Switch Step 3: Setting selectedView to $newView');
+          // Use FINEST for very detailed debug logs inside async callback
+          _logger.finest('--- INSIDE FUTURE.DELAYED CALLBACK ---');
+          _logger.finest('Current state.selectedView: ${state.selectedView}');
+          _logger.finest(
+              'Current state.expandedAnswers.isEmpty: ${state.expandedAnswers.isEmpty}');
+          _logger
+              .finest('Captured viewBeingSwitchedFrom: $viewBeingSwitchedFrom');
+          _logger.finest('Captured newView: $newView');
+
+          if (state.expandedAnswers.isEmpty &&
+              state.selectedView == viewBeingSwitchedFrom) {
+            _logger.finest('CONDITION TRUE: Setting selectedView to $newView');
             state = state.copyWith(selectedView: newView);
+            _logger.finest('STATE SET to: ${state.selectedView}');
           } else {
-            _logger.fine(
-                'Switch Step 3: Skipped setting view to $newView, state changed during delay.');
+            _logger.finest('CONDITION FALSE: Skipped setting view to $newView');
+            if (state.expandedAnswers.isNotEmpty) {
+              _logger.warning('Reason: expandedAnswers was NOT empty.');
+            }
+            if (state.selectedView != viewBeingSwitchedFrom) {
+              _logger.warning(
+                  'Reason: state.selectedView (${state.selectedView}) != viewBeingSwitchedFrom ($viewBeingSwitchedFrom)');
+            }
           }
-        } catch (e) {
-          _logger.warning(
-              'Failed to switch view after delay, provider might be disposed: $e');
+        } catch (e, s) {
+          _logger.severe(
+              '--- CATCH BLOCK EXECUTED in Future.delayed ---', e, s);
         }
       });
     } else {
       // --- Case 3: Switch from 'none' to 'correct' or 'incorrect' ---
       _logger.info('Switching view: none -> $newView');
-      // Just switch the view, start collapsed (expandedAnswers is already empty or will be set)
       state = state.copyWith(
           selectedView: newView,
           expandedAnswers: {} // Ensure it starts collapsed
@@ -102,127 +113,71 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   }
 
   /// Toggles the explanation for a given question.
-  ///
-  /// If the explanation for the question is already expanded, it is collapsed.
-  /// Otherwise, it is expanded.
-  ///
-  /// Parameters:
-  ///   - [questionId]: The ID of the question to toggle the explanation for.
   void toggleExplanation(String questionId) {
     _logger.fine('toggleExplanation called for questionId: $questionId');
     final newExpandedAnswers = {...state.expandedAnswers};
     if (newExpandedAnswers.contains(questionId)) {
       newExpandedAnswers.remove(questionId);
-      _logger.info('Removed questionId $questionId from expandedAnswers');
+      _logger.fine('Removed questionId $questionId from expandedAnswers');
     } else {
       newExpandedAnswers.add(questionId);
-      _logger.info('Added questionId $questionId to expandedAnswers');
+      _logger.fine('Added questionId $questionId to expandedAnswers');
     }
     state = state.copyWith(expandedAnswers: newExpandedAnswers);
   }
 
   // --- Data Access/Filtering Methods ---
 
-  /// Returns a filtered list of answers based on the selected view.
-  ///
-  /// Delegates filtering logic to [_filterAnswersByView].
-  ///
-  /// Returns:
-  ///   A list of [QuizAnswer] objects.
   List<QuizAnswer> getFilteredAnswers() {
     _logger.fine(
         'getFilteredAnswers called with current selectedView: ${state.selectedView}');
     return _filterAnswersByView(state.quizAnswers, state.selectedView);
   }
 
-  /// Checks if there are any correct answers.
-  ///
-  /// Delegates check to [_isAnswerCorrect].
-  ///
-  /// Returns:
-  ///   `true` if there are any correct answers, `false` otherwise.
   bool hasCorrectAnswers() {
     final result = state.quizAnswers.any(_isAnswerCorrect);
-    _logger.finer('hasCorrectAnswers returning: $result');
+    _logger.finer('hasCorrectAnswers returning: $result'); // Keep FINER
     return result;
   }
 
-  /// Checks if there are any incorrect answers.
-  ///
-  /// Delegates check to [_isAnswerCorrect].
-  ///
-  /// Returns:
-  ///   `true` if there are any incorrect answers, `false` otherwise.
   bool hasIncorrectAnswers() {
     final result = state.quizAnswers.any((a) => !_isAnswerCorrect(a));
-    _logger.finer('hasIncorrectAnswers returning: $result');
+    _logger.finer('hasIncorrectAnswers returning: $result'); // Keep FINER
     return result;
   }
 
   // --- Calculation Methods ---
 
-  /// Calculates the total possible points for the quiz.
-  ///
-  /// Delegates calculation to [_calculateTotalPoints].
-  ///
-  /// Returns:
-  ///   The total possible points.
   int calculateTotalPossiblePoints() {
     final total = _calculateTotalPoints(state.quizAnswers);
-    _logger.finer('calculateTotalPossiblePoints returning: $total');
+    _logger
+        .finer('calculateTotalPossiblePoints returning: $total'); // Keep FINER
     return total;
   }
 
-  /// Calculates the user's points for the quiz.
-  ///
-  /// Delegates calculation to [_calculateEarnedPoints].
-  ///
-  /// Returns:
-  ///   The user's points.
   int calculateUserPoints() {
     final userPoints = _calculateEarnedPoints(state.quizAnswers);
-    _logger.finer('calculateUserPoints returning: $userPoints');
+    _logger.finer('calculateUserPoints returning: $userPoints'); // Keep FINER
     return userPoints;
   }
 
-  /// Calculates the percentage of correct answers.
-  ///
-  /// Delegates calculation to [_calculatePercentageScore].
-  ///
-  /// Returns:
-  ///   The percentage of correct answers.
   double calculatePercentage() {
     final total = calculateTotalPossiblePoints();
     final userPoints = calculateUserPoints();
     final percentage = _calculatePercentageScore(userPoints, total);
-    _logger.finer('calculatePercentage returning: $percentage');
+    _logger.finer('calculatePercentage returning: $percentage'); // Keep FINER
     return percentage;
   }
 
-  /// Determines if the quiz was passed.
-  ///
-  /// Delegates check to [_checkIfPassed].
-  ///
-  /// Returns:
-  ///   `true` if the quiz was passed, `false` otherwise.
   bool isQuizPassed() {
     final percentage = calculatePercentage();
     final isPassed = _checkIfPassed(percentage);
-    _logger.finer('isQuizPassed returning: $isPassed');
+    _logger.finer('isQuizPassed returning: $isPassed'); // Keep FINER
     return isPassed;
   }
 
   // --- Database Interaction Methods ---
 
-  /// Saves the quiz result to the database.
-  ///
-  /// This method creates a [Result] object with the current quiz data and
-  /// saves it using the `saveResultNotifierProvider`. Includes error handling.
-  ///
-  /// Parameters:
-  ///   - [categoryId]: The ID of the category the quiz belongs to.
-  ///   - [topicId]: The ID of the topic the quiz belongs to.
-  ///   - [userId]: The ID of the user who took the quiz.
   Future<void> saveQuizResult(
       String categoryId, String topicId, String userId) async {
     _logger.info(
@@ -238,33 +193,21 @@ class QuizResultNotifier extends _$QuizResultNotifier {
           quizAnswers: state.quizAnswers,
           userId: userId);
 
-      // Use the provider's own ref
       await ref.read(saveResultNotifierProvider.notifier).saveResult(result);
       _logger.info('✅ Quiz result saved successfully.');
     } catch (e, s) {
       _logger.severe('❌ Error saving quiz result: $e', e, s);
-      // Optionally: Rethrow, set an error state, or notify the UI
-      // Consider rethrowing if the caller needs to handle this failure:
+      // Consider rethrowing if the caller needs to handle this failure.
       // rethrow;
     }
   }
 
-  /// Marks a topic as done and updates category progress in the database.
-  ///
-  /// Refactored to use helper functions for clarity and testability.
-  /// Includes error handling for fetching prerequisites and updating data.
-  /// Rethrows errors to allow the caller (UI) to handle them.
-  ///
-  /// Parameters:
-  ///   - [topicId]: The ID of the topic to mark as done.
-  ///   - [categoryId]: The ID of the category the topic belongs to.
   Future<void> markTopicAsDone(String topicId, String categoryId) async {
     _logger.info(
         'Attempting to mark topic $topicId as done in category $categoryId');
     AppUser? user;
     List<Topic>? topics;
     QuizMockDatabaseRepository? repo;
-    // --- Step 1: Fetch prerequisites with error handling ---
     try {
       user = await _fetchCurrentUser();
       repo = await _fetchRepository();
@@ -272,24 +215,17 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     } catch (e, s) {
       _logger.severe(
           '❌ Error fetching prerequisites for markTopicAsDone: $e', e, s);
-      // Rethrow the error so the caller (UI) can handle it
       rethrow;
     }
 
-    // --- Step 2: Update user data and save with error handling ---
     try {
-      // Update completion status using helper
       final updatedTopicDoneMap =
           _updateTopicCompletionStatus(user, categoryId, topicId);
-
-      // Calculate new progress using helper
-      // Pass only the relevant category map for done topics
       final progress = _calculateCategoryProgress(
           topics, updatedTopicDoneMap[categoryId] ?? {});
-      _logger.fine(// Changed level
+      _logger.fine(
           'Calculated progress for category $categoryId: ${(progress * 100).toStringAsFixed(1)}%');
 
-      // Create updated user object
       final userWithProgress = user.copyWith(
         isTopicDone: updatedTopicDoneMap,
         categoryProgress: {
@@ -298,8 +234,6 @@ class QuizResultNotifier extends _$QuizResultNotifier {
         },
       );
       await repo.updateUser(userWithProgress);
-
-      // Invalidate user provider ONLY on success
       ref.invalidate(currentUserModelProvider);
 
       _logger.info('✅ Topic $topicId marked as done for category $categoryId.');
@@ -307,119 +241,95 @@ class QuizResultNotifier extends _$QuizResultNotifier {
           '✅ Progress for $categoryId: ${(progress * 100).toStringAsFixed(1)}%');
     } catch (e, s) {
       _logger.severe('❌ Error updating user data in markTopicAsDone: $e', e, s);
-      // Rethrow the error so the caller (UI) can handle it
       rethrow;
     }
   }
 
   // --- Private Helper Functions ---
 
-  // --- Helpers for markTopicAsDone ---
-
-  /// Fetches the current user, throwing an error if not found.
   Future<AppUser> _fetchCurrentUser() async {
-    final user = ref.read(currentUserModelProvider).valueOrNull;
-    if (user == null) {
-      _logger.warning('⚠️ Cannot proceed: User not found.');
+    _logger.fine('Attempting to fetch current user...');
+    try {
+      final user = await ref.read(currentUserModelProvider.future);
+      if (user == null) {
+        _logger.warning(
+            '⚠️ Cannot proceed: User fetch returned null after await.');
+        throw Exception('User not found');
+      }
+      _logger.fine('Fetched current user successfully: ${user.id}');
+      return user;
+    } catch (e, s) {
+      _logger.warning('⚠️ Cannot proceed: Error fetching user: $e', e, s);
       throw Exception('User not found');
     }
-    _logger.fine('Fetched current user successfully.');
-    return user;
   }
 
-  /// Fetches the database repository instance.
   Future<QuizMockDatabaseRepository> _fetchRepository() async {
-    // Return specific type
-    // Assuming quizMockDatabaseRepositoryProvider provides the correct repo interface/instance
     final repo = await ref.read(quizMockDatabaseRepositoryProvider.future);
     _logger.fine('Fetched database repository instance.');
-    // Cast or ensure the provider returns the expected type
     return repo;
   }
 
-  /// Fetches topics for a specific category.
   Future<List<Topic>> _fetchCategoryTopics(String categoryId) async {
-    // Assuming 'en' is okay or get current lang dynamically
     final topics = await ref.read(topicsProvider(categoryId, 'en').future);
     _logger.fine('Fetched ${topics.length} topics for category $categoryId.');
     return topics;
   }
 
-  /// Creates an updated map reflecting the topic's completion status.
   Map<String, Map<String, bool>> _updateTopicCompletionStatus(
       AppUser user, String categoryId, String topicId) {
-    // Create deep copies to avoid modifying the original user state directly
     final updatedMap = Map<String, Map<String, bool>>.from(user.isTopicDone.map(
       (key, value) => MapEntry(key, Map<String, bool>.from(value)),
     ));
-    // Get or create the map for the specific category
     final categoryMap = updatedMap.putIfAbsent(categoryId, () => {});
-    categoryMap[topicId] = true; // Mark topic as done
-    // No need to putIfAbsent again, categoryMap is a reference to the map inside updatedMap
-    _logger.finer('Updated topic completion status for $categoryId - $topicId');
+    categoryMap[topicId] = true;
+    _logger.finer(
+        'Updated topic completion status for $categoryId - $topicId'); // Keep FINER
     return updatedMap;
   }
 
-  // --- Helpers for filtering and calculations ---
-
-  /// Filters a list of answers based on the selected view.
   List<QuizAnswer> _filterAnswersByView(
       List<QuizAnswer> answers, SelectedView view) {
     switch (view) {
       case SelectedView.none:
-        _logger.finer(
+        _logger.finer(// Keep FINER
             'Filtering: Returning empty list because selectedView is none');
         return [];
       case SelectedView.correct:
-        _logger.finer('Filtering for correct answers');
+        _logger.finer('Filtering for correct answers'); // Keep FINER
         return answers.where(_isAnswerCorrect).toList();
       case SelectedView.incorrect:
-        _logger.finer('Filtering for incorrect answers');
+        _logger.finer('Filtering for incorrect answers'); // Keep FINER
         return answers.where((a) => !_isAnswerCorrect(a)).toList();
     }
   }
 
-  /// Checks if a single quiz answer is considered correct.
   bool _isAnswerCorrect(QuizAnswer answer) {
-    // Correct if points earned match possible points
     return answer.pointsEarned == answer.possiblePoints;
   }
 
-  /// Calculates the total possible points from a list of answers.
   int _calculateTotalPoints(List<QuizAnswer> answers) {
-    // Sum up possible points for all answers
     return answers.fold<int>(0, (sum, answer) => sum + answer.possiblePoints);
   }
 
-  /// Calculates the total earned points from a list of answers.
   int _calculateEarnedPoints(List<QuizAnswer> answers) {
-    // Sum up earned points for all answers
     return answers.fold<int>(0, (sum, answer) => sum + answer.pointsEarned);
   }
 
-  /// Calculates the percentage score.
   double _calculatePercentageScore(int earnedPoints, int totalPoints) {
-    // Avoid division by zero
     if (totalPoints == 0) return 0.0;
-    // Calculate percentage
     return (earnedPoints / totalPoints) * 100.0;
   }
 
-  /// Checks if the percentage score meets the passing threshold (>= 60%).
   bool _checkIfPassed(double percentage) {
-    // Check against threshold
     return percentage >= 60.0;
   }
 
-  /// Calculates the progress for a category based on completed topics.
   double _calculateCategoryProgress(
       List<Topic> categoryTopics, Map<String, bool> doneTopicsMap) {
-    // Avoid division by zero
     if (categoryTopics.isEmpty) return 0.0;
-    // Count topics marked as done within the specific category map
     final passedTopicsCount =
         categoryTopics.where((t) => doneTopicsMap[t.id] == true).length;
-    // Calculate progress ratio
     return passedTopicsCount / categoryTopics.length;
   }
 }
