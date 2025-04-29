@@ -219,9 +219,10 @@ class __$$ResultImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(explicitToJson: true)
 class _$ResultImpl implements _Result {
-  _$ResultImpl(
+  const _$ResultImpl(
       {required this.id,
       required this.userId,
       required this.topicId,
@@ -321,7 +322,7 @@ class _$ResultImpl implements _Result {
 }
 
 abstract class _Result implements Result {
-  factory _Result(
+  const factory _Result(
       {required final String id,
       required final String userId,
       required final String topicId,

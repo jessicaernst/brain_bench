@@ -32,5 +32,5 @@ Map<String, dynamic> _$$ResultImplToJson(_$ResultImpl instance) =>
       'score': instance.score,
       'isPassed': instance.isPassed,
       'timestamp': instance.timestamp.toIso8601String(),
-      'quizAnswers': instance.quizAnswers,
+      'quizAnswers': instance.quizAnswers.map((e) => e.toJson()).toList(),
     };

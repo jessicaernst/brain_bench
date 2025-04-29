@@ -32,7 +32,4 @@ class Answer with _$Answer {
 
   /// Factory for creating an Answer from JSON.
   factory Answer.fromJson(Map<String, dynamic> json) => _$AnswerFromJson(json);
-
-  /// Optional: Get the localized text based on the provided locale.
-  // String getLocalizedText(Locale locale) => locale.languageCode == 'de' ? textDe : textEn;
 }
