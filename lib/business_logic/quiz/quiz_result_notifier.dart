@@ -136,13 +136,13 @@ class QuizResultNotifier extends _$QuizResultNotifier {
 
   bool hasCorrectAnswers() {
     final result = state.quizAnswers.any(_isAnswerCorrect);
-    _logger.finer('hasCorrectAnswers returning: $result'); // Keep FINER
+    _logger.finer('hasCorrectAnswers returning: $result');
     return result;
   }
 
   bool hasIncorrectAnswers() {
     final result = state.quizAnswers.any((a) => !_isAnswerCorrect(a));
-    _logger.finer('hasIncorrectAnswers returning: $result'); // Keep FINER
+    _logger.finer('hasIncorrectAnswers returning: $result');
     return result;
   }
 
@@ -150,14 +150,13 @@ class QuizResultNotifier extends _$QuizResultNotifier {
 
   int calculateTotalPossiblePoints() {
     final total = _calculateTotalPoints(state.quizAnswers);
-    _logger
-        .finer('calculateTotalPossiblePoints returning: $total'); // Keep FINER
+    _logger.finer('calculateTotalPossiblePoints returning: $total');
     return total;
   }
 
   int calculateUserPoints() {
     final userPoints = _calculateEarnedPoints(state.quizAnswers);
-    _logger.finer('calculateUserPoints returning: $userPoints'); // Keep FINER
+    _logger.finer('calculateUserPoints returning: $userPoints');
     return userPoints;
   }
 
@@ -165,14 +164,14 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     final total = calculateTotalPossiblePoints();
     final userPoints = calculateUserPoints();
     final percentage = _calculatePercentageScore(userPoints, total);
-    _logger.finer('calculatePercentage returning: $percentage'); // Keep FINER
+    _logger.finer('calculatePercentage returning: $percentage');
     return percentage;
   }
 
   bool isQuizPassed() {
     final percentage = calculatePercentage();
     final isPassed = _checkIfPassed(percentage);
-    _logger.finer('isQuizPassed returning: $isPassed'); // Keep FINER
+    _logger.finer('isQuizPassed returning: $isPassed');
     return isPassed;
   }
 
@@ -283,8 +282,7 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     ));
     final categoryMap = updatedMap.putIfAbsent(categoryId, () => {});
     categoryMap[topicId] = true;
-    _logger.finer(
-        'Updated topic completion status for $categoryId - $topicId'); // Keep FINER
+    _logger.finer('Updated topic completion status for $categoryId - $topicId');
     return updatedMap;
   }
 
@@ -292,14 +290,14 @@ class QuizResultNotifier extends _$QuizResultNotifier {
       List<QuizAnswer> answers, SelectedView view) {
     switch (view) {
       case SelectedView.none:
-        _logger.finer(// Keep FINER
+        _logger.finer(
             'Filtering: Returning empty list because selectedView is none');
         return [];
       case SelectedView.correct:
-        _logger.finer('Filtering for correct answers'); // Keep FINER
+        _logger.finer('Filtering for correct answers');
         return answers.where(_isAnswerCorrect).toList();
       case SelectedView.incorrect:
-        _logger.finer('Filtering for incorrect answers'); // Keep FINER
+        _logger.finer('Filtering for incorrect answers');
         return answers.where((a) => !_isAnswerCorrect(a)).toList();
     }
   }

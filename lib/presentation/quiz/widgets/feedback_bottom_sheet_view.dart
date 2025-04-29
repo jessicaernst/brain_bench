@@ -1,77 +1,66 @@
-import 'package:brain_bench/core/styles/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
+import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
+import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/styles/colors.dart';
+import 'package:brain_bench/core/utils/quiz_filtering.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logging/logging.dart';
 
-/// This widget displays a bottom sheet that provides feedback to the user after answering a quiz question.
-/// It shows the correct answers, incorrect answers, and any missed correct answers.
-class FeedbackBottomSheetView extends StatelessWidget {
-  /// Creates a [FeedbackBottomSheetView].
-  ///
-  /// [correctAnswers] is a list of the correct answers.
-  /// [incorrectAnswers] is a list of the user's incorrect answers.
-  /// [missedCorrectAnswers] is a list of correct answers the user did not select.
-  /// [btnLbl] is the label for the button, which may be "Next Question" or "Finish Quiz".
-  /// [onBtnPressed] is the callback function for when the button is pressed.
-  /// [languageCode] is the current language code ('en' or 'de'). // <-- Hinzugefügt
+final Logger _logger = Logger('FeedbackBottomSheetView');
+
+class FeedbackBottomSheetView extends ConsumerWidget {
   const FeedbackBottomSheetView({
     super.key,
-    required this.correctAnswers,
-    required this.incorrectAnswers,
-    required this.missedCorrectAnswers,
-    required this.btnLbl,
     required this.onBtnPressed,
-    required this.languageCode, // <-- Hinzugefügt
+    required this.languageCode,
   });
 
-  /// The list of correct answers.
-  final List<Answer> correctAnswers;
-
-  /// The list of incorrect answers selected by the user.
-  final List<Answer> incorrectAnswers;
-
-  /// The list of correct answers that the user did not select.
-  final List<Answer> missedCorrectAnswers;
-
-  /// The label for the action button (e.g., "Next Question", "Finish Quiz").
-  final String btnLbl;
-
-  /// Callback function executed when the action button is pressed.
   final VoidCallback onBtnPressed;
+  final String languageCode;
 
-  /// The current language code ('en' or 'de'). // <-- Hinzugefügt
-  final String languageCode; // <-- Hinzugefügt
+  /// Helper function to get the localized text for an answer.
+  String _getLocalizedAnswerText(Answer answer) {
+    return languageCode == 'de' ? answer.textDe : answer.textEn;
+  }
 
   @override
-  Widget build(BuildContext context) {
-    // Retrieve the app's localizations for translating text.
-    final AppLocalizations localizations = AppLocalizations.of(context)!;
-    final TextTheme textTheme =
-        Theme.of(context).textTheme; // Besser Theme.of verwenden
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Watch necessary providers
+    final quizState = ref.watch(quizViewModelProvider);
+    final currentAnswers = ref.watch(answersNotifierProvider);
+    final localizations = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
 
-    // Helper function to get localized text
-    String getLocalizedAnswerText(Answer answer) {
-      return languageCode == 'de' ? answer.textDe : answer.textEn;
-    }
+    // Filter answers based on the current state
+    final filtered = filterAnswers(quizState, currentAnswers);
+
+    // Determine the appropriate button label
+    final String btnLbl =
+        quizState.currentIndex + 1 < quizState.questions.length
+            ? localizations.nextQuestionBtnLbl
+            : localizations.finishQuizBtnLbl;
+
+    _logger.fine(
+        'Building FeedbackBottomSheetView. Correct: ${filtered.correct.length}, Incorrect: ${filtered.incorrect.length}, Missed: ${filtered.missed.length}');
 
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min, // Crucial for bottom sheet height
           children: [
-            // Title of the bottom sheet.
             Text(
               localizations.feedBackBottomSheetTitle,
-              style: textTheme.headlineMedium, // Verwende textTheme
+              style: textTheme.headlineMedium,
             ),
-
             const SizedBox(height: 16),
 
-            // ✅ Correct Answers Section
-            if (correctAnswers.isNotEmpty) ...[
+            // Correct Answers Section
+            if (filtered.correct.isNotEmpty) ...[
               Row(
                 children: [
                   const Icon(Icons.check_circle,
@@ -79,16 +68,16 @@ class FeedbackBottomSheetView extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     localizations.feedbackBSheetCorrectAnswers,
-                    style: textTheme.bodyLarge, // Verwende textTheme
+                    style: textTheme.bodyLarge,
                   ),
                 ],
               ),
-              ...correctAnswers.map(
+              ...filtered.correct.map(
                 (a) => Padding(
                   padding: const EdgeInsets.only(left: 24.0),
                   child: Text(
-                    '- ${getLocalizedAnswerText(a)}', // <-- Angepasst
-                    style: textTheme.bodyMedium // Verwende textTheme
+                    '- ${_getLocalizedAnswerText(a)}',
+                    style: textTheme.bodyMedium
                         ?.copyWith(color: BrainBenchColors.correctAnswerGlass),
                   ),
                 ),
@@ -96,8 +85,8 @@ class FeedbackBottomSheetView extends StatelessWidget {
               const SizedBox(height: 8),
             ],
 
-            // ❌ Incorrect Answers Section
-            if (incorrectAnswers.isNotEmpty) ...[
+            // Incorrect Answers Section
+            if (filtered.incorrect.isNotEmpty) ...[
               Row(
                 children: [
                   const Icon(Icons.cancel,
@@ -105,16 +94,16 @@ class FeedbackBottomSheetView extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     localizations.feedbackBSheetWrongAnswers,
-                    style: textTheme.bodyLarge, // Verwende textTheme
+                    style: textTheme.bodyLarge,
                   ),
                 ],
               ),
-              ...incorrectAnswers.map(
+              ...filtered.incorrect.map(
                 (a) => Padding(
                   padding: const EdgeInsets.only(left: 24.0),
                   child: Text(
-                    '- ${getLocalizedAnswerText(a)}', // <-- Angepasst
-                    style: textTheme.bodyMedium // Verwende textTheme
+                    '- ${_getLocalizedAnswerText(a)}',
+                    style: textTheme.bodyMedium
                         ?.copyWith(color: BrainBenchColors.falseQuestionGlass),
                   ),
                 ),
@@ -122,33 +111,35 @@ class FeedbackBottomSheetView extends StatelessWidget {
               const SizedBox(height: 8),
             ],
 
-            // ⚠️ Missed Correct Answers Section
-            if (missedCorrectAnswers.isNotEmpty) ...[
+            // Missed Correct Answers Section
+            if (filtered.missed.isNotEmpty) ...[
               Row(
                 children: [
                   const Icon(Icons.warning_amber_rounded, color: Colors.orange),
                   const SizedBox(width: 8),
                   Text(
                     localizations.feedbackBSheetMissedCorrectAnswers,
-                    style: textTheme.bodyLarge, // Verwende textTheme
+                    style: textTheme.bodyLarge,
                   ),
                 ],
               ),
-              ...missedCorrectAnswers.map(
+              ...filtered.missed.map(
                 (a) => Padding(
                   padding: const EdgeInsets.only(left: 24.0),
                   child: Text(
-                    '- ${getLocalizedAnswerText(a)}', // <-- Angepasst
-                    style: textTheme.bodyMedium // Verwende textTheme
-                        ?.copyWith(color: Colors.orange),
+                    '- ${_getLocalizedAnswerText(a)}',
+                    style: textTheme.bodyMedium?.copyWith(color: Colors.orange),
                   ),
                 ),
               ),
               const SizedBox(height: 8),
             ],
 
+            // TODO: Consider adding Explanation section if available
+            // final explanation = quizState.questions[quizState.currentIndex].explanation;
+            // if (explanation != null && explanation.isNotEmpty) ... [ ... ]
+
             const SizedBox(height: 48),
-            // Action Button (Next Question or Finish Quiz).
             Center(
               child: LightDarkSwitchBtn(
                 title: btnLbl,
@@ -156,8 +147,7 @@ class FeedbackBottomSheetView extends StatelessWidget {
                 onPressed: onBtnPressed,
               ),
             ),
-
-            const SizedBox(height: 16),
+            const SizedBox(height: 16), // Bottom padding
           ],
         ),
       ),

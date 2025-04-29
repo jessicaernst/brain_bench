@@ -12,6 +12,87 @@ class AppLocalizationsDe extends AppLocalizations {
   String get appTitle => 'BrainBench';
 
   @override
+  String get answerExpandableExplanationHeader => 'Erklärung:';
+
+  @override
+  String get answerExpandableNoExplanation => 'Keine Erklärung verfügbar';
+
+  @override
+  String get answerExpandableQuestionHeader => 'Frage:';
+
+  @override
+  String get appBarTitleCategories => 'Kategorien';
+
+  @override
+  String get appBarTitleHome => 'BrainBench';
+
+  @override
+  String get appBarTitleQuizResult => 'Ergebnisse';
+
+  @override
+  String get authDividerLoginText => 'Oder anmelden mit';
+
+  @override
+  String get authDividerRegisterText => 'Oder registrieren mit';
+
+  @override
+  String get authEmail => 'E-Mail';
+
+  @override
+  String get authEmailEmptyError => 'Die E-Mail-Adresse darf nicht leer sein.';
+
+  @override
+  String get authEmailInvalidError => 'Die E-Mail-Adresse ist ungültig.';
+
+  @override
+  String get authLoginBtnLbl => 'Anmelden';
+
+  @override
+  String get authLoginText => 'Du hast schon einen Account? ';
+
+  @override
+  String get authLoginTextBtnLbl => 'Anmelden';
+
+  @override
+  String get authLoginTitle => 'Anmelden';
+
+  @override
+  String get authPassword => 'Passwort';
+
+  @override
+  String get authPasswordEmptyError => 'Das Passwort darf nicht leer sein.';
+
+  @override
+  String get authPasswordNotMatchError => 'Die Passwörter stimmen nicht überein.';
+
+  @override
+  String get authPasswordResetEmailPrompt => 'Bitte gib zuerst deine E-Mail-Adresse ein.';
+
+  @override
+  String get authPasswordShortError => 'Das Passwort muss mindestens 6 Zeichen lang sein.';
+
+  @override
+  String get authPwdForgottenBtnLbl => 'Hier zurücksetzen';
+
+  @override
+  String get authPwdForgottenText => 'Passwort vergessen? ';
+
+  @override
+  String get authRegisterBtnLbl => 'Registrieren';
+
+  @override
+  String get authRegisterTitle => 'Registrieren';
+
+  @override
+  String get authRepeatPassword => 'Passwort wiederholen';
+
+  @override
+  String get authSignUpText => 'Noch kein Account? ';
+
+  @override
+  String get authSignUpTextBtnLbl => 'Hier registrieren';
+
+  @override
   String get bottomNavigationHome => 'Home';
 
   @override
@@ -21,16 +102,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get bottomNavigationResults => 'Ergebnisse';
 
   @override
-  String get appBarTitleHome => 'BrainBench';
-
-  @override
-  String get appBarTitleCategories => 'Kategorien';
-
-  @override
-  String get appBarTitleQuizResult => 'Ergebnisse';
-
-  @override
-  String get chooseCategoryBtnLbl => 'Kategorie wählen';
+  String get categoryDetailsErrorLoading => 'Fehler beim Laden der Kategorie-Details:';
 
   @override
   String get categoryDetailsTitle => 'Kategorie';
@@ -39,25 +111,22 @@ class AppLocalizationsDe extends AppLocalizations {
   String get catgoryBtnLbl => 'Ok';
 
   @override
-  String get categoryDetailsErrorLoading => 'Fehler beim Laden der Kategorie-Details:';
+  String get chooseCategoryBtnLbl => 'Kategorie wählen';
 
   @override
-  String get startQuizBtnLbl => 'Quiz starten';
+  String get errorCategoryNotFound => 'Kategorie nicht gefunden';
 
   @override
-  String get quizAppBarTitle => 'Quiz';
+  String get errorGeneric => 'Ein unerwarteter Fehler ist aufgetreten.';
 
   @override
-  String get submitAnswerBtnLbl => 'Fertig';
+  String get errorNavigationFailed => 'Navigation fehlgeschlagen. Bitte versuche es erneut.';
 
   @override
-  String get nextQuestionBtnLbl => 'Nächste Frage';
+  String get errorNoCategorySelected => 'Kategorie nicht ausgewählt';
 
   @override
-  String get finishQuizBtnLbl => 'Zeige Ergebnisse';
-
-  @override
-  String get quizCompletedMsg => '🎉 Quiz abgeschlossen';
+  String get errorSavingData => 'Fehler beim Speichern deiner Antwort.';
 
   @override
   String get feedBackBottomSheetTitle => 'Ergebnisse';
@@ -66,187 +135,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get feedbackBSheetCorrectAnswers => 'Korrekte Antworten:';
 
   @override
-  String get feedbackBSheetWrongAnswers => 'Falsche Antworten:';
-
-  @override
   String get feedbackBSheetMissedCorrectAnswers => 'Verpasste korrekte Antworten:';
 
   @override
-  String get quizResultsAppBarTitle => 'Quiz Ergebnisse';
+  String get feedbackBSheetWrongAnswers => 'Falsche Antworten:';
 
   @override
-  String get quizResultsNotSaved => 'Keine Quiz Ergebnisse gespeichert';
-
-  @override
-  String get answerExpandableQuestionHeader => 'Frage:';
-
-  @override
-  String get answerExpandableExplanationHeader => 'Erklärung:';
-
-  @override
-  String get answerExpandableNoExplanation => 'Keine Erklärung verfügbar';
-
-  @override
-  String get quizToggleExplanation => 'Hier kannst du zwischen deinen richtigen und falschen Antworten filtern. Tippe dafür auf die Daumen!';
-
-  @override
-  String get quizResultBtnLbl => 'Zurück zu Themenauswahl';
-
-  @override
-  String get quizResultPassed => 'Bestanden';
-
-  @override
-  String get quizResultFailed => 'Nicht bestanden';
-
-  @override
-  String get quizResultScore => 'Punktzahl';
-
-  @override
-  String get topicsDone => 'Erledigt';
-
-  @override
-  String get topicsTitle => 'Topics';
-
-  @override
-  String get authEmail => 'E-Mail';
-
-  @override
-  String get authPassword => 'Passwort';
-
-  @override
-  String get authRepeatPassword => 'Passwort wiederholen';
-
-  @override
-  String get authLoginTitle => 'Anmelden';
-
-  @override
-  String get authRegisterTitle => 'Registrieren';
-
-  @override
-  String get authLoginBtnLbl => 'Anmelden';
-
-  @override
-  String get authRegisterBtnLbl => 'Registrieren';
-
-  @override
-  String get authSignUpTextBtnLbl => 'Hier registrieren';
-
-  @override
-  String get authSignUpText => 'Noch kein Account? ';
-
-  @override
-  String get authLoginTextBtnLbl => 'Anmelden';
-
-  @override
-  String get authLoginText => 'Du hast schon einen Account? ';
-
-  @override
-  String get authPwdForgottenText => 'Passwort vergessen? ';
-
-  @override
-  String get authPwdForgottenBtnLbl => 'Hier zurücksetzen';
-
-  @override
-  String get authDividerLoginText => 'Oder anmelden mit';
-
-  @override
-  String get authDividerRegisterText => 'Oder registrieren mit';
-
-  @override
-  String get authEmailEmptyError => 'Die E-Mail-Adresse darf nicht leer sein.';
-
-  @override
-  String get authEmailInvalidError => 'Die E-Mail-Adresse ist ungültig.';
-
-  @override
-  String get authPasswordEmptyError => 'Das Passwort darf nicht leer sein.';
-
-  @override
-  String get authPasswordShortError => 'Das Passwort muss mindestens 6 Zeichen lang sein.';
-
-  @override
-  String get authPasswordNotMatchError => 'Die Passwörter stimmen nicht überein.';
-
-  @override
-  String get profileMenuProfile => 'Profil';
-
-  @override
-  String get profileMenuSettings => 'Einstellungen';
-
-  @override
-  String get profileMenuLogout => 'Abmelden';
-
-  @override
-  String get notFoundAppBarTitle => 'Seite nicht gefunden';
-
-  @override
-  String get notFoundHeading => '404 - Seite nicht gefunden';
-
-  @override
-  String get notFoundErrorDetailsLabel => 'Fehlerdetails:';
-
-  @override
-  String get settingsAppBarTitle => 'Einstellungen';
-
-  @override
-  String get profileAppBarTitle => 'Profil';
-
-  @override
-  String get profileUserNotFound => 'Benutzerdaten nicht gefunden.';
-
-  @override
-  String get profileNoUsername => 'Benutzernamen hinzufügen';
-
-  @override
-  String get profileNoEmail => 'Keine E-Mail verfügbar';
-
-  @override
-  String get profileErrorLoading => 'Fehler beim Laden der Profildaten.';
-
-  @override
-  String get profileChangePictureTooltip => 'Profilbild ändern';
-
-  @override
-  String get profileDisplayNameLabel => 'Benutzername';
-
-  @override
-  String get profileEmailLabel => 'E-Mail';
-
-  @override
-  String get profileEditAppBarTitle => 'Profil bearbeiten';
-
-  @override
-  String get profileEditBtnLbl => 'Speichern';
-
-  @override
-  String get profilePickFromGallery => 'Aus Galerie wählen';
-
-  @override
-  String get profilePickFromCamera => 'Foto aufnehmen';
-
-  @override
-  String get profileImagePickerError => 'Fehler bei der Bildauswahl.';
-
-  @override
-  String get profileUpdateError => 'Fehler beim Aktualisieren des Profils';
-
-  @override
-  String get profileUpdateSuccess => 'Profil erfolgreich aktualisiert!';
-
-  @override
-  String get profileDisplayNameEmptyError => 'Der Benutzername darf nicht leer sein.';
-
-  @override
-  String get profileSaveTooltip => 'Änderungen speichern';
-
-  @override
-  String get profileEditTooltip => 'Profil bearbeiten';
-
-  @override
-  String get settingsThemeToggleLabel => 'Theme';
-
-  @override
-  String get settingsLanguageLabel => 'Sprache';
+  String get finishQuizBtnLbl => 'Zeige Ergebnisse';
 
   @override
   String get languageNameEnglish => 'Englisch';
@@ -255,32 +150,149 @@ class AppLocalizationsDe extends AppLocalizations {
   String get languageNameGerman => 'Deutsch';
 
   @override
+  String get nextQuestionBtnLbl => 'Nächste Frage';
+
+  @override
+  String get notFoundAppBarTitle => 'Seite nicht gefunden';
+
+  @override
+  String get notFoundErrorDetailsLabel => 'Fehlerdetails:';
+
+  @override
+  String get notFoundHeading => '404 - Seite nicht gefunden';
+
+  @override
   String get pickerDoneButton => 'Fertig';
 
   @override
-  String get settingsThemeRefreshed => 'Themen neu geladen';
+  String get profileAppBarTitle => 'Profil';
 
   @override
-  String get settingsRefreshButtonLabel => 'Aktualisieren';
+  String get profileChangePictureTooltip => 'Profilbild ändern';
 
   @override
-  String get settingsLocaleRefreshed => 'Sprachen neu geladen';
+  String get profileDisplayNameEmptyError => 'Der Benutzername darf nicht leer sein.';
 
   @override
-  String get errorCategoryNotFound => 'Kategorie nicht gefunden';
+  String get profileDisplayNameLabel => 'Benutzername';
 
   @override
-  String get errorNoCategorySelected => 'Kategorie nicht ausgewählt';
+  String get profileEditAppBarTitle => 'Profil bearbeiten';
 
   @override
-  String get errorGeneric => 'Ein Fehler ist aufgetreten';
+  String get profileEditBtnLbl => 'Speichern';
 
   @override
-  String get authPasswordResetEmailPrompt => 'Bitte gib zuerst deine E-Mail-Adresse ein.';
+  String get profileEditTooltip => 'Profil bearbeiten';
+
+  @override
+  String get profileEmailLabel => 'E-Mail';
+
+  @override
+  String get profileErrorLoading => 'Fehler beim Laden der Profildaten.';
+
+  @override
+  String get profileImagePickerError => 'Fehler bei der Bildauswahl.';
+
+  @override
+  String get profileMenuLogout => 'Abmelden';
+
+  @override
+  String get profileMenuProfile => 'Profil';
+
+  @override
+  String get profileMenuSettings => 'Einstellungen';
+
+  @override
+  String get profileNoEmail => 'Keine E-Mail verfügbar';
+
+  @override
+  String get profileNoUsername => 'Benutzernamen hinzufügen';
+
+  @override
+  String get profilePickFromCamera => 'Foto aufnehmen';
+
+  @override
+  String get profilePickFromGallery => 'Aus Galerie wählen';
+
+  @override
+  String get profileSaveTooltip => 'Änderungen speichern';
+
+  @override
+  String get profileUpdateError => 'Fehler beim Aktualisieren des Profils';
+
+  @override
+  String get profileUpdateSuccess => 'Profil erfolgreich aktualisiert!';
+
+  @override
+  String get profileUserNotFound => 'Benutzerdaten nicht gefunden.';
+
+  @override
+  String get quizAppBarTitle => 'Quiz';
+
+  @override
+  String get quizCompletedMsg => '🎉 Quiz abgeschlossen';
+
+  @override
+  String get quizErrorLoadingNextQuestion => 'Fehler beim Laden der nächsten Frage.';
+
+  @override
+  String get quizErrorLoadingQuestions => 'Fehler beim Laden der Fragen:';
+
+  @override
+  String get quizErrorNoQuestions => 'Keine Fragen für dieses Thema gefunden.';
 
   @override
   String get quizNoQuestionsAvailable => 'Für dieses Thema sind noch keine Fragen verfügbar.';
 
   @override
-  String get quizErrorLoadingQuestions => 'Fehler beim Laden der Fragen:';
+  String get quizResultBtnLbl => 'Zurück zur Themenauswahl';
+
+  @override
+  String get quizResultFailed => 'Nicht bestanden';
+
+  @override
+  String get quizResultPassed => 'Bestanden';
+
+  @override
+  String get quizResultScore => 'Punktzahl';
+
+  @override
+  String get quizResultsAppBarTitle => 'Quiz Ergebnisse';
+
+  @override
+  String get quizResultsNotSaved => 'Keine Quiz Ergebnisse gespeichert';
+
+  @override
+  String get quizToggleExplanation => 'Hier kannst du zwischen deinen richtigen und falschen Antworten filtern. Tippe dafür auf die Daumen!';
+
+  @override
+  String get settingsAppBarTitle => 'Einstellungen';
+
+  @override
+  String get settingsLanguageLabel => 'Sprache';
+
+  @override
+  String get settingsLocaleRefreshed => 'Sprachen neu geladen';
+
+  @override
+  String get settingsRefreshButtonLabel => 'Aktualisieren';
+
+  @override
+  String get settingsThemeRefreshed => 'Themen neu geladen';
+
+  @override
+  String get settingsThemeToggleLabel => 'Theme';
+
+  @override
+  String get startQuizBtnLbl => 'Quiz starten';
+
+  @override
+  String get submitAnswerBtnLbl => 'Fertig';
+
+  @override
+  String get topicsDone => 'Erledigt';
+
+  @override
+  String get topicsTitle => 'Themen';
 }

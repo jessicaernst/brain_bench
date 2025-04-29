@@ -1,6 +1,6 @@
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
-import 'package:brain_bench/business_logic/quiz/quiz_state.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_answer_evaluator.dart';
+import 'package:brain_bench/business_logic/quiz/quiz_state.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
@@ -53,7 +53,7 @@ class QuizViewModel extends _$QuizViewModel {
             'ViewModel potentially disposed before error handling could reset answers: $disposeError');
       }
     } finally {
-      // --- Set loading state to false ---
+      // Set loading state to false
       try {
         state = state.copyWith(isLoadingAnswers: false);
         _logger.fine('Set isLoadingAnswers = false for question $questionId');
@@ -82,7 +82,7 @@ class QuizViewModel extends _$QuizViewModel {
     state = state.copyWith(
         questions: questions,
         currentIndex: 0,
-        isLoadingAnswers: true); // <-- Set loading TRUE before await
+        isLoadingAnswers: true); // Set loading TRUE before await
     _logger.fine('Set isLoadingAnswers = true for initialization');
 
     final firstQuestion = questions.first;
@@ -113,7 +113,7 @@ class QuizViewModel extends _$QuizViewModel {
       // Set new index and mark as loading answers
       state = state.copyWith(
           currentIndex: nextIndex,
-          isLoadingAnswers: true); // <-- Set loading TRUE before await
+          isLoadingAnswers: true); // Set loading TRUE before await
       _logger.fine(
           'Loading next question: Index $nextIndex, Set isLoadingAnswers = true');
 
@@ -126,13 +126,15 @@ class QuizViewModel extends _$QuizViewModel {
     }
   }
 
-  /// Checks the user's selected answers and updates the state accordingly.
+  /// Checks the user's selected answers against the correct answers
+  /// and updates the state with lists of correct, incorrect, and missed answer IDs.
   void checkAnswers() {
     final answers = ref.read(answersNotifierProvider);
 
     if (answers.isEmpty) {
       _logger.warning(
           '⚠️ checkAnswers called but AnswersNotifier is empty. Cannot check.');
+      // Ensure lists are empty if no answers are present
       state = state.copyWith(
         correctAnswers: [],
         incorrectAnswers: [],
@@ -140,21 +142,19 @@ class QuizViewModel extends _$QuizViewModel {
       );
       return;
     }
-
     _logger.fine('Checking answers...');
 
-    // --- Use the extracted evaluator function ---
     final evaluationResult = evaluateAnswers(answers);
 
-    // Update the state using the results from the evaluator
+    // Update the state with the evaluation results using copyWith
     state = state.copyWith(
-      correctAnswers: evaluationResult.correct,
-      incorrectAnswers: evaluationResult.incorrect,
-      missedCorrectAnswers: evaluationResult.missed,
+      correctAnswers: evaluationResult.correct.map((a) => a.id).toList(),
+      incorrectAnswers: evaluationResult.incorrect.map((a) => a.id).toList(),
+      missedCorrectAnswers: evaluationResult.missed.map((a) => a.id).toList(),
     );
 
     _logger.fine(
-        'Check complete: Correct: ${evaluationResult.correct.length}, Incorrect: ${evaluationResult.incorrect.length}, Missed: ${evaluationResult.missed.length}');
+        'Check complete: Correct: ${state.correctAnswers.length}, Incorrect: ${state.incorrectAnswers.length}, Missed: ${state.missedCorrectAnswers.length}');
   }
 
   /// Resets the quiz state and associated notifiers.

@@ -4,6 +4,114 @@
     "@appTitle": {
         "description": "The title of the application"
     },
+    "answerExpandableExplanationHeader": "Explanation:",
+    "@answerExpandableExplanationHeader": {
+        "description": "The header of the expandable explanation in the answer page"
+    },
+    "answerExpandableNoExplanation": "No explanation available",
+    "@answerExpandableNoExplanation": {
+        "description": "The message displayed when there is no explanation available"
+    },
+    "answerExpandableQuestionHeader": "Question:",
+    "@answerExpandableQuestionHeader": {
+        "description": "The header of the expandable question in the answer page"
+    },
+    "appBarTitleCategories": "Categories",
+    "@appBarTitleCategories": {
+        "description": "The title of the categories page in the app bar"
+    },
+    "appBarTitleHome": "BrainBench",
+    "@appBarTitleHome": {
+        "description": "The title of the home page in the app bar"
+    },
+    "appBarTitleQuizResult": "Results",
+    "@appBarTitleQuizResult": {
+        "description": "The title of the quiz result page in the app bar"
+    },
+    "authDividerLoginText": "Or Login with",
+    "@authDividerLoginText": {
+        "description": "The text of the divider"
+    },
+    "authDividerRegisterText": "Or Sign in with",
+    "@authDividerRegisterText": {
+        "description": "The text of the divider"
+    },
+    "authEmail": "E-Mail",
+    "@authEmail": {
+        "description": "The label for the email input field"
+    },
+    "authEmailEmptyError": "Email cannot be empty.",
+    "@authEmailEmptyError": {
+        "description": "The error message displayed when the email input field is empty"
+    },
+    "authEmailInvalidError": "Email is invalid.",
+    "@authEmailInvalidError": {
+        "description": "The error message displayed when the email input field is invalid"
+    },
+    "authLoginBtnLbl": "Login",
+    "@authLoginBtnLbl": {
+        "description": "The label of the login button"
+    },
+    "authLoginText": "Already have an account? ",
+    "@authLoginText": {
+        "description": "The text of the login text"
+    },
+    "authLoginTextBtnLbl": "Login",
+    "@authLoginTextBtnLbl": {
+        "description": "The label of the login text button"
+    },
+    "authLoginTitle": "Login",
+    "@authLoginTitle": {
+        "description": "The title of the login page"
+    },
+    "authPassword": "Password",
+    "@authPassword": {
+        "description": "The label for the password input field"
+    },
+    "authPasswordEmptyError": "Password cannot be empty.",
+    "@authPasswordEmptyError": {
+        "description": "The error message displayed when the password input field is empty"
+    },
+    "authPasswordNotMatchError": "Passwords do not match.",
+    "@authPasswordNotMatchError": {
+        "description": "The error message displayed when the passwords do not match"
+    },
+    "authPasswordResetEmailPrompt": "Please enter your email first.",
+    "@authPasswordResetEmailPrompt": {
+        "description": "Message shown when trying to reset password without entering an email address."
+    },
+    "authPasswordShortError": "Password must be at least 6 characters long.",
+    "@authPasswordShortError": {
+        "description": "The error message displayed when the password when the password is to short"
+    },
+    "authPwdForgottenBtnLbl": "Reset here",
+    "@authPwdForgottenBtnLbl": {
+        "description": "The label of the password forgotten button"
+    },
+    "authPwdForgottenText": "Forgot your password? ",
+    "@authPwdForgottenText": {
+        "description": "The text of the password forgotten text"
+    },
+    "authRegisterBtnLbl": "Sign Up",
+    "@authRegisterBtnLbl": {
+        "description": "The label of the register button"
+    },
+    "authRegisterTitle": "Sign Up",
+    "@authRegisterTitle": {
+        "description": "The title of the register page"
+    },
+    "authRepeatPassword": "Repeat Password",
+    "@authRepeatPassword": {
+        "description": "The label for the repeated password input field"
+    },
+    "authSignUpText": "Don't have an account? ",
+    "@authSignUpText": {
+        "description": "The text of the sign up text"
+    },
+    "authSignUpTextBtnLbl": "Sign Up here",
+    "@authSignUpTextBtnLbl": {
+        "description": "The label of the sign up text button"
+    },
     "bottomNavigationHome": "Home",
     "@bottomNavigationHome": {
         "description": "The title of the home page in the bottom navigation bar"
@@ -16,21 +124,9 @@
     "@bottomNavigationResults": {
         "description": "The title of the results page in the bottom navigation bar"
     },
-    "appBarTitleHome": "BrainBench",
-    "@appBarTitleHome": {
-        "description": "The title of the home page in the app bar"
-    },
-    "appBarTitleCategories": "Categories",
-    "@appBarTitleCategories": {
-        "description": "The title of the categories page in the app bar"
-    },
-    "appBarTitleQuizResult": "Results",
-    "@appBarTitleQuizResult": {
-        "description": "The title of the quiz result page in the app bar"
-    },
-    "chooseCategoryBtnLbl": "Choose Category",
-    "@chooseCategoryBtnLbl": {
-        "description": "The label of the button to choose a category"
+    "categoryDetailsErrorLoading": "Error loading category details:",
+    "@categoryDetailsErrorLoading": {
+        "description": "Error message prefix displayed when category details fail to load."
     },
     "categoryDetailsTitle": "Category",
     "@categoryDetailsTitle": {
@@ -40,33 +136,29 @@
     "@catgoryBtnLbl": {
         "description": "The label of the button to choose a category"
     },
-    "categoryDetailsErrorLoading": "Error loading category details:",
-    "@categoryDetailsErrorLoading": {
-        "description": "Error message prefix displayed when category details fail to load."
+    "chooseCategoryBtnLbl": "Choose Category",
+    "@chooseCategoryBtnLbl": {
+        "description": "The label of the button to choose a category"
     },
-    "startQuizBtnLbl": "Start Quiz",
-    "@startQuizBtnLbl": {
-        "description": "The label of the button to start the quiz"
+    "errorCategoryNotFound": "Category not found",
+    "@errorCategoryNotFound": {
+        "description": "Error message displayed when the category is not found"
     },
-    "quizAppBarTitle": "Quiz",
-    "@quizAppBarTitle": {
-        "description": "The title of the quiz page in the app bar"
+    "errorGeneric": "An unexpected error occurred.",
+    "@errorGeneric": {
+        "description": "Generic error message shown in a SnackBar for unexpected issues."
     },
-    "submitAnswerBtnLbl": "Done",
-    "@submitAnswerBtnLbl": {
-        "description": "The label of the button to submit an answer"
+    "errorNavigationFailed": "Navigation failed. Please try again.",
+    "@errorNavigationFailed": {
+        "description": "Generic error message shown in a SnackBar when navigating between screens fails."
     },
-    "nextQuestionBtnLbl": "Next Question",
-    "@nextQuestionBtnLbl": {
-        "description": "The label of the button to go to the next question"
+    "errorNoCategorySelected": "Category not selected",
+    "@errorNoCategorySelected": {
+        "description": "Error message displayed when no category is selected"
     },
-    "finishQuizBtnLbl": "Show Results",
-    "@finishQuizBtnLbl": {
-        "description": "The label of the button to finish the quiz"
-    },
-    "quizCompletedMsg": "🎉 Quiz Completed",
-    "@quizCompletedMsg": {
-        "description": "The message displayed when the quiz is completed"
+    "errorSavingData": "Error saving your answer.",
+    "@errorSavingData": {
+        "description": "Error message shown in a SnackBar when saving the user's quiz answer attempt fails."
     },
     "feedBackBottomSheetTitle": "Results",
     "@feedBackBottomSheetTitle": {
@@ -76,249 +168,17 @@
     "@feedbackBSheetCorrectAnswers": {
         "description": "The label for the correct answers in the quiz results bottom sheet"
     },
-    "feedbackBSheetWrongAnswers": "Incorrect Answers:",
-    "@feedbackBSheetWrongAnswers": {
-        "description": "The label for the incorrect answers in the quiz results bottom sheet"
-    },
     "feedbackBSheetMissedCorrectAnswers": "Missed Correct Answers:",
     "@feedbackBSheetMissedCorrectAnswers": {
         "description": "The label for the missed correct answers in the quiz results bottom sheet"
     },
-    "quizResultsAppBarTitle": "Quiz Results",
-    "@quizResultsAppBarTitle": {
-        "description": "The title of the quiz results page in the app bar"
+    "feedbackBSheetWrongAnswers": "Incorrect Answers:",
+    "@feedbackBSheetWrongAnswers": {
+        "description": "The label for the incorrect answers in the quiz results bottom sheet"
     },
-    "quizResultsNotSaved": "Quiz results not saved",
-    "@quizResultsNotSaved": {
-        "description": "The message displayed when the quiz results are not saved"
-    },
-    "answerExpandableQuestionHeader": "Question:",
-    "@answerExpandableQuestionHeader": {
-        "description": "The header of the expandable question in the answer page"
-    },
-    "answerExpandableExplanationHeader": "Explanation:",
-    "@answerExpandableExplanationHeader": {
-        "description": "The header of the expandable explanation in the answer page"
-    },
-    "answerExpandableNoExplanation": "No explanation available",
-    "@answerExpandableNoExplanation": {
-        "description": "The message displayed when there is no explanation available"
-    },
-    "quizToggleExplanation": "Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!",
-    "@quizToggleExplanation": {
-        "description": "The label for the toggle explanation button"
-    },
-    "quizResultBtnLbl": "Back to topic selection",
-    "@quizResultBtnLbl": {
-        "description": "The label of the button to view the quiz results"
-    },
-    "quizResultPassed": "Passed",
-    "@quizResultPassed": {
-        "description": "The label for the passed quiz result"
-    },
-    "quizResultFailed": "Failed",
-    "@quizResultFailed": {
-        "description": "The label for the failed quiz result"
-    },
-    "quizResultScore": "Score",
-    "@quizResultScore": {
-        "description": "The label for the quiz result score"
-    },
-    "topicsDone": "Done",
-    "@topicsDone": {
-        "description": "The label for the done topics"
-    },
-    "topicsTitle": "Topics",
-    "@topicsTitle": {
-        "description": "The title of the topics page"
-    },
-    "authEmail": "E-Mail",
-    "@authEmail": {
-        "description": "The label for the email input field"
-    },
-    "authPassword": "Password",
-    "@authPassword": {
-        "description": "The label for the password input field"
-    },
-    "authRepeatPassword": "Repeat Password",
-    "@authRepeatPassword": {
-        "description": "The label for the repeated password input field"
-    },
-    "authLoginTitle": "Login",
-    "@authLoginTitle": {
-        "description": "The title of the login page"
-    },
-    "authRegisterTitle": "Sign Up",
-    "@authRegisterTitle": {
-        "description": "The title of the register page"
-    },
-    "authLoginBtnLbl": "Login",
-    "@authLoginBtnLbl": {
-        "description": "The label of the login button"
-    },
-    "authRegisterBtnLbl": "Sign Up",
-    "@authRegisterBtnLbl": {
-        "description": "The label of the register button"
-    },
-    "authSignUpTextBtnLbl": "Sign Up here",
-    "@authSignUpTextBtnLbl": {
-        "description": "The label of the sign up text button"
-    },
-    "authSignUpText": "Don't have an account? ",
-    "@authSignUpText": {
-        "description": "The text of the sign up text"
-    },
-    "authLoginTextBtnLbl": "Login",
-    "@authLoginTextBtnLbl": {
-        "description": "The label of the login text button"
-    },
-    "authLoginText": "Already have an account? ",
-    "@authLoginText": {
-        "description": "The text of the login text"
-    },
-    "authPwdForgottenText": "Forgot your password? ",
-    "@authPwdForgottenText": {
-        "description": "The text of the password forgotten text"
-    },
-    "authPwdForgottenBtnLbl": "Reset here",
-    "@authPwdForgottenBtnLbl": {
-        "description": "The label of the password forgotten button"
-    },
-    "authDividerLoginText": "Or Login with",
-    "@authDividerLoginText": {
-        "description": "The text of the divider"
-    },
-    "authDividerRegisterText": "Or Sign in with",
-    "@authDividerRegisterText": {
-        "description": "The text of the divider"
-    },
-    "authEmailEmptyError": "Email cannot be empty.",
-    "@authEmailEmptyError": {
-        "description": "The error message displayed when the email input field is empty"
-    },
-    "authEmailInvalidError": "Email is invalid.",
-    "@authEmailInvalidError": {
-        "description": "The error message displayed when the email input field is invalid"
-    },
-    "authPasswordEmptyError": "Password cannot be empty.",
-    "@authPasswordEmptyError": {
-        "description": "The error message displayed when the password input field is empty"
-    },
-    "authPasswordShortError": "Password must be at least 6 characters long.",
-    "@authPasswordShortError": {
-        "description": "The error message displayed when the password when the password is to short"
-    },
-    "authPasswordNotMatchError": "Passwords do not match.",
-    "@authPasswordNotMatchError": {
-        "description": "The error message displayed when the passwords do not match"
-    },
-    "profileMenuProfile": "Profile",
-    "@profileMenuProfile": {
-        "description": "Menu item text for navigating to the user profile screen"
-    },
-    "profileMenuSettings": "Settings",
-    "@profileMenuSettings": {
-        "description": "Menu item text for navigating to the settings screen"
-    },
-    "profileMenuLogout": "Logout",
-    "@profileMenuLogout": {
-        "description": "Menu item text for logging the user out"
-    },
-    "notFoundAppBarTitle": "Page Not Found",
-    "@notFoundAppBarTitle": {
-        "description": "App bar title for the 404 error page"
-    },
-    "notFoundHeading": "404 - Page Not Found",
-    "@notFoundHeading": {
-        "description": "Main heading displayed on the 404 error page"
-    },
-    "notFoundErrorDetailsLabel": "Error details:",
-    "@notFoundErrorDetailsLabel": {
-        "description": "Label preceding the technical error details on the 404 page"
-    },
-    "settingsAppBarTitle": "Settings",
-    "@settingsAppBarTitle": {
-        "description": "Title of the app bar for settings"
-    },
-    "profileAppBarTitle": "Profile",
-    "@profileAppBarTitle": {
-        "description": "Title of the app bar for the profile"
-    },
-    "profileUserNotFound": "User data not found.",
-    "@profileUserNotFound": {
-        "description": "Message shown on profile page if the user data is null"
-    },
-    "profileNoUsername": "Add username",
-    "@profileNoUsername": {
-        "description": "Fallback text if the user has no display name"
-    },
-    "profileNoEmail": "No email available",
-    "@profileNoEmail": {
-        "description": "Fallback text if the user has no email address"
-    },
-    "profileErrorLoading": "Error loading profile data.",
-    "@profileErrorLoading": {
-        "description": "Error message shown on profile page if user data fails to load"
-    },
-    "profileChangePictureTooltip": "Change profile picture",
-    "@profileChangePictureTooltip": {
-        "description": "Tooltip text for changing the profile picture"
-    },
-    "profileDisplayNameLabel": "Display name",
-    "@profileDisplayNameLabel": {
-        "description": "Label for the display name input field"
-    },
-    "profileEmailLabel": "E-Mail",
-    "@profileEmailLabel": {
-        "description": "Label for the email input field"
-    },
-    "profileEditAppBarTitle": "Edit Profile",
-    "@profileEditAppBarTitle": {
-        "description": "Title of the app bar for editing the profile"
-    },
-    "profileEditBtnLbl": "Save",
-    "@profileEditBtnLbl": {
-        "description": "Label for the save button"
-    },
-    "profilePickFromGallery": "Pick from Gallery",
-    "@profilePickFromGallery": {
-        "description": "Option in the bottom sheet to select an image from the device gallery."
-    },
-    "profilePickFromCamera": "Take a photo",
-    "@profilePickFromCamera": {
-        "description": "Option in the bottom sheet to take a new photo with the camera."
-    },
-    "profileImagePickerError": "Error selecting an image.",
-    "@profileImagePickerError": {
-        "description": "Error message shown on profile page if image selection fails"
-    },
-    "profileUpdateError": "Error updating profile",
-    "@profileUpdateError": {
-        "description": "Error message shown when profile update fails"
-    },
-    "profileUpdateSuccess": "Profile updated successfully!",
-    "@profileUpdateSuccess": {
-        "description": "Success message shown when profile update succeeds"
-    },
-    "profileDisplayNameEmptyError": "Display name cannot be empty.",
-    "@profileDisplayNameEmptyError": {
-        "description": "Validation error message when the display name field is empty during profile save"
-    },
-    "profileSaveTooltip": "Save changes",
-    "@profileSaveTooltip": {
-        "description": "Tooltip for the save button on the profile page AppBar"
-    },
-    "profileEditTooltip": "Edit profile",
-    "@profileEditTooltip": {
-        "description": "Tooltip for the edit button on the profile page AppBar"
-    },
-    "settingsThemeToggleLabel": "Theme",
-    "@settingsThemeToggleLabel": {
-        "description": "Label for the theme (dark/light mode) toggle switch"
-    },
-    "settingsLanguageLabel": "Language",
-    "@settingsLanguageLabel": {
-        "description": "Label for the language selection setting"
+    "finishQuizBtnLbl": "Show Results",
+    "@finishQuizBtnLbl": {
+        "description": "The label of the button to finish the quiz"
     },
     "languageNameEnglish": "English",
     "@languageNameEnglish": {
@@ -328,44 +188,200 @@
     "@languageNameGerman": {
         "description": "The name of the German language"
     },
+    "nextQuestionBtnLbl": "Next Question",
+    "@nextQuestionBtnLbl": {
+        "description": "The label of the button to go to the next question"
+    },
+    "notFoundAppBarTitle": "Page Not Found",
+    "@notFoundAppBarTitle": {
+        "description": "App bar title for the 404 error page"
+    },
+    "notFoundErrorDetailsLabel": "Error details:",
+    "@notFoundErrorDetailsLabel": {
+        "description": "Label preceding the technical error details on the 404 page"
+    },
+    "notFoundHeading": "404 - Page Not Found",
+    "@notFoundHeading": {
+        "description": "Main heading displayed on the 404 error page"
+    },
     "pickerDoneButton": "Done",
     "@pickerDoneButton": {
         "description": "Label for the 'Done' button in pickers"
     },
-    "settingsThemeRefreshed": "Theme refreshed",
-    "@settingsThemeRefreshed": {
-        "description": "Message displayed when the theme is refreshed"
+    "profileAppBarTitle": "Profile",
+    "@profileAppBarTitle": {
+        "description": "Title of the app bar for the profile"
     },
-    "settingsRefreshButtonLabel": "Refresh",
-    "@settingsRefreshButtonLabel": {
-        "description": "Label for the refresh button"
+    "profileChangePictureTooltip": "Change profile picture",
+    "@profileChangePictureTooltip": {
+        "description": "Tooltip text for changing the profile picture"
     },
-    "settingsLocaleRefreshed": "Locale refreshed",
-    "@settingsLocaleRefreshed": {
-        "description": "Message displayed when the locale is refreshed"
+    "profileDisplayNameEmptyError": "Display name cannot be empty.",
+    "@profileDisplayNameEmptyError": {
+        "description": "Validation error message when the display name field is empty during profile save"
     },
-    "errorCategoryNotFound": "Category not found",
-    "@errorCategoryNotFound": {
-        "description": "Error message displayed when the category is not found"
+    "profileDisplayNameLabel": "Display name",
+    "@profileDisplayNameLabel": {
+        "description": "Label for the display name input field"
     },
-    "errorNoCategorySelected": "Category not selected",
-    "@errorNoCategorySelected": {
-        "description": "Error message displayed when no category is selected"
+    "profileEditAppBarTitle": "Edit Profile",
+    "@profileEditAppBarTitle": {
+        "description": "Title of the app bar for editing the profile"
     },
-    "errorGeneric": "An error occurred",
-    "@errorGeneric": {
-        "description": "Generic error message prefix shown before the specific error details"
+    "profileEditBtnLbl": "Save",
+    "@profileEditBtnLbl": {
+        "description": "Label for the save button"
     },
-    "authPasswordResetEmailPrompt": "Please enter your email first.",
-    "@authPasswordResetEmailPrompt": {
-        "description": "Message shown when trying to reset password without entering an email address."
+    "profileEditTooltip": "Edit profile",
+    "@profileEditTooltip": {
+        "description": "Tooltip for the edit button on the profile page AppBar"
+    },
+    "profileEmailLabel": "E-Mail",
+    "@profileEmailLabel": {
+        "description": "Label for the email input field"
+    },
+    "profileErrorLoading": "Error loading profile data.",
+    "@profileErrorLoading": {
+        "description": "Error message shown on profile page if user data fails to load"
+    },
+    "profileImagePickerError": "Error selecting an image.",
+    "@profileImagePickerError": {
+        "description": "Error message shown on profile page if image selection fails"
+    },
+    "profileMenuLogout": "Logout",
+    "@profileMenuLogout": {
+        "description": "Menu item text for logging the user out"
+    },
+    "profileMenuProfile": "Profile",
+    "@profileMenuProfile": {
+        "description": "Menu item text for navigating to the user profile screen"
+    },
+    "profileMenuSettings": "Settings",
+    "@profileMenuSettings": {
+        "description": "Menu item text for navigating to the settings screen"
+    },
+    "profileNoEmail": "No email available",
+    "@profileNoEmail": {
+        "description": "Fallback text if the user has no email address"
+    },
+    "profileNoUsername": "Add username",
+    "@profileNoUsername": {
+        "description": "Fallback text if the user has no display name"
+    },
+    "profilePickFromCamera": "Take a photo",
+    "@profilePickFromCamera": {
+        "description": "Option in the bottom sheet to take a new photo with the camera."
+    },
+    "profilePickFromGallery": "Pick from Gallery",
+    "@profilePickFromGallery": {
+        "description": "Option in the bottom sheet to select an image from the device gallery."
+    },
+    "profileSaveTooltip": "Save changes",
+    "@profileSaveTooltip": {
+        "description": "Tooltip for the save button on the profile page AppBar"
+    },
+    "profileUpdateError": "Error updating profile",
+    "@profileUpdateError": {
+        "description": "Error message shown when profile update fails"
+    },
+    "profileUpdateSuccess": "Profile updated successfully!",
+    "@profileUpdateSuccess": {
+        "description": "Success message shown when profile update succeeds"
+    },
+    "profileUserNotFound": "User data not found.",
+    "@profileUserNotFound": {
+        "description": "Message shown on profile page if the user data is null"
+    },
+    "quizAppBarTitle": "Quiz",
+    "@quizAppBarTitle": {
+        "description": "The title of the quiz page in the app bar"
+    },
+    "quizCompletedMsg": "🎉 Quiz Completed",
+    "@quizCompletedMsg": {
+        "description": "The message displayed when the quiz is completed"
+    },
+    "quizErrorLoadingNextQuestion": "Error loading next question.",
+    "@quizErrorLoadingNextQuestion": {
+        "description": "Error message shown in a SnackBar when loading the next quiz question fails."
+    },
+    "quizErrorLoadingQuestions": "Error loading questions:",
+    "@quizErrorLoadingQuestions": {
+        "description": "Error message prefix displayed when questions fail to load in the quiz page."
+    },
+    "quizErrorNoQuestions": "No questions found for this topic.",
+    "@quizErrorNoQuestions": {
+        "description": "Message displayed in the quiz page body or SnackBar when no questions are found for the selected topic."
     },
     "quizNoQuestionsAvailable": "No questions available for this topic yet.",
     "@quizNoQuestionsAvailable": {
         "description": "Message displayed in the quiz page when no questions are found for the selected topic."
     },
-    "quizErrorLoadingQuestions": "Error loading questions:",
-    "@quizErrorLoadingQuestions": {
-        "description": "Error message prefix displayed when questions fail to load in the quiz page."
+    "quizResultBtnLbl": "Back to topic selection",
+    "@quizResultBtnLbl": {
+        "description": "The label of the button to view the quiz results"
+    },
+    "quizResultFailed": "Failed",
+    "@quizResultFailed": {
+        "description": "The label for the failed quiz result"
+    },
+    "quizResultPassed": "Passed",
+    "@quizResultPassed": {
+        "description": "The label for the passed quiz result"
+    },
+    "quizResultScore": "Score",
+    "@quizResultScore": {
+        "description": "The label for the quiz result score"
+    },
+    "quizResultsAppBarTitle": "Quiz Results",
+    "@quizResultsAppBarTitle": {
+        "description": "The title of the quiz results page in the app bar"
+    },
+    "quizResultsNotSaved": "Quiz results not saved",
+    "@quizResultsNotSaved": {
+        "description": "The message displayed when the quiz results are not saved"
+    },
+    "quizToggleExplanation": "Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!",
+    "@quizToggleExplanation": {
+        "description": "The label for the toggle explanation button"
+    },
+    "settingsAppBarTitle": "Settings",
+    "@settingsAppBarTitle": {
+        "description": "Title of the app bar for settings"
+    },
+    "settingsLanguageLabel": "Language",
+    "@settingsLanguageLabel": {
+        "description": "Label for the language selection setting"
+    },
+    "settingsLocaleRefreshed": "Locale refreshed",
+    "@settingsLocaleRefreshed": {
+        "description": "Message displayed when the locale is refreshed"
+    },
+    "settingsRefreshButtonLabel": "Refresh",
+    "@settingsRefreshButtonLabel": {
+        "description": "Label for the refresh button"
+    },
+    "settingsThemeRefreshed": "Theme refreshed",
+    "@settingsThemeRefreshed": {
+        "description": "Message displayed when the theme is refreshed"
+    },
+    "settingsThemeToggleLabel": "Theme",
+    "@settingsThemeToggleLabel": {
+        "description": "Label for the theme (dark/light mode) toggle switch"
+    },
+    "startQuizBtnLbl": "Start Quiz",
+    "@startQuizBtnLbl": {
+        "description": "The label of the button to start the quiz"
+    },
+    "submitAnswerBtnLbl": "Done",
+    "@submitAnswerBtnLbl": {
+        "description": "The label of the button to submit an answer"
+    },
+    "topicsDone": "Done",
+    "@topicsDone": {
+        "description": "The label for the done topics"
+    },
+    "topicsTitle": "Topics",
+    "@topicsTitle": {
+        "description": "The title of the topics page"
     }
 }
