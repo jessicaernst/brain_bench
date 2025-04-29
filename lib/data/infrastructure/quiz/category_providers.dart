@@ -98,13 +98,3 @@ class Categories extends _$Categories {
     return progress;
   }
 }
-
-// categoryById provider remains the same as in business_logic/categories/categories_provider.dart
-// If it was also defined here, it should be removed from this infrastructure file.
-/*
-@riverpod
-Future<Category> categoryById(
-    Ref ref, String categoryId, String languageCode) async {
-  // ... implementation ...
-}
-*/

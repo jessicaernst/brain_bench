@@ -1,6 +1,6 @@
-import 'package:brain_bench/data/models/result/result.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
+import 'package:brain_bench/data/models/result/result.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -10,7 +10,7 @@ part 'result_providers.g.dart';
 @riverpod
 Future<List<Result>> results(Ref ref) async {
   final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
-  final user = ref.watch(currentUserModelProvider).valueOrNull;
+  final user = await ref.watch(currentUserModelProvider.future);
 
   if (user == null) {
     throw Exception('❌ Kein eingeloggter User in [resultsProvider]');
@@ -20,9 +20,6 @@ Future<List<Result>> results(Ref ref) async {
 }
 
 /// A notifier that handles saving quiz results and marking topics as done.
-///
-/// This notifier uses the [quizMockDatabaseRepositoryProvider] to interact
-/// with the database.
 @riverpod
 class SaveResultNotifier extends _$SaveResultNotifier {
   @override
@@ -35,14 +32,14 @@ class SaveResultNotifier extends _$SaveResultNotifier {
   }
 
   /// Marks a topic as done and updates user progress.
-  ///
-  /// Requires [topicId], [categoryId], and the [user] to update `isTopicDone` + `categoryProgress`.
   Future<void> markTopicAsDone({
     required String topicId,
     required String categoryId,
   }) async {
     final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
-    final user = ref.read(currentUserModelProvider).valueOrNull;
+    // Await the future to get the current user data.
+    // The complete user object is needed for the repository call to update progress.
+    final user = await ref.watch(currentUserModelProvider.future);
 
     if (user == null) {
       throw Exception('❌ Kein eingeloggter User in markTopicAsDone');
@@ -50,7 +47,6 @@ class SaveResultNotifier extends _$SaveResultNotifier {
 
     await repo.markTopicAsDone(topicId, categoryId, user);
 
-    // ✅ User-Provider aktualisieren
     ref.invalidate(currentUserModelProvider);
   }
 }

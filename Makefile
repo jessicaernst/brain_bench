@@ -1,53 +1,66 @@
-.PHONY: test test-watch test-once clean-coverage show-coverage open-coverage coverage-report
+# Declare targets that are not actual files, ensuring they always run.
+.PHONY: test test-watch test-once clean-coverage show-coverage open-coverage coverage-report filter-lcov
 
-# Runs tests once WITHOUT generating coverage.
+# Filters generated Dart files (.g.dart, .freezed.dart, .gen.dart) from the lcov.info coverage report.
+# Ensures the 'remove_from_coverage' tool is globally activated first.
+filter-lcov:
+	@echo "🧹 Filtering generated files from coverage..."
+	dart pub global list | grep remove_from_coverage >/dev/null || dart pub global activate remove_from_coverage
+	dart pub global run remove_from_coverage:remove_from_coverage \
+		-f coverage/lcov.info \
+		-r '\.g\.dart$$|\.freezed\.dart$$|\.gen\.dart$$'
+
+# Runs Flutter tests once without generating code coverage.
 test:
 	@echo "🧪 Running Flutter Tests once (no coverage)..."
 	flutter test
 
-# Runs tests once and generates the coverage report in the 'coverage/' directory.
+# Runs Flutter tests once, generates code coverage data (lcov.info),
+# and then filters generated files from the coverage report.
 test-once:
 	@echo "🚀 Running Flutter Tests once with Coverage..."
 	flutter test --coverage
+	@$(MAKE) filter-lcov
 
-# Runs tests continuously in watch mode (WITH coverage).
-# It uses 'fswatch' to monitor the 'lib' and 'test' directories for changes.
-# When a change is detected, it removes the old coverage report,
-# reruns 'flutter test --coverage', and prints a success or failure message.
+# Watches for file changes in 'lib' and 'test' directories.
+# Automatically re-runs tests with coverage on any change, filters the report on success,
+# and prints a success or failure message. Cleans previous coverage first.
 test-watch:
 	@echo "👀 Watching Flutter Tests with Coverage..."
-	# Ensure a clean start by removing any previous coverage results.
 	@rm -rf coverage
-	# Watch 'lib' and 'test' folders, on change (-o), pipe output to xargs.
-	# xargs takes each changed file path (-n1 -I{}) and executes the bash command.
-	# The bash command runs tests with coverage and prints colored status messages.
-	@fswatch -o lib test | xargs -n1 -I{} bash -c 'flutter test --coverage && echo "\033[0;32m✅ All Tests Passed\033[0m" || echo "\033[0;31m❌ Tests Failed\033[0m"'
+	@fswatch -o lib test | xargs -n1 -I{} bash -c 'flutter test --coverage && make filter-lcov && echo "\033[0;32m✅ All Tests Passed\033[0m" || echo "\033[0;31m❌ Tests Failed\033[0m"'
 
-# Deletes the 'coverage/' directory, removing all generated coverage reports.
+# Removes the 'coverage' directory, cleaning up all generated coverage data.
 clean-coverage:
 	@echo "🧹 Cleaning coverage folder..."
 	@rm -rf coverage
 
-# Attempts to toggle the visibility of coverage highlighting in Visual Studio Code.
-# This requires the 'Coverage Gutters' extension to be installed and the
-# 'coverage-gutters.toggleCoverage' command to be accessible via the 'code' CLI.
-# This might require specific VS Code setup or keybindings.
+# Toggles the visibility of code coverage highlighting in VS Code gutters.
+# Checks if the 'code' command is available in the PATH first.
+# Requires the 'Coverage Gutters' extension.
 show-coverage:
-	@echo "📊 Toggling Coverage Gutters in VS Code (if mapped)..."
-	code --command coverage-gutters.toggleCoverage
+	@echo "📊 Toggling Coverage Gutters in VS Code..."
+	@if command -v code >/dev/null 2>&1; then \
+		echo "   Found 'code' command. Attempting to toggle..."; \
+		code --command coverage-gutters.toggleCoverage; \
+	else \
+		echo "⚠️ 'code' command not found in PATH. Cannot toggle VS Code coverage gutters."; \
+		echo "   Ensure VS Code command line tools are installed and in your PATH."; \
+		echo "   See: https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line (Mac)"; \
+		echo "   or https://code.visualstudio.com/docs/setup/linux#_launching-from-the-command-line (Linux)"; \
+	fi
 
-# Generates an HTML report from the existing coverage/lcov.info file
-# using 'genhtml' (requires lcov package) and opens the main index.html
-# file in the default web browser.
+# Generates an HTML code coverage report from 'lcov.info' using genhtml
+# and opens the main 'index.html' file in the default web browser.
 open-coverage:
 	@echo "📂 Generating HTML Coverage Report..."
 	genhtml coverage/lcov.info -o coverage/html
 	@echo "🌐 Opening HTML Report in browser..."
 	open coverage/html/index.html
 
-# Convenience target: First runs the tests once to generate coverage data,
-# then generates the HTML report and opens it in the browser.
+# Convenience target: Runs tests with coverage (`test-once`),
+# then generates and opens the HTML coverage report (`open-coverage`).
 coverage-report:
-	@make test-once
-	@make open-coverage
+	@$(MAKE) test-once
+	@$(MAKE) open-coverage
 
