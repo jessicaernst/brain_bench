@@ -281,7 +281,6 @@ class _QuizPageState extends ConsumerState<QuizPage> {
               'Back button pressed, resetting quiz and navigating to topics.');
           // Resetting is synchronous
           quizViewModel.resetQuiz();
-          // --- CORRECT LINT FIX: Check mounted, then use context directly inside callback ---
           // This callback is synchronous.
           if (!mounted) return;
           // Use 'context' property directly after mounted check
@@ -307,7 +306,6 @@ class _QuizPageState extends ConsumerState<QuizPage> {
               ),
             );
           }
-          // --- END CORRECT LINT FIX ---
         },
       ),
       body: questionsAsync.when(
