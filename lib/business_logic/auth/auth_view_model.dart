@@ -8,7 +8,7 @@ part 'auth_view_model.g.dart';
 
 final Logger _logger = Logger('AuthViewModel');
 
-@riverpod
+@Riverpod(keepAlive: false)
 class AuthViewModel extends _$AuthViewModel {
   @override
   AsyncValue<void> build() => const AsyncData(null);
@@ -25,10 +25,12 @@ class AuthViewModel extends _$AuthViewModel {
       _logger.info('AuthViewModel received from repo after Email Sign-In: '
           'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
 
-      await ensureUserExistsIfNeeded(ref, appUser);
+      // If ensureUserExistsIfNeeded now re-throws, this await might throw
+      await ensureUserExistsIfNeeded(ref.read, appUser);
 
       state = const AsyncData(null);
     } catch (e, st) {
+      // This block will now catch errors from ensureUserExistsIfNeeded too
       state = AsyncError(e, st);
       if (context.mounted) _showError(context, e);
     }
@@ -46,10 +48,12 @@ class AuthViewModel extends _$AuthViewModel {
       _logger.info('AuthViewModel received from repo after Email Sign-Up: '
           'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
 
-      await ensureUserExistsIfNeeded(ref, appUser);
+      // If ensureUserExistsIfNeeded now re-throws, this await might throw
+      await ensureUserExistsIfNeeded(ref.read, appUser);
 
       state = const AsyncData(null);
     } catch (e, st) {
+      // This block will now catch errors from ensureUserExistsIfNeeded too
       state = AsyncError(e, st);
       if (context.mounted) _showError(context, e);
     }
@@ -63,9 +67,12 @@ class AuthViewModel extends _$AuthViewModel {
       _logger.info('AuthViewModel received from repo after Google Sign-In: '
           'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
 
-      await ensureUserExistsIfNeeded(ref, appUser);
+      // If ensureUserExistsIfNeeded now re-throws, this await might throw
+      await ensureUserExistsIfNeeded(ref.read, appUser);
+
       state = const AsyncData(null);
     } catch (e, st) {
+      // This block will now catch errors from ensureUserExistsIfNeeded too
       state = AsyncError(e, st);
       if (context.mounted) _showError(context, e);
     }
@@ -79,10 +86,12 @@ class AuthViewModel extends _$AuthViewModel {
       _logger.info('AuthViewModel received from repo after Apple Sign-In: '
           'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}, Email=${appUser.email}');
 
-      await ensureUserExistsIfNeeded(ref, appUser);
+      // If ensureUserExistsIfNeeded now re-throws, this await might throw
+      await ensureUserExistsIfNeeded(ref.read, appUser);
 
       state = const AsyncData(null);
     } catch (e, st) {
+      // This block will now catch errors from ensureUserExistsIfNeeded too
       state = AsyncError(e, st);
       if (context.mounted) _showError(context, e);
     }

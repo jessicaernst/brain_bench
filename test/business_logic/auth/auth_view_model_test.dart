@@ -1,10 +1,10 @@
 // REMOVED duplicate import: import 'package:brain_bench/data/repositories/auth_repository.dart';
 // Ensure ONLY ONE import for AuthRepository is active and correct
-import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
 import 'package:brain_bench/business_logic/auth/auth_view_model.dart';
-import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/core/utils/ensure_user_exists.dart'
     as ensure_user_exists;
+import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
+import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/repositories/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,21 +18,20 @@ class MockAuthRepository extends Mock implements AuthRepository {}
 void main() {
   late MockAuthRepository mockAuthRepository;
 
-  late Future<void> Function(Ref<Object?>, AppUser?) originalEnsureUserExists;
+  late Future<void> Function(ensure_user_exists.Reader, AppUser?)
+      originalEnsureUserExists;
 
   setUpAll(() {
     originalEnsureUserExists = ensure_user_exists.ensureUserExistsIfNeeded;
   });
 
   setUp(() {
-    // Override ensureUserExistsIfNeeded before each test
-    ensure_user_exists.ensureUserExistsIfNeeded = (ref, user) async {
-      // Mock implementation does nothing for these tests
+    ensure_user_exists.ensureUserExistsIfNeeded = (ref, _) async {
+      // no-op for tests
     };
   });
 
   tearDown(() {
-    // Restore the original function after each test
     ensure_user_exists.ensureUserExistsIfNeeded = originalEnsureUserExists;
   });
 
