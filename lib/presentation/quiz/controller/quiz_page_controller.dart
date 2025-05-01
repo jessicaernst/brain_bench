@@ -18,8 +18,6 @@ final Logger _logger = Logger('QuizPageController');
 class QuizPageController extends _$QuizPageController {
   @override
   void build({required String topicId, required String categoryId}) {
-    // Initialization logic can go here if needed.
-    // Parameters topicId and categoryId are accessible via this.topicId etc.
     return;
   }
 
