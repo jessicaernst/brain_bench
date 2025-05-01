@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:brain_bench/business_logic/auth/current_user_provider.dart';
-import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart'; // Import the provider definition
+import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
-import 'package:brain_bench/data/repositories/auth_repository.dart'; // Import the abstract class
+import 'package:brain_bench/data/repositories/auth_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
