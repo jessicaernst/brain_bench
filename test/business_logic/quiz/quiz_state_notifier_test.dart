@@ -1,3 +1,18 @@
+/// This file contains the unit tests for the `QuizStateNotifier` class.
+/// It tests the behavior of the `QuizStateNotifier` and its interactions with other classes.
+/// The tests cover the initialization of the quiz, the state of the quiz, and the interactions with the repository and the answers notifier.
+/// The tests are written using the `flutter_test` package and the `mocktail` package for mocking dependencies.
+/// The `FakeAnswersNotifier` class is used as a fake implementation of the `AnswersNotifier` class for testing purposes.
+/// The `MockQuizMockDatabaseRepository` class is used as a mock implementation of the `QuizMockDatabaseRepository` class for testing purposes.
+/// The tests are organized into different groups to test different scenarios and edge cases.
+/// The `setUpAll` function is used to set up the necessary dependencies and fallback values for the tests.
+/// The `createContainer` function is a helper function to create a new provider container with test-specific overrides.
+/// The `initViewModel` function is a helper function to initialize the view model for the tests.
+/// The `group` function is used to group related tests together.
+/// The `test` function is used to define individual test cases.
+/// The tests cover the initial state of the quiz, the initialization of the quiz with questions, and the behavior when trying to initialize the quiz multiple times or with an empty questions list.
+library;
+
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_state.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_state_notifier.dart';
@@ -29,8 +44,6 @@ class FakeAnswersNotifier extends Notifier<List<Answer>>
   List<Answer> build() {
     return initialAnswers;
   }
-
-  // No explicit state getter/setter needed; Notifier provides it.
 
   // Counters for testing interactions (optional)
   int initializeAnswersCallCount = 0;

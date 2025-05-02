@@ -17,8 +17,6 @@ part 'quiz_result_notifier.g.dart';
 
 final Logger _logger = Logger('QuizResultNotifier');
 
-const Duration _kExpansionAnimationDuration = Duration(milliseconds: 200);
-
 /// A Riverpod notifier that manages the state of the quiz result page.
 ///
 /// This notifier is responsible for:
@@ -32,6 +30,9 @@ const Duration _kExpansionAnimationDuration = Duration(milliseconds: 200);
 @riverpod
 class QuizResultNotifier extends _$QuizResultNotifier {
   /// Builds the initial state of the notifier.
+  // Define animation duration (should match UI animation)
+  static const Duration _kAnimationDuration = Duration(milliseconds: 300);
+
   @override
   QuizResultState build() {
     final quizAnswers = ref.watch(quizAnswersNotifierProvider);
@@ -46,69 +47,41 @@ class QuizResultNotifier extends _$QuizResultNotifier {
 
   // --- UI Interaction Methods ---
 
-  /// Toggles the selected view between `none`, `correct`, and `incorrect`.
+  /// Toggles the view between different [SelectedView]s.
   ///
-  /// When switching between 'correct' and 'incorrect', it first collapses
-  /// the current view, waits for the animation, then switches the view.
-  ///
-  /// Parameters:
-  ///   - [newView]: The new view to toggle to.
+  /// If the current view is the same as the new view, it collapses the view and switches to [SelectedView.none].
+  /// If the current view is not [SelectedView.none] and the new view is not [SelectedView.none], it first collapses the view and then switches to the new view after a delay.
+  /// If the current view is [SelectedView.none] or the new view is [SelectedView.none], it immediately switches to the new view and collapses the view.
   void toggleView(SelectedView newView) {
     _logger.fine('toggleView called with newView: $newView');
-
     final currentView = state.selectedView;
 
-    if (currentView != SelectedView.none && currentView == newView) {
-      // --- Case 1: Same button pressed again -> Switch to 'none' ---
-      _logger.info('Toggling OFF view: $currentView -> none');
+    if (currentView == newView) {
+      _logger.fine('Toggling view OFF: $currentView -> none');
       state =
           state.copyWith(selectedView: SelectedView.none, expandedAnswers: {});
-    } else if (currentView != SelectedView.none && currentView != newView) {
-      // --- Case 2: Switch between 'correct' and 'incorrect' ---
-      _logger.info('Switching view: $currentView -> $newView');
-
-      final viewBeingSwitchedFrom = currentView;
-
-      _logger.fine('Switch Step 1: Clearing expanded answers for $currentView');
-
-      Future.delayed(_kExpansionAnimationDuration, () {
-        try {
-          // Use FINEST for very detailed debug logs inside async callback
-          _logger.finest('--- INSIDE FUTURE.DELAYED CALLBACK ---');
-          _logger.finest('Current state.selectedView: ${state.selectedView}');
-          _logger.finest(
-              'Current state.expandedAnswers.isEmpty: ${state.expandedAnswers.isEmpty}');
+    } else if (currentView != SelectedView.none &&
+        newView != SelectedView.none) {
+      // Switching between Correct and Incorrect: Collapse first, then switch view after delay
+      _logger.fine('Switching view: $currentView -> $newView (with delay)');
+      // Step 1: Start collapse animation
+      state = state.copyWith(expandedAnswers: {});
+      // Step 2: Wait for animation duration, then switch the view
+      Future.delayed(_kAnimationDuration, () {
+        // Check if the state is still relevant (user might have clicked again)
+        if (state.selectedView == currentView &&
+            state.expandedAnswers.isEmpty) {
+          state = state.copyWith(selectedView: newView);
+          _logger.fine('Delayed view switch complete: -> $newView');
+        } else {
           _logger
-              .finest('Captured viewBeingSwitchedFrom: $viewBeingSwitchedFrom');
-          _logger.finest('Captured newView: $newView');
-
-          if (state.expandedAnswers.isEmpty &&
-              state.selectedView == viewBeingSwitchedFrom) {
-            _logger.finest('CONDITION TRUE: Setting selectedView to $newView');
-            state = state.copyWith(selectedView: newView);
-            _logger.finest('STATE SET to: ${state.selectedView}');
-          } else {
-            _logger.finest('CONDITION FALSE: Skipped setting view to $newView');
-            if (state.expandedAnswers.isNotEmpty) {
-              _logger.warning('Reason: expandedAnswers was NOT empty.');
-            }
-            if (state.selectedView != viewBeingSwitchedFrom) {
-              _logger.warning(
-                  'Reason: state.selectedView (${state.selectedView}) != viewBeingSwitchedFrom ($viewBeingSwitchedFrom)');
-            }
-          }
-        } catch (e, s) {
-          _logger.severe(
-              '--- CATCH BLOCK EXECUTED in Future.delayed ---', e, s);
+              .fine('Delayed view switch aborted (state changed during delay)');
         }
       });
     } else {
-      // --- Case 3: Switch from 'none' to 'correct' or 'incorrect' ---
-      _logger.info('Switching view: none -> $newView');
-      state = state.copyWith(
-          selectedView: newView,
-          expandedAnswers: {} // Ensure it starts collapsed
-          );
+      // Switching from/to 'none': Collapse and switch immediately
+      _logger.fine('Toggling view ON: $currentView -> $newView');
+      state = state.copyWith(selectedView: newView, expandedAnswers: {});
     }
   }
 
