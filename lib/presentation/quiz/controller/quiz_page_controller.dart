@@ -16,6 +16,9 @@ final Logger _logger = Logger('QuizPageController');
 /// Handles UI logic and interactions for the QuizPage.
 @Riverpod(keepAlive: true)
 class QuizPageController extends _$QuizPageController {
+  @visibleForTesting
+  GoRouter Function(BuildContext)? navigatorOverride;
+
   @override
   void build({required String topicId, required String categoryId}) {
     return;
@@ -62,7 +65,9 @@ class QuizPageController extends _$QuizPageController {
   }
 
   // Helper for navigation as GoRouter needs context
-  GoRouter navigator(BuildContext context) => GoRouter.of(context);
+  @visibleForTesting
+  GoRouter navigator(BuildContext context) =>
+      navigatorOverride?.call(context) ?? GoRouter.of(context);
 
   /// Gathers quiz answer data, saves it, and shows the result bottom sheet.
   void prepareAndShowResultBottomSheet(
@@ -121,7 +126,6 @@ class QuizPageController extends _$QuizPageController {
           isMounted, AppLocalizations.of(context)!.errorSavingData);
     }
 
-    // Show the bottom sheet using the helper method
     _showFeedbackBottomSheet(context, isMounted, languageCode);
   }
 
@@ -144,7 +148,6 @@ class QuizPageController extends _$QuizPageController {
     }
   }
 
-  /// Shows the feedback bottom sheet.
   void _showFeedbackBottomSheet(
       BuildContext context, bool Function() isMounted, String languageCode) {
     if (!isMounted()) return;
@@ -165,7 +168,6 @@ class QuizPageController extends _$QuizPageController {
     );
   }
 
-  /// Shows a generic error SnackBar.
   void showErrorSnackBar(ScaffoldMessengerState scaffoldMessenger,
       ThemeData theme, bool Function() isMounted, String message) {
     if (!isMounted()) return;

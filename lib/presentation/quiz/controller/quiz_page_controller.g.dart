@@ -7,7 +7,7 @@ part of 'quiz_page_controller.dart';
 // **************************************************************************
 
 String _$quizPageControllerHash() =>
-    r'0d56762d38a6b8a8eca8186071c06848fda18251';
+    r'b22ed737d1fda3e3296ae1d2557a40c3a33fd071';
 
 /// Copied from Dart SDK
 class _SystemHash {
