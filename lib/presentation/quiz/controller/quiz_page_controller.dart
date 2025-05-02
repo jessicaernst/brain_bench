@@ -1,6 +1,6 @@
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_answers_notifier.dart';
-import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
+import 'package:brain_bench/business_logic/quiz/quiz_state_notifier.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:brain_bench/presentation/quiz/widgets/feedback_bottom_sheet_view.dart';
@@ -24,7 +24,8 @@ class QuizPageController extends _$QuizPageController {
     return;
   }
 
-  QuizViewModel get quizViewModel => ref.read(quizViewModelProvider.notifier);
+  QuizStateNotifier get quizStateNotifier =>
+      ref.read(quizStateNotifierProvider.notifier);
 
   /// Handles moving to the next question or finishing the quiz.
   Future<void> handleNextQuestionOrFinish(BuildContext context,
@@ -33,10 +34,10 @@ class QuizPageController extends _$QuizPageController {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     final theme = Theme.of(context);
 
-    if (quizViewModel.hasNextQuestion()) {
+    if (quizStateNotifier.hasNextQuestion()) {
       _logger.fine('Attempting to load next question...');
       try {
-        await quizViewModel.loadNextQuestion(languageCode);
+        await quizStateNotifier.loadNextQuestion(languageCode);
         _logger.fine('Successfully loaded next question data.');
       } catch (e, s) {
         _logger.severe('Failed to load next question: $e', e, s);
@@ -72,7 +73,7 @@ class QuizPageController extends _$QuizPageController {
   /// Gathers quiz answer data, saves it, and shows the result bottom sheet.
   void prepareAndShowResultBottomSheet(
       BuildContext context, bool Function() isMounted, String languageCode) {
-    final quizState = ref.read(quizViewModelProvider);
+    final quizState = ref.read(quizStateNotifierProvider);
     final quizAnswerNotifier = ref.read(quizAnswersNotifierProvider.notifier);
     final currentLoadedAnswers = ref.read(answersNotifierProvider);
 
@@ -101,7 +102,7 @@ class QuizPageController extends _$QuizPageController {
         .toList();
     final explanation = currentQuestion.explanation;
     final allCorrectAnswersText = ref
-        .read(quizViewModelProvider.notifier)
+        .read(quizStateNotifierProvider.notifier)
         .getAllCorrectAnswersForCurrentQuestion(languageCode);
     final localizedQuestionText = currentQuestion.question;
 
@@ -133,7 +134,7 @@ class QuizPageController extends _$QuizPageController {
   void handleBackButton(BuildContext context, bool Function() isMounted) {
     _logger
         .fine('Back button pressed, resetting quiz and navigating to topics.');
-    quizViewModel.resetQuiz();
+    quizStateNotifier.resetQuiz();
     if (!isMounted()) return;
     try {
       navigator(context).goNamed(

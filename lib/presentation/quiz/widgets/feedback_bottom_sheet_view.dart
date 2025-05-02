@@ -1,5 +1,5 @@
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
-import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
+import 'package:brain_bench/business_logic/quiz/quiz_state_notifier.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
@@ -29,7 +29,7 @@ class FeedbackBottomSheetView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch necessary providers
-    final quizState = ref.watch(quizViewModelProvider);
+    final quizState = ref.watch(quizStateNotifierProvider);
     final currentAnswers = ref.watch(answersNotifierProvider);
     final localizations = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;

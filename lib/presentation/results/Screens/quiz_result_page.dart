@@ -1,6 +1,6 @@
 import 'package:brain_bench/business_logic/quiz/quiz_answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_result_notifier.dart';
-import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
+import 'package:brain_bench/business_logic/quiz/quiz_state_notifier.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
@@ -100,7 +100,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                       }
 
                       ref.read(quizAnswersNotifierProvider.notifier).reset();
-                      ref.read(quizViewModelProvider.notifier).resetQuiz();
+                      ref.read(quizStateNotifierProvider.notifier).resetQuiz();
                       notifier.toggleView(SelectedView.none);
 
                       if (context.mounted) {

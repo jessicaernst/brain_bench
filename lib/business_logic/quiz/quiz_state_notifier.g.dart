@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'quiz_view_model.dart';
+part of 'quiz_state_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$quizViewModelHash() => r'a4a88d9d60507b441f67d3c8096a31b87d75367b';
+String _$quizStateNotifierHash() => r'c6f2c223fc14e6a228f6a00789d89719746fdbdb';
 
-/// See also [QuizViewModel].
-@ProviderFor(QuizViewModel)
-final quizViewModelProvider =
-    NotifierProvider<QuizViewModel, QuizState>.internal(
-  QuizViewModel.new,
-  name: r'quizViewModelProvider',
+/// See also [QuizStateNotifier].
+@ProviderFor(QuizStateNotifier)
+final quizStateNotifierProvider =
+    NotifierProvider<QuizStateNotifier, QuizState>.internal(
+  QuizStateNotifier.new,
+  name: r'quizStateNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$quizViewModelHash,
+      : _$quizStateNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$QuizViewModel = Notifier<QuizState>;
+typedef _$QuizStateNotifier = Notifier<QuizState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

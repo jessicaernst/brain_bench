@@ -1,5 +1,5 @@
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
-import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
+import 'package:brain_bench/business_logic/quiz/quiz_state_notifier.dart';
 import 'package:brain_bench/core/component_widgets/no_data_available_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
@@ -28,10 +28,10 @@ class QuizContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch the dependent states needed for rendering
-    final quizState = ref.watch(quizViewModelProvider);
+    final quizState = ref.watch(quizStateNotifierProvider);
     final List<Answer> currentAnswers = ref.watch(answersNotifierProvider);
     // Read view model and notifier for actions
-    final quizViewModel = ref.read(quizViewModelProvider.notifier);
+    final quizViewModel = ref.read(quizStateNotifierProvider.notifier);
     final answersNotifier = ref.read(answersNotifierProvider.notifier);
 
     // --- Loading Condition 1: QuizViewModel hasn't been initialized yet ---

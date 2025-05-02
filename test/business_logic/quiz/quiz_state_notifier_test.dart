@@ -1,6 +1,6 @@
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_state.dart';
-import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
+import 'package:brain_bench/business_logic/quiz/quiz_state_notifier.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
@@ -188,7 +188,7 @@ void main() {
     when(() => mockRepository.getAnswers(questions.first.answerIds, lang))
         .thenAnswer((_) async => mockAnswersQ1); // Use appropriate mock answers
 
-    final viewModel = container.read(quizViewModelProvider.notifier);
+    final viewModel = container.read(quizStateNotifierProvider.notifier);
     await viewModel.initializeQuizIfNeeded(questions, lang);
     await container.pump(); // Allow futures to complete
   }
@@ -196,7 +196,7 @@ void main() {
   group('QuizViewModel Tests', () {
     test('Initial state is correct', () {
       final container = createContainer(); // Use default overrides
-      final initialState = container.read(quizViewModelProvider);
+      final initialState = container.read(quizStateNotifierProvider);
 
       // Assert initial state properties
       expect(initialState, QuizState.initial());
@@ -219,12 +219,12 @@ void main() {
             .thenAnswer((_) async => mockAnswersQ1);
 
         // Act
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
         await viewModel.initializeQuizIfNeeded(questions, lang);
         await container.pump(); // Settle futures
 
         // Assert State
-        final state = container.read(quizViewModelProvider);
+        final state = container.read(quizStateNotifierProvider);
         expect(state.questions, questions);
         expect(state.currentIndex, 0);
         expect(
@@ -251,12 +251,12 @@ void main() {
             .thenAnswer((_) async => mockAnswersQ1);
 
         // Act: Try to initialize again
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
         await viewModel.initializeQuizIfNeeded(questions, lang);
         await container.pump();
 
         // Assert State
-        final state = container.read(quizViewModelProvider);
+        final state = container.read(quizStateNotifierProvider);
         expect(state.currentIndex, 0); // Should remain the same
 
         // Assert Interactions (should not call repo again)
@@ -271,12 +271,12 @@ void main() {
         const lang = 'en';
 
         // Act
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
         await viewModel.initializeQuizIfNeeded(questions, lang);
         await container.pump();
 
         // Assert State
-        final state = container.read(quizViewModelProvider);
+        final state = container.read(quizStateNotifierProvider);
         expect(state, QuizState.initial()); // Should remain initial
 
         // Assert Interactions
@@ -294,12 +294,12 @@ void main() {
             .thenThrow(testError);
 
         // Act
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
         await viewModel.initializeQuizIfNeeded(questions, lang);
         await container.pump();
 
         // Assert State
-        final state = container.read(quizViewModelProvider);
+        final state = container.read(quizStateNotifierProvider);
         expect(state.questions, questions); // Questions should be set
         expect(state.currentIndex, 0); // Index should be set
         expect(state.isLoadingAnswers, false); // Should be false after error
@@ -320,7 +320,7 @@ void main() {
         await initViewModel(
             container, questions); // Initialize with 2 questions, index 0
 
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
         expect(viewModel.getProgress(), 0.5); // 1 / 2
 
         // Arrange for next question
@@ -340,7 +340,7 @@ void main() {
 
       test('getProgress returns 0 for empty quiz or initial state', () {
         final container = createContainer(); // Use default overrides
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
         expect(viewModel.getProgress(), 0.0); // Initial state
       });
 
@@ -349,7 +349,7 @@ void main() {
         final questions = [mockQuestion1, mockQuestion2];
         await initViewModel(container, questions); // Initialize, index 0
 
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
         expect(viewModel.hasNextQuestion(), isTrue);
       });
 
@@ -363,7 +363,7 @@ void main() {
             .thenAnswer((_) async => mockAnswersQ2);
 
         // Act: Move to next (last) question
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
         await viewModel.loadNextQuestion('en');
         await container.pump(); // Settle loadNextQuestion
 
@@ -374,7 +374,7 @@ void main() {
       test('hasNextQuestion returns false for empty or single question quiz',
           () async {
         final container = createContainer(); // Use default overrides
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
         expect(viewModel.hasNextQuestion(), isFalse); // Initial empty
 
         // Test with single question
@@ -395,12 +395,12 @@ void main() {
             .thenAnswer((_) async => mockAnswersQ2);
 
         // Act
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
         await viewModel.loadNextQuestion(lang);
         await container.pump();
 
         // Assert State
-        final state = container.read(quizViewModelProvider);
+        final state = container.read(quizStateNotifierProvider);
         expect(state.currentIndex, 1); // Index should be updated
         expect(
             state.isLoadingAnswers, false); // Should be false after completion
@@ -419,19 +419,19 @@ void main() {
         await initViewModel(container, questions); // Initialize, index 0
         const lang = 'en';
 
-        final initialState = container.read(quizViewModelProvider);
+        final initialState = container.read(quizStateNotifierProvider);
 
         // Arrange: Stub for potential unexpected call
         when(() => mockRepository.getAnswers(any(), any()))
             .thenAnswer((_) async => []);
 
         // Act
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
         await viewModel.loadNextQuestion(lang);
         await container.pump();
 
         // Assert State (should not change)
-        final finalState = container.read(quizViewModelProvider);
+        final finalState = container.read(quizStateNotifierProvider);
         expect(finalState.currentIndex, initialState.currentIndex);
         expect(finalState.isLoadingAnswers, false); // Should remain false
 
@@ -454,12 +454,12 @@ void main() {
             .thenThrow(testError);
 
         // Act
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
         await viewModel.loadNextQuestion(lang);
         await container.pump();
 
         // Assert State
-        final state = container.read(quizViewModelProvider);
+        final state = container.read(quizStateNotifierProvider);
         expect(state.currentIndex, 1); // Index should update
         expect(state.isLoadingAnswers, false); // Should be false after error
 
@@ -508,7 +508,7 @@ void main() {
         ]);
 
         // Arrange: Initialer Zustand des ViewModels
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
         final initialState = QuizState.initial().copyWith(
           questions: [mockQuestion1],
           currentIndex: 0,
@@ -533,7 +533,7 @@ void main() {
 
       test('Handles empty answers list', () async {
         final container = createContainer();
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
 
         // Arrange: Set initial VM state
         final initialState = QuizState.initial().copyWith(
@@ -567,12 +567,12 @@ void main() {
       await initViewModel(container, questions);
 
       // Act
-      final viewModel = container.read(quizViewModelProvider.notifier);
+      final viewModel = container.read(quizStateNotifierProvider.notifier);
       viewModel.resetQuiz();
       // No pump needed for synchronous reset
 
       // Assert State
-      expect(container.read(quizViewModelProvider), QuizState.initial());
+      expect(container.read(quizStateNotifierProvider), QuizState.initial());
 
       // Assert Interactions (check state of the overridden notifier)
       final answersState = container.read(answersNotifierProvider);
@@ -607,7 +607,7 @@ void main() {
         ]);
 
         // Arrange: Set VM state (optional, if needed by the method)
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
         viewModel.state = QuizState.initial()
             .copyWith(questions: [mockQuestion1], currentIndex: 0);
 
@@ -627,7 +627,7 @@ void main() {
 
       test('Returns empty list when answers notifier is empty', () async {
         final container = createContainer();
-        final viewModel = container.read(quizViewModelProvider.notifier);
+        final viewModel = container.read(quizStateNotifierProvider.notifier);
         viewModel.state = QuizState.initial().copyWith(
             questions: [mockQuestion1], currentIndex: 0); // Set VM state
         const lang = 'en';

@@ -1,4 +1,4 @@
-import 'package:brain_bench/business_logic/quiz/quiz_view_model.dart';
+import 'package:brain_bench/business_logic/quiz/quiz_state_notifier.dart';
 import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/infrastructure/quiz/question_providers.dart';
@@ -40,8 +40,8 @@ class _QuizPageState extends ConsumerState<QuizPage> {
             topicId: widget.topicId, categoryId: widget.categoryId)
         .notifier);
 
-    final QuizViewModel quizViewModel =
-        ref.read(quizViewModelProvider.notifier);
+    final QuizStateNotifier quizViewModel =
+        ref.read(quizStateNotifierProvider.notifier);
     final AsyncValue<List<Question>> questionsAsync =
         ref.watch(questionsProvider(widget.topicId, languageCode));
 
@@ -56,12 +56,12 @@ class _QuizPageState extends ConsumerState<QuizPage> {
         if (next is AsyncData<List<Question>>) {
           final questions = next.value;
           if (questions.isNotEmpty &&
-              ref.read(quizViewModelProvider).questions.isEmpty) {
+              ref.read(quizStateNotifierProvider).questions.isEmpty) {
             _logger.info(
                 'questionsProvider has data, triggering quiz initialization...');
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (mounted &&
-                  ref.read(quizViewModelProvider).questions.isEmpty) {
+                  ref.read(quizStateNotifierProvider).questions.isEmpty) {
                 quizViewModel.initializeQuizIfNeeded(questions, languageCode);
               }
             });

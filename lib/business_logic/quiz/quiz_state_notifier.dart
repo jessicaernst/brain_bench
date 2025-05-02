@@ -7,12 +7,12 @@ import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'quiz_view_model.g.dart';
+part 'quiz_state_notifier.g.dart';
 
 final Logger _logger = Logger('QuizViewModel');
 
 @Riverpod(keepAlive: true)
-class QuizViewModel extends _$QuizViewModel {
+class QuizStateNotifier extends _$QuizStateNotifier {
   @override
   QuizState build() {
     _logger.info('QuizViewModel initialized.');
