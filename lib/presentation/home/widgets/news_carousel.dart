@@ -52,7 +52,7 @@ class _NewsCarouselState extends State<NewsCarousel> {
       });
 
     return SizedBox(
-      height: cardHeight + 80,
+      height: cardHeight + 40,
       child: Stack(
         clipBehavior: Clip.none,
         children: [

@@ -22,7 +22,6 @@ class InactiveNewsCarouselCard extends StatelessWidget {
       height: 299.11,
       child: Stack(
         children: [
-          // Hintergrund-Layer mit Farbe + Shadow
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -35,8 +34,6 @@ class InactiveNewsCarouselCard extends StatelessWidget {
               ),
             ),
           ),
-
-          // Inhalt mit Layer Blur (exakt deckungsgleich über Background)
           Positioned.fill(
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(24)),
