@@ -1,10 +1,9 @@
-import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
-import 'package:brain_bench/core/component_widgets/dash_evolution_progress_dircle_view.dart';
 import 'package:brain_bench/core/component_widgets/profile_button_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/models/home/carousel.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
+import 'package:brain_bench/presentation/home/widgets/actual_category_view.dart';
 import 'package:brain_bench/presentation/home/widgets/news_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -90,64 +89,27 @@ class HomePage extends ConsumerWidget {
       body: SafeArea(
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
+              ActualCategoryView(isDarkMode: isDarkMode),
               Padding(
-                padding: const EdgeInsets.only(left: 24.0, top: 16.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'actual',
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: isDarkMode
-                              ? BrainBenchColors.cloudCanvas
-                                  .withAlpha((0.6 * 255).toInt())
-                              : BrainBenchColors.deepDive
-                                  .withAlpha((0.6 * 255).toInt()),
-                        ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    DashEvolutionProgressCircleView(
-                      progress: 0.75,
-                      size: 118,
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'test category',
-                            style: Theme.of(context).textTheme.headlineLarge,
-                          ),
-                          const SizedBox(height: 12),
-                          AutoHyphenatingText(
-                            'Potter ipsum wand elf parchment wingardium. Heir long description that needs to wrap automatically when space runs out.',
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
+                padding: const EdgeInsets.only(left: 24, right: 24),
+                child: Text(
+                  'articles',
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: isDarkMode
+                            ? BrainBenchColors.cloudCanvas
+                                .withAlpha((0.6 * 255).toInt())
+                            : BrainBenchColors.deepDive
+                                .withAlpha((0.6 * 255).toInt()),
                       ),
-                    )
-                  ],
                 ),
               ),
-              const Spacer(),
               NewsCarousel(items: carouselItems),
-              const SizedBox(height: 16),
             ],
           ),
         ),
