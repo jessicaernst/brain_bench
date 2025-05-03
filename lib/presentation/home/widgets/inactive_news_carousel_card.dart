@@ -17,46 +17,41 @@ class InactiveNewsCarouselCard extends StatelessWidget {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
 
-    return SizedBox(
-      width: 174.1,
-      height: 299.11,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                color: isDarkMode
-                    ? BrainBenchColors.deepDive
-                    : BrainBenchColors.cloudCanvas
-                        .withAlpha((0.5 * 255).toInt()),
-                boxShadow: isDarkMode ? [] : _shadows,
-              ),
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              color: isDarkMode
+                  ? BrainBenchColors.deepDive
+                  : BrainBenchColors.cloudCanvas.withAlpha((0.5 * 255).toInt()),
+              boxShadow: isDarkMode ? [] : _shadows,
             ),
           ),
-          Positioned.fill(
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(24)),
-              child: ImageFiltered(
-                imageFilter: ImageFilter.blur(sigmaX: 1.84, sigmaY: 1.84),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: isDarkMode
-                        ? BrainBenchGradients.authCardGradientDark
-                        : BrainBenchGradients.authCardGradientLight,
-                    border: Border.all(
-                      color: BrainBenchColors.btnStroke,
-                      width: 0.7,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(24)),
+        ),
+        Positioned.fill(
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(24)),
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 1.84, sigmaY: 1.84),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: isDarkMode
+                      ? BrainBenchGradients.authCardGradientDark
+                      : BrainBenchGradients.authCardGradientLight,
+                  border: Border.all(
+                    color: BrainBenchColors.btnStroke,
+                    width: 0.7,
                   ),
-                  child: content,
+                  borderRadius: BorderRadius.all(Radius.circular(24)),
                 ),
+                child: content,
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

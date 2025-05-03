@@ -3,6 +3,8 @@ import 'package:brain_bench/core/component_widgets/dash_evolution_progress_dircl
 import 'package:brain_bench/core/component_widgets/profile_button_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
+import 'package:brain_bench/data/models/home/carousel.dart';
+import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:brain_bench/presentation/home/widgets/news_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,6 +23,45 @@ class HomePage extends ConsumerWidget {
         color: BrainBenchColors.deepDive.withAlpha((0.8 * 255).toInt()),
         offset: Offset(1.0, 1.0),
         blurRadius: 2.0,
+      ),
+    ];
+
+    final List<Carousel> carouselItems = [
+      Carousel.create(
+        title: 'Mastering UI: Image 12',
+        description:
+            'Learn how to structure layouts using advanced Figma UI blocks.',
+        imageUrl: Assets.carouselTest.image12.path,
+      ),
+      Carousel.create(
+        title: 'Design Systems: Image 13',
+        description:
+            'Understand how to build scalable and reusable design systems.',
+        imageUrl: Assets.carouselTest.image13.path,
+      ),
+      Carousel.create(
+        title: 'Typography Tricks: Image 14',
+        description:
+            'Typography techniques to improve readability and design harmony.',
+        imageUrl: Assets.carouselTest.image14.path,
+      ),
+      Carousel.create(
+        title: 'Modern Layouts: Image 15',
+        description:
+            'Explore advanced layout techniques with grids and spacing.',
+        imageUrl: Assets.carouselTest.image15.path,
+      ),
+      Carousel.create(
+        title: 'Component-Based UI: Image 16',
+        description:
+            'Discover how to build component-driven interfaces in Figma.',
+        imageUrl: Assets.carouselTest.image16.path,
+      ),
+      Carousel.create(
+        title: 'Figma Intro: Image',
+        description:
+            'Start designing mobile apps with a beginner-friendly mockup.',
+        imageUrl: Assets.carouselTest.image.path,
       ),
     ];
 
@@ -109,7 +150,7 @@ class HomePage extends ConsumerWidget {
               ),
               // Use Spacer to flexibly fill the space above the carousel
               const Spacer(),
-              NewsCarousel(),
+              NewsCarousel(items: carouselItems),
               // Add some padding at the bottom so the carousel isn't glued to the edge
               const SizedBox(height: 16),
             ],

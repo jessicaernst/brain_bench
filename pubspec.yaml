@@ -158,7 +158,6 @@ flutter_native_splash:
 
 flutter_gen:
   output: lib/gen/
-  synthetic-package: false
 
   integrations:
     flutter_svg: true

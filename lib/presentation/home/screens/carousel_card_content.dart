@@ -1,5 +1,5 @@
 import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
-import 'package:brain_bench/gen/assets.gen.dart';
+import 'package:brain_bench/data/models/home/carousel.dart';
 import 'package:flutter/material.dart';
 
 /// A widget that represents the content of a carousel card.
@@ -7,30 +7,33 @@ class CarouselCardContent extends StatelessWidget {
   const CarouselCardContent({
     super.key,
     required this.isActive,
+    required this.item,
   });
 
   final bool isActive;
+  final Carousel item;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(isActive ? 14.5 : 11.33),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16.0),
-            child: Assets.carouselTest.image.image(
+            child: Image.asset(
+              item.imageUrl,
               height: isActive ? 153 : 117,
               width: isActive ? 228 : 151,
               fit: BoxFit.cover,
             ),
           ),
-          SizedBox(height: 6),
+          const SizedBox(height: 6),
           AutoHyphenatingText(
-            'Figma Basics: Designing Your First Mobile App Mockup',
+            item.title,
             overflow: TextOverflow.ellipsis,
-            maxLines: 3,
+            maxLines: 2,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   fontSize: isActive ? 15 : 12,
@@ -39,25 +42,24 @@ class CarouselCardContent extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           AutoHyphenatingText(
-            'Learn how to start your journey in app design with our beginner’s guide to creating your first mobile app mockup in Figma.',
+            item.description,
             overflow: TextOverflow.ellipsis,
-            maxLines: isActive ? 1 : 2,
+            maxLines: isActive ? 3 : 4,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontSize: isActive ? 15 : 12,
                 ),
           ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              const Spacer(),
-              TextButton(
+          Expanded(
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: TextButton(
                 onPressed: () {
-                  debugPrint('Button tapped');
+                  debugPrint('Button tapped: ${item.title}');
                 },
-                child: Text('tap for more'),
+                child: const Text('tap for more'),
               ),
-            ],
-          )
+            ),
+          ),
         ],
       ),
     );
