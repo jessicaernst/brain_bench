@@ -3,10 +3,13 @@ import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/models/home/carousel.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
+import 'package:brain_bench/presentation/home/screens/carousel_card_content.dart';
+import 'package:brain_bench/presentation/home/widgets/active_news_carousel_card.dart';
 import 'package:brain_bench/presentation/home/widgets/actual_category_view.dart';
-import 'package:brain_bench/presentation/home/widgets/news_carousel.dart';
+import 'package:brain_bench/presentation/home/widgets/inactive_news_carousel_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:infinite_carousel/infinite_carousel.dart';
 
 class HomePage extends ConsumerWidget {
   HomePage({super.key});
@@ -64,6 +67,8 @@ class HomePage extends ConsumerWidget {
       ),
     ];
 
+    carouselItems.shuffle();
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -109,7 +114,20 @@ class HomePage extends ConsumerWidget {
                       ),
                 ),
               ),
-              NewsCarousel(items: carouselItems),
+              InfiniteCarousel(
+                items: carouselItems.map((item) {
+                  return InfiniteCarouselItem(
+                    content: CarouselCardContent(item: item, isActive: false),
+                  );
+                }).toList(),
+                cardWidth: 228,
+                cardHeight: 347,
+                inactiveScale: 0.9,
+                activeCardBuilder: (child) =>
+                    ActiveNewsCarouselCard(content: child),
+                inactiveCardBuilder: (child) =>
+                    InactiveNewsCarouselCard(content: child),
+              ),
             ],
           ),
         ),
