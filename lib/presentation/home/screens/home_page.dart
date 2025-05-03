@@ -62,7 +62,7 @@ class HomePage extends ConsumerWidget {
       Carousel.create(
         title: 'Figma Intro: Image',
         description:
-            'Start designing mobile apps with a beginner-friendly mockup.',
+            'Start designing mobile apps with a beginner-friendly mockup. Start designing mobile apps with a beginner-friendly mockup. Start designing mobile apps with a beginner-friendly mockup.',
         imageUrl: Assets.carouselTest.image.path,
       ),
     ];
@@ -104,7 +104,7 @@ class HomePage extends ConsumerWidget {
                 child: Text(
                   'articles',
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        fontSize: 18,
+                        fontSize: 20,
                         fontWeight: FontWeight.w600,
                         color: isDarkMode
                             ? BrainBenchColors.cloudCanvas

@@ -29,14 +29,12 @@ class CarouselCardContent extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: isActive ? 14.5 : 11.33),
           AutoHyphenatingText(
             item.title,
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
-            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontSize: isActive ? 15 : 12,
                   fontWeight: FontWeight.w800,
                 ),
           ),
@@ -44,10 +42,8 @@ class CarouselCardContent extends StatelessWidget {
           AutoHyphenatingText(
             item.description,
             overflow: TextOverflow.ellipsis,
-            maxLines: isActive ? 3 : 4,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontSize: isActive ? 15 : 12,
-                ),
+            maxLines: 4,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           Expanded(
             child: Align(

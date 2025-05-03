@@ -22,7 +22,7 @@ class ActualCategoryView extends StatelessWidget {
             child: Text(
               'actual',
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600,
                     color: isDarkMode
                         ? BrainBenchColors.cloudCanvas
