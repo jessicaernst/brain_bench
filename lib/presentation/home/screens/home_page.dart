@@ -3,8 +3,7 @@ import 'package:brain_bench/core/component_widgets/dash_evolution_progress_dircl
 import 'package:brain_bench/core/component_widgets/profile_button_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
-import 'package:brain_bench/presentation/home/screens/carousel_card_content.dart';
-import 'package:brain_bench/presentation/home/widgets/active_news_carousel_card.dart';
+import 'package:brain_bench/presentation/home/widgets/news_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -106,12 +105,7 @@ class HomePage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: ActiveNewsCarouselCard(
-                  content: CarouselCardContent(),
-                ),
-              ),
+              NewsCarousel()
             ],
           ),
         ),
