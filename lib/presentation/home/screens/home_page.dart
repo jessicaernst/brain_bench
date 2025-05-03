@@ -89,13 +89,10 @@ class HomePage extends ConsumerWidget {
       ),
       body: SafeArea(
         child: Center(
-          // Remove Center and SingleChildScrollView
           child: Column(
-            mainAxisAlignment:
-                MainAxisAlignment.start, // Keep content starting from top
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize:
-                MainAxisSize.max, // Make Column fill SafeArea vertically
+            mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 24.0, top: 16.0),
@@ -148,10 +145,8 @@ class HomePage extends ConsumerWidget {
                   ],
                 ),
               ),
-              // Use Spacer to flexibly fill the space above the carousel
               const Spacer(),
               NewsCarousel(items: carouselItems),
-              // Add some padding at the bottom so the carousel isn't glued to the edge
               const SizedBox(height: 16),
             ],
           ),
