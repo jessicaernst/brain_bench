@@ -3,18 +3,19 @@ import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
 import 'package:brain_bench/core/component_widgets/no_data_available_view.dart';
 import 'package:brain_bench/core/component_widgets/progress_indicator_bar_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
-import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/infrastructure/quiz/topic_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
+import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_card.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
 final Logger _logger = Logger('TopicsPage');
 
+/// The screen that displays the topics for a specific category.
 class TopicsPage extends ConsumerStatefulWidget {
   TopicsPage({
     super.key,
@@ -28,9 +29,31 @@ class TopicsPage extends ConsumerStatefulWidget {
 }
 
 class _TopicsPageState extends ConsumerState<TopicsPage> {
-  // ✅ Map to hold the expanded state of each TopicCard, keyed by topicId
+  // ✅ Map to hold the expanded state of each TopicCard, keyed by topicId + status
   final Map<String, bool> _expandedStates = {};
   bool _showDoneTopics = false;
+
+  /// Helper method to get and initialize the expanded state for a topic,
+  /// considering its current done status to ensure state reset on status change.
+  bool _getExpandedState(Topic topic, bool isDone) {
+    // Create a status-specific key
+    final stateKey = '${topic.id}_$isDone';
+    // Remove the old state key for the opposite status, if it exists
+    final oldStateKey = '${topic.id}_${!isDone}';
+    if (_expandedStates.containsKey(oldStateKey)) {
+      _expandedStates.remove(oldStateKey);
+    }
+    // Ensure the state exists, defaulting to false if not.
+    _expandedStates.putIfAbsent(stateKey, () => false);
+    final isExpandedRaw = _expandedStates[stateKey];
+    // Validate the state type, logging an error if it's not a bool.
+    if (isExpandedRaw is! bool) {
+      _logger.severe(
+          '❌ Invalid expanded state for topic ${topic.id} (status: $isDone): $isExpandedRaw. Resetting to false.');
+      return false;
+    }
+    return isExpandedRaw;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,15 +115,18 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
                     // ✅ Undone Topics
                     if (undoneTopics.isNotEmpty)
                       ...undoneTopics.map((topic) {
-                        _expandedStates.putIfAbsent(topic.id, () => false);
+                        const bool isDone =
+                            false; // Topic is in the undone list
+                        final stateKey = '${topic.id}_$isDone';
+                        final isExpanded = _getExpandedState(topic, isDone);
                         return Padding(
                           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                           child: TopicCard(
-                            isExpanded: _expandedStates[topic.id]!,
+                            isExpanded: isExpanded,
                             onToggle: () {
                               setState(() {
-                                _expandedStates[topic.id] =
-                                    !_expandedStates[topic.id]!;
+                                _expandedStates[stateKey] =
+                                    !_expandedStates[stateKey]!;
                               });
                             },
                             onPressed: () {
@@ -118,11 +144,15 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
                       }),
 
                     // ✅ Done Topics Section
+                    // ✅ Only show the "Done" section if there are done topics
                     if (doneTopics.isNotEmpty)
                       ExpansionTile(
+                        // ✅ Use categoryId for a stable PageStorageKey
+                        key: PageStorageKey<String>(
+                            'doneTopicsExpansionTile_${widget.categoryId}'),
                         title: Text(
                           localizations.topicsDone,
-                          style: TextTheme.of(context).headlineMedium,
+                          style: Theme.of(context).textTheme.headlineMedium,
                         ),
                         initiallyExpanded: _showDoneTopics,
                         onExpansionChanged: (expanded) {
@@ -131,15 +161,17 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
                           });
                         },
                         children: doneTopics.map((topic) {
-                          _expandedStates.putIfAbsent(topic.id, () => false);
+                          const bool isDone = true;
+                          final stateKey = '${topic.id}_$isDone';
+                          final isExpanded = _getExpandedState(topic, isDone);
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 16),
                             child: TopicCard(
-                              isExpanded: _expandedStates[topic.id]!,
+                              isExpanded: isExpanded,
                               onToggle: () {
                                 setState(() {
-                                  _expandedStates[topic.id] =
-                                      !_expandedStates[topic.id]!;
+                                  _expandedStates[stateKey] =
+                                      !_expandedStates[stateKey]!;
                                 });
                               },
                               onPressed: () {
