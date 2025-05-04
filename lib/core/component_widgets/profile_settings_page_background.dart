@@ -16,7 +16,7 @@ class ProfileSettingsPageBackground extends StatelessWidget {
     final double logoWidth = isSmallScreenValue ? 420 : 565;
     final double logoHeight = isSmallScreenValue ? 360 : 480;
     final double topPosition = isSmallScreenValue ? 20 : 30;
-    final double horizontalOffset = isSmallScreenValue ? 90 : 0;
+    final double horizontalOffset = isSmallScreenValue ? 90 : 75;
 
     return Stack(
       children: [
