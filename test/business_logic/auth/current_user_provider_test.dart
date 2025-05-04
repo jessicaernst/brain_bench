@@ -61,7 +61,7 @@ void main() {
     authStateController.add(null); // Simulate user logging out
 
     // Allow stream to emit and listener to react
-    await Future.value();
+    await Future.delayed(Duration.zero); // Give event loop a chance
 
     // Assert
     // Verify the listener received the loading state and then the data state with null
@@ -88,7 +88,7 @@ void main() {
     authStateController.add(testUser); // Simulate user logging in
 
     // Allow stream to emit and listener to react
-    await Future.value();
+    await Future.delayed(Duration.zero); // Give event loop a chance
 
     // Assert
     // Verify the listener received the loading state and then the data state with the user
