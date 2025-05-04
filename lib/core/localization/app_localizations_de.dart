@@ -316,4 +316,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get cancel => 'Abbrechen';
+
+  @override
+  String get profileLoadError => 'Fehler beim Laden des Profils.';
 }

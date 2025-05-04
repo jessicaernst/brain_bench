@@ -50,7 +50,7 @@ void main() {
           (ref) => Future.value(mockRepo),
         ),
         currentUserModelProvider.overrideWith(
-          (ref) => Future.value(testUser),
+          (ref) => Stream.value(testUser),
         ),
       ]);
 
@@ -66,7 +66,7 @@ void main() {
           (ref) => Future.value(mockRepo),
         ),
         currentUserModelProvider.overrideWith(
-          (ref) => Future.value(null), // ❌ kein User vorhanden
+          (ref) => Stream.value(null), // ❌ kein User vorhanden
         ),
       ]);
 
@@ -86,7 +86,7 @@ void main() {
           (ref) => Future.value(mockRepo),
         ),
         currentUserModelProvider.overrideWith(
-          (ref) => Future.value(testUser),
+          (ref) => Stream.value(testUser),
         ),
       ]);
 
@@ -106,7 +106,7 @@ void main() {
           (ref) => Future.value(mockRepo),
         ),
         currentUserModelProvider.overrideWith(
-          (ref) => Future.value(testUser),
+          (ref) => Stream.value(testUser),
         ),
       ]);
 
@@ -123,7 +123,7 @@ void main() {
           (ref) => Future.value(mockRepo),
         ),
         currentUserModelProvider.overrideWith(
-          (ref) => Future.value(null), // ❌ kein User vorhanden
+          (ref) => Stream.value(null), // ❌ kein User vorhanden
         ),
       ]);
 

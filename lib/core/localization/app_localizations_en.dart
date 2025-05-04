@@ -316,4 +316,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get profileLoadError => 'Error loading profile data.';
 }

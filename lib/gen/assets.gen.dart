@@ -85,8 +85,14 @@ class $AssetsCarouselTestGen {
       const AssetGenImage('assets/carousel_test/image.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [image12, image13, image14, image15, image16, image];
+  List<AssetGenImage> get values => [
+    image12,
+    image13,
+    image14,
+    image15,
+    image16,
+    image,
+  ];
 }
 
 class $AssetsIconsGen {
@@ -118,13 +124,13 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
-        homeFilled,
-        homeOutlined,
-        quizFilled,
-        quizOutlined,
-        resultFilled,
-        resultOulined
-      ];
+    homeFilled,
+    homeOutlined,
+    quizFilled,
+    quizOutlined,
+    resultFilled,
+    resultOulined,
+  ];
 }
 
 class $AssetsImagesGen {
@@ -163,15 +169,15 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-        dashLogo,
-        dashLogoSmaller,
-        evolution1,
-        evolution2,
-        evolution3,
-        evolution4,
-        evolutionExpert,
-        sadHam
-      ];
+    dashLogo,
+    dashLogoSmaller,
+    evolution1,
+    evolution2,
+    evolution3,
+    evolution4,
+    evolutionExpert,
+    sadHam,
+  ];
 }
 
 class $AssetsRiveGen {
@@ -200,8 +206,11 @@ class $AssetsSocialLoginsGen {
       const AssetGenImage('assets/social_logins/google_logo.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [appleidButtonBlack, appleidButtonWhite, googleLogo];
+  List<AssetGenImage> get values => [
+    appleidButtonBlack,
+    appleidButtonWhite,
+    googleLogo,
+  ];
 }
 
 class $LibDataGen {
@@ -233,12 +242,18 @@ class $LibDataDataSourceGen {
   String get user => 'lib/data/data_source/user.json';
 
   /// List of all assets
-  List<String> get values =>
-      [answers, category, questions, results, topics, user];
+  List<String> get values => [
+    answers,
+    category,
+    questions,
+    results,
+    topics,
+    user,
+  ];
 }
 
 class Assets {
-  Assets._();
+  const Assets._();
 
   static const $AssetsAppIconsGen appIcons = $AssetsAppIconsGen();
   static const $AssetsBackgroundsGen backgrounds = $AssetsBackgroundsGen();
@@ -251,11 +266,7 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  });
+  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
 
   final String _assetName;
 
@@ -283,7 +294,7 @@ class AssetGenImage {
     bool gaplessPlayback = true,
     bool isAntiAlias = false,
     String? package,
-    FilterQuality filterQuality = FilterQuality.low,
+    FilterQuality filterQuality = FilterQuality.medium,
     int? cacheWidth,
     int? cacheHeight,
   }) {
@@ -315,15 +326,8 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({
-    AssetBundle? bundle,
-    String? package,
-  }) {
-    return AssetImage(
-      _assetName,
-      bundle: bundle,
-      package: package,
-    );
+  ImageProvider provider({AssetBundle? bundle, String? package}) {
+    return AssetImage(_assetName, bundle: bundle, package: package);
   }
 
   String get path => _assetName;
@@ -332,17 +336,11 @@ class AssetGenImage {
 }
 
 class SvgGenImage {
-  const SvgGenImage(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  }) : _isVecFormat = false;
+  const SvgGenImage(this._assetName, {this.size, this.flavors = const {}})
+    : _isVecFormat = false;
 
-  const SvgGenImage.vec(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  }) : _isVecFormat = true;
+  const SvgGenImage.vec(this._assetName, {this.size, this.flavors = const {}})
+    : _isVecFormat = true;
 
   final String _assetName;
   final Size? size;
@@ -396,7 +394,8 @@ class SvgGenImage {
       placeholderBuilder: placeholderBuilder,
       semanticsLabel: semanticsLabel,
       excludeFromSemantics: excludeFromSemantics,
-      colorFilter: colorFilter ??
+      colorFilter:
+          colorFilter ??
           (color == null ? null : ColorFilter.mode(color, colorBlendMode)),
       clipBehavior: clipBehavior,
       cacheColorFilter: cacheColorFilter,

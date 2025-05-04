@@ -411,5 +411,9 @@
     "cancel": "Abbrechen",
     "@cancel": {
         "description": "Label for a generic cancel button, typically used in dialogs."
+    },
+    "profileLoadError": "Fehler beim Laden des Profils.",
+    "@profileLoadError": {
+        "description": "Error message shown when loading the profile fails"
     }
 }

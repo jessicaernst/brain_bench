@@ -6,9 +6,15 @@ part of 'auth_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authViewModelHash() => r'29e8accae18f5d13a39ec367f5ce0ec3fd6e5a30';
+String _$authViewModelHash() => r'929abd8b59caecc2682aa022008e0f4d2bd90e9c';
 
-/// See also [AuthViewModel].
+/// ViewModel class for handling authentication logic.
+/// This class extends the generated `_$AuthViewModel` class from the Riverpod package.
+/// It provides methods for signing in, signing up, signing in with Google and Apple,
+/// sending password reset emails, signing out, and resetting the state.
+/// It also includes private helper methods for error handling and displaying error messages.
+///
+/// Copied from [AuthViewModel].
 @ProviderFor(AuthViewModel)
 final authViewModelProvider =
     AutoDisposeNotifierProvider<AuthViewModel, AsyncValue<void>>.internal(

@@ -411,5 +411,9 @@
     "cancel": "Cancel",
     "@cancel": {
         "description": "Label for a generic cancel button, typically used in dialogs."
+    },
+    "profileLoadError": "Error loading profile data.",
+    "@profileLoadError": {
+        "description": "Error message shown on profile page if user data fails to load"
     }
 }

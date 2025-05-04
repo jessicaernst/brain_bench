@@ -239,7 +239,7 @@ void main() {
       ),
       saveResultNotifierProvider.overrideWith(() => currentSaveNotifier),
       currentUserModelProvider.overrideWith(
-        (ref) => Future.value(currentUser), // Provide the user instance
+        (ref) => Stream.value(currentUser), // Provide the user instance
       ),
       quizMockDatabaseRepositoryProvider
           .overrideWith((ref) => Future.value(currentDbRepo)),
@@ -727,7 +727,7 @@ void main() {
         final container = createContainer(
             initialQuizAnswers: sampleAnswersMixed,
             additionalOverrides: [
-              currentUserModelProvider.overrideWith((ref) => Future.value(null))
+              currentUserModelProvider.overrideWith((ref) => Stream.value(null))
             ]);
         addTearDown(container.dispose);
         final notifier = container.read(quizResultNotifierProvider.notifier);

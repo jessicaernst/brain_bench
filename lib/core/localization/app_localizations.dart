@@ -712,6 +712,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
+
+  /// Error message shown on profile page if user data fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading profile data.'**
+  String get profileLoadError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

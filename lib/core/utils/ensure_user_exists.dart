@@ -10,12 +10,13 @@ final _logger = Logger('EnsureUser');
 
 typedef Reader = T Function<T>(ProviderListenable<T>);
 
-Future<void> _ensureUserExistsIfNeededImpl(
+Future<bool> _ensureUserExistsIfNeededImpl(
     Reader read, model.AppUser? appUser) async {
+  // Return bool
   if (appUser == null) {
     _logger.warning(
         'ensureUserExistsIfNeeded called with null appUser. Skipping.');
-    return;
+    return false;
   }
 
   DeviceContactInfo? deviceContactInfo;
@@ -64,6 +65,7 @@ Future<void> _ensureUserExistsIfNeededImpl(
 
       await db.saveUser(newUser);
       _logger.info('🆕 Successfully created user ${appUser.uid} in DB.');
+      return true;
     } else {
       _logger.fine('User ${appUser.uid} found in DB. Checking for updates...');
       final Map<String, dynamic> updates = {};
@@ -108,17 +110,17 @@ Future<void> _ensureUserExistsIfNeededImpl(
         await db.saveUser(updatedUser);
         _logger.info('✅ Successfully updated user ${appUser.uid} in DB.');
       } else {
-        _logger.fine('✅ User ${appUser.uid} is already up-to-date in DB.');
+        _logger.fine('✅ User ${appUser.uid} exists and is up-to-date in DB.');
       }
+      return false;
     }
   } catch (e, st) {
     _logger.severe(
         'Error during DB interaction in ensureUserExistsIfNeeded for ${appUser.uid}: $e',
         e,
         st);
-    rethrow; // Re-throw the exception after logging
+    rethrow;
   }
 }
 
-// Öffentliche referenzierbare Variable
 var ensureUserExistsIfNeeded = _ensureUserExistsIfNeededImpl;
