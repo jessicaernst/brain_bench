@@ -19,7 +19,7 @@ class NoDataAvailableView extends StatelessWidget {
             width: 200,
             height: 200,
           ),
-          const SizedBox(height: 48),
+          const SizedBox(height: 56),
           Text(text,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: Theme.of(context).colorScheme.error,

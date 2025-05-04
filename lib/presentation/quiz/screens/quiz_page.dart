@@ -1,5 +1,6 @@
 import 'package:brain_bench/business_logic/quiz/quiz_state_notifier.dart';
 import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
+import 'package:brain_bench/core/component_widgets/no_data_available_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/infrastructure/quiz/question_providers.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
@@ -67,11 +68,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
             });
           } else if (questions.isEmpty) {
             _logger.warning(
-                'questionsProvider returned empty list, not initializing quiz.');
-            if (mounted) {
-              controller.showErrorSnackBar(scaffoldMessenger, theme,
-                  () => mounted, localizations.quizErrorNoQuestions);
-            }
+                'questionsProvider returned empty list. QuizBodyView will handle display.');
           }
         } else if (next is AsyncError) {
           _logger.severe('Error in questionsProvider listener: ${next.error}');
@@ -89,17 +86,30 @@ class _QuizPageState extends ConsumerState<QuizPage> {
         onBack: () => controller.handleBackButton(context, () => mounted),
       ),
       body: questionsAsync.when(
-        data: (questions) => QuizBodyView(
-          questions: questions,
-          localizations: localizations,
-          languageCode: languageCode,
-          controller: controller,
-          isMountedCheck: () => mounted,
-          buildContext: context,
-        ),
+        data: (questions) {
+          if (questions.isEmpty) {
+            _logger.warning(
+                'No questions available for topic ${widget.topicId}. Displaying NoDataAvailableView.');
+            return NoDataAvailableView(
+              text: localizations.quizErrorNoQuestions,
+            );
+          }
+
+          return QuizBodyView(
+            questions: questions,
+            localizations: localizations,
+            languageCode: languageCode,
+            controller: controller,
+            isMountedCheck: () => mounted,
+            buildContext: context,
+          );
+        },
         loading: () => const QuizLoadingView(),
         error: (error, stack) => QuizErrorView(
-            error: error, stack: stack, localizations: localizations),
+          error: error,
+          stack: stack,
+          localizations: localizations,
+        ),
       ),
     );
   }

@@ -143,13 +143,11 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
                         );
                       }),
 
-                    // ✅ Done Topics Section
-                    // ✅ Only show the "Done" section if there are done topics
                     if (doneTopics.isNotEmpty)
                       ExpansionTile(
-                        // ✅ Use categoryId for a stable PageStorageKey
                         key: PageStorageKey<String>(
-                            'doneTopicsExpansionTile_${widget.categoryId}'),
+                          'doneTopicsExpansionTile_${widget.categoryId}',
+                        ),
                         title: Text(
                           localizations.topicsDone,
                           style: Theme.of(context).textTheme.headlineMedium,

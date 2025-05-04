@@ -1,4 +1,5 @@
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 class QuizErrorView extends StatelessWidget {
@@ -18,12 +19,21 @@ class QuizErrorView extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Text(
-          localizations.quizErrorLoadingQuestions,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.error,
-              ),
-          textAlign: TextAlign.center,
+        child: Column(
+          children: [
+            Assets.images.sadHam.image(
+              width: 200,
+              height: 200,
+            ),
+            const SizedBox(height: 48),
+            Text(
+              localizations.quizErrorLoadingQuestions,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );

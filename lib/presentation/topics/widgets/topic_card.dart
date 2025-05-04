@@ -67,9 +67,8 @@ class _TopicCardState extends State<TopicCard> with EnsureVisibleMixin {
       children: [
         // The main card area that displays the topic title and handles expansion.
         TopicMainCard(
-          title: languageCode == 'de'
-              ? widget.topic.nameDe
-              : widget.topic.nameEn, // ✅ Use nameEn or nameDe
+          title:
+              languageCode == 'de' ? widget.topic.nameDe : widget.topic.nameEn,
           isExpanded: widget.isExpanded,
           onTap: () {
             logger.fine('tapped topic: ${widget.topic.nameEn}');
@@ -88,13 +87,12 @@ class _TopicCardState extends State<TopicCard> with EnsureVisibleMixin {
           child: TopicCardExpandable(
             description: languageCode == 'de'
                 ? widget.topic.descriptionDe
-                : widget.topic
-                    .descriptionEn, // ✅ Use descriptionEn or descriptionDe
-            onPressed: widget.onPressed, // Pass the callback to start the quiz.
+                : widget.topic.descriptionEn,
+            onPressed: widget.onPressed,
             isExpanded: widget.isExpanded,
             title: languageCode == 'de'
                 ? widget.topic.nameDe
-                : widget.topic.nameEn, // ✅ Use nameEn or nameDe
+                : widget.topic.nameEn,
           ),
         ),
       ],
