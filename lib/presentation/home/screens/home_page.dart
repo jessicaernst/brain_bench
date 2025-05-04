@@ -1,4 +1,5 @@
 import 'package:brain_bench/core/component_widgets/profile_button_view.dart';
+import 'package:brain_bench/core/extensions/responsive_context.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/models/home/carousel.dart';
@@ -18,6 +19,11 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    final bool isSmallScreenValue = context.isSmallScreen;
+
+    final double carouselCardHeight = isSmallScreenValue ? 300 : 347;
+    final double carouselCardWidth = isSmallScreenValue ? 197 : 228;
     final baseTitleStyle = Theme.of(context).textTheme.displaySmall;
 
     final lightModeShadow = [
@@ -27,6 +33,9 @@ class HomePage extends ConsumerWidget {
         blurRadius: 2.0,
       ),
     ];
+
+    final double appBarTitleSize =
+        isSmallScreenValue ? 28 : (baseTitleStyle?.fontSize ?? 36);
 
     final List<Carousel> carouselItems = [
       Carousel.create(
@@ -72,18 +81,13 @@ class HomePage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        titleSpacing: 0.0,
-        title: const SizedBox(),
-        flexibleSpace: Padding(
-          padding: const EdgeInsets.only(top: 56),
-          child: Center(
-            child: Text(
-              localizations.appBarTitleHome,
-              style: baseTitleStyle?.copyWith(
-                color: BrainBenchColors.logoGold,
-                shadows: isDarkMode ? null : lightModeShadow,
-              ),
-            ),
+        centerTitle: true,
+        title: Text(
+          localizations.appBarTitleHome,
+          style: baseTitleStyle?.copyWith(
+            fontSize: appBarTitleSize,
+            color: BrainBenchColors.logoGold,
+            shadows: isDarkMode ? null : lightModeShadow,
           ),
         ),
         actions: const [
@@ -100,7 +104,7 @@ class HomePage extends ConsumerWidget {
             children: [
               ActualCategoryView(isDarkMode: isDarkMode),
               Padding(
-                padding: const EdgeInsets.only(left: 24, right: 24),
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Text(
                   'articles',
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
@@ -114,19 +118,20 @@ class HomePage extends ConsumerWidget {
                       ),
                 ),
               ),
-              InfiniteCarousel(
-                items: carouselItems.map((item) {
-                  return InfiniteCarouselItem(
-                    content: CarouselCardContent(item: item, isActive: false),
-                  );
-                }).toList(),
-                cardWidth: 228,
-                cardHeight: 347,
-                inactiveScale: 0.9,
-                activeCardBuilder: (child) =>
-                    ActiveNewsCarouselCard(content: child),
-                inactiveCardBuilder: (child) =>
-                    InactiveNewsCarouselCard(content: child),
+              Expanded(
+                child: InfiniteCarousel(
+                  items: carouselItems.map((item) {
+                    return InfiniteCarouselItem(
+                      content: CarouselCardContent(item: item, isActive: false),
+                    );
+                  }).toList(),
+                  cardWidth: carouselCardWidth,
+                  cardHeight: carouselCardHeight,
+                  activeCardBuilder: (child) =>
+                      ActiveNewsCarouselCard(content: child),
+                  inactiveCardBuilder: (child) =>
+                      InactiveNewsCarouselCard(content: child),
+                ),
               ),
             ],
           ),

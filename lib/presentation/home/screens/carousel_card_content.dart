@@ -1,4 +1,5 @@
 import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
+import 'package:brain_bench/core/extensions/responsive_context.dart';
 import 'package:brain_bench/data/models/home/carousel.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,9 @@ class CarouselCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isSmallScreenValue = context.isSmallScreen;
+    final int descriptionMaxLines = isSmallScreenValue ? 2 : 4;
+
     return Padding(
       padding: EdgeInsets.all(isActive ? 14.5 : 11.33),
       child: Column(
@@ -42,7 +46,7 @@ class CarouselCardContent extends StatelessWidget {
           AutoHyphenatingText(
             item.description,
             overflow: TextOverflow.ellipsis,
-            maxLines: 4,
+            maxLines: descriptionMaxLines,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           Expanded(
