@@ -18,7 +18,8 @@ class MockAuthRepository extends Mock implements AuthRepository {}
 void main() {
   late MockAuthRepository mockAuthRepository;
 
-  late Future<void> Function(ensure_user_exists.Reader, AppUser?)
+  late Future<bool> Function(
+          ensure_user_exists.Reader, AppUser?) // <-- Update type here
       originalEnsureUserExists;
 
   setUpAll(() {
@@ -27,7 +28,7 @@ void main() {
 
   setUp(() {
     ensure_user_exists.ensureUserExistsIfNeeded = (ref, _) async {
-      // no-op for tests
+      return false;
     };
   });
 

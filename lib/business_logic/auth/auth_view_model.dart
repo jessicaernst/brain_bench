@@ -31,7 +31,6 @@ class AuthViewModel extends _$AuthViewModel {
       _logger.info('AuthViewModel received from repo after Email Sign-In: '
           'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
 
-      // If ensureUserExistsIfNeeded now re-throws, this await might throw
       final bool newUserCreated =
           await ensureUserExistsIfNeeded(ref.read, appUser);
 
@@ -39,11 +38,9 @@ class AuthViewModel extends _$AuthViewModel {
         _logger.info(
             'New user was created, invalidating currentUserModelProvider.');
         ref.invalidate(currentUserModelProvider);
-        // await Future.delayed(const Duration(milliseconds: 100)); // Removed delay
       }
       state = const AsyncData(null);
     } catch (e, st) {
-      // This block will now catch errors from ensureUserExistsIfNeeded too
       state = AsyncError(e, st);
       if (context.mounted) _showError(context, e);
     }
@@ -61,7 +58,6 @@ class AuthViewModel extends _$AuthViewModel {
       _logger.info('AuthViewModel received from repo after Email Sign-Up: '
           'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
 
-      // If ensureUserExistsIfNeeded now re-throws, this await might throw
       final bool newUserCreated =
           await ensureUserExistsIfNeeded(ref.read, appUser);
 
@@ -69,11 +65,9 @@ class AuthViewModel extends _$AuthViewModel {
         _logger.info(
             'New user was created, invalidating currentUserModelProvider.');
         ref.invalidate(currentUserModelProvider);
-        // await Future.delayed(const Duration(milliseconds: 100)); // Removed delay
       }
       state = const AsyncData(null);
     } catch (e, st) {
-      // This block will now catch errors from ensureUserExistsIfNeeded too
       state = AsyncError(e, st);
       if (context.mounted) _showError(context, e);
     }
