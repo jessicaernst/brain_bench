@@ -10,36 +10,35 @@ part 'user_provider.g.dart';
 
 final Logger _logger = Logger('UserProvider');
 
+/// Returns a stream of the current authenticated user model.
+///
+/// This function retrieves the current authenticated user from the [authRepository]
+/// and then fetches the corresponding user model from the [db]. It returns a stream
+/// of [model.AppUser] objects representing the current user.
+///
+/// If the [authUser] is null, it yields null. Otherwise, it fetches the user model
+/// from the [db] using the [authUser.uid] and yields the user model.
+///
+/// If an error occurs during the process, it logs a warning message and yields
+/// the error using a stream error.
 @riverpod
 Stream<model.AppUser?> currentUserModel(Ref ref) {
-  // Watch the AuthRepository provider to get access to its instance
   final authRepository = ref.watch(authRepositoryProvider);
-  // Get the stream directly from the repository instance
+
   final authUserStream = authRepository.authStateChanges();
 
-  // Use switchMap: When authUserStream emits a new value,
-  // it switches to the new stream returned by the callback.
   return authUserStream.switchMap((authUser) async* {
     if (authUser == null) {
-      yield null; // User is logged out, emit null.
-      return; // End this inner stream generator for the null user.
+      yield null;
+      return;
     }
 
-    // Authenticated, get the DB repo and return the user stream
     final db = await ref.watch(quizMockDatabaseRepositoryProvider.future);
 
-    // --- IMPORTANT ---
-    // Ideally, your repository should have a method that returns a Stream, e.g., watchUser:
-    // yield* db.watchUser(authUser.uid);
-    // This ensures real-time updates if the user data changes in the DB.
-
-    // If you only have a Future-based getUser method, wrap it in try-catch:
     try {
       final userModel = await db.getUser(authUser.uid);
       yield userModel;
-      // Note: This won't update automatically if DB data changes later, only when auth state changes.
     } catch (e, st) {
-      // Log and propagate the error if getUser fails
       _logger.warning(
           'Error fetching user model in currentUserModel for ${authUser.uid}: $e');
       yield* Stream.error(e, st);
