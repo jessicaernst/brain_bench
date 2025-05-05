@@ -78,6 +78,7 @@ dependencies:
       url: git@github.com:jessicaernst/infinite_carousel.git
       ref: v1.1.1
   stream_transform: ^2.1.1
+  permission_handler_apple: ^9.4.7
 
 
 

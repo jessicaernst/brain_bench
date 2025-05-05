@@ -1,22 +1,22 @@
 import 'dart:async';
+
 import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
 import 'package:brain_bench/app/app.dart';
 import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
 import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
 import 'package:brain_bench/data/repositories/firebase_auth_repository_impl.dart';
+// Import all Firebase config files
+import 'package:brain_bench/services/firebase_options_dev.dart' as dev;
+import 'package:brain_bench/services/firebase_options_prod.dart' as prod;
+import 'package:brain_bench/services/firebase_options_test.dart' as test;
 import 'package:brain_bench/services/logging_service.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-
-// Import all Firebase config files
-import 'package:brain_bench/services/firebase_options_dev.dart' as dev;
-import 'package:brain_bench/services/firebase_options_test.dart' as test;
-import 'package:brain_bench/services/firebase_options_prod.dart' as prod;
 import 'package:rive/rive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -117,8 +117,7 @@ Future<void> main() async {
     ProviderScope(
       overrides: [
         // ---> 2. Override the imported provider <---
-        sharedPreferencesProvider
-            .overrideWithValue(prefs), // Correctly overridden
+        sharedPreferencesProvider.overrideWithValue(prefs),
         firebaseEnvProvider.overrideWithValue(firebaseEnv),
         // for using Mockrepository
         authRepositoryProvider.overrideWithValue(FirebaseAuthRepository()),

@@ -71,6 +71,17 @@
 	<array>
 		<string>_dartobservatory._tcp</string>
 	</array>
+	
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera so you can take a new profile picture.</string>
 
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photo library so you can choose a new profile picture.</string>
+
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We need access to save profile pictures to your photo library.</string>
+
+	<key>NSContactsUsageDescription</key>
+	<string>We need access to your contacts to personalize your profile with your contact photo.</string>
 </dict>
 </plist>

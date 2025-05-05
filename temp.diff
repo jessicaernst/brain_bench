@@ -1,0 +1,746 @@
+diff --git a/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/configure_fingerprint.bin b/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/configure_fingerprint.bin
+index 26594b7..53b0e82 100644
+--- a/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/configure_fingerprint.bin
++++ b/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/configure_fingerprint.bin
+@@ -2,27 +2,27 @@ C/C++ Structured Logs
+ q
+ o/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/additional_project_files.txtC
+ A
+-?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	¿πµÑÂ2 ü›± ›2p
++?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	æ∏éÌÈ2 ü›± ›2p
+ n
+-l/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/android_gradle_build.json	¿πµÑÂ2ˇ ¢›± ›2u
++l/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/android_gradle_build.json	æ∏éÌÈ2ˇ ¢›± ›2u
+ s
+-q/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/android_gradle_build_mini.json	¿πµÑÂ2˙ •›± ›2b
++q/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/android_gradle_build_mini.json	æ∏éÌÈ2˙ •›± ›2b
+ `
+-^/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/build.ninja	¿πµÑÂ2∏— è›± ›2f
++^/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/build.ninja	æ∏éÌÈ2∏— è›± ›2f
+ d
+-b/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/build.ninja.txt	¿πµÑÂ2k
++b/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/build.ninja.txt	æ∏éÌÈ2k
+ i
+-g/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/build_file_index.txt	¿πµÑÂ2d ¶›± ›2l
++g/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/build_file_index.txt	æ∏éÌÈ2d ¶›± ›2l
+ j
+-h/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/compile_commands.json	¿πµÑÂ2p
++h/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/compile_commands.json	æ∏éÌÈ2p
+ n
+-l/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/compile_commands.json.bin	¿πµÑÂ2	v
++l/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/compile_commands.json.bin	æ∏éÌÈ2	v
+ t
+-r/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/metadata_generation_command.txt	¿πµÑÂ2
++r/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/metadata_generation_command.txt	æ∏éÌÈ2
+ Ï ¶›± ›2i
+ g
+-e/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/prefab_config.json	¿πµÑÂ2( ¶›± ›2n
++e/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/prefab_config.json	æ∏éÌÈ2( ¶›± ›2n
+ l
+-j/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/symbol_folder_index.txt	¿πµÑÂ2a ¶›± ›2h
++j/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/symbol_folder_index.txt	æ∏éÌÈ2a ¶›± ›2h
+ f
+-d/Users/jessicaernst/development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt	¿πµÑÂ2§ ·‚ë˚œ2
+\ No newline at end of file
++d/Users/jessicaernst/development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt	æ∏éÌÈ2§ ·‚ë˚œ2
+\ No newline at end of file
+diff --git a/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/configure_fingerprint.bin b/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/configure_fingerprint.bin
+index 5991a54..f16b8ff 100644
+--- a/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/configure_fingerprint.bin
++++ b/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/configure_fingerprint.bin
+@@ -2,27 +2,27 @@ C/C++ Structured Logu
+ s
+ q/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/additional_project_files.txtC
+ A
+-?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	–πµÑÂ2 ‹Ã≤ ›2r
++?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	«∏éÌÈ2 ‹Ã≤ ›2r
+ p
+-n/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/android_gradle_build.json	–πµÑÂ2É ›Ã≤ ›2w
++n/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/android_gradle_build.json	«∏éÌÈ2É ›Ã≤ ›2w
+ u
+-s/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/android_gradle_build_mini.json	–πµÑÂ2˛ ﬁÃ≤ ›2d
++s/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/android_gradle_build_mini.json	«∏éÌÈ2˛ ﬁÃ≤ ›2d
+ b
+-`/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/build.ninja	–πµÑÂ2ƒ— —Ã≤ ›2h
++`/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/build.ninja	«∏éÌÈ2ƒ— —Ã≤ ›2h
+ f
+-d/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/build.ninja.txt	–πµÑÂ2m
++d/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/build.ninja.txt	«∏éÌÈ2m
+ k
+-i/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/build_file_index.txt	–πµÑÂ2d ﬁÃ≤ ›2n
++i/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/build_file_index.txt	«∏éÌÈ2d ﬁÃ≤ ›2n
+ l
+-j/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/compile_commands.json	–πµÑÂ2r
++j/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/compile_commands.json	«∏éÌÈ2r
+ p
+-n/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/compile_commands.json.bin	–πµÑÂ2	x
++n/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/compile_commands.json.bin	«∏éÌÈ2	x
+ v
+-t/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/metadata_generation_command.txt	–πµÑÂ2
++t/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/metadata_generation_command.txt	«∏éÌÈ2
+ ˆ ﬁÃ≤ ›2k
+ i
+-g/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/prefab_config.json	–πµÑÂ2( ﬁÃ≤ ›2p
++g/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/prefab_config.json	«∏éÌÈ2( ﬁÃ≤ ›2p
+ n
+-l/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/symbol_folder_index.txt	–πµÑÂ2c ﬁÃ≤ ›2h
++l/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/armeabi-v7a/symbol_folder_index.txt	«∏éÌÈ2c ﬁÃ≤ ›2h
+ f
+-d/Users/jessicaernst/development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt	–πµÑÂ2§ ·‚ë˚œ2
+\ No newline at end of file
++d/Users/jessicaernst/development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt	«∏éÌÈ2§ ·‚ë˚œ2
+\ No newline at end of file
+diff --git a/android/app/.cxx/Debug/hsh6h1i2/x86/configure_fingerprint.bin b/android/app/.cxx/Debug/hsh6h1i2/x86/configure_fingerprint.bin
+index 362ba66..6d7da80 100644
+--- a/android/app/.cxx/Debug/hsh6h1i2/x86/configure_fingerprint.bin
++++ b/android/app/.cxx/Debug/hsh6h1i2/x86/configure_fingerprint.bin
+@@ -2,27 +2,27 @@ C/C++ Structured Logm
+ k
+ i/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/additional_project_files.txtC
+ A
+-?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	’πµÑÂ2 Òœ≤ ›2j
++?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	Œ∏éÌÈ2 Òœ≤ ›2j
+ h
+-f/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/android_gradle_build.json	’πµÑÂ2Û Òœ≤ ›2o
++f/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/android_gradle_build.json	Œ∏éÌÈ2Û Òœ≤ ›2o
+ m
+-k/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/android_gradle_build_mini.json	’πµÑÂ2Ó Úœ≤ ›2\
++k/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/android_gradle_build_mini.json	Œ∏éÌÈ2Ó Úœ≤ ›2\
+ Z
+-X/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/build.ninja	’πµÑÂ2î— Áœ≤ ›2`
++X/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/build.ninja	Œ∏éÌÈ2î— Áœ≤ ›2`
+ ^
+-\/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/build.ninja.txt	’πµÑÂ2e
++\/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/build.ninja.txt	Œ∏éÌÈ2e
+ c
+-a/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/build_file_index.txt	’πµÑÂ2d Ûœ≤ ›2f
++a/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/build_file_index.txt	Œ∏éÌÈ2d Ûœ≤ ›2f
+ d
+-b/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/compile_commands.json	’πµÑÂ2j
++b/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/compile_commands.json	Œ∏éÌÈ2j
+ h
+-f/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/compile_commands.json.bin	’πµÑÂ2	p
++f/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/compile_commands.json.bin	Œ∏éÌÈ2	p
+ n
+-l/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/metadata_generation_command.txt	’πµÑÂ2
++l/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/metadata_generation_command.txt	Œ∏éÌÈ2
+ Œ Úœ≤ ›2c
+ a
+-_/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/prefab_config.json	’πµÑÂ2( Úœ≤ ›2h
++_/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/prefab_config.json	Œ∏éÌÈ2( Úœ≤ ›2h
+ f
+-d/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/symbol_folder_index.txt	’πµÑÂ2[ Ûœ≤ ›2h
++d/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86/symbol_folder_index.txt	Œ∏éÌÈ2[ Ûœ≤ ›2h
+ f
+-d/Users/jessicaernst/development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt	’πµÑÂ2§ ·‚ë˚œ2
+\ No newline at end of file
++d/Users/jessicaernst/development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt	Œ∏éÌÈ2§ ·‚ë˚œ2
+\ No newline at end of file
+diff --git a/android/app/.cxx/Debug/hsh6h1i2/x86_64/configure_fingerprint.bin b/android/app/.cxx/Debug/hsh6h1i2/x86_64/configure_fingerprint.bin
+index 47ac285..3a947ef 100644
+--- a/android/app/.cxx/Debug/hsh6h1i2/x86_64/configure_fingerprint.bin
++++ b/android/app/.cxx/Debug/hsh6h1i2/x86_64/configure_fingerprint.bin
+@@ -2,27 +2,27 @@ C/C++ Structured Logp
+ n
+ l/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/additional_project_files.txtC
+ A
+-?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	€πµÑÂ2 Ë“≤ ›2m
++?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	”∏éÌÈ2 Ë“≤ ›2m
+ k
+-i/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/android_gradle_build.json	€πµÑÂ2˘ È“≤ ›2r
++i/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/android_gradle_build.json	”∏éÌÈ2˘ È“≤ ›2r
+ p
+-n/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/android_gradle_build_mini.json	€πµÑÂ2Ù È“≤ ›2_
++n/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/android_gradle_build_mini.json	‘∏éÌÈ2Ù È“≤ ›2_
+ ]
+-[/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/build.ninja	€πµÑÂ2¶— ›“≤ ›2c
++[/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/build.ninja	‘∏éÌÈ2¶— ›“≤ ›2c
+ a
+-_/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/build.ninja.txt	€πµÑÂ2h
++_/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/build.ninja.txt	‘∏éÌÈ2h
+ f
+-d/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/build_file_index.txt	€πµÑÂ2d Í“≤ ›2i
++d/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/build_file_index.txt	‘∏éÌÈ2d Í“≤ ›2i
+ g
+-e/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/compile_commands.json	€πµÑÂ2m
++e/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/compile_commands.json	‘∏éÌÈ2m
+ k
+-i/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/compile_commands.json.bin	€πµÑÂ2	s
++i/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/compile_commands.json.bin	‘∏éÌÈ2	s
+ q
+-o/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/metadata_generation_command.txt	€πµÑÂ2
++o/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/metadata_generation_command.txt	‘∏éÌÈ2
+ › Í“≤ ›2f
+ d
+-b/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/prefab_config.json	€πµÑÂ2( Í“≤ ›2k
++b/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/prefab_config.json	‘∏éÌÈ2( Í“≤ ›2k
+ i
+-g/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/symbol_folder_index.txt	€πµÑÂ2^ Í“≤ ›2h
++g/Users/jessicaernst/Projects/brain_bench/android/app/.cxx/Debug/hsh6h1i2/x86_64/symbol_folder_index.txt	‘∏éÌÈ2^ Í“≤ ›2h
+ f
+-d/Users/jessicaernst/development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt	€πµÑÂ2§ ·‚ë˚œ2
+\ No newline at end of file
++d/Users/jessicaernst/development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt	‘∏éÌÈ2§ ·‚ë˚œ2
+\ No newline at end of file
+diff --git a/ios/Podfile.lock b/ios/Podfile.lock
+index 84d8546..9c1aefa 100644
+--- a/ios/Podfile.lock
++++ b/ios/Podfile.lock
+@@ -1259,7 +1259,7 @@ PODS:
+     - GoogleUtilities/Network (~> 8.0)
+     - "GoogleUtilities/NSData+zlib (~> 8.0)"
+     - nanopb (~> 3.30910.0)
+-  - FirebaseAppCheckInterop (11.11.0)
++  - FirebaseAppCheckInterop (11.12.0)
+   - FirebaseAuth (11.10.0):
+     - FirebaseAppCheckInterop (~> 11.0)
+     - FirebaseAuthInterop (~> 11.0)
+@@ -1269,7 +1269,7 @@ PODS:
+     - GoogleUtilities/Environment (~> 8.0)
+     - GTMSessionFetcher/Core (< 5.0, >= 3.4)
+     - RecaptchaInterop (~> 101.0)
+-  - FirebaseAuthInterop (11.11.0)
++  - FirebaseAuthInterop (11.12.0)
+   - FirebaseCore (11.10.0):
+     - FirebaseCoreInternal (~> 11.10.0)
+     - GoogleUtilities/Environment (~> 8.0)
+@@ -1312,7 +1312,7 @@ PODS:
+     - GoogleUtilities/Environment (~> 8.0)
+     - GoogleUtilities/UserDefaults (~> 8.0)
+     - PromisesObjC (~> 2.4)
+-  - FirebaseRemoteConfigInterop (11.11.0)
++  - FirebaseRemoteConfigInterop (11.12.0)
+   - FirebaseSessions (11.10.0):
+     - FirebaseCore (~> 11.10.0)
+     - FirebaseCoreExtension (~> 11.10.0)
+@@ -1322,7 +1322,7 @@ PODS:
+     - GoogleUtilities/UserDefaults (~> 8.0)
+     - nanopb (~> 3.30910.0)
+     - PromisesSwift (~> 2.1)
+-  - FirebaseSharedSwift (11.11.0)
++  - FirebaseSharedSwift (11.12.0)
+   - Flutter (1.0.0)
+   - flutter_native_splash (2.4.3):
+     - Flutter
+@@ -1360,31 +1360,31 @@ PODS:
+     - AppCheckCore (~> 11.0)
+     - GTMAppAuth (< 5.0, >= 4.1.1)
+     - GTMSessionFetcher/Core (~> 3.3)
+-  - GoogleUtilities/AppDelegateSwizzler (8.0.2):
++  - GoogleUtilities/AppDelegateSwizzler (8.1.0):
+     - GoogleUtilities/Environment
+     - GoogleUtilities/Logger
+     - GoogleUtilities/Network
+     - GoogleUtilities/Privacy
+-  - GoogleUtilities/Environment (8.0.2):
++  - GoogleUtilities/Environment (8.1.0):
+     - GoogleUtilities/Privacy
+-  - GoogleUtilities/Logger (8.0.2):
++  - GoogleUtilities/Logger (8.1.0):
+     - GoogleUtilities/Environment
+     - GoogleUtilities/Privacy
+-  - GoogleUtilities/MethodSwizzler (8.0.2):
++  - GoogleUtilities/MethodSwizzler (8.1.0):
+     - GoogleUtilities/Logger
+     - GoogleUtilities/Privacy
+-  - GoogleUtilities/Network (8.0.2):
++  - GoogleUtilities/Network (8.1.0):
+     - GoogleUtilities/Logger
+     - "GoogleUtilities/NSData+zlib"
+     - GoogleUtilities/Privacy
+     - GoogleUtilities/Reachability
+-  - "GoogleUtilities/NSData+zlib (8.0.2)":
++  - "GoogleUtilities/NSData+zlib (8.1.0)":
+     - GoogleUtilities/Privacy
+-  - GoogleUtilities/Privacy (8.0.2)
+-  - GoogleUtilities/Reachability (8.0.2):
++  - GoogleUtilities/Privacy (8.1.0)
++  - GoogleUtilities/Reachability (8.1.0):
+     - GoogleUtilities/Logger
+     - GoogleUtilities/Privacy
+-  - GoogleUtilities/UserDefaults (8.0.2):
++  - GoogleUtilities/UserDefaults (8.1.0):
+     - GoogleUtilities/Logger
+     - GoogleUtilities/Privacy
+   - "gRPC-C++ (1.69.0)":
+@@ -1611,9 +1611,9 @@ SPEC CHECKSUMS:
+   firebase_core: 432718558359a8c08762151b5f49bb0f093eb6e0
+   firebase_crashlytics: f3b2649ae73f440895f285021bf70bdf4d36dec4
+   FirebaseAnalytics: 4e42333f02cf78ed93703a5c36f36dd518aebdef
+-  FirebaseAppCheckInterop: f23709c9ce92d810aa53ff4ce12ad3e666a3c7be
++  FirebaseAppCheckInterop: 73b173e5ec45192e2d522ad43f526a82ad10b852
+   FirebaseAuth: c4146bdfdc87329f9962babd24dae89373f49a32
+-  FirebaseAuthInterop: ac22ed402c2f4e3a8c63ebd3278af9a06073c1be
++  FirebaseAuthInterop: b583210c039a60ed3f1e48865e1f3da44a796595
+   FirebaseCore: 8344daef5e2661eb004b177488d6f9f0f24251b7
+   FirebaseCoreExtension: 6f357679327f3614e995dc7cf3f2d600bdc774ac
+   FirebaseCoreInternal: ef4505d2afb1d0ebbc33162cb3795382904b5679
+@@ -1621,16 +1621,16 @@ SPEC CHECKSUMS:
+   FirebaseFirestore: 3f1488ff7739cb3c5d10e572bc4e9fcd8e8cb4ac
+   FirebaseFirestoreInternal: 97a2bb5f16951c77753c860d3519379702ab6f8a
+   FirebaseInstallations: 9980995bdd06ec8081dfb6ab364162bdd64245c3
+-  FirebaseRemoteConfigInterop: 85bdce8babed7814816496bb6f082bc05b0a45e1
++  FirebaseRemoteConfigInterop: 82b81fd06ee550cbeff40004e2c106daedf73e38
+   FirebaseSessions: 9b3b30947b97a15370e0902ee7a90f50ef60ead6
+-  FirebaseSharedSwift: b1d32c3b29a911dc174bcf363f2f70bda9509d2f
++  FirebaseSharedSwift: d2475748a2d2a36242ed13baa34b2acda846c925
+   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+   flutter_native_splash: df59bb2e1421aa0282cb2e95618af4dcb0c56c29
+   google_sign_in_ios: 7411fab6948df90490dc4620ecbcabdc3ca04017
+   GoogleAppMeasurement: 36684bfb3ee034e2b42b4321eb19da3a1b81e65d
+   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
+   GoogleSignIn: ce8c89bb9b37fb624b92e7514cc67335d1e277e4
+-  GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
++  GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
+   "gRPC-C++": cc207623316fb041a7a3e774c252cf68a058b9e8
+   gRPC-Core: 860978b7db482de8b4f5e10677216309b5ff6330
+   GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
+diff --git a/ios/Runner/Info.plist b/ios/Runner/Info.plist
+index 9ed0dfb..c6fc1b4 100644
+--- a/ios/Runner/Info.plist
++++ b/ios/Runner/Info.plist
+@@ -71,6 +71,17 @@
+ 	<array>
+ 		<string>_dartobservatory._tcp</string>
+ 	</array>
++	
++	<key>NSCameraUsageDescription</key>
++	<string>We need access to your camera so you can take a new profile picture.</string>
+ 
++	<key>NSPhotoLibraryUsageDescription</key>
++	<string>We need access to your photo library so you can choose a new profile picture.</string>
++
++	<key>NSPhotoLibraryAddUsageDescription</key>
++	<string>We need access to save profile pictures to your photo library.</string>
++
++	<key>NSContactsUsageDescription</key>
++	<string>We need access to your contacts to personalize your profile with your contact photo.</string>
+ </dict>
+ </plist>
+diff --git a/ios/Runner/de.lproj/InfoPlist.strings b/ios/Runner/de.lproj/InfoPlist.strings
+index d81fe8a..ae9af64 100644
+--- a/ios/Runner/de.lproj/InfoPlist.strings
++++ b/ios/Runner/de.lproj/InfoPlist.strings
+@@ -1,3 +1,4 @@
+ "NSContactsUsageDescription" = "Wir ben√∂tigen Zugriff auf deine Kontakte, um dein Profilbild automatisch anzeigen zu k√∂nnen.";
+ "NSPhotoLibraryUsageDescription" = "Wir ben√∂tigen Zugriff auf Ihre Fotobibliothek, damit Sie ein neues Profilbild ausw√§hlen k√∂nnen.";
+ "NSCameraUsageDescription" = "Wir ben√∂tigen Zugriff auf Ihre Kamera, damit Sie ein neues Profilbild aufnehmen k√∂nnen.";
++"NSPhotoLibraryAddUsageDescription" = "Wir ben√∂tigen Zugriff, um Profilbilder in deiner Fotomediathek zu speichern.";
+diff --git a/ios/Runner/en.lproj/InfoPlist.strings b/ios/Runner/en.lproj/InfoPlist.strings
+index 329010c..85d4e66 100644
+--- a/ios/Runner/en.lproj/InfoPlist.strings
++++ b/ios/Runner/en.lproj/InfoPlist.strings
+@@ -1,3 +1,4 @@
+ "NSContactsUsageDescription" = "We need access to your contacts to personalize your profile with your contact photo.";
+ "NSPhotoLibraryUsageDescription" = "We need access to your photo library so you can choose a new profile picture.";
+ "NSCameraUsageDescription" = "We need access to your camera so you can take a new profile picture.";
++"NSPhotoLibraryAddUsageDescription" = "We need access to save profile pictures to your photo library.";
+diff --git a/lib/core/hooks/use_image_picker_with_permissions.dart b/lib/core/hooks/use_image_picker_with_permissions.dart
+index b903a11..0f515e5 100644
+--- a/lib/core/hooks/use_image_picker_with_permissions.dart
++++ b/lib/core/hooks/use_image_picker_with_permissions.dart
+@@ -1,6 +1,7 @@
+ import 'dart:io';
+ 
+ import 'package:brain_bench/core/localization/app_localizations.dart';
++import 'package:brain_bench/core/styles/colors.dart';
+ import 'package:device_info_plus/device_info_plus.dart';
+ import 'package:flutter/cupertino.dart';
+ import 'package:flutter/material.dart';
+@@ -11,33 +12,25 @@ import 'package:permission_handler/permission_handler.dart';
+ 
+ final _logger = Logger('useImagePickerWithPermissions');
+ 
+-// Helper to bundle the hook's result
+ class ImagePickerResult {
+-  final ValueNotifier<XFile?> selectedImage; // The state of the selected image
+-  final Future<void> Function(BuildContext, AppLocalizations)
+-      pickImage; // The trigger function
++  final ValueNotifier<XFile?> selectedImage;
++  final Future<void> Function(BuildContext, AppLocalizations) pickImage;
+ 
+   ImagePickerResult({required this.selectedImage, required this.pickImage});
+ }
+ 
+-// The Custom Hook
+ ImagePickerResult useImagePickerWithPermissions() {
+-  // Manage the state for the selected image within the hook
+   final selectedImageState = useState<XFile?>(null);
+-  // Create ImagePicker only once using useMemoized
+   final picker = useMemoized(() => ImagePicker());
+ 
+-  // The actual logic for selecting an image and checking permissions
+   Future<void> pickImageInternal(
+       BuildContext context, AppLocalizations localizations) async {
+     ImageSource? source;
+ 
+-    // 1. Select source (BottomSheet)
+     try {
+       source = await showModalBottomSheet<ImageSource>(
+         context: context,
+         builder: (BuildContext sheetContext) {
+-          // --- BottomSheet UI ---
+           final theme = Theme.of(sheetContext);
+           final isDarkMode = theme.brightness == Brightness.dark;
+           return SafeArea(
+@@ -51,8 +44,8 @@ ImagePickerResult useImagePickerWithPermissions() {
+                           ? CupertinoIcons.photo_fill_on_rectangle_fill
+                           : Icons.photo_library,
+                       color: isDarkMode
+-                          ? Colors.white70
+-                          : Colors.black87, // Example colors
++                          ? BrainBenchColors.cloudCanvas
++                          : BrainBenchColors.deepDive,
+                     ),
+                     title: Text(
+                       localizations.profilePickFromGallery,
+@@ -66,7 +59,9 @@ ImagePickerResult useImagePickerWithPermissions() {
+                       Platform.isIOS
+                           ? CupertinoIcons.camera_fill
+                           : Icons.camera_alt,
+-                      color: isDarkMode ? Colors.white70 : Colors.black87,
++                      color: isDarkMode
++                          ? BrainBenchColors.cloudCanvas
++                          : BrainBenchColors.deepDive,
+                     ),
+                     title: Text(
+                       localizations.profilePickFromCamera,
+@@ -79,27 +74,22 @@ ImagePickerResult useImagePickerWithPermissions() {
+               ),
+             ),
+           );
+-          // --- End BottomSheet UI ---
+         },
+       );
+       if (source == null) {
+         _logger.info('Image source selection cancelled.');
+-        return; // User closed the bottom sheet
++        return;
+       }
+     } catch (e, s) {
+       _logger.severe('Error showing image source picker', e, s);
+-      return; // Exit if showing the picker failed
++      return;
+     }
+ 
+-    // 2. Check and request permission
+     PermissionStatus status;
+     Permission permission;
+-    // --- Logic to determine the correct permission ---
+     if (source == ImageSource.camera) {
+       permission = Permission.camera;
+     } else {
+-      // ImageSource.gallery
+-      // Use Permission.photos for newer SDKs, otherwise storage
+       if (Platform.isAndroid && (await _getAndroidSdkVersion() ?? 0) >= 33 ||
+           Platform.isIOS) {
+         permission = Permission.photos;
+@@ -107,51 +97,50 @@ ImagePickerResult useImagePickerWithPermissions() {
+         permission = Permission.storage;
+       }
+     }
+-    // --- End Logic ---
+ 
+     _logger.fine('Checking permission: $permission');
+     status = await permission.status;
+     _logger.fine('Initial permission status: $status');
+ 
+-    // Request permission if it was denied before (but not permanently)
+     if (status.isDenied) {
+       _logger.info('Requesting permission: $permission');
+       status = await permission.request();
+       _logger.info('Permission status after request: $status');
+     }
+ 
+-    // 3. Evaluate permission status
++    if (Platform.isIOS && permission == Permission.photos && status.isLimited) {
++      _logger
++          .info('iOS limited access granted, prompting to upgrade access...');
++      final upgraded = await _promptForFullPhotoAccess(context);
++      if (!upgraded) {
++        _logger.warning('User did not upgrade photo permission to full access');
++        return;
++      }
++    }
++
+     if (status.isGranted || status.isLimited) {
+-      // isLimited is relevant for iOS photo access
+-      // 4. Permission granted -> Invoke ImagePicker
+       _logger.info('Permission granted/limited. Launching image picker...');
+       try {
+         final XFile? pickedFile = await picker.pickImage(
+           source: source,
+-          imageQuality: 80, // Optional: Adjust quality
+-          maxWidth: 1024, // Optional: Limit dimensions
++          imageQuality: 80,
++          maxWidth: 1024,
+         );
+         if (pickedFile != null) {
+           _logger.info('Image selected: ${pickedFile.path}');
+-          // --- Update state within the hook ---
+           selectedImageState.value = pickedFile;
+-          // ---
+         } else {
+           _logger.info('Image selection cancelled or failed.');
+-          // Optional: Reset state if necessary
+-          // selectedImageState.value = null;
+         }
+       } catch (e, s) {
+         _logger.severe('Error picking image', e, s);
+-        // Show error message to the user if the context is still valid
+         if (context.mounted) {
+           ScaffoldMessenger.of(context).showSnackBar(
+             SnackBar(content: Text(localizations.profileImagePickerError)),
+           );
+         }
+       }
+-    } else if (status.isPermanentlyDenied) {
+-      // 5. Permission permanently denied -> Show dialog guiding to settings
++    } else if (status.isPermanentlyDenied || status.isRestricted) {
+       _logger.warning('Permission $permission permanently denied.');
+       if (context.mounted) {
+         showDialog(
+@@ -169,7 +158,7 @@ ImagePickerResult useImagePickerWithPermissions() {
+               TextButton(
+                 child: Text(localizations.openSettings),
+                 onPressed: () {
+-                  openAppSettings(); // Opens the app's settings page
++                  openAppSettings();
+                   Navigator.of(ctx).pop();
+                 },
+               ),
+@@ -178,7 +167,6 @@ ImagePickerResult useImagePickerWithPermissions() {
+         );
+       }
+     } else {
+-      // 6. Permission denied (again) -> Show SnackBar
+       _logger.warning('Permission $permission denied.');
+       if (context.mounted) {
+         ScaffoldMessenger.of(context).showSnackBar(
+@@ -192,19 +180,41 @@ ImagePickerResult useImagePickerWithPermissions() {
+     }
+   }
+ 
+-  // Return the state and the trigger function
+   return ImagePickerResult(
+     selectedImage: selectedImageState,
+     pickImage: pickImageInternal,
+   );
+ }
+ 
+-// Private helper function for SDK version (can also reside here)
+ Future<int?> _getAndroidSdkVersion() async {
+   if (Platform.isAndroid) {
+-    // Requires 'device_info_plus' package
+     final androidInfo = await DeviceInfoPlugin().androidInfo;
+     return androidInfo.version.sdkInt;
+   }
+-  return null; // Return null for non-Android platforms
++  return null;
++}
++
++Future<bool> _promptForFullPhotoAccess(BuildContext context) async {
++  return await showDialog<bool>(
++        context: context,
++        builder: (ctx) => AlertDialog(
++          title: const Text('Full Access Required'),
++          content: const Text(
++              'To select all photos, please allow full photo access in Settings.'),
++          actions: [
++            TextButton(
++              child: const Text('Cancel'),
++              onPressed: () => Navigator.of(ctx).pop(false),
++            ),
++            TextButton(
++              child: const Text('Open Settings'),
++              onPressed: () {
++                openAppSettings();
++                Navigator.of(ctx).pop(true);
++              },
++            ),
++          ],
++        ),
++      ) ??
++      false;
+ }
+diff --git a/lib/data/infrastructure/user/user_provider.dart b/lib/data/infrastructure/user/user_provider.dart
+index f30261d..c1bb1d2 100644
+--- a/lib/data/infrastructure/user/user_provider.dart
++++ b/lib/data/infrastructure/user/user_provider.dart
+@@ -1,5 +1,5 @@
+-import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart'; // Import AuthRepository provider
+-import 'package:brain_bench/data/infrastructure/database_providers.dart'; // Keep DB provider import
++import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
++import 'package:brain_bench/data/infrastructure/database_providers.dart';
+ import 'package:brain_bench/data/models/user/app_user.dart' as model;
+ import 'package:hooks_riverpod/hooks_riverpod.dart';
+ import 'package:logging/logging.dart';
+@@ -10,17 +10,14 @@ part 'user_provider.g.dart';
+ 
+ final Logger _logger = Logger('UserProvider');
+ 
+-/// Returns a stream of the current authenticated user model.
++/// Retrieves the current user model as a stream.
+ ///
+-/// This function retrieves the current authenticated user from the [authRepository]
+-/// and then fetches the corresponding user model from the [db]. It returns a stream
+-/// of [model.AppUser] objects representing the current user.
++/// This function listens to changes in the authentication state and fetches the corresponding user model from the database.
++/// If the authentication user is null, it yields null.
++/// If the user model is not found in the database, it forces a logout and yields null.
++/// If an error occurs during the process, it yields the error.
+ ///
+-/// If the [authUser] is null, it yields null. Otherwise, it fetches the user model
+-/// from the [db] using the [authUser.uid] and yields the user model.
+-///
+-/// If an error occurs during the process, it logs a warning message and yields
+-/// the error using a stream error.
++/// Returns a stream of [model.AppUser?] representing the current user model.
+ @riverpod
+ Stream<model.AppUser?> currentUserModel(Ref ref) {
+   final authRepository = ref.watch(authRepositoryProvider);
+@@ -37,10 +34,22 @@ Stream<model.AppUser?> currentUserModel(Ref ref) {
+ 
+     try {
+       final userModel = await db.getUser(authUser.uid);
++
++      if (userModel == null) {
++        _logger.warning(
++            '‚ùå Auth user exists, but no DB user found ‚Äì forcing logout for UID ${authUser.uid}');
++        await ref.read(authRepositoryProvider).signOut();
++        yield null;
++        return;
++      }
++
+       yield userModel;
+     } catch (e, st) {
+       _logger.warning(
+-          'Error fetching user model in currentUserModel for ${authUser.uid}: $e');
++        'Error fetching user model in currentUserModel for ${authUser.uid}: $e',
++        e,
++        st,
++      );
+       yield* Stream.error(e, st);
+     }
+   });
+diff --git a/lib/data/infrastructure/user/user_provider.g.dart b/lib/data/infrastructure/user/user_provider.g.dart
+index ee857e5..ebf8c28 100644
+--- a/lib/data/infrastructure/user/user_provider.g.dart
++++ b/lib/data/infrastructure/user/user_provider.g.dart
+@@ -6,9 +6,18 @@ part of 'user_provider.dart';
+ // RiverpodGenerator
+ // **************************************************************************
+ 
+-String _$currentUserModelHash() => r'774964e53742bf3b0f8e7fb7538c00bd0a8c368b';
++String _$currentUserModelHash() => r'4637b09968d8b3a85078c8d0535ac04a156735ff';
+ 
+-/// See also [currentUserModel].
++/// Retrieves the current user model as a stream.
++///
++/// This function listens to changes in the authentication state and fetches the corresponding user model from the database.
++/// If the authentication user is null, it yields null.
++/// If the user model is not found in the database, it forces a logout and yields null.
++/// If an error occurs during the process, it yields the error.
++///
++/// Returns a stream of [model.AppUser?] representing the current user model.
++///
++/// Copied from [currentUserModel].
+ @ProviderFor(currentUserModel)
+ final currentUserModelProvider =
+     AutoDisposeStreamProvider<model.AppUser?>.internal(
+diff --git a/lib/main.dart b/lib/main.dart
+index 5bf7efd..6c7c7e9 100644
+--- a/lib/main.dart
++++ b/lib/main.dart
+@@ -1,22 +1,22 @@
+ import 'dart:async';
++
+ import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
+ import 'package:brain_bench/app/app.dart';
+ import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
+ import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
+ import 'package:brain_bench/data/repositories/firebase_auth_repository_impl.dart';
++// Import all Firebase config files
++import 'package:brain_bench/services/firebase_options_dev.dart' as dev;
++import 'package:brain_bench/services/firebase_options_prod.dart' as prod;
++import 'package:brain_bench/services/firebase_options_test.dart' as test;
+ import 'package:brain_bench/services/logging_service.dart';
++import 'package:firebase_core/firebase_core.dart';
++import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+ import 'package:flutter/foundation.dart';
+ import 'package:flutter/material.dart';
+ import 'package:flutter/services.dart';
+ import 'package:flutter_native_splash/flutter_native_splash.dart';
+ import 'package:flutter_riverpod/flutter_riverpod.dart';
+-import 'package:firebase_core/firebase_core.dart';
+-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+-
+-// Import all Firebase config files
+-import 'package:brain_bench/services/firebase_options_dev.dart' as dev;
+-import 'package:brain_bench/services/firebase_options_test.dart' as test;
+-import 'package:brain_bench/services/firebase_options_prod.dart' as prod;
+ import 'package:rive/rive.dart';
+ import 'package:shared_preferences/shared_preferences.dart';
+ 
+@@ -117,8 +117,7 @@ Future<void> main() async {
+     ProviderScope(
+       overrides: [
+         // ---> 2. Override the imported provider <---
+-        sharedPreferencesProvider
+-            .overrideWithValue(prefs), // Correctly overridden
++        sharedPreferencesProvider.overrideWithValue(prefs),
+         firebaseEnvProvider.overrideWithValue(firebaseEnv),
+         // for using Mockrepository
+         authRepositoryProvider.overrideWithValue(FirebaseAuthRepository()),
+diff --git a/lib/presentation/profile/screens/profile_page.dart b/lib/presentation/profile/screens/profile_page.dart
+index 6073d24..96cdc43 100644
+--- a/lib/presentation/profile/screens/profile_page.dart
++++ b/lib/presentation/profile/screens/profile_page.dart
+@@ -224,7 +224,6 @@ class ProfilePage extends HookConsumerWidget {
+             child: userAsyncValue.when(
+               data: (user) {
+                 if (user == null) {
+-                  // This case should ideally only happen if the user is truly not found or logged out.
+                   _logger.warning(
+                       'ProfilePage build: User data received but is null.');
+                   return Center(child: Text(localizations.profileUserNotFound));
+diff --git a/lib/presentation/profile/widgets/profile_content_view.dart b/lib/presentation/profile/widgets/profile_content_view.dart
+index 0b542a2..ec0c2fc 100644
+--- a/lib/presentation/profile/widgets/profile_content_view.dart
++++ b/lib/presentation/profile/widgets/profile_content_view.dart
+@@ -71,9 +71,7 @@ class ProfileContentView extends StatelessWidget {
+                   textTheme: textTheme,
+                   theme: theme,
+                   userImageUrl: userImageUrl,
+-                  // Pass isSaveEnabled to control the button state
+-                  isActive: isSaveEnabled, // <-- Pass calculated state
+-                  // Pass handleSaveChanges, button disables itself if !isActive
++                  isActive: isSaveEnabled,
+                   onPressed: handleSaveChanges,
+                   onImageSelected: handleImageSelection,
+                   selectedImageFile: selectedImage.value,
+diff --git a/pubspec.lock b/pubspec.lock
+index e1ab73f..f4066e4 100644
+--- a/pubspec.lock
++++ b/pubspec.lock
+@@ -1064,7 +1064,7 @@ packages:
+     source: hosted
+     version: "13.0.1"
+   permission_handler_apple:
+-    dependency: transitive
++    dependency: "direct main"
+     description:
+       name: permission_handler_apple
+       sha256: f000131e755c54cf4d84a5d8bd6e4149e262cc31c5a8b1d698de1ac85fa41023
+diff --git a/pubspec.yaml b/pubspec.yaml
+index 729f5ec..dca9b7e 100644
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+@@ -78,6 +78,7 @@ dependencies:
+       url: git@github.com:jessicaernst/infinite_carousel.git
+       ref: v1.1.1
+   stream_transform: ^2.1.1
++  permission_handler_apple: ^9.4.7
+ 
+ 
+ 
