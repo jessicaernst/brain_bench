@@ -4,9 +4,9 @@ import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/models/home/carousel.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
-import 'package:brain_bench/presentation/home/screens/carousel_card_content.dart';
 import 'package:brain_bench/presentation/home/widgets/active_news_carousel_card.dart';
 import 'package:brain_bench/presentation/home/widgets/actual_category_view.dart';
+import 'package:brain_bench/presentation/home/widgets/carousel_card_content.dart';
 import 'package:brain_bench/presentation/home/widgets/inactive_news_carousel_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -132,6 +132,7 @@ class HomePage extends ConsumerWidget {
                       ActiveNewsCarouselCard(content: child),
                   inactiveCardBuilder: (child) =>
                       InactiveNewsCarouselCard(content: child),
+                  animationCurve: Curves.easeOut,
                 ),
               ),
             ],
