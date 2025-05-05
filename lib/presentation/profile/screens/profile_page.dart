@@ -4,6 +4,8 @@ import 'package:brain_bench/core/component_widgets/profile_settings_page_backgro
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
+import 'package:brain_bench/data/models/user/app_user.dart';
+import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/presentation/profile/widgets/profile_content_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
@@ -16,10 +18,6 @@ import 'package:logging/logging.dart';
 
 final Logger _logger = Logger('ProfilePage');
 
-/// The `ProfilePage` class is a widget that displays the profile page of a user.
-/// It allows the user to view and edit their profile information, such as display name and profile picture.
-/// The page includes a form for editing the profile, and handles saving the changes to the user's profile.
-/// It also displays a background image and an app bar with navigation and action buttons.
 class ProfilePage extends HookConsumerWidget {
   ProfilePage({super.key});
 
@@ -33,7 +31,7 @@ class ProfilePage extends HookConsumerWidget {
     final previousIsEditing = usePrevious(isEditing.value);
     final selectedImage = useState<XFile?>(null);
 
-    final userAsyncValue = ref.watch(currentUserModelProvider);
+    final userStateAsync = ref.watch(currentUserModelProvider);
     final displayNameController = useTextEditingController();
     final emailController = useTextEditingController();
     final bool isDarkMode = theme.brightness == Brightness.dark;
@@ -51,7 +49,7 @@ class ProfilePage extends HookConsumerWidget {
             SnackBar(
               content: Text(
                   '${localizations.profileUpdateError}: ${error.toString()}'),
-              backgroundColor: Colors.red,
+              backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
         },
@@ -72,34 +70,44 @@ class ProfilePage extends HookConsumerWidget {
     });
 
     useEffect(() {
-      void updateControllers(user) {
-        if (user != null) {
-          if (!isEditing.value || displayNameController.text.isEmpty) {
-            displayNameController.text = user.displayName ?? '';
-          }
-          emailController.text = user.email ?? '';
-        } else {
-          displayNameController.clear();
-          emailController.clear();
+      void updateControllers(AppUser user) {
+        if (!isEditing.value || displayNameController.text.isEmpty) {
+          displayNameController.text = user.displayName ?? '';
         }
+        emailController.text = user.email;
       }
 
       final subscription =
           ref.listenManual(currentUserModelProvider, (_, next) {
-        next.whenData(updateControllers);
+        next.whenData((state) {
+          if (state is UserModelData) updateControllers(state.user);
+        });
       });
 
-      userAsyncValue.whenData(updateControllers);
-      return subscription.close;
-    }, [userAsyncValue, isEditing.value]);
+      userStateAsync.whenData((state) {
+        if (state is UserModelData) updateControllers(state.user);
+      });
 
-    final String? userImageUrl = userAsyncValue.when(
-      data: (user) => user?.photoUrl,
+      return subscription.close;
+    }, [userStateAsync, isEditing.value]);
+
+    final String? userImageUrl = userStateAsync.when(
+      data: (state) => switch (state) {
+        UserModelData(:final user) => user.photoUrl,
+        _ => null,
+      },
       loading: () => null,
       error: (err, stack) => null,
     );
 
-    final originalDisplayName = userAsyncValue.value?.displayName ?? '';
+    final originalDisplayName = userStateAsync.when(
+      data: (state) => switch (state) {
+        UserModelData(:final user) => user.displayName ?? '',
+        _ => '',
+      },
+      loading: () => 'Loading...',
+      error: (err, stack) => 'Error',
+    );
 
     final currentDisplayName = useListenable(displayNameController).text.trim();
     final nameChanged = currentDisplayName != originalDisplayName;
@@ -137,24 +145,23 @@ class ProfilePage extends HookConsumerWidget {
       _logger.info('Changes detected, calling profile update notifier.');
       ref.read(profileNotifierProvider.notifier).updateProfile(
             displayName: finalDisplayName,
-            // newImageFile: selectedImage.value, // Pass file when TODO is resolved in Notifier
           );
     }
 
     void toggleEditMode() {
       _logger.fine('Toggling edit mode. Current state: ${isEditing.value}');
       if (!isEditing.value) {
-        userAsyncValue.whenData((user) {
-          if (user != null) {
-            displayNameController.text = user.displayName ?? '';
+        userStateAsync.whenData((state) {
+          if (state is UserModelData) {
+            displayNameController.text = state.user.displayName ?? '';
           }
         });
         selectedImage.value = null;
       } else {
         selectedImage.value = null;
-        userAsyncValue.whenData((user) {
-          if (user != null) {
-            displayNameController.text = user.displayName ?? '';
+        userStateAsync.whenData((state) {
+          if (state is UserModelData) {
+            displayNameController.text = state.user.displayName ?? '';
           }
         });
       }
@@ -165,9 +172,9 @@ class ProfilePage extends HookConsumerWidget {
       if (isEditing.value) {
         _logger.fine('Back action in edit mode. Discarding changes.');
         selectedImage.value = null;
-        userAsyncValue.whenData((user) {
-          if (user != null) {
-            displayNameController.text = user.displayName ?? '';
+        userStateAsync.whenData((state) {
+          if (state is UserModelData) {
+            displayNameController.text = state.user.displayName ?? '';
           }
         });
         isEditing.value = false;
@@ -221,29 +228,34 @@ class ProfilePage extends HookConsumerWidget {
         children: [
           const ProfileSettingsPageBackground(),
           SafeArea(
-            child: userAsyncValue.when(
-              data: (user) {
-                if (user == null) {
-                  // This case should ideally only happen if the user is truly not found or logged out.
-                  _logger.warning(
-                      'ProfilePage build: User data received but is null.');
-                  return Center(child: Text(localizations.profileUserNotFound));
-                }
-                return ProfileContentView(
-                  previousIsEditing: previousIsEditing,
-                  isEditing: isEditing,
-                  displayNameController: displayNameController,
-                  emailController: emailController,
-                  localizations: localizations,
-                  textTheme: textTheme,
-                  theme: theme,
-                  userImageUrl: userImageUrl,
-                  isSaveEnabled: isSaveEnabled,
-                  selectedImage: selectedImage,
-                  userAsyncValue: userAsyncValue,
-                  handleImageSelection: handleImageSelection,
-                  handleSaveChanges: handleSaveChanges,
-                );
+            child: userStateAsync.when(
+              data: (state) {
+                return switch (state) {
+                  UserModelData(:final user) => ProfileContentView(
+                      previousIsEditing: previousIsEditing,
+                      isEditing: isEditing,
+                      displayNameController: displayNameController,
+                      emailController: emailController,
+                      localizations: localizations,
+                      textTheme: textTheme,
+                      theme: theme,
+                      userImageUrl: userImageUrl,
+                      isSaveEnabled: isSaveEnabled,
+                      selectedImage: selectedImage,
+                      userAsyncValue: AsyncData(user),
+                      handleImageSelection: handleImageSelection,
+                      handleSaveChanges: handleSaveChanges,
+                    ),
+                  UserModelLoading() =>
+                    const Center(child: CupertinoActivityIndicator()),
+                  UserModelUnauthenticated() => Center(
+                      child: Text(localizations.profileUserNotFound),
+                    ),
+                  UserModelError(:final message) => Center(
+                      child:
+                          Text('${localizations.profileLoadError}: $message'),
+                    ),
+                };
               },
               loading: () => const Center(child: CupertinoActivityIndicator()),
               error: (error, stack) => Center(

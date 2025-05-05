@@ -5,6 +5,7 @@ import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
+import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:brain_bench/presentation/categories/widgets/category_row_view.dart';
 import 'package:flutter/material.dart';
@@ -43,9 +44,6 @@ class CategoriesLoadedView extends ConsumerWidget {
     );
   }
 
-  // --- Extracted Function for the map operation ---
-  // This function needs access to 'user', so it remains a method.
-  // It takes the item from the list (category) and returns the widget.
   Widget _mapCategoryToWidget(Category category, AppUser? user) {
     return _buildCategoryRow(category, user);
   }
@@ -54,7 +52,12 @@ class CategoriesLoadedView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedCategoryId = ref.watch(selectedCategoryNotifierProvider);
     _logger.fine('Watching selectedCategoryId: $selectedCategoryId');
-    final AppUser? user = ref.watch(currentUserModelProvider).valueOrNull;
+    final userState = ref.watch(currentUserModelProvider);
+
+    final AppUser? user = switch (userState) {
+      AsyncData(value: UserModelData(:final user)) => user,
+      _ => null,
+    };
 
     void handleChooseCategoryPressed() {
       if (selectedCategoryId != null) {

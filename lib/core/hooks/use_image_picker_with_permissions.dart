@@ -109,8 +109,13 @@ ImagePickerResult useImagePickerWithPermissions() {
     }
 
     if (Platform.isIOS && permission == Permission.photos && status.isLimited) {
-      _logger
-          .info('iOS limited access granted, prompting to upgrade access...');
+      _logger.info(
+          'iOS limited photo access granted, checking if context is mounted before prompting...');
+      if (!context.mounted) {
+        _logger.warning(
+            'Context not mounted before prompting for full photo access. Aborting.');
+        return;
+      }
       final upgraded = await _promptForFullPhotoAccess(context);
       if (!upgraded) {
         _logger.warning('User did not upgrade photo permission to full access');
@@ -135,6 +140,7 @@ ImagePickerResult useImagePickerWithPermissions() {
       } catch (e, s) {
         _logger.severe('Error picking image', e, s);
         if (context.mounted) {
+          // Guard after async gap
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(localizations.profileImagePickerError)),
           );
@@ -195,6 +201,7 @@ Future<int?> _getAndroidSdkVersion() async {
 }
 
 Future<bool> _promptForFullPhotoAccess(BuildContext context) async {
+  // Although called after a mounted check, double-check here just in case.
   return await showDialog<bool>(
         context: context,
         builder: (ctx) => AlertDialog(

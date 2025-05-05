@@ -6,6 +6,8 @@ import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/infrastructure/quiz/topic_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
+import 'package:brain_bench/data/models/user/app_user.dart';
+import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_card.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +17,8 @@ import 'package:logging/logging.dart';
 
 final Logger _logger = Logger('TopicsPage');
 
-/// The screen that displays the topics for a specific category.
 class TopicsPage extends ConsumerStatefulWidget {
-  TopicsPage({
+  const TopicsPage({
     super.key,
     required this.categoryId,
   });
@@ -29,24 +30,17 @@ class TopicsPage extends ConsumerStatefulWidget {
 }
 
 class _TopicsPageState extends ConsumerState<TopicsPage> {
-  // ✅ Map to hold the expanded state of each TopicCard, keyed by topicId + status
   final Map<String, bool> _expandedStates = {};
   bool _showDoneTopics = false;
 
-  /// Helper method to get and initialize the expanded state for a topic,
-  /// considering its current done status to ensure state reset on status change.
   bool _getExpandedState(Topic topic, bool isDone) {
-    // Create a status-specific key
     final stateKey = '${topic.id}_$isDone';
-    // Remove the old state key for the opposite status, if it exists
     final oldStateKey = '${topic.id}_${!isDone}';
     if (_expandedStates.containsKey(oldStateKey)) {
       _expandedStates.remove(oldStateKey);
     }
-    // Ensure the state exists, defaulting to false if not.
     _expandedStates.putIfAbsent(stateKey, () => false);
     final isExpandedRaw = _expandedStates[stateKey];
-    // Validate the state type, logging an error if it's not a bool.
     if (isExpandedRaw is! bool) {
       _logger.severe(
           '❌ Invalid expanded state for topic ${topic.id} (status: $isDone): $isExpandedRaw. Resetting to false.');
@@ -57,14 +51,20 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final String languageCode = Localizations.localeOf(context).languageCode;
-    final AppLocalizations localizations = AppLocalizations.of(context)!;
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final localizations = AppLocalizations.of(context)!;
 
     final topicsAsync =
         ref.watch(topicsProvider(widget.categoryId, languageCode));
 
     final categoryAsync =
         ref.watch(categoryByIdProvider(widget.categoryId, languageCode));
+
+    final userStateAsync = ref.watch(currentUserModelProvider);
+    AppUser? user;
+    if (userStateAsync is AsyncData && userStateAsync.value is UserModelData) {
+      user = (userStateAsync.value as UserModelData).user;
+    }
 
     return Scaffold(
       appBar: BackNavAppBar(
@@ -81,13 +81,11 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
         children: [
           categoryAsync.when(
             data: (category) {
-              final user = ref.watch(currentUserModelProvider).valueOrNull;
               final progress = user?.categoryProgress[category.id] ?? 0.0;
-
               return ProgressIndicatorBarView(progress: progress);
             },
             loading: () => const ProgressIndicatorBarView(progress: 0),
-            error: (error, stack) => const SizedBox.shrink(),
+            error: (_, __) => const SizedBox.shrink(),
           ),
           Expanded(
             child: topicsAsync.when(
@@ -100,23 +98,19 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
                   );
                 }
 
-                // ✅ Split topics into done and undone
-                final user = ref.watch(currentUserModelProvider).valueOrNull;
                 final topicDoneMap = user?.isTopicDone[widget.categoryId] ?? {};
 
-                final List<Topic> doneTopics =
+                final doneTopics =
                     topics.where((t) => topicDoneMap[t.id] == true).toList();
-                final List<Topic> undoneTopics =
+                final undoneTopics =
                     topics.where((t) => topicDoneMap[t.id] != true).toList();
 
                 return ListView(
                   key: const PageStorageKey('topicList'),
                   children: [
-                    // ✅ Undone Topics
                     if (undoneTopics.isNotEmpty)
                       ...undoneTopics.map((topic) {
-                        const bool isDone =
-                            false; // Topic is in the undone list
+                        const isDone = false;
                         final stateKey = '${topic.id}_$isDone';
                         final isExpanded = _getExpandedState(topic, isDone);
                         return Padding(
@@ -142,7 +136,6 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
                           ),
                         );
                       }),
-
                     if (doneTopics.isNotEmpty)
                       ExpansionTile(
                         key: PageStorageKey<String>(
@@ -159,7 +152,7 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
                           });
                         },
                         children: doneTopics.map((topic) {
-                          const bool isDone = true;
+                          const isDone = true;
                           final stateKey = '${topic.id}_$isDone';
                           final isExpanded = _getExpandedState(topic, isDone);
                           return Padding(
@@ -190,7 +183,7 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stack) => Center(
+              error: (error, _) => Center(
                 child: Text(
                   'Error loading topics: $error',
                   style: Theme.of(context).textTheme.bodyMedium,

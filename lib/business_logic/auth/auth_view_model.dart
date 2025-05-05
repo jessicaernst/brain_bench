@@ -1,6 +1,4 @@
-import 'package:brain_bench/core/utils/ensure_user_exists.dart';
 import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
-import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -27,18 +25,9 @@ class AuthViewModel extends _$AuthViewModel {
     state = const AsyncLoading();
     try {
       final repo = ref.read(authRepositoryProvider);
-      final appUser = await repo.signInWithEmail(email, password);
-      _logger.info('AuthViewModel received from repo after Email Sign-In: '
-          'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
+      await repo.signInWithEmail(email, password);
+      _logger.info('Email Sign-In attempt successful via repository.');
 
-      final bool newUserCreated =
-          await ensureUserExistsIfNeeded(ref.read, appUser);
-
-      if (newUserCreated) {
-        _logger.info(
-            'New user was created, invalidating currentUserModelProvider.');
-        ref.invalidate(currentUserModelProvider);
-      }
       state = const AsyncData(null);
     } catch (e, st) {
       state = AsyncError(e, st);
@@ -54,18 +43,9 @@ class AuthViewModel extends _$AuthViewModel {
     state = const AsyncLoading();
     try {
       final repo = ref.read(authRepositoryProvider);
-      final appUser = await repo.signUpWithEmail(email, password);
-      _logger.info('AuthViewModel received from repo after Email Sign-Up: '
-          'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
+      await repo.signUpWithEmail(email, password);
+      _logger.info('Email Sign-Up attempt successful via repository.');
 
-      final bool newUserCreated =
-          await ensureUserExistsIfNeeded(ref.read, appUser);
-
-      if (newUserCreated) {
-        _logger.info(
-            'New user was created, invalidating currentUserModelProvider.');
-        ref.invalidate(currentUserModelProvider);
-      }
       state = const AsyncData(null);
     } catch (e, st) {
       state = AsyncError(e, st);
@@ -77,18 +57,9 @@ class AuthViewModel extends _$AuthViewModel {
     state = const AsyncLoading();
     try {
       final repo = ref.read(authRepositoryProvider);
-      final appUser = await repo.signInWithGoogle();
-      _logger.info('AuthViewModel received from repo after Google Sign-In: '
-          'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}');
+      await repo.signInWithGoogle();
+      _logger.info('Google Sign-In attempt successful via repository.');
 
-      final bool newUserCreated =
-          await ensureUserExistsIfNeeded(ref.read, appUser);
-
-      if (newUserCreated) {
-        _logger.info(
-            'New user was created, invalidating currentUserModelProvider.');
-        ref.invalidate(currentUserModelProvider);
-      }
       state = const AsyncData(null);
     } catch (e, st) {
       state = AsyncError(e, st);
@@ -100,18 +71,9 @@ class AuthViewModel extends _$AuthViewModel {
     state = const AsyncLoading();
     try {
       final repo = ref.read(authRepositoryProvider);
-      final appUser = await repo.signInWithApple();
-      _logger.info('AuthViewModel received from repo after Apple Sign-In: '
-          'UID=${appUser.uid}, Name=${appUser.displayName}, Photo=${appUser.photoUrl}, Email=${appUser.email}');
+      await repo.signInWithApple();
+      _logger.info('Apple Sign-In attempt successful via repository.');
 
-      final bool newUserCreated =
-          await ensureUserExistsIfNeeded(ref.read, appUser);
-
-      if (newUserCreated) {
-        _logger.info(
-            'New user was created, invalidating currentUserModelProvider.');
-        ref.invalidate(currentUserModelProvider);
-      }
       state = const AsyncData(null);
     } catch (e, st) {
       state = AsyncError(e, st);

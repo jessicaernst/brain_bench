@@ -7,6 +7,7 @@ import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
 import 'package:brain_bench/data/models/result/result.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
+import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -222,12 +223,17 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   Future<AppUser> _fetchCurrentUser() async {
     _logger.fine('Attempting to fetch current user...');
     try {
-      final user = await ref.read(currentUserModelProvider.future);
-      if (user == null) {
-        _logger.warning(
-            '⚠️ Cannot proceed: User fetch returned null after await.');
-        throw Exception('User not found');
-      }
+      final state = await ref.read(currentUserModelProvider.future);
+
+      final user = switch (state) {
+        UserModelData(:final user) => user,
+        UserModelUnauthenticated() =>
+          throw Exception('⚠️ User is not authenticated'),
+        UserModelLoading() => throw Exception('⚠️ Still loading user'),
+        UserModelError(:final message, :final uid) =>
+          throw Exception('⚠️ Failed to fetch user [$uid]: $message'),
+      };
+
       _logger.fine('Fetched current user successfully: ${user.id}');
       return user;
     } catch (e, s) {

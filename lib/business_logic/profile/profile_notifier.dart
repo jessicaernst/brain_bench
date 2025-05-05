@@ -1,10 +1,10 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:brain_bench/data/repositories/database_repository.dart';
+import 'package:brain_bench/business_logic/auth/current_user_provider.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
-import 'package:brain_bench/business_logic/auth/current_user_provider.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
+import 'package:brain_bench/data/repositories/database_repository.dart';
 import 'package:logging/logging.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'profile_notifier.g.dart';
 
@@ -50,7 +50,6 @@ class ProfileNotifier extends _$ProfileNotifier {
         return;
       }
 
-      // --- Image Upload Logic ---
       // TODO(YourNameOrTicketId): Implement image upload to Firebase Storage
       // - Check if newImageFile is not null
       // - Inject/Read a StorageService/Repository
@@ -61,7 +60,6 @@ class ProfileNotifier extends _$ProfileNotifier {
       //   final storageService = ref.read(storageServiceProvider); // Example
       //   photoUrl = await storageService.uploadProfilePicture(userId: userId, file: newImageFile);
       // }
-      // --- End Image Upload Logic ---
 
       // 5. Call the database repository method
       _logger.info(
@@ -75,7 +73,8 @@ class ProfileNotifier extends _$ProfileNotifier {
 
       // 6. Invalidate the provider that loads the *full* user model from the DB
       //    This ensures that UIs watching currentUserModelProvider get the updated data.
-      ref.invalidate(currentUserModelProvider);
+      ref.invalidate(
+          currentUserModelProvider); // Revert to currentUserModelProvider
       _logger.fine('Invalidated currentUserModelProvider.');
 
       // 7. Set state to success

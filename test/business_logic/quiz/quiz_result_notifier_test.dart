@@ -11,6 +11,7 @@ import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
 import 'package:brain_bench/data/models/result/result.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
+import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -239,7 +240,7 @@ void main() {
       ),
       saveResultNotifierProvider.overrideWith(() => currentSaveNotifier),
       currentUserModelProvider.overrideWith(
-        (ref) => Stream.value(currentUser), // Provide the user instance
+        (ref) => Stream.value(UserModelState.data(currentUser)),
       ),
       quizMockDatabaseRepositoryProvider
           .overrideWith((ref) => Future.value(currentDbRepo)),
@@ -727,7 +728,9 @@ void main() {
         final container = createContainer(
             initialQuizAnswers: sampleAnswersMixed,
             additionalOverrides: [
-              currentUserModelProvider.overrideWith((ref) => Stream.value(null))
+              currentUserModelProvider.overrideWith(
+                (ref) => Stream.value(const UserModelState.unauthenticated()),
+              ),
             ]);
         addTearDown(container.dispose);
         final notifier = container.read(quizResultNotifierProvider.notifier);

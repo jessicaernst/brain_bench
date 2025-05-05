@@ -28,16 +28,13 @@ class FeedbackBottomSheetView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch necessary providers
     final quizState = ref.watch(quizStateNotifierProvider);
     final currentAnswers = ref.watch(answersNotifierProvider);
     final localizations = AppLocalizations.of(context)!;
     final textTheme = Theme.of(context).textTheme;
 
-    // Filter answers based on the current state
     final filtered = filterAnswers(quizState, currentAnswers);
 
-    // Determine the appropriate button label
     final String btnLbl =
         quizState.currentIndex + 1 < quizState.questions.length
             ? localizations.nextQuestionBtnLbl
@@ -51,7 +48,7 @@ class FeedbackBottomSheetView extends ConsumerWidget {
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min, // Crucial for bottom sheet height
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               localizations.feedBackBottomSheetTitle,
@@ -135,10 +132,6 @@ class FeedbackBottomSheetView extends ConsumerWidget {
               const SizedBox(height: 8),
             ],
 
-            // TODO: Consider adding Explanation section if available
-            // final explanation = quizState.questions[quizState.currentIndex].explanation;
-            // if (explanation != null && explanation.isNotEmpty) ... [ ... ]
-
             const SizedBox(height: 48),
             Center(
               child: LightDarkSwitchBtn(
@@ -147,7 +140,7 @@ class FeedbackBottomSheetView extends ConsumerWidget {
                 onPressed: onBtnPressed,
               ),
             ),
-            const SizedBox(height: 16), // Bottom padding
+            const SizedBox(height: 16),
           ],
         ),
       ),

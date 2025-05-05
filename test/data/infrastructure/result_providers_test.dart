@@ -3,6 +3,7 @@ import 'package:brain_bench/data/infrastructure/results/result_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/result/result.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
+import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -50,7 +51,7 @@ void main() {
           (ref) => Future.value(mockRepo),
         ),
         currentUserModelProvider.overrideWith(
-          (ref) => Stream.value(testUser),
+          (ref) => Stream.value(UserModelState.data(testUser)),
         ),
       ]);
 
@@ -66,7 +67,7 @@ void main() {
           (ref) => Future.value(mockRepo),
         ),
         currentUserModelProvider.overrideWith(
-          (ref) => Stream.value(null), // ❌ kein User vorhanden
+          (ref) => Stream.value(const UserModelState.unauthenticated()),
         ),
       ]);
 
@@ -86,7 +87,7 @@ void main() {
           (ref) => Future.value(mockRepo),
         ),
         currentUserModelProvider.overrideWith(
-          (ref) => Stream.value(testUser),
+          (ref) => Stream.value(UserModelState.data(testUser)),
         ),
       ]);
 
@@ -106,7 +107,7 @@ void main() {
           (ref) => Future.value(mockRepo),
         ),
         currentUserModelProvider.overrideWith(
-          (ref) => Stream.value(testUser),
+          (ref) => Stream.value(UserModelState.data(testUser)),
         ),
       ]);
 
@@ -123,7 +124,7 @@ void main() {
           (ref) => Future.value(mockRepo),
         ),
         currentUserModelProvider.overrideWith(
-          (ref) => Stream.value(null), // ❌ kein User vorhanden
+          (ref) => Stream.value(const UserModelState.unauthenticated()),
         ),
       ]);
 

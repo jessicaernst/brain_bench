@@ -4,6 +4,7 @@ import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
+import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/data/repositories/auth_repository.dart';
 import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
 import 'package:flutter/services.dart';
@@ -81,11 +82,18 @@ void main() {
             .overrideWith((ref) async => mockRepo),
       ]);
 
+      // Trigger the auth change FIRST
       authStateController.add(testUser);
-      await container.pump();
 
-      final result = await container.read(currentUserModelProvider.future);
-      expect(result, testUser);
+      // Directly expect the Stream of the provider
+      await expectLater(
+        container.read(currentUserModelProvider.future),
+        emitsInOrder([
+          const UserModelState.loading(),
+          UserModelState.data(testUser),
+        ]),
+      );
+
       verify(() => mockRepo.getUser(testUser.uid)).called(1);
     });
 
@@ -96,11 +104,23 @@ void main() {
             .overrideWith((ref) async => mockRepo),
       ]);
 
-      authStateController.add(null);
-      await container.pump();
+      // List to collect emitted AsyncValue states
+      final emittedStates = <AsyncValue<UserModelState>>[];
+      container.listen<AsyncValue<UserModelState>>(
+        currentUserModelProvider,
+        (_, next) => emittedStates.add(next),
+        fireImmediately: true, // Capture initial loading state
+      );
 
-      final result = await container.read(currentUserModelProvider.future);
-      expect(result, isNull);
+      // Trigger the event
+      authStateController.add(null);
+
+      // Wait for the provider to process the event
+      await container.read(currentUserModelProvider.future);
+
+      // Assert the final state
+      expect(emittedStates.last,
+          const AsyncData(UserModelState.unauthenticated()));
       verifyNever(() => mockRepo.getUser(any()));
     });
   });

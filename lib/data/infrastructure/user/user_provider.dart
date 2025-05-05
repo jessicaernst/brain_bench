@@ -1,6 +1,8 @@
-import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart'; // Import AuthRepository provider
-import 'package:brain_bench/data/infrastructure/database_providers.dart'; // Keep DB provider import
+import 'package:brain_bench/core/utils/ensure_user_exists.dart';
+import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
+import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/models/user/app_user.dart' as model;
+import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -10,38 +12,98 @@ part 'user_provider.g.dart';
 
 final Logger _logger = Logger('UserProvider');
 
-/// Returns a stream of the current authenticated user model.
+/// Stream that provides the current user model based on the authentication state.
+/// Retrieves the current user model as a stream of [UserModelState].
+/// The [UserModelState] represents the state of the user model, including loading, unauthenticated, error, or data.
+/// This function listens to the authentication state changes and fetches the user model from the database.
+/// If the user model does not exist, it attempts to create one.
 ///
-/// This function retrieves the current authenticated user from the [authRepository]
-/// and then fetches the corresponding user model from the [db]. It returns a stream
-/// of [model.AppUser] objects representing the current user.
+/// Parameters:
+/// - [ref]: The reference to the current provider.
 ///
-/// If the [authUser] is null, it yields null. Otherwise, it fetches the user model
-/// from the [db] using the [authUser.uid] and yields the user model.
-///
-/// If an error occurs during the process, it logs a warning message and yields
-/// the error using a stream error.
+/// Returns:
+/// A stream of [UserModelState] representing the state of the user model.
 @riverpod
-Stream<model.AppUser?> currentUserModel(Ref ref) {
+Stream<UserModelState> currentUserModel(Ref ref) {
+  final creationInProgress = ref.watch(creationInProgressProvider.notifier);
   final authRepository = ref.watch(authRepositoryProvider);
-
   final authUserStream = authRepository.authStateChanges();
 
   return authUserStream.switchMap((authUser) async* {
     if (authUser == null) {
-      yield null;
+      _logger.info('currentUserModel: No auth user.');
+      yield const UserModelState.unauthenticated();
       return;
     }
 
     final db = await ref.watch(quizMockDatabaseRepositoryProvider.future);
 
     try {
-      final userModel = await db.getUser(authUser.uid);
-      yield userModel;
+      yield const UserModelState.loading();
+
+      model.AppUser? userModel = await db.getUser(authUser.uid);
+
+      if (userModel == null) {
+        if (creationInProgress.contains(authUser.uid)) {
+          yield const UserModelState.loading();
+          return;
+        }
+
+        creationInProgress.start(authUser.uid);
+
+        try {
+          await ensureUserExistsIfNeeded(ref.read, authUser);
+          userModel = await db.getUser(authUser.uid);
+        } catch (error, stack) {
+          _logger.severe('Error creating user ', error, stack);
+          yield UserModelState.error(
+              uid: authUser.uid, message: error.toString());
+          return;
+        } finally {
+          creationInProgress.finish(authUser.uid);
+        }
+      }
+
+      if (userModel == null) {
+        final error = StateError('User could not be found or created.');
+        _logger.severe('currentUserModel: ${error.message}');
+        yield UserModelState.error(uid: authUser.uid, message: error.message);
+      } else {
+        yield UserModelState.data(userModel);
+      }
     } catch (e, st) {
-      _logger.warning(
-          'Error fetching user model in currentUserModel for ${authUser.uid}: $e');
-      yield* Stream.error(e, st);
+      _logger.severe(
+          'Caught unexpected error in currentUserModel stream processing',
+          e,
+          st);
+      yield UserModelState.error(uid: authUser.uid, message: e.toString());
     }
   });
 }
+
+/// Notifier for tracking the creation progress of user objects.
+class CreationInProgressNotifier extends StateNotifier<Set<String>> {
+  CreationInProgressNotifier() : super({});
+
+  /// Checks if the given [uid] is in the set of creation in progress.
+  bool contains(String uid) => state.contains(uid);
+
+  /// Starts the creation progress for the given [uid].
+  void start(String uid) {
+    if (!state.contains(uid)) {
+      state = {...state, uid};
+    }
+  }
+
+  /// Finishes the creation progress for the given [uid].
+  void finish(String uid) {
+    final newState = {...state}..remove(uid);
+    state = newState;
+  }
+}
+
+/// Provider for the [CreationInProgressNotifier] that holds the set of UIDs in creation progress.
+final creationInProgressProvider =
+    StateNotifierProvider<CreationInProgressNotifier, Set<String>>(
+  (ref) => CreationInProgressNotifier(),
+);

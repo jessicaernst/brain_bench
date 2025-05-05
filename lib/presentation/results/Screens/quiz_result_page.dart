@@ -4,6 +4,8 @@ import 'package:brain_bench/business_logic/quiz/quiz_state_notifier.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
+import 'package:brain_bench/data/models/user/app_user.dart';
+import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:brain_bench/presentation/results/widgets/quiz_result_expanded_view.dart';
 import 'package:brain_bench/presentation/results/widgets/quiz_result_header.dart';
@@ -17,7 +19,7 @@ import 'package:logging/logging.dart';
 final Logger _logger = Logger('QuizResultPage');
 
 class QuizResultPage extends ConsumerStatefulWidget {
-  QuizResultPage({
+  const QuizResultPage({
     super.key,
     required this.categoryId,
     required this.topicId,
@@ -79,22 +81,49 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                     onPressed: () async {
                       _logger.info('End Quiz button pressed');
 
-                      final user =
+                      // Fetch the current user state
+                      final userState =
                           await ref.watch(currentUserModelProvider.future);
-                      if (user == null) {
-                        _logger.warning('❌ Kein eingeloggter User gefunden.');
+
+                      // Use pattern matching to handle the user state
+                      final AppUser? userData = switch (userState) {
+                        UserModelData(:final user) => user,
+                        UserModelUnauthenticated() => null,
+                        UserModelLoading() => null,
+                        UserModelError() => null,
+                      };
+
+                      if (userData == null) {
+                        // Log the specific reason based on the state
+                        switch (userState) {
+                          case UserModelUnauthenticated():
+                            _logger.warning('❌ User ist nicht eingeloggt.');
+                          case UserModelLoading():
+                            _logger.warning('⏳ User wird noch geladen.');
+                          case UserModelError(:final message):
+                            _logger.warning(
+                                '❌ Fehler beim Laden des Users: $message');
+                          case UserModelData():
+                            _logger.severe(
+                                '❌ Inkonsistenter Zustand: UserModelData aber kein User extrahiert.');
+                        }
                         return;
                       }
+
+                      _logger.info(
+                          '✅ User ist eingeloggt (UID: ${userData.uid}).');
 
                       await notifier.saveQuizResult(
                         widget.categoryId,
                         widget.topicId,
-                        user.uid,
+                        userData.uid,
                       );
 
                       if (isPassed) {
                         await notifier.markTopicAsDone(
-                            widget.topicId, widget.categoryId);
+                          widget.topicId,
+                          widget.categoryId,
+                        );
                         _logger.info(
                             '✅ Fortschritt & Topic als "done" gespeichert.');
                       }
@@ -104,8 +133,12 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
                       notifier.toggleView(SelectedView.none);
 
                       if (context.mounted) {
-                        context.goNamed(AppRouteNames.topics,
-                            pathParameters: {'categoryId': widget.categoryId});
+                        context.goNamed(
+                          AppRouteNames.topics,
+                          pathParameters: {
+                            'categoryId': widget.categoryId,
+                          },
+                        );
                       }
                     },
                   ),

@@ -1,6 +1,7 @@
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/result/result.dart';
+import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -8,13 +9,15 @@ part 'result_providers.g.dart';
 
 /// Provides a list of [Result] objects for the currently logged-in user.
 @riverpod
+@riverpod
 Future<List<Result>> results(Ref ref) async {
   final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
-  final user = await ref.watch(currentUserModelProvider.future);
+  final state = await ref.watch(currentUserModelProvider.future);
 
-  if (user == null) {
-    throw Exception('❌ Kein eingeloggter User in [resultsProvider]');
-  }
+  final user = switch (state) {
+    UserModelData(:final user) => user,
+    _ => throw Exception('❌ Kein eingeloggter User in [resultsProvider]'),
+  };
 
   return repo.getResults(user.uid);
 }
@@ -37,13 +40,12 @@ class SaveResultNotifier extends _$SaveResultNotifier {
     required String categoryId,
   }) async {
     final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
-    // Await the future to get the current user data.
-    // The complete user object is needed for the repository call to update progress.
-    final user = await ref.watch(currentUserModelProvider.future);
+    final state = await ref.watch(currentUserModelProvider.future);
 
-    if (user == null) {
-      throw Exception('❌ Kein eingeloggter User in markTopicAsDone');
-    }
+    final user = switch (state) {
+      UserModelData(:final user) => user,
+      _ => throw Exception('❌ Kein eingeloggter User in markTopicAsDone'),
+    };
 
     await repo.markTopicAsDone(topicId, categoryId, user);
 
