@@ -82,17 +82,31 @@ void main() {
             .overrideWith((ref) async => mockRepo),
       ]);
 
-      // Trigger the auth change FIRST
+      final emittedStates = <AsyncValue<UserModelState>>[];
+      final dataCompleter = Completer<void>();
+
+      container.listen<AsyncValue<UserModelState>>(
+        currentUserModelProvider,
+        (_, next) {
+          emittedStates.add(next);
+          if (next is AsyncData<UserModelState> &&
+              next.value == UserModelState.data(testUser)) {
+            if (!dataCompleter.isCompleted) {
+              dataCompleter.complete();
+            }
+          }
+        },
+        fireImmediately: true,
+      );
+
       authStateController.add(testUser);
 
-      // Directly expect the Stream of the provider
-      await expectLater(
-        container.read(currentUserModelProvider.future),
-        emitsInOrder([
-          const UserModelState.loading(),
-          UserModelState.data(testUser),
-        ]),
-      );
+      await dataCompleter.future;
+      expect(emittedStates, [
+        isA<AsyncLoading<UserModelState>>(),
+        const AsyncData(UserModelState.loading()),
+        AsyncData(UserModelState.data(testUser)),
+      ]);
 
       verify(() => mockRepo.getUser(testUser.uid)).called(1);
     });
@@ -104,23 +118,29 @@ void main() {
             .overrideWith((ref) async => mockRepo),
       ]);
 
-      // List to collect emitted AsyncValue states
       final emittedStates = <AsyncValue<UserModelState>>[];
+      final unauthenticatedCompleter = Completer<void>();
+
       container.listen<AsyncValue<UserModelState>>(
         currentUserModelProvider,
-        (_, next) => emittedStates.add(next),
-        fireImmediately: true, // Capture initial loading state
+        (_, next) {
+          emittedStates.add(next);
+          if (next is AsyncData<UserModelState> &&
+              next.value == const UserModelState.unauthenticated()) {
+            if (!unauthenticatedCompleter.isCompleted) {
+              unauthenticatedCompleter.complete();
+            }
+          }
+        },
+        fireImmediately: true,
       );
 
-      // Trigger the event
       authStateController.add(null);
 
-      // Wait for the provider to process the event
-      await container.read(currentUserModelProvider.future);
-
-      // Assert the final state
+      await unauthenticatedCompleter.future;
       expect(emittedStates.last,
           const AsyncData(UserModelState.unauthenticated()));
+
       verifyNever(() => mockRepo.getUser(any()));
     });
   });
