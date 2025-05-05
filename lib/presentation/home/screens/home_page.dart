@@ -132,6 +132,7 @@ class HomePage extends ConsumerWidget {
                       ActiveNewsCarouselCard(content: child),
                   inactiveCardBuilder: (child) =>
                       InactiveNewsCarouselCard(content: child),
+                  animationDuration: const Duration(milliseconds: 200),
                   animationCurve: Curves.easeOut,
                 ),
               ),
