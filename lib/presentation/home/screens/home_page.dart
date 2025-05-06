@@ -105,7 +105,9 @@ class HomePage extends ConsumerWidget {
               ActualCategoryView(isDarkMode: isDarkMode),
               Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: 24, vertical: isSmallScreenValue ? 16 : 32),
+                  horizontal: 24,
+                  vertical: isSmallScreenValue ? 16 : 32,
+                ),
                 child: Text(
                   'articles',
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
