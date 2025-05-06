@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:brain_bench/core/hooks/shared/image_picker_result.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -12,19 +13,44 @@ import 'package:permission_handler/permission_handler.dart';
 
 final _logger = Logger('useImagePickerWithPermissions');
 
-class ImagePickerResult {
-  final ValueNotifier<XFile?> selectedImage;
-  final Future<void> Function(BuildContext, AppLocalizations) pickImage;
-
-  ImagePickerResult({required this.selectedImage, required this.pickImage});
-}
-
-ImagePickerResult useImagePickerWithPermissions() {
+/// Custom hook for picking an image with permissions.
+///
+/// This hook provides a function, `pickImageInternal`, that allows the user to pick an image from the gallery or capture a new image using the camera.
+/// It handles the necessary permissions and displays a UI for selecting the image source.
+///
+/// Example usage:
+/// ```dart
+/// ImagePickerResult useImagePickerWithPermissions() {
+///   // ...
+/// }
+/// ```
+///
+/// Returns:
+/// - An [ImagePickerResult] object that contains the selected image file.
+///
+/// Throws:
+/// - [PermissionDeniedException] if the user denies the required permissions.
+/// - [PermissionPermanentlyDeniedException] if the user permanently denies the required permissions.
+/// - [PermissionRestrictedException] if the user restricts the required permissions.
+/// - [PermissionLimitedException] if the user grants limited permissions.
+/// - [PermissionGrantedException] if the user grants the required permissions.
+ImagePickerResult useImagePickerWrapperInternal(bool _) {
   final selectedImageState = useState<XFile?>(null);
   final picker = useMemoized(() => ImagePicker());
 
-  Future<void> pickImageInternal(
-      BuildContext context, AppLocalizations localizations) async {
+  Future<void> pickImageInternal([BuildContext? context]) async {
+    if (context == null) {
+      _logger
+          .warning('Context is null – required for picker UI and permissions.');
+      return;
+    }
+
+    final localizations = AppLocalizations.of(context);
+    if (localizations == null) {
+      _logger.warning('AppLocalizations not found in context.');
+      return;
+    }
+
     ImageSource? source;
 
     try {
@@ -109,11 +135,10 @@ ImagePickerResult useImagePickerWithPermissions() {
     }
 
     if (Platform.isIOS && permission == Permission.photos && status.isLimited) {
-      _logger.info(
-          'iOS limited photo access granted, checking if context is mounted before prompting...');
+      _logger.info('iOS limited photo access granted');
       if (!context.mounted) {
         _logger.warning(
-            'Context not mounted before prompting for full photo access. Aborting.');
+            'Context not mounted before prompting for full photo access.');
         return;
       }
       final upgraded = await _promptForFullPhotoAccess(context);
@@ -124,7 +149,7 @@ ImagePickerResult useImagePickerWithPermissions() {
     }
 
     if (status.isGranted || status.isLimited) {
-      _logger.info('Permission granted/limited. Launching image picker...');
+      _logger.info('Permission granted. Launching picker...');
       try {
         final XFile? pickedFile = await picker.pickImage(
           source: source,
@@ -135,12 +160,11 @@ ImagePickerResult useImagePickerWithPermissions() {
           _logger.info('Image selected: ${pickedFile.path}');
           selectedImageState.value = pickedFile;
         } else {
-          _logger.info('Image selection cancelled or failed.');
+          _logger.info('Image selection cancelled.');
         }
       } catch (e, s) {
         _logger.severe('Error picking image', e, s);
         if (context.mounted) {
-          // Guard after async gap
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(localizations.profileImagePickerError)),
           );
@@ -192,6 +216,8 @@ ImagePickerResult useImagePickerWithPermissions() {
   );
 }
 
+/// Retrieves the Android SDK version if the current platform is Android.
+/// Returns `null` if the current platform is not Android.
 Future<int?> _getAndroidSdkVersion() async {
   if (Platform.isAndroid) {
     final androidInfo = await DeviceInfoPlugin().androidInfo;
@@ -200,8 +226,9 @@ Future<int?> _getAndroidSdkVersion() async {
   return null;
 }
 
+/// Prompts the user to grant full photo access.
+/// Returns a [Future] that resolves to a [bool] indicating whether the user granted full photo access or not.
 Future<bool> _promptForFullPhotoAccess(BuildContext context) async {
-  // Although called after a mounted check, double-check here just in case.
   return await showDialog<bool>(
         context: context,
         builder: (ctx) => AlertDialog(

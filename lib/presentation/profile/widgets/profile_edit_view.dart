@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:brain_bench/core/component_widgets/glass_card_view.dart';
 import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
-import 'package:brain_bench/core/hooks/use_image_picker_with_permissions.dart';
+import 'package:brain_bench/core/hooks/shared/use_image_picker_wrapper.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
@@ -43,7 +43,7 @@ class ProfileEditView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imagePickerLogic = useImagePickerWithPermissions();
+    final imagePickerLogic = useImagePickerWrapper();
 
     useEffect(() {
       final selectedFile = imagePickerLogic.selectedImage.value;
@@ -121,8 +121,7 @@ class ProfileEditView extends HookWidget {
                       iconSize: 24,
                       tooltip: localizations.profileChangePictureTooltip,
                       // Trigger the hook's pickImage function
-                      onPressed: () =>
-                          imagePickerLogic.pickImage(context, localizations),
+                      onPressed: () => imagePickerLogic.pickImage(context),
                     ),
                   ),
                 ),
