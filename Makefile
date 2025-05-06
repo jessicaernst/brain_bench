@@ -1,5 +1,5 @@
 # Declare targets that are not actual files, ensuring they always run.
-.PHONY: test test-watch test-once clean-coverage show-coverage open-coverage coverage-report filter-lcov
+.PHONY: test test-watch test-once clean-coverage show-coverage open-coverage coverage-report filter-lcov deep-clean dev-clean
 
 # Filters generated Dart files (.g.dart, .freezed.dart, .gen.dart) from the lcov.info coverage report.
 # Ensures the 'remove_from_coverage' tool is globally activated first.
@@ -64,3 +64,18 @@ coverage-report:
 	@$(MAKE) test-once
 	@$(MAKE) open-coverage
 
+# Performs a deep clean of Flutter project including iOS CocoaPods,
+# regenerates pub packages and reinstalls pods (macOS/Apple Silicon compatible).
+deep-clean:
+	@echo "🧹 Performing deep clean (Flutter + iOS pods)..."
+	flutter clean
+	flutter pub get
+	cd ios && rm -rf Pods Podfile.lock build && arch -x86_64 pod install --repo-update && cd ..
+
+# Switches to the 'dev' Firebase environment and performs a deep clean.
+# Cleans previous builds and dependencies, reinstalls CocoaPods, and prepares the dev setup.
+dev-clean:
+	@echo "🔁 Switching to 'dev' Firebase environment with deep clean..."
+	./scripts/use_firebase_env.sh dev --clean
+	flutter pub get
+	cd ios && rm -rf Pods Podfile.lock build && arch -x86_64 pod install --repo-update && cd ..

@@ -33,15 +33,16 @@ This project uses Flutter's built-in Testing and automatic code coverage monitor
 
 ## 📦 Available Makefile Commands
 
-| Command             | Description                                                                                             |
-|:--------------------|:--------------------------------------------------------------------------------------------------------|
-| `make test`         | Run all tests once (without coverage).                                                                  |
-| `make test-once`    | Run all tests once and generate coverage data (`coverage/lcov.info`).                                   |
-| `make test-watch`   | Watch for changes (`lib`, `test`) and rerun tests automatically (with coverage, requires `fswatch`).      |
-| `make clean-coverage`| Delete the `coverage` directory.                                                                        |
-| `make show-coverage`| Toggle visibility of Coverage Gutters in VS Code (requires 'Coverage Gutters' extension).                 |
-| `make open-coverage`| Generate HTML coverage report from existing data and open it in the browser (requires `lcov`).            |
-| `make coverage-report`| Run `test-once`, then generate the HTML report and open it in the browser (requires `lcov`).            |
-
+| Command               | Description                                                                                                 |
+|:----------------------|:------------------------------------------------------------------------------------------------------------|
+| `make test`           | Run all tests once (without coverage).                                                                      |
+| `make test-once`      | Run all tests once and generate coverage data (`coverage/lcov.info`).                                       |
+| `make test-watch`     | Watch for changes (`lib`, `test`) and rerun tests automatically (with coverage, requires `fswatch`).        |
+| `make clean-coverage` | Delete the `coverage` directory.                                                                            |
+| `make show-coverage`  | Toggle visibility of Coverage Gutters in VS Code (requires 'Coverage Gutters' extension).                   |
+| `make open-coverage`  | Generate HTML coverage report from existing data and open it in the browser (requires `lcov`).              |
+| `make coverage-report`| Run `test-once`, then generate the HTML report and open it in the browser (requires `lcov`).                |
+| `make deep-clean`     | Perform full clean: Flutter, pub packages, iOS CocoaPods (incl. `pod install --repo-update` for Apple Silicon). |
+| `make dev-clean`      | Switch to the `dev` Firebase environment and perform a full clean with CocoaPods reinstall.                 |
 
 
