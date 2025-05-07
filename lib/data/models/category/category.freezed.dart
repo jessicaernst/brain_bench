@@ -12,7 +12,8 @@ part of 'category.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 Category _$CategoryFromJson(Map<String, dynamic> json) {
   return _Category.fromJson(json);
@@ -43,14 +44,15 @@ abstract class $CategoryCopyWith<$Res> {
   factory $CategoryCopyWith(Category value, $Res Function(Category) then) =
       _$CategoryCopyWithImpl<$Res, Category>;
   @useResult
-  $Res call(
-      {String id,
-      String nameEn,
-      String nameDe,
-      String subtitleEn,
-      String subtitleDe,
-      String descriptionEn,
-      String descriptionDe});
+  $Res call({
+    String id,
+    String nameEn,
+    String nameDe,
+    String subtitleEn,
+    String subtitleDe,
+    String descriptionEn,
+    String descriptionDe,
+  });
 }
 
 /// @nodoc
@@ -76,36 +78,46 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
     Object? descriptionEn = null,
     Object? descriptionDe = null,
   }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      nameEn: null == nameEn
-          ? _value.nameEn
-          : nameEn // ignore: cast_nullable_to_non_nullable
-              as String,
-      nameDe: null == nameDe
-          ? _value.nameDe
-          : nameDe // ignore: cast_nullable_to_non_nullable
-              as String,
-      subtitleEn: null == subtitleEn
-          ? _value.subtitleEn
-          : subtitleEn // ignore: cast_nullable_to_non_nullable
-              as String,
-      subtitleDe: null == subtitleDe
-          ? _value.subtitleDe
-          : subtitleDe // ignore: cast_nullable_to_non_nullable
-              as String,
-      descriptionEn: null == descriptionEn
-          ? _value.descriptionEn
-          : descriptionEn // ignore: cast_nullable_to_non_nullable
-              as String,
-      descriptionDe: null == descriptionDe
-          ? _value.descriptionDe
-          : descriptionDe // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                null == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as String,
+            nameEn:
+                null == nameEn
+                    ? _value.nameEn
+                    : nameEn // ignore: cast_nullable_to_non_nullable
+                        as String,
+            nameDe:
+                null == nameDe
+                    ? _value.nameDe
+                    : nameDe // ignore: cast_nullable_to_non_nullable
+                        as String,
+            subtitleEn:
+                null == subtitleEn
+                    ? _value.subtitleEn
+                    : subtitleEn // ignore: cast_nullable_to_non_nullable
+                        as String,
+            subtitleDe:
+                null == subtitleDe
+                    ? _value.subtitleDe
+                    : subtitleDe // ignore: cast_nullable_to_non_nullable
+                        as String,
+            descriptionEn:
+                null == descriptionEn
+                    ? _value.descriptionEn
+                    : descriptionEn // ignore: cast_nullable_to_non_nullable
+                        as String,
+            descriptionDe:
+                null == descriptionDe
+                    ? _value.descriptionDe
+                    : descriptionDe // ignore: cast_nullable_to_non_nullable
+                        as String,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -113,18 +125,20 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
 abstract class _$$CategoryImplCopyWith<$Res>
     implements $CategoryCopyWith<$Res> {
   factory _$$CategoryImplCopyWith(
-          _$CategoryImpl value, $Res Function(_$CategoryImpl) then) =
-      __$$CategoryImplCopyWithImpl<$Res>;
+    _$CategoryImpl value,
+    $Res Function(_$CategoryImpl) then,
+  ) = __$$CategoryImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String id,
-      String nameEn,
-      String nameDe,
-      String subtitleEn,
-      String subtitleDe,
-      String descriptionEn,
-      String descriptionDe});
+  $Res call({
+    String id,
+    String nameEn,
+    String nameDe,
+    String subtitleEn,
+    String subtitleDe,
+    String descriptionEn,
+    String descriptionDe,
+  });
 }
 
 /// @nodoc
@@ -132,8 +146,9 @@ class __$$CategoryImplCopyWithImpl<$Res>
     extends _$CategoryCopyWithImpl<$Res, _$CategoryImpl>
     implements _$$CategoryImplCopyWith<$Res> {
   __$$CategoryImplCopyWithImpl(
-      _$CategoryImpl _value, $Res Function(_$CategoryImpl) _then)
-      : super(_value, _then);
+    _$CategoryImpl _value,
+    $Res Function(_$CategoryImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Category
   /// with the given fields replaced by the non-null parameter values.
@@ -148,50 +163,60 @@ class __$$CategoryImplCopyWithImpl<$Res>
     Object? descriptionEn = null,
     Object? descriptionDe = null,
   }) {
-    return _then(_$CategoryImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      nameEn: null == nameEn
-          ? _value.nameEn
-          : nameEn // ignore: cast_nullable_to_non_nullable
-              as String,
-      nameDe: null == nameDe
-          ? _value.nameDe
-          : nameDe // ignore: cast_nullable_to_non_nullable
-              as String,
-      subtitleEn: null == subtitleEn
-          ? _value.subtitleEn
-          : subtitleEn // ignore: cast_nullable_to_non_nullable
-              as String,
-      subtitleDe: null == subtitleDe
-          ? _value.subtitleDe
-          : subtitleDe // ignore: cast_nullable_to_non_nullable
-              as String,
-      descriptionEn: null == descriptionEn
-          ? _value.descriptionEn
-          : descriptionEn // ignore: cast_nullable_to_non_nullable
-              as String,
-      descriptionDe: null == descriptionDe
-          ? _value.descriptionDe
-          : descriptionDe // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
+    return _then(
+      _$CategoryImpl(
+        id:
+            null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String,
+        nameEn:
+            null == nameEn
+                ? _value.nameEn
+                : nameEn // ignore: cast_nullable_to_non_nullable
+                    as String,
+        nameDe:
+            null == nameDe
+                ? _value.nameDe
+                : nameDe // ignore: cast_nullable_to_non_nullable
+                    as String,
+        subtitleEn:
+            null == subtitleEn
+                ? _value.subtitleEn
+                : subtitleEn // ignore: cast_nullable_to_non_nullable
+                    as String,
+        subtitleDe:
+            null == subtitleDe
+                ? _value.subtitleDe
+                : subtitleDe // ignore: cast_nullable_to_non_nullable
+                    as String,
+        descriptionEn:
+            null == descriptionEn
+                ? _value.descriptionEn
+                : descriptionEn // ignore: cast_nullable_to_non_nullable
+                    as String,
+        descriptionDe:
+            null == descriptionDe
+                ? _value.descriptionDe
+                : descriptionDe // ignore: cast_nullable_to_non_nullable
+                    as String,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$CategoryImpl implements _Category {
-  _$CategoryImpl(
-      {required this.id,
-      required this.nameEn,
-      required this.nameDe,
-      required this.subtitleEn,
-      required this.subtitleDe,
-      required this.descriptionEn,
-      required this.descriptionDe});
+  _$CategoryImpl({
+    required this.id,
+    required this.nameEn,
+    required this.nameDe,
+    required this.subtitleEn,
+    required this.subtitleDe,
+    required this.descriptionEn,
+    required this.descriptionDe,
+  });
 
   factory _$CategoryImpl.fromJson(Map<String, dynamic> json) =>
       _$$CategoryImplFromJson(json);
@@ -236,8 +261,16 @@ class _$CategoryImpl implements _Category {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, nameEn, nameDe, subtitleEn,
-      subtitleDe, descriptionEn, descriptionDe);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    nameEn,
+    nameDe,
+    subtitleEn,
+    subtitleDe,
+    descriptionEn,
+    descriptionDe,
+  );
 
   /// Create a copy of Category
   /// with the given fields replaced by the non-null parameter values.
@@ -249,21 +282,20 @@ class _$CategoryImpl implements _Category {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$CategoryImplToJson(
-      this,
-    );
+    return _$$CategoryImplToJson(this);
   }
 }
 
 abstract class _Category implements Category {
-  factory _Category(
-      {required final String id,
-      required final String nameEn,
-      required final String nameDe,
-      required final String subtitleEn,
-      required final String subtitleDe,
-      required final String descriptionEn,
-      required final String descriptionDe}) = _$CategoryImpl;
+  factory _Category({
+    required final String id,
+    required final String nameEn,
+    required final String nameDe,
+    required final String subtitleEn,
+    required final String subtitleDe,
+    required final String descriptionEn,
+    required final String descriptionDe,
+  }) = _$CategoryImpl;
 
   factory _Category.fromJson(Map<String, dynamic> json) =
       _$CategoryImpl.fromJson;

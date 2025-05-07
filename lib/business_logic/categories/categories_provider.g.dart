@@ -39,24 +39,15 @@ class CategoryByIdFamily extends Family<AsyncValue<Category>> {
   const CategoryByIdFamily();
 
   /// See also [categoryById].
-  CategoryByIdProvider call(
-    String categoryId,
-    String languageCode,
-  ) {
-    return CategoryByIdProvider(
-      categoryId,
-      languageCode,
-    );
+  CategoryByIdProvider call(String categoryId, String languageCode) {
+    return CategoryByIdProvider(categoryId, languageCode);
   }
 
   @override
   CategoryByIdProvider getProviderOverride(
     covariant CategoryByIdProvider provider,
   ) {
-    return call(
-      provider.categoryId,
-      provider.languageCode,
-    );
+    return call(provider.categoryId, provider.languageCode);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -77,27 +68,21 @@ class CategoryByIdFamily extends Family<AsyncValue<Category>> {
 /// See also [categoryById].
 class CategoryByIdProvider extends AutoDisposeFutureProvider<Category> {
   /// See also [categoryById].
-  CategoryByIdProvider(
-    String categoryId,
-    String languageCode,
-  ) : this._internal(
-          (ref) => categoryById(
-            ref as CategoryByIdRef,
-            categoryId,
-            languageCode,
-          ),
-          from: categoryByIdProvider,
-          name: r'categoryByIdProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$categoryByIdHash,
-          dependencies: CategoryByIdFamily._dependencies,
-          allTransitiveDependencies:
-              CategoryByIdFamily._allTransitiveDependencies,
-          categoryId: categoryId,
-          languageCode: languageCode,
-        );
+  CategoryByIdProvider(String categoryId, String languageCode)
+    : this._internal(
+        (ref) => categoryById(ref as CategoryByIdRef, categoryId, languageCode),
+        from: categoryByIdProvider,
+        name: r'categoryByIdProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$categoryByIdHash,
+        dependencies: CategoryByIdFamily._dependencies,
+        allTransitiveDependencies:
+            CategoryByIdFamily._allTransitiveDependencies,
+        categoryId: categoryId,
+        languageCode: languageCode,
+      );
 
   CategoryByIdProvider._internal(
     super._createNotifier, {
@@ -165,7 +150,8 @@ mixin CategoryByIdRef on AutoDisposeFutureProviderRef<Category> {
 }
 
 class _CategoryByIdProviderElement
-    extends AutoDisposeFutureProviderElement<Category> with CategoryByIdRef {
+    extends AutoDisposeFutureProviderElement<Category>
+    with CategoryByIdRef {
   _CategoryByIdProviderElement(super.provider);
 
   @override
@@ -181,14 +167,15 @@ String _$selectedCategoryNotifierHash() =>
 @ProviderFor(SelectedCategoryNotifier)
 final selectedCategoryNotifierProvider =
     AutoDisposeNotifierProvider<SelectedCategoryNotifier, String?>.internal(
-  SelectedCategoryNotifier.new,
-  name: r'selectedCategoryNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$selectedCategoryNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      SelectedCategoryNotifier.new,
+      name: r'selectedCategoryNotifierProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$selectedCategoryNotifierHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$SelectedCategoryNotifier = AutoDisposeNotifier<String?>;
 // ignore_for_file: type=lint

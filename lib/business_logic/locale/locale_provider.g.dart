@@ -12,14 +12,15 @@ String _$localeNotifierHash() => r'df5fad68e19d0d8064be26157d83c403d8b3b34d';
 @ProviderFor(LocaleNotifier)
 final localeNotifierProvider =
     AutoDisposeAsyncNotifierProvider<LocaleNotifier, Locale>.internal(
-  LocaleNotifier.new,
-  name: r'localeNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$localeNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      LocaleNotifier.new,
+      name: r'localeNotifierProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$localeNotifierHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$LocaleNotifier = AutoDisposeAsyncNotifier<Locale>;
 // ignore_for_file: type=lint

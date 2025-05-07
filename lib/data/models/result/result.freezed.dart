@@ -12,7 +12,8 @@ part of 'result.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 Result _$ResultFromJson(Map<String, dynamic> json) {
   return _Result.fromJson(json);
@@ -45,17 +46,18 @@ abstract class $ResultCopyWith<$Res> {
   factory $ResultCopyWith(Result value, $Res Function(Result) then) =
       _$ResultCopyWithImpl<$Res, Result>;
   @useResult
-  $Res call(
-      {String id,
-      String userId,
-      String topicId,
-      String categoryId,
-      int correct,
-      int total,
-      double score,
-      bool isPassed,
-      DateTime timestamp,
-      List<QuizAnswer> quizAnswers});
+  $Res call({
+    String id,
+    String userId,
+    String topicId,
+    String categoryId,
+    int correct,
+    int total,
+    double score,
+    bool isPassed,
+    DateTime timestamp,
+    List<QuizAnswer> quizAnswers,
+  });
 }
 
 /// @nodoc
@@ -84,69 +86,84 @@ class _$ResultCopyWithImpl<$Res, $Val extends Result>
     Object? timestamp = null,
     Object? quizAnswers = null,
   }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      topicId: null == topicId
-          ? _value.topicId
-          : topicId // ignore: cast_nullable_to_non_nullable
-              as String,
-      categoryId: null == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as String,
-      correct: null == correct
-          ? _value.correct
-          : correct // ignore: cast_nullable_to_non_nullable
-              as int,
-      total: null == total
-          ? _value.total
-          : total // ignore: cast_nullable_to_non_nullable
-              as int,
-      score: null == score
-          ? _value.score
-          : score // ignore: cast_nullable_to_non_nullable
-              as double,
-      isPassed: null == isPassed
-          ? _value.isPassed
-          : isPassed // ignore: cast_nullable_to_non_nullable
-              as bool,
-      timestamp: null == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      quizAnswers: null == quizAnswers
-          ? _value.quizAnswers
-          : quizAnswers // ignore: cast_nullable_to_non_nullable
-              as List<QuizAnswer>,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                null == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as String,
+            userId:
+                null == userId
+                    ? _value.userId
+                    : userId // ignore: cast_nullable_to_non_nullable
+                        as String,
+            topicId:
+                null == topicId
+                    ? _value.topicId
+                    : topicId // ignore: cast_nullable_to_non_nullable
+                        as String,
+            categoryId:
+                null == categoryId
+                    ? _value.categoryId
+                    : categoryId // ignore: cast_nullable_to_non_nullable
+                        as String,
+            correct:
+                null == correct
+                    ? _value.correct
+                    : correct // ignore: cast_nullable_to_non_nullable
+                        as int,
+            total:
+                null == total
+                    ? _value.total
+                    : total // ignore: cast_nullable_to_non_nullable
+                        as int,
+            score:
+                null == score
+                    ? _value.score
+                    : score // ignore: cast_nullable_to_non_nullable
+                        as double,
+            isPassed:
+                null == isPassed
+                    ? _value.isPassed
+                    : isPassed // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            timestamp:
+                null == timestamp
+                    ? _value.timestamp
+                    : timestamp // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+            quizAnswers:
+                null == quizAnswers
+                    ? _value.quizAnswers
+                    : quizAnswers // ignore: cast_nullable_to_non_nullable
+                        as List<QuizAnswer>,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$ResultImplCopyWith<$Res> implements $ResultCopyWith<$Res> {
   factory _$$ResultImplCopyWith(
-          _$ResultImpl value, $Res Function(_$ResultImpl) then) =
-      __$$ResultImplCopyWithImpl<$Res>;
+    _$ResultImpl value,
+    $Res Function(_$ResultImpl) then,
+  ) = __$$ResultImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String id,
-      String userId,
-      String topicId,
-      String categoryId,
-      int correct,
-      int total,
-      double score,
-      bool isPassed,
-      DateTime timestamp,
-      List<QuizAnswer> quizAnswers});
+  $Res call({
+    String id,
+    String userId,
+    String topicId,
+    String categoryId,
+    int correct,
+    int total,
+    double score,
+    bool isPassed,
+    DateTime timestamp,
+    List<QuizAnswer> quizAnswers,
+  });
 }
 
 /// @nodoc
@@ -154,8 +171,9 @@ class __$$ResultImplCopyWithImpl<$Res>
     extends _$ResultCopyWithImpl<$Res, _$ResultImpl>
     implements _$$ResultImplCopyWith<$Res> {
   __$$ResultImplCopyWithImpl(
-      _$ResultImpl _value, $Res Function(_$ResultImpl) _then)
-      : super(_value, _then);
+    _$ResultImpl _value,
+    $Res Function(_$ResultImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Result
   /// with the given fields replaced by the non-null parameter values.
@@ -173,48 +191,60 @@ class __$$ResultImplCopyWithImpl<$Res>
     Object? timestamp = null,
     Object? quizAnswers = null,
   }) {
-    return _then(_$ResultImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      topicId: null == topicId
-          ? _value.topicId
-          : topicId // ignore: cast_nullable_to_non_nullable
-              as String,
-      categoryId: null == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as String,
-      correct: null == correct
-          ? _value.correct
-          : correct // ignore: cast_nullable_to_non_nullable
-              as int,
-      total: null == total
-          ? _value.total
-          : total // ignore: cast_nullable_to_non_nullable
-              as int,
-      score: null == score
-          ? _value.score
-          : score // ignore: cast_nullable_to_non_nullable
-              as double,
-      isPassed: null == isPassed
-          ? _value.isPassed
-          : isPassed // ignore: cast_nullable_to_non_nullable
-              as bool,
-      timestamp: null == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      quizAnswers: null == quizAnswers
-          ? _value._quizAnswers
-          : quizAnswers // ignore: cast_nullable_to_non_nullable
-              as List<QuizAnswer>,
-    ));
+    return _then(
+      _$ResultImpl(
+        id:
+            null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String,
+        userId:
+            null == userId
+                ? _value.userId
+                : userId // ignore: cast_nullable_to_non_nullable
+                    as String,
+        topicId:
+            null == topicId
+                ? _value.topicId
+                : topicId // ignore: cast_nullable_to_non_nullable
+                    as String,
+        categoryId:
+            null == categoryId
+                ? _value.categoryId
+                : categoryId // ignore: cast_nullable_to_non_nullable
+                    as String,
+        correct:
+            null == correct
+                ? _value.correct
+                : correct // ignore: cast_nullable_to_non_nullable
+                    as int,
+        total:
+            null == total
+                ? _value.total
+                : total // ignore: cast_nullable_to_non_nullable
+                    as int,
+        score:
+            null == score
+                ? _value.score
+                : score // ignore: cast_nullable_to_non_nullable
+                    as double,
+        isPassed:
+            null == isPassed
+                ? _value.isPassed
+                : isPassed // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        timestamp:
+            null == timestamp
+                ? _value.timestamp
+                : timestamp // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+        quizAnswers:
+            null == quizAnswers
+                ? _value._quizAnswers
+                : quizAnswers // ignore: cast_nullable_to_non_nullable
+                    as List<QuizAnswer>,
+      ),
+    );
   }
 }
 
@@ -222,18 +252,18 @@ class __$$ResultImplCopyWithImpl<$Res>
 
 @JsonSerializable(explicitToJson: true)
 class _$ResultImpl implements _Result {
-  const _$ResultImpl(
-      {required this.id,
-      required this.userId,
-      required this.topicId,
-      required this.categoryId,
-      required this.correct,
-      required this.total,
-      required this.score,
-      required this.isPassed,
-      required this.timestamp,
-      required final List<QuizAnswer> quizAnswers})
-      : _quizAnswers = quizAnswers;
+  const _$ResultImpl({
+    required this.id,
+    required this.userId,
+    required this.topicId,
+    required this.categoryId,
+    required this.correct,
+    required this.total,
+    required this.score,
+    required this.isPassed,
+    required this.timestamp,
+    required final List<QuizAnswer> quizAnswers,
+  }) : _quizAnswers = quizAnswers;
 
   factory _$ResultImpl.fromJson(Map<String, dynamic> json) =>
       _$$ResultImplFromJson(json);
@@ -286,24 +316,27 @@ class _$ResultImpl implements _Result {
                 other.isPassed == isPassed) &&
             (identical(other.timestamp, timestamp) ||
                 other.timestamp == timestamp) &&
-            const DeepCollectionEquality()
-                .equals(other._quizAnswers, _quizAnswers));
+            const DeepCollectionEquality().equals(
+              other._quizAnswers,
+              _quizAnswers,
+            ));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      userId,
-      topicId,
-      categoryId,
-      correct,
-      total,
-      score,
-      isPassed,
-      timestamp,
-      const DeepCollectionEquality().hash(_quizAnswers));
+    runtimeType,
+    id,
+    userId,
+    topicId,
+    categoryId,
+    correct,
+    total,
+    score,
+    isPassed,
+    timestamp,
+    const DeepCollectionEquality().hash(_quizAnswers),
+  );
 
   /// Create a copy of Result
   /// with the given fields replaced by the non-null parameter values.
@@ -315,24 +348,23 @@ class _$ResultImpl implements _Result {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$ResultImplToJson(
-      this,
-    );
+    return _$$ResultImplToJson(this);
   }
 }
 
 abstract class _Result implements Result {
-  const factory _Result(
-      {required final String id,
-      required final String userId,
-      required final String topicId,
-      required final String categoryId,
-      required final int correct,
-      required final int total,
-      required final double score,
-      required final bool isPassed,
-      required final DateTime timestamp,
-      required final List<QuizAnswer> quizAnswers}) = _$ResultImpl;
+  const factory _Result({
+    required final String id,
+    required final String userId,
+    required final String topicId,
+    required final String categoryId,
+    required final int correct,
+    required final int total,
+    required final double score,
+    required final bool isPassed,
+    required final DateTime timestamp,
+    required final List<QuizAnswer> quizAnswers,
+  }) = _$ResultImpl;
 
   factory _Result.fromJson(Map<String, dynamic> json) = _$ResultImpl.fromJson;
 

@@ -33,9 +33,7 @@ class _SystemHash {
 abstract class _$AnswerCardExpanded extends BuildlessAutoDisposeNotifier<bool> {
   late final String questionId;
 
-  bool build(
-    String questionId,
-  );
+  bool build(String questionId);
 }
 
 /// See also [AnswerCardExpanded].
@@ -48,21 +46,15 @@ class AnswerCardExpandedFamily extends Family<bool> {
   const AnswerCardExpandedFamily();
 
   /// See also [AnswerCardExpanded].
-  AnswerCardExpandedProvider call(
-    String questionId,
-  ) {
-    return AnswerCardExpandedProvider(
-      questionId,
-    );
+  AnswerCardExpandedProvider call(String questionId) {
+    return AnswerCardExpandedProvider(questionId);
   }
 
   @override
   AnswerCardExpandedProvider getProviderOverride(
     covariant AnswerCardExpandedProvider provider,
   ) {
-    return call(
-      provider.questionId,
-    );
+    return call(provider.questionId);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -84,21 +76,20 @@ class AnswerCardExpandedFamily extends Family<bool> {
 class AnswerCardExpandedProvider
     extends AutoDisposeNotifierProviderImpl<AnswerCardExpanded, bool> {
   /// See also [AnswerCardExpanded].
-  AnswerCardExpandedProvider(
-    String questionId,
-  ) : this._internal(
-          () => AnswerCardExpanded()..questionId = questionId,
-          from: answerCardExpandedProvider,
-          name: r'answerCardExpandedProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$answerCardExpandedHash,
-          dependencies: AnswerCardExpandedFamily._dependencies,
-          allTransitiveDependencies:
-              AnswerCardExpandedFamily._allTransitiveDependencies,
-          questionId: questionId,
-        );
+  AnswerCardExpandedProvider(String questionId)
+    : this._internal(
+        () => AnswerCardExpanded()..questionId = questionId,
+        from: answerCardExpandedProvider,
+        name: r'answerCardExpandedProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$answerCardExpandedHash,
+        dependencies: AnswerCardExpandedFamily._dependencies,
+        allTransitiveDependencies:
+            AnswerCardExpandedFamily._allTransitiveDependencies,
+        questionId: questionId,
+      );
 
   AnswerCardExpandedProvider._internal(
     super._createNotifier, {
@@ -113,12 +104,8 @@ class AnswerCardExpandedProvider
   final String questionId;
 
   @override
-  bool runNotifierBuild(
-    covariant AnswerCardExpanded notifier,
-  ) {
-    return notifier.build(
-      questionId,
-    );
+  bool runNotifierBuild(covariant AnswerCardExpanded notifier) {
+    return notifier.build(questionId);
   }
 
   @override
@@ -172,5 +159,6 @@ class _AnswerCardExpandedProviderElement
   @override
   String get questionId => (origin as AnswerCardExpandedProvider).questionId;
 }
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

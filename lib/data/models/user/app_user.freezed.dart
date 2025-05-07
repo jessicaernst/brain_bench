@@ -12,7 +12,8 @@ part of 'app_user.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 AppUser _$AppUserFromJson(Map<String, dynamic> json) {
   return _AppUser.fromJson(json);
@@ -47,17 +48,18 @@ abstract class $AppUserCopyWith<$Res> {
   factory $AppUserCopyWith(AppUser value, $Res Function(AppUser) then) =
       _$AppUserCopyWithImpl<$Res, AppUser>;
   @useResult
-  $Res call(
-      {String uid,
-      String email,
-      String? displayName,
-      String? photoUrl,
-      String? profileImageUrl,
-      String themeMode,
-      String language,
-      Map<String, double> categoryProgress,
-      Map<String, Map<String, bool>> isTopicDone,
-      String id});
+  $Res call({
+    String uid,
+    String email,
+    String? displayName,
+    String? photoUrl,
+    String? profileImageUrl,
+    String themeMode,
+    String language,
+    Map<String, double> categoryProgress,
+    Map<String, Map<String, bool>> isTopicDone,
+    String id,
+  });
 }
 
 /// @nodoc
@@ -86,69 +88,84 @@ class _$AppUserCopyWithImpl<$Res, $Val extends AppUser>
     Object? isTopicDone = null,
     Object? id = null,
   }) {
-    return _then(_value.copyWith(
-      uid: null == uid
-          ? _value.uid
-          : uid // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      displayName: freezed == displayName
-          ? _value.displayName
-          : displayName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      photoUrl: freezed == photoUrl
-          ? _value.photoUrl
-          : photoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      profileImageUrl: freezed == profileImageUrl
-          ? _value.profileImageUrl
-          : profileImageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      themeMode: null == themeMode
-          ? _value.themeMode
-          : themeMode // ignore: cast_nullable_to_non_nullable
-              as String,
-      language: null == language
-          ? _value.language
-          : language // ignore: cast_nullable_to_non_nullable
-              as String,
-      categoryProgress: null == categoryProgress
-          ? _value.categoryProgress
-          : categoryProgress // ignore: cast_nullable_to_non_nullable
-              as Map<String, double>,
-      isTopicDone: null == isTopicDone
-          ? _value.isTopicDone
-          : isTopicDone // ignore: cast_nullable_to_non_nullable
-              as Map<String, Map<String, bool>>,
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            uid:
+                null == uid
+                    ? _value.uid
+                    : uid // ignore: cast_nullable_to_non_nullable
+                        as String,
+            email:
+                null == email
+                    ? _value.email
+                    : email // ignore: cast_nullable_to_non_nullable
+                        as String,
+            displayName:
+                freezed == displayName
+                    ? _value.displayName
+                    : displayName // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            photoUrl:
+                freezed == photoUrl
+                    ? _value.photoUrl
+                    : photoUrl // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            profileImageUrl:
+                freezed == profileImageUrl
+                    ? _value.profileImageUrl
+                    : profileImageUrl // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            themeMode:
+                null == themeMode
+                    ? _value.themeMode
+                    : themeMode // ignore: cast_nullable_to_non_nullable
+                        as String,
+            language:
+                null == language
+                    ? _value.language
+                    : language // ignore: cast_nullable_to_non_nullable
+                        as String,
+            categoryProgress:
+                null == categoryProgress
+                    ? _value.categoryProgress
+                    : categoryProgress // ignore: cast_nullable_to_non_nullable
+                        as Map<String, double>,
+            isTopicDone:
+                null == isTopicDone
+                    ? _value.isTopicDone
+                    : isTopicDone // ignore: cast_nullable_to_non_nullable
+                        as Map<String, Map<String, bool>>,
+            id:
+                null == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as String,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$AppUserImplCopyWith<$Res> implements $AppUserCopyWith<$Res> {
   factory _$$AppUserImplCopyWith(
-          _$AppUserImpl value, $Res Function(_$AppUserImpl) then) =
-      __$$AppUserImplCopyWithImpl<$Res>;
+    _$AppUserImpl value,
+    $Res Function(_$AppUserImpl) then,
+  ) = __$$AppUserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String uid,
-      String email,
-      String? displayName,
-      String? photoUrl,
-      String? profileImageUrl,
-      String themeMode,
-      String language,
-      Map<String, double> categoryProgress,
-      Map<String, Map<String, bool>> isTopicDone,
-      String id});
+  $Res call({
+    String uid,
+    String email,
+    String? displayName,
+    String? photoUrl,
+    String? profileImageUrl,
+    String themeMode,
+    String language,
+    Map<String, double> categoryProgress,
+    Map<String, Map<String, bool>> isTopicDone,
+    String id,
+  });
 }
 
 /// @nodoc
@@ -156,8 +173,9 @@ class __$$AppUserImplCopyWithImpl<$Res>
     extends _$AppUserCopyWithImpl<$Res, _$AppUserImpl>
     implements _$$AppUserImplCopyWith<$Res> {
   __$$AppUserImplCopyWithImpl(
-      _$AppUserImpl _value, $Res Function(_$AppUserImpl) _then)
-      : super(_value, _then);
+    _$AppUserImpl _value,
+    $Res Function(_$AppUserImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of AppUser
   /// with the given fields replaced by the non-null parameter values.
@@ -175,67 +193,79 @@ class __$$AppUserImplCopyWithImpl<$Res>
     Object? isTopicDone = null,
     Object? id = null,
   }) {
-    return _then(_$AppUserImpl(
-      uid: null == uid
-          ? _value.uid
-          : uid // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      displayName: freezed == displayName
-          ? _value.displayName
-          : displayName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      photoUrl: freezed == photoUrl
-          ? _value.photoUrl
-          : photoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      profileImageUrl: freezed == profileImageUrl
-          ? _value.profileImageUrl
-          : profileImageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      themeMode: null == themeMode
-          ? _value.themeMode
-          : themeMode // ignore: cast_nullable_to_non_nullable
-              as String,
-      language: null == language
-          ? _value.language
-          : language // ignore: cast_nullable_to_non_nullable
-              as String,
-      categoryProgress: null == categoryProgress
-          ? _value._categoryProgress
-          : categoryProgress // ignore: cast_nullable_to_non_nullable
-              as Map<String, double>,
-      isTopicDone: null == isTopicDone
-          ? _value._isTopicDone
-          : isTopicDone // ignore: cast_nullable_to_non_nullable
-              as Map<String, Map<String, bool>>,
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
+    return _then(
+      _$AppUserImpl(
+        uid:
+            null == uid
+                ? _value.uid
+                : uid // ignore: cast_nullable_to_non_nullable
+                    as String,
+        email:
+            null == email
+                ? _value.email
+                : email // ignore: cast_nullable_to_non_nullable
+                    as String,
+        displayName:
+            freezed == displayName
+                ? _value.displayName
+                : displayName // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        photoUrl:
+            freezed == photoUrl
+                ? _value.photoUrl
+                : photoUrl // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        profileImageUrl:
+            freezed == profileImageUrl
+                ? _value.profileImageUrl
+                : profileImageUrl // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        themeMode:
+            null == themeMode
+                ? _value.themeMode
+                : themeMode // ignore: cast_nullable_to_non_nullable
+                    as String,
+        language:
+            null == language
+                ? _value.language
+                : language // ignore: cast_nullable_to_non_nullable
+                    as String,
+        categoryProgress:
+            null == categoryProgress
+                ? _value._categoryProgress
+                : categoryProgress // ignore: cast_nullable_to_non_nullable
+                    as Map<String, double>,
+        isTopicDone:
+            null == isTopicDone
+                ? _value._isTopicDone
+                : isTopicDone // ignore: cast_nullable_to_non_nullable
+                    as Map<String, Map<String, bool>>,
+        id:
+            null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$AppUserImpl implements _AppUser {
-  const _$AppUserImpl(
-      {required this.uid,
-      required this.email,
-      this.displayName,
-      this.photoUrl,
-      this.profileImageUrl,
-      this.themeMode = 'system',
-      this.language = 'en',
-      final Map<String, double> categoryProgress = const {},
-      final Map<String, Map<String, bool>> isTopicDone = const {},
-      required this.id})
-      : _categoryProgress = categoryProgress,
-        _isTopicDone = isTopicDone;
+  const _$AppUserImpl({
+    required this.uid,
+    required this.email,
+    this.displayName,
+    this.photoUrl,
+    this.profileImageUrl,
+    this.themeMode = 'system',
+    this.language = 'en',
+    final Map<String, double> categoryProgress = const {},
+    final Map<String, Map<String, bool>> isTopicDone = const {},
+    required this.id,
+  }) : _categoryProgress = categoryProgress,
+       _isTopicDone = isTopicDone;
 
   factory _$AppUserImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppUserImplFromJson(json);
@@ -299,27 +329,32 @@ class _$AppUserImpl implements _AppUser {
                 other.themeMode == themeMode) &&
             (identical(other.language, language) ||
                 other.language == language) &&
-            const DeepCollectionEquality()
-                .equals(other._categoryProgress, _categoryProgress) &&
-            const DeepCollectionEquality()
-                .equals(other._isTopicDone, _isTopicDone) &&
+            const DeepCollectionEquality().equals(
+              other._categoryProgress,
+              _categoryProgress,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._isTopicDone,
+              _isTopicDone,
+            ) &&
             (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      uid,
-      email,
-      displayName,
-      photoUrl,
-      profileImageUrl,
-      themeMode,
-      language,
-      const DeepCollectionEquality().hash(_categoryProgress),
-      const DeepCollectionEquality().hash(_isTopicDone),
-      id);
+    runtimeType,
+    uid,
+    email,
+    displayName,
+    photoUrl,
+    profileImageUrl,
+    themeMode,
+    language,
+    const DeepCollectionEquality().hash(_categoryProgress),
+    const DeepCollectionEquality().hash(_isTopicDone),
+    id,
+  );
 
   /// Create a copy of AppUser
   /// with the given fields replaced by the non-null parameter values.
@@ -331,24 +366,23 @@ class _$AppUserImpl implements _AppUser {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AppUserImplToJson(
-      this,
-    );
+    return _$$AppUserImplToJson(this);
   }
 }
 
 abstract class _AppUser implements AppUser {
-  const factory _AppUser(
-      {required final String uid,
-      required final String email,
-      final String? displayName,
-      final String? photoUrl,
-      final String? profileImageUrl,
-      final String themeMode,
-      final String language,
-      final Map<String, double> categoryProgress,
-      final Map<String, Map<String, bool>> isTopicDone,
-      required final String id}) = _$AppUserImpl;
+  const factory _AppUser({
+    required final String uid,
+    required final String email,
+    final String? displayName,
+    final String? photoUrl,
+    final String? profileImageUrl,
+    final String themeMode,
+    final String language,
+    final Map<String, double> categoryProgress,
+    final Map<String, Map<String, bool>> isTopicDone,
+    required final String id,
+  }) = _$AppUserImpl;
 
   factory _AppUser.fromJson(Map<String, dynamic> json) = _$AppUserImpl.fromJson;
 

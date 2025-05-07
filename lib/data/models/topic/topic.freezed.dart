@@ -12,7 +12,8 @@ part of 'topic.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 Topic _$TopicFromJson(Map<String, dynamic> json) {
   return _Topic.fromJson(json);
@@ -42,14 +43,15 @@ abstract class $TopicCopyWith<$Res> {
   factory $TopicCopyWith(Topic value, $Res Function(Topic) then) =
       _$TopicCopyWithImpl<$Res, Topic>;
   @useResult
-  $Res call(
-      {String id,
-      String nameEn,
-      String nameDe,
-      String descriptionEn,
-      String descriptionDe,
-      String categoryId,
-      double progress});
+  $Res call({
+    String id,
+    String nameEn,
+    String nameDe,
+    String descriptionEn,
+    String descriptionDe,
+    String categoryId,
+    double progress,
+  });
 }
 
 /// @nodoc
@@ -75,54 +77,66 @@ class _$TopicCopyWithImpl<$Res, $Val extends Topic>
     Object? categoryId = null,
     Object? progress = null,
   }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      nameEn: null == nameEn
-          ? _value.nameEn
-          : nameEn // ignore: cast_nullable_to_non_nullable
-              as String,
-      nameDe: null == nameDe
-          ? _value.nameDe
-          : nameDe // ignore: cast_nullable_to_non_nullable
-              as String,
-      descriptionEn: null == descriptionEn
-          ? _value.descriptionEn
-          : descriptionEn // ignore: cast_nullable_to_non_nullable
-              as String,
-      descriptionDe: null == descriptionDe
-          ? _value.descriptionDe
-          : descriptionDe // ignore: cast_nullable_to_non_nullable
-              as String,
-      categoryId: null == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as String,
-      progress: null == progress
-          ? _value.progress
-          : progress // ignore: cast_nullable_to_non_nullable
-              as double,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                null == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as String,
+            nameEn:
+                null == nameEn
+                    ? _value.nameEn
+                    : nameEn // ignore: cast_nullable_to_non_nullable
+                        as String,
+            nameDe:
+                null == nameDe
+                    ? _value.nameDe
+                    : nameDe // ignore: cast_nullable_to_non_nullable
+                        as String,
+            descriptionEn:
+                null == descriptionEn
+                    ? _value.descriptionEn
+                    : descriptionEn // ignore: cast_nullable_to_non_nullable
+                        as String,
+            descriptionDe:
+                null == descriptionDe
+                    ? _value.descriptionDe
+                    : descriptionDe // ignore: cast_nullable_to_non_nullable
+                        as String,
+            categoryId:
+                null == categoryId
+                    ? _value.categoryId
+                    : categoryId // ignore: cast_nullable_to_non_nullable
+                        as String,
+            progress:
+                null == progress
+                    ? _value.progress
+                    : progress // ignore: cast_nullable_to_non_nullable
+                        as double,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$TopicImplCopyWith<$Res> implements $TopicCopyWith<$Res> {
   factory _$$TopicImplCopyWith(
-          _$TopicImpl value, $Res Function(_$TopicImpl) then) =
-      __$$TopicImplCopyWithImpl<$Res>;
+    _$TopicImpl value,
+    $Res Function(_$TopicImpl) then,
+  ) = __$$TopicImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String id,
-      String nameEn,
-      String nameDe,
-      String descriptionEn,
-      String descriptionDe,
-      String categoryId,
-      double progress});
+  $Res call({
+    String id,
+    String nameEn,
+    String nameDe,
+    String descriptionEn,
+    String descriptionDe,
+    String categoryId,
+    double progress,
+  });
 }
 
 /// @nodoc
@@ -130,8 +144,9 @@ class __$$TopicImplCopyWithImpl<$Res>
     extends _$TopicCopyWithImpl<$Res, _$TopicImpl>
     implements _$$TopicImplCopyWith<$Res> {
   __$$TopicImplCopyWithImpl(
-      _$TopicImpl _value, $Res Function(_$TopicImpl) _then)
-      : super(_value, _then);
+    _$TopicImpl _value,
+    $Res Function(_$TopicImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Topic
   /// with the given fields replaced by the non-null parameter values.
@@ -146,50 +161,60 @@ class __$$TopicImplCopyWithImpl<$Res>
     Object? categoryId = null,
     Object? progress = null,
   }) {
-    return _then(_$TopicImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      nameEn: null == nameEn
-          ? _value.nameEn
-          : nameEn // ignore: cast_nullable_to_non_nullable
-              as String,
-      nameDe: null == nameDe
-          ? _value.nameDe
-          : nameDe // ignore: cast_nullable_to_non_nullable
-              as String,
-      descriptionEn: null == descriptionEn
-          ? _value.descriptionEn
-          : descriptionEn // ignore: cast_nullable_to_non_nullable
-              as String,
-      descriptionDe: null == descriptionDe
-          ? _value.descriptionDe
-          : descriptionDe // ignore: cast_nullable_to_non_nullable
-              as String,
-      categoryId: null == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as String,
-      progress: null == progress
-          ? _value.progress
-          : progress // ignore: cast_nullable_to_non_nullable
-              as double,
-    ));
+    return _then(
+      _$TopicImpl(
+        id:
+            null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String,
+        nameEn:
+            null == nameEn
+                ? _value.nameEn
+                : nameEn // ignore: cast_nullable_to_non_nullable
+                    as String,
+        nameDe:
+            null == nameDe
+                ? _value.nameDe
+                : nameDe // ignore: cast_nullable_to_non_nullable
+                    as String,
+        descriptionEn:
+            null == descriptionEn
+                ? _value.descriptionEn
+                : descriptionEn // ignore: cast_nullable_to_non_nullable
+                    as String,
+        descriptionDe:
+            null == descriptionDe
+                ? _value.descriptionDe
+                : descriptionDe // ignore: cast_nullable_to_non_nullable
+                    as String,
+        categoryId:
+            null == categoryId
+                ? _value.categoryId
+                : categoryId // ignore: cast_nullable_to_non_nullable
+                    as String,
+        progress:
+            null == progress
+                ? _value.progress
+                : progress // ignore: cast_nullable_to_non_nullable
+                    as double,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$TopicImpl implements _Topic {
-  _$TopicImpl(
-      {required this.id,
-      required this.nameEn,
-      required this.nameDe,
-      required this.descriptionEn,
-      required this.descriptionDe,
-      required this.categoryId,
-      this.progress = 0.0});
+  _$TopicImpl({
+    required this.id,
+    required this.nameEn,
+    required this.nameDe,
+    required this.descriptionEn,
+    required this.descriptionDe,
+    required this.categoryId,
+    this.progress = 0.0,
+  });
 
   factory _$TopicImpl.fromJson(Map<String, dynamic> json) =>
       _$$TopicImplFromJson(json);
@@ -235,8 +260,16 @@ class _$TopicImpl implements _Topic {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, nameEn, nameDe,
-      descriptionEn, descriptionDe, categoryId, progress);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    nameEn,
+    nameDe,
+    descriptionEn,
+    descriptionDe,
+    categoryId,
+    progress,
+  );
 
   /// Create a copy of Topic
   /// with the given fields replaced by the non-null parameter values.
@@ -248,21 +281,20 @@ class _$TopicImpl implements _Topic {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$TopicImplToJson(
-      this,
-    );
+    return _$$TopicImplToJson(this);
   }
 }
 
 abstract class _Topic implements Topic {
-  factory _Topic(
-      {required final String id,
-      required final String nameEn,
-      required final String nameDe,
-      required final String descriptionEn,
-      required final String descriptionDe,
-      required final String categoryId,
-      final double progress}) = _$TopicImpl;
+  factory _Topic({
+    required final String id,
+    required final String nameEn,
+    required final String nameDe,
+    required final String descriptionEn,
+    required final String descriptionDe,
+    required final String categoryId,
+    final double progress,
+  }) = _$TopicImpl;
 
   factory _Topic.fromJson(Map<String, dynamic> json) = _$TopicImpl.fromJson;
 

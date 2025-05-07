@@ -24,14 +24,15 @@ String _$quizResultNotifierHash() =>
 @ProviderFor(QuizResultNotifier)
 final quizResultNotifierProvider =
     AutoDisposeNotifierProvider<QuizResultNotifier, QuizResultState>.internal(
-  QuizResultNotifier.new,
-  name: r'quizResultNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$quizResultNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      QuizResultNotifier.new,
+      name: r'quizResultNotifierProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$quizResultNotifierHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$QuizResultNotifier = AutoDisposeNotifier<QuizResultState>;
 // ignore_for_file: type=lint

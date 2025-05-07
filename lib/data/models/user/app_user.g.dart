@@ -17,10 +17,11 @@ _$AppUserImpl _$$AppUserImplFromJson(Map<String, dynamic> json) =>
       language: json['language'] as String? ?? 'en',
       categoryProgress:
           (json['categoryProgress'] as Map<String, dynamic>?)?.map(
-                (k, e) => MapEntry(k, (e as num).toDouble()),
-              ) ??
-              const {},
-      isTopicDone: (json['isTopicDone'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, (e as num).toDouble()),
+          ) ??
+          const {},
+      isTopicDone:
+          (json['isTopicDone'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, Map<String, bool>.from(e as Map)),
           ) ??
           const {},

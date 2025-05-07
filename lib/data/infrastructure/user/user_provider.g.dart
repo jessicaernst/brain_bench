@@ -24,14 +24,15 @@ String _$currentUserModelHash() => r'7a1ae60fe7be34179919285741594540f60ed411';
 @ProviderFor(currentUserModel)
 final currentUserModelProvider =
     AutoDisposeStreamProvider<UserModelState>.internal(
-  currentUserModel,
-  name: r'currentUserModelProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$currentUserModelHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      currentUserModel,
+      name: r'currentUserModelProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$currentUserModelHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element

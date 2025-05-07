@@ -33,14 +33,15 @@ String _$saveResultNotifierHash() =>
 @ProviderFor(SaveResultNotifier)
 final saveResultNotifierProvider =
     AutoDisposeAsyncNotifierProvider<SaveResultNotifier, void>.internal(
-  SaveResultNotifier.new,
-  name: r'saveResultNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$saveResultNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      SaveResultNotifier.new,
+      name: r'saveResultNotifierProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$saveResultNotifierHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$SaveResultNotifier = AutoDisposeAsyncNotifier<void>;
 // ignore_for_file: type=lint

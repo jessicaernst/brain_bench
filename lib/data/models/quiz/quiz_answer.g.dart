@@ -6,29 +6,30 @@ part of 'quiz_answer.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$QuizAnswerImpl _$$QuizAnswerImplFromJson(Map<String, dynamic> json) =>
-    _$QuizAnswerImpl(
-      id: json['id'] as String,
-      topicId: json['topicId'] as String,
-      categoryId: json['categoryId'] as String,
-      questionId: json['questionId'] as String,
-      questionText: json['questionText'] as String,
-      givenAnswers: (json['givenAnswers'] as List<dynamic>)
+_$QuizAnswerImpl _$$QuizAnswerImplFromJson(
+  Map<String, dynamic> json,
+) => _$QuizAnswerImpl(
+  id: json['id'] as String,
+  topicId: json['topicId'] as String,
+  categoryId: json['categoryId'] as String,
+  questionId: json['questionId'] as String,
+  questionText: json['questionText'] as String,
+  givenAnswers:
+      (json['givenAnswers'] as List<dynamic>).map((e) => e as String).toList(),
+  correctAnswers:
+      (json['correctAnswers'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      correctAnswers: (json['correctAnswers'] as List<dynamic>)
+  incorrectAnswers:
+      (json['incorrectAnswers'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      incorrectAnswers: (json['incorrectAnswers'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      allAnswers: (json['allAnswers'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      explanation: json['explanation'] as String?,
-      pointsEarned: (json['pointsEarned'] as num?)?.toInt() ?? 0,
-      possiblePoints: (json['possiblePoints'] as num?)?.toInt() ?? 0,
-    );
+  allAnswers:
+      (json['allAnswers'] as List<dynamic>).map((e) => e as String).toList(),
+  explanation: json['explanation'] as String?,
+  pointsEarned: (json['pointsEarned'] as num?)?.toInt() ?? 0,
+  possiblePoints: (json['possiblePoints'] as num?)?.toInt() ?? 0,
+);
 
 Map<String, dynamic> _$$QuizAnswerImplToJson(_$QuizAnswerImpl instance) =>
     <String, dynamic>{

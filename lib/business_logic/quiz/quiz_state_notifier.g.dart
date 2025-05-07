@@ -12,14 +12,15 @@ String _$quizStateNotifierHash() => r'c6f2c223fc14e6a228f6a00789d89719746fdbdb';
 @ProviderFor(QuizStateNotifier)
 final quizStateNotifierProvider =
     NotifierProvider<QuizStateNotifier, QuizState>.internal(
-  QuizStateNotifier.new,
-  name: r'quizStateNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$quizStateNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      QuizStateNotifier.new,
+      name: r'quizStateNotifierProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$quizStateNotifierHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$QuizStateNotifier = Notifier<QuizState>;
 // ignore_for_file: type=lint

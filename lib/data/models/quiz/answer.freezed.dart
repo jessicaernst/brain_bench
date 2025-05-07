@@ -12,7 +12,8 @@ part of 'answer.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 Answer _$AnswerFromJson(Map<String, dynamic> json) {
   return _Answer.fromJson(json);
@@ -41,12 +42,13 @@ abstract class $AnswerCopyWith<$Res> {
   factory $AnswerCopyWith(Answer value, $Res Function(Answer) then) =
       _$AnswerCopyWithImpl<$Res, Answer>;
   @useResult
-  $Res call(
-      {String id,
-      String textEn,
-      String textDe,
-      bool isCorrect,
-      @JsonKey(includeFromJson: false, includeToJson: false) bool isSelected});
+  $Res call({
+    String id,
+    String textEn,
+    String textDe,
+    bool isCorrect,
+    @JsonKey(includeFromJson: false, includeToJson: false) bool isSelected,
+  });
 }
 
 /// @nodoc
@@ -70,44 +72,54 @@ class _$AnswerCopyWithImpl<$Res, $Val extends Answer>
     Object? isCorrect = null,
     Object? isSelected = null,
   }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      textEn: null == textEn
-          ? _value.textEn
-          : textEn // ignore: cast_nullable_to_non_nullable
-              as String,
-      textDe: null == textDe
-          ? _value.textDe
-          : textDe // ignore: cast_nullable_to_non_nullable
-              as String,
-      isCorrect: null == isCorrect
-          ? _value.isCorrect
-          : isCorrect // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isSelected: null == isSelected
-          ? _value.isSelected
-          : isSelected // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                null == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as String,
+            textEn:
+                null == textEn
+                    ? _value.textEn
+                    : textEn // ignore: cast_nullable_to_non_nullable
+                        as String,
+            textDe:
+                null == textDe
+                    ? _value.textDe
+                    : textDe // ignore: cast_nullable_to_non_nullable
+                        as String,
+            isCorrect:
+                null == isCorrect
+                    ? _value.isCorrect
+                    : isCorrect // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            isSelected:
+                null == isSelected
+                    ? _value.isSelected
+                    : isSelected // ignore: cast_nullable_to_non_nullable
+                        as bool,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$AnswerImplCopyWith<$Res> implements $AnswerCopyWith<$Res> {
   factory _$$AnswerImplCopyWith(
-          _$AnswerImpl value, $Res Function(_$AnswerImpl) then) =
-      __$$AnswerImplCopyWithImpl<$Res>;
+    _$AnswerImpl value,
+    $Res Function(_$AnswerImpl) then,
+  ) = __$$AnswerImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String id,
-      String textEn,
-      String textDe,
-      bool isCorrect,
-      @JsonKey(includeFromJson: false, includeToJson: false) bool isSelected});
+  $Res call({
+    String id,
+    String textEn,
+    String textDe,
+    bool isCorrect,
+    @JsonKey(includeFromJson: false, includeToJson: false) bool isSelected,
+  });
 }
 
 /// @nodoc
@@ -115,8 +127,9 @@ class __$$AnswerImplCopyWithImpl<$Res>
     extends _$AnswerCopyWithImpl<$Res, _$AnswerImpl>
     implements _$$AnswerImplCopyWith<$Res> {
   __$$AnswerImplCopyWithImpl(
-      _$AnswerImpl _value, $Res Function(_$AnswerImpl) _then)
-      : super(_value, _then);
+    _$AnswerImpl _value,
+    $Res Function(_$AnswerImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Answer
   /// with the given fields replaced by the non-null parameter values.
@@ -129,41 +142,49 @@ class __$$AnswerImplCopyWithImpl<$Res>
     Object? isCorrect = null,
     Object? isSelected = null,
   }) {
-    return _then(_$AnswerImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      textEn: null == textEn
-          ? _value.textEn
-          : textEn // ignore: cast_nullable_to_non_nullable
-              as String,
-      textDe: null == textDe
-          ? _value.textDe
-          : textDe // ignore: cast_nullable_to_non_nullable
-              as String,
-      isCorrect: null == isCorrect
-          ? _value.isCorrect
-          : isCorrect // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isSelected: null == isSelected
-          ? _value.isSelected
-          : isSelected // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
+    return _then(
+      _$AnswerImpl(
+        id:
+            null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String,
+        textEn:
+            null == textEn
+                ? _value.textEn
+                : textEn // ignore: cast_nullable_to_non_nullable
+                    as String,
+        textDe:
+            null == textDe
+                ? _value.textDe
+                : textDe // ignore: cast_nullable_to_non_nullable
+                    as String,
+        isCorrect:
+            null == isCorrect
+                ? _value.isCorrect
+                : isCorrect // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        isSelected:
+            null == isSelected
+                ? _value.isSelected
+                : isSelected // ignore: cast_nullable_to_non_nullable
+                    as bool,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$AnswerImpl implements _Answer {
-  const _$AnswerImpl(
-      {required this.id,
-      required this.textEn,
-      required this.textDe,
-      required this.isCorrect,
-      @JsonKey(includeFromJson: false, includeToJson: false)
-      this.isSelected = false});
+  const _$AnswerImpl({
+    required this.id,
+    required this.textEn,
+    required this.textDe,
+    required this.isCorrect,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    this.isSelected = false,
+  });
 
   factory _$AnswerImpl.fromJson(Map<String, dynamic> json) =>
       _$$AnswerImplFromJson(json);
@@ -214,20 +235,19 @@ class _$AnswerImpl implements _Answer {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AnswerImplToJson(
-      this,
-    );
+    return _$$AnswerImplToJson(this);
   }
 }
 
 abstract class _Answer implements Answer {
-  const factory _Answer(
-      {required final String id,
-      required final String textEn,
-      required final String textDe,
-      required final bool isCorrect,
-      @JsonKey(includeFromJson: false, includeToJson: false)
-      final bool isSelected}) = _$AnswerImpl;
+  const factory _Answer({
+    required final String id,
+    required final String textEn,
+    required final String textDe,
+    required final bool isCorrect,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    final bool isSelected,
+  }) = _$AnswerImpl;
 
   factory _Answer.fromJson(Map<String, dynamic> json) = _$AnswerImpl.fromJson;
 

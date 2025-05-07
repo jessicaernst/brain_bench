@@ -39,24 +39,13 @@ class AnswersFamily extends Family<AsyncValue<List<Answer>>> {
   const AnswersFamily();
 
   /// See also [answers].
-  AnswersProvider call(
-    List<String> answerIds,
-    String languageCode,
-  ) {
-    return AnswersProvider(
-      answerIds,
-      languageCode,
-    );
+  AnswersProvider call(List<String> answerIds, String languageCode) {
+    return AnswersProvider(answerIds, languageCode);
   }
 
   @override
-  AnswersProvider getProviderOverride(
-    covariant AnswersProvider provider,
-  ) {
-    return call(
-      provider.answerIds,
-      provider.languageCode,
-    );
+  AnswersProvider getProviderOverride(covariant AnswersProvider provider) {
+    return call(provider.answerIds, provider.languageCode);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -77,26 +66,20 @@ class AnswersFamily extends Family<AsyncValue<List<Answer>>> {
 /// See also [answers].
 class AnswersProvider extends AutoDisposeFutureProvider<List<Answer>> {
   /// See also [answers].
-  AnswersProvider(
-    List<String> answerIds,
-    String languageCode,
-  ) : this._internal(
-          (ref) => answers(
-            ref as AnswersRef,
-            answerIds,
-            languageCode,
-          ),
-          from: answersProvider,
-          name: r'answersProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$answersHash,
-          dependencies: AnswersFamily._dependencies,
-          allTransitiveDependencies: AnswersFamily._allTransitiveDependencies,
-          answerIds: answerIds,
-          languageCode: languageCode,
-        );
+  AnswersProvider(List<String> answerIds, String languageCode)
+    : this._internal(
+        (ref) => answers(ref as AnswersRef, answerIds, languageCode),
+        from: answersProvider,
+        name: r'answersProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$answersHash,
+        dependencies: AnswersFamily._dependencies,
+        allTransitiveDependencies: AnswersFamily._allTransitiveDependencies,
+        answerIds: answerIds,
+        languageCode: languageCode,
+      );
 
   AnswersProvider._internal(
     super._createNotifier, {
@@ -164,7 +147,8 @@ mixin AnswersRef on AutoDisposeFutureProviderRef<List<Answer>> {
 }
 
 class _AnswersProviderElement
-    extends AutoDisposeFutureProviderElement<List<Answer>> with AnswersRef {
+    extends AutoDisposeFutureProviderElement<List<Answer>>
+    with AnswersRef {
   _AnswersProviderElement(super.provider);
 
   @override
@@ -172,5 +156,6 @@ class _AnswersProviderElement
   @override
   String get languageCode => (origin as AnswersProvider).languageCode;
 }
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

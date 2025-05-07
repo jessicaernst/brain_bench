@@ -23,9 +23,10 @@ String _$routerRefreshNotifierHash() =>
 final routerRefreshNotifierProvider = Provider<RouterRefreshNotifier>.internal(
   routerRefreshNotifier,
   name: r'routerRefreshNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$routerRefreshNotifierHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$routerRefreshNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

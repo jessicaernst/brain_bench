@@ -79,3 +79,15 @@ dev-clean:
 	./scripts/use_firebase_env.sh dev --clean
 	flutter pub get
 	cd ios && rm -rf Pods Podfile.lock build && arch -x86_64 pod install --repo-update && cd ..
+
+# Builds the project using build_runner, deleting any conflicting outputs.
+# This is a one-time build, not a watch.
+build:
+	@echo "Running a one-time build..."
+	dart run build_runner build --delete-conflicting-outputs
+
+# Watches for changes in the project and rebuilds automatically.
+# This is a continuous watch, not a one-time build.
+watch:
+	@echo "Starting build_runner watch..."
+	dart run build_runner watch --delete-conflicting-outputs

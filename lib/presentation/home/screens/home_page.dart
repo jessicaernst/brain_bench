@@ -43,36 +43,42 @@ class HomePage extends ConsumerWidget {
         description:
             'Learn how to structure layouts using advanced Figma UI blocks.',
         imageUrl: Assets.carouselTest.image12.path,
+        categoryId: '',
       ),
       Carousel.create(
         title: 'Design Systems: Image 13',
         description:
             'Understand how to build scalable and reusable design systems.',
         imageUrl: Assets.carouselTest.image13.path,
+        categoryId: '',
       ),
       Carousel.create(
         title: 'Typography Tricks: Image 14',
         description:
             'Typography techniques to improve readability and design harmony.',
         imageUrl: Assets.carouselTest.image14.path,
+        categoryId: '',
       ),
       Carousel.create(
         title: 'Modern Layouts: Image 15',
         description:
             'Explore advanced layout techniques with grids and spacing.',
         imageUrl: Assets.carouselTest.image15.path,
+        categoryId: '',
       ),
       Carousel.create(
         title: 'Component-Based UI: Image 16',
         description:
             'Discover how to build component-driven interfaces in Figma.',
         imageUrl: Assets.carouselTest.image16.path,
+        categoryId: '',
       ),
       Carousel.create(
         title: 'Figma Intro: Image',
         description:
             'Start designing mobile apps with a beginner-friendly mockup. Start designing mobile apps with a beginner-friendly mockup. Start designing mobile apps with a beginner-friendly mockup.',
         imageUrl: Assets.carouselTest.image.path,
+        categoryId: '',
       ),
     ];
 
@@ -90,10 +96,7 @@ class HomePage extends ConsumerWidget {
             shadows: isDarkMode ? null : lightModeShadow,
           ),
         ),
-        actions: const [
-          ProfileButtonView(),
-          SizedBox(width: 16),
-        ],
+        actions: const [ProfileButtonView(), SizedBox(width: 16)],
       ),
       body: SafeArea(
         child: Center(
@@ -111,29 +114,36 @@ class HomePage extends ConsumerWidget {
                 child: Text(
                   'articles',
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: isDarkMode
-                            ? BrainBenchColors.cloudCanvas
-                                .withAlpha((0.6 * 255).toInt())
-                            : BrainBenchColors.deepDive
-                                .withAlpha((0.6 * 255).toInt()),
-                      ),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color:
+                        isDarkMode
+                            ? BrainBenchColors.cloudCanvas.withAlpha(
+                              (0.6 * 255).toInt(),
+                            )
+                            : BrainBenchColors.deepDive.withAlpha(
+                              (0.6 * 255).toInt(),
+                            ),
+                  ),
                 ),
               ),
               Expanded(
                 child: InfiniteCarousel(
-                  items: carouselItems.map((item) {
-                    return InfiniteCarouselItem(
-                      content: CarouselCardContent(item: item, isActive: false),
-                    );
-                  }).toList(),
+                  items:
+                      carouselItems.map((item) {
+                        return InfiniteCarouselItem(
+                          content: CarouselCardContent(
+                            item: item,
+                            isActive: false,
+                          ),
+                        );
+                      }).toList(),
                   cardWidth: carouselCardWidth,
                   cardHeight: carouselCardHeight,
-                  activeCardBuilder: (child) =>
-                      ActiveNewsCarouselCard(content: child),
-                  inactiveCardBuilder: (child) =>
-                      InactiveNewsCarouselCard(content: child),
+                  activeCardBuilder:
+                      (child) => ActiveNewsCarouselCard(content: child),
+                  inactiveCardBuilder:
+                      (child) => InactiveNewsCarouselCard(content: child),
                   animationDuration: const Duration(milliseconds: 200),
                   animationCurve: Curves.easeOut,
                 ),

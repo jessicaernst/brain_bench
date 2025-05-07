@@ -12,7 +12,8 @@ part of 'quiz_answer.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 QuizAnswer _$QuizAnswerFromJson(Map<String, dynamic> json) {
   return _QuizAnswer.fromJson(json);
@@ -46,22 +47,24 @@ mixin _$QuizAnswer {
 /// @nodoc
 abstract class $QuizAnswerCopyWith<$Res> {
   factory $QuizAnswerCopyWith(
-          QuizAnswer value, $Res Function(QuizAnswer) then) =
-      _$QuizAnswerCopyWithImpl<$Res, QuizAnswer>;
+    QuizAnswer value,
+    $Res Function(QuizAnswer) then,
+  ) = _$QuizAnswerCopyWithImpl<$Res, QuizAnswer>;
   @useResult
-  $Res call(
-      {String id,
-      String topicId,
-      String categoryId,
-      String questionId,
-      String questionText,
-      List<String> givenAnswers,
-      List<String> correctAnswers,
-      List<String> incorrectAnswers,
-      List<String> allAnswers,
-      String? explanation,
-      int pointsEarned,
-      int possiblePoints});
+  $Res call({
+    String id,
+    String topicId,
+    String categoryId,
+    String questionId,
+    String questionText,
+    List<String> givenAnswers,
+    List<String> correctAnswers,
+    List<String> incorrectAnswers,
+    List<String> allAnswers,
+    String? explanation,
+    int pointsEarned,
+    int possiblePoints,
+  });
 }
 
 /// @nodoc
@@ -92,56 +95,71 @@ class _$QuizAnswerCopyWithImpl<$Res, $Val extends QuizAnswer>
     Object? pointsEarned = null,
     Object? possiblePoints = null,
   }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      topicId: null == topicId
-          ? _value.topicId
-          : topicId // ignore: cast_nullable_to_non_nullable
-              as String,
-      categoryId: null == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as String,
-      questionId: null == questionId
-          ? _value.questionId
-          : questionId // ignore: cast_nullable_to_non_nullable
-              as String,
-      questionText: null == questionText
-          ? _value.questionText
-          : questionText // ignore: cast_nullable_to_non_nullable
-              as String,
-      givenAnswers: null == givenAnswers
-          ? _value.givenAnswers
-          : givenAnswers // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      correctAnswers: null == correctAnswers
-          ? _value.correctAnswers
-          : correctAnswers // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      incorrectAnswers: null == incorrectAnswers
-          ? _value.incorrectAnswers
-          : incorrectAnswers // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      allAnswers: null == allAnswers
-          ? _value.allAnswers
-          : allAnswers // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      explanation: freezed == explanation
-          ? _value.explanation
-          : explanation // ignore: cast_nullable_to_non_nullable
-              as String?,
-      pointsEarned: null == pointsEarned
-          ? _value.pointsEarned
-          : pointsEarned // ignore: cast_nullable_to_non_nullable
-              as int,
-      possiblePoints: null == possiblePoints
-          ? _value.possiblePoints
-          : possiblePoints // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                null == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as String,
+            topicId:
+                null == topicId
+                    ? _value.topicId
+                    : topicId // ignore: cast_nullable_to_non_nullable
+                        as String,
+            categoryId:
+                null == categoryId
+                    ? _value.categoryId
+                    : categoryId // ignore: cast_nullable_to_non_nullable
+                        as String,
+            questionId:
+                null == questionId
+                    ? _value.questionId
+                    : questionId // ignore: cast_nullable_to_non_nullable
+                        as String,
+            questionText:
+                null == questionText
+                    ? _value.questionText
+                    : questionText // ignore: cast_nullable_to_non_nullable
+                        as String,
+            givenAnswers:
+                null == givenAnswers
+                    ? _value.givenAnswers
+                    : givenAnswers // ignore: cast_nullable_to_non_nullable
+                        as List<String>,
+            correctAnswers:
+                null == correctAnswers
+                    ? _value.correctAnswers
+                    : correctAnswers // ignore: cast_nullable_to_non_nullable
+                        as List<String>,
+            incorrectAnswers:
+                null == incorrectAnswers
+                    ? _value.incorrectAnswers
+                    : incorrectAnswers // ignore: cast_nullable_to_non_nullable
+                        as List<String>,
+            allAnswers:
+                null == allAnswers
+                    ? _value.allAnswers
+                    : allAnswers // ignore: cast_nullable_to_non_nullable
+                        as List<String>,
+            explanation:
+                freezed == explanation
+                    ? _value.explanation
+                    : explanation // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            pointsEarned:
+                null == pointsEarned
+                    ? _value.pointsEarned
+                    : pointsEarned // ignore: cast_nullable_to_non_nullable
+                        as int,
+            possiblePoints:
+                null == possiblePoints
+                    ? _value.possiblePoints
+                    : possiblePoints // ignore: cast_nullable_to_non_nullable
+                        as int,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -149,23 +167,25 @@ class _$QuizAnswerCopyWithImpl<$Res, $Val extends QuizAnswer>
 abstract class _$$QuizAnswerImplCopyWith<$Res>
     implements $QuizAnswerCopyWith<$Res> {
   factory _$$QuizAnswerImplCopyWith(
-          _$QuizAnswerImpl value, $Res Function(_$QuizAnswerImpl) then) =
-      __$$QuizAnswerImplCopyWithImpl<$Res>;
+    _$QuizAnswerImpl value,
+    $Res Function(_$QuizAnswerImpl) then,
+  ) = __$$QuizAnswerImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String id,
-      String topicId,
-      String categoryId,
-      String questionId,
-      String questionText,
-      List<String> givenAnswers,
-      List<String> correctAnswers,
-      List<String> incorrectAnswers,
-      List<String> allAnswers,
-      String? explanation,
-      int pointsEarned,
-      int possiblePoints});
+  $Res call({
+    String id,
+    String topicId,
+    String categoryId,
+    String questionId,
+    String questionText,
+    List<String> givenAnswers,
+    List<String> correctAnswers,
+    List<String> incorrectAnswers,
+    List<String> allAnswers,
+    String? explanation,
+    int pointsEarned,
+    int possiblePoints,
+  });
 }
 
 /// @nodoc
@@ -173,8 +193,9 @@ class __$$QuizAnswerImplCopyWithImpl<$Res>
     extends _$QuizAnswerCopyWithImpl<$Res, _$QuizAnswerImpl>
     implements _$$QuizAnswerImplCopyWith<$Res> {
   __$$QuizAnswerImplCopyWithImpl(
-      _$QuizAnswerImpl _value, $Res Function(_$QuizAnswerImpl) _then)
-      : super(_value, _then);
+    _$QuizAnswerImpl _value,
+    $Res Function(_$QuizAnswerImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of QuizAnswer
   /// with the given fields replaced by the non-null parameter values.
@@ -194,79 +215,93 @@ class __$$QuizAnswerImplCopyWithImpl<$Res>
     Object? pointsEarned = null,
     Object? possiblePoints = null,
   }) {
-    return _then(_$QuizAnswerImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      topicId: null == topicId
-          ? _value.topicId
-          : topicId // ignore: cast_nullable_to_non_nullable
-              as String,
-      categoryId: null == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as String,
-      questionId: null == questionId
-          ? _value.questionId
-          : questionId // ignore: cast_nullable_to_non_nullable
-              as String,
-      questionText: null == questionText
-          ? _value.questionText
-          : questionText // ignore: cast_nullable_to_non_nullable
-              as String,
-      givenAnswers: null == givenAnswers
-          ? _value._givenAnswers
-          : givenAnswers // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      correctAnswers: null == correctAnswers
-          ? _value._correctAnswers
-          : correctAnswers // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      incorrectAnswers: null == incorrectAnswers
-          ? _value._incorrectAnswers
-          : incorrectAnswers // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      allAnswers: null == allAnswers
-          ? _value._allAnswers
-          : allAnswers // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      explanation: freezed == explanation
-          ? _value.explanation
-          : explanation // ignore: cast_nullable_to_non_nullable
-              as String?,
-      pointsEarned: null == pointsEarned
-          ? _value.pointsEarned
-          : pointsEarned // ignore: cast_nullable_to_non_nullable
-              as int,
-      possiblePoints: null == possiblePoints
-          ? _value.possiblePoints
-          : possiblePoints // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
+    return _then(
+      _$QuizAnswerImpl(
+        id:
+            null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String,
+        topicId:
+            null == topicId
+                ? _value.topicId
+                : topicId // ignore: cast_nullable_to_non_nullable
+                    as String,
+        categoryId:
+            null == categoryId
+                ? _value.categoryId
+                : categoryId // ignore: cast_nullable_to_non_nullable
+                    as String,
+        questionId:
+            null == questionId
+                ? _value.questionId
+                : questionId // ignore: cast_nullable_to_non_nullable
+                    as String,
+        questionText:
+            null == questionText
+                ? _value.questionText
+                : questionText // ignore: cast_nullable_to_non_nullable
+                    as String,
+        givenAnswers:
+            null == givenAnswers
+                ? _value._givenAnswers
+                : givenAnswers // ignore: cast_nullable_to_non_nullable
+                    as List<String>,
+        correctAnswers:
+            null == correctAnswers
+                ? _value._correctAnswers
+                : correctAnswers // ignore: cast_nullable_to_non_nullable
+                    as List<String>,
+        incorrectAnswers:
+            null == incorrectAnswers
+                ? _value._incorrectAnswers
+                : incorrectAnswers // ignore: cast_nullable_to_non_nullable
+                    as List<String>,
+        allAnswers:
+            null == allAnswers
+                ? _value._allAnswers
+                : allAnswers // ignore: cast_nullable_to_non_nullable
+                    as List<String>,
+        explanation:
+            freezed == explanation
+                ? _value.explanation
+                : explanation // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        pointsEarned:
+            null == pointsEarned
+                ? _value.pointsEarned
+                : pointsEarned // ignore: cast_nullable_to_non_nullable
+                    as int,
+        possiblePoints:
+            null == possiblePoints
+                ? _value.possiblePoints
+                : possiblePoints // ignore: cast_nullable_to_non_nullable
+                    as int,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$QuizAnswerImpl implements _QuizAnswer {
-  _$QuizAnswerImpl(
-      {required this.id,
-      required this.topicId,
-      required this.categoryId,
-      required this.questionId,
-      required this.questionText,
-      required final List<String> givenAnswers,
-      required final List<String> correctAnswers,
-      required final List<String> incorrectAnswers,
-      required final List<String> allAnswers,
-      this.explanation,
-      this.pointsEarned = 0,
-      this.possiblePoints = 0})
-      : _givenAnswers = givenAnswers,
-        _correctAnswers = correctAnswers,
-        _incorrectAnswers = incorrectAnswers,
-        _allAnswers = allAnswers;
+  _$QuizAnswerImpl({
+    required this.id,
+    required this.topicId,
+    required this.categoryId,
+    required this.questionId,
+    required this.questionText,
+    required final List<String> givenAnswers,
+    required final List<String> correctAnswers,
+    required final List<String> incorrectAnswers,
+    required final List<String> allAnswers,
+    this.explanation,
+    this.pointsEarned = 0,
+    this.possiblePoints = 0,
+  }) : _givenAnswers = givenAnswers,
+       _correctAnswers = correctAnswers,
+       _incorrectAnswers = incorrectAnswers,
+       _allAnswers = allAnswers;
 
   factory _$QuizAnswerImpl.fromJson(Map<String, dynamic> json) =>
       _$$QuizAnswerImplFromJson(json);
@@ -341,14 +376,22 @@ class _$QuizAnswerImpl implements _QuizAnswer {
                 other.questionId == questionId) &&
             (identical(other.questionText, questionText) ||
                 other.questionText == questionText) &&
-            const DeepCollectionEquality()
-                .equals(other._givenAnswers, _givenAnswers) &&
-            const DeepCollectionEquality()
-                .equals(other._correctAnswers, _correctAnswers) &&
-            const DeepCollectionEquality()
-                .equals(other._incorrectAnswers, _incorrectAnswers) &&
-            const DeepCollectionEquality()
-                .equals(other._allAnswers, _allAnswers) &&
+            const DeepCollectionEquality().equals(
+              other._givenAnswers,
+              _givenAnswers,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._correctAnswers,
+              _correctAnswers,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._incorrectAnswers,
+              _incorrectAnswers,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._allAnswers,
+              _allAnswers,
+            ) &&
             (identical(other.explanation, explanation) ||
                 other.explanation == explanation) &&
             (identical(other.pointsEarned, pointsEarned) ||
@@ -360,19 +403,20 @@ class _$QuizAnswerImpl implements _QuizAnswer {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      topicId,
-      categoryId,
-      questionId,
-      questionText,
-      const DeepCollectionEquality().hash(_givenAnswers),
-      const DeepCollectionEquality().hash(_correctAnswers),
-      const DeepCollectionEquality().hash(_incorrectAnswers),
-      const DeepCollectionEquality().hash(_allAnswers),
-      explanation,
-      pointsEarned,
-      possiblePoints);
+    runtimeType,
+    id,
+    topicId,
+    categoryId,
+    questionId,
+    questionText,
+    const DeepCollectionEquality().hash(_givenAnswers),
+    const DeepCollectionEquality().hash(_correctAnswers),
+    const DeepCollectionEquality().hash(_incorrectAnswers),
+    const DeepCollectionEquality().hash(_allAnswers),
+    explanation,
+    pointsEarned,
+    possiblePoints,
+  );
 
   /// Create a copy of QuizAnswer
   /// with the given fields replaced by the non-null parameter values.
@@ -384,26 +428,25 @@ class _$QuizAnswerImpl implements _QuizAnswer {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$QuizAnswerImplToJson(
-      this,
-    );
+    return _$$QuizAnswerImplToJson(this);
   }
 }
 
 abstract class _QuizAnswer implements QuizAnswer {
-  factory _QuizAnswer(
-      {required final String id,
-      required final String topicId,
-      required final String categoryId,
-      required final String questionId,
-      required final String questionText,
-      required final List<String> givenAnswers,
-      required final List<String> correctAnswers,
-      required final List<String> incorrectAnswers,
-      required final List<String> allAnswers,
-      final String? explanation,
-      final int pointsEarned,
-      final int possiblePoints}) = _$QuizAnswerImpl;
+  factory _QuizAnswer({
+    required final String id,
+    required final String topicId,
+    required final String categoryId,
+    required final String questionId,
+    required final String questionText,
+    required final List<String> givenAnswers,
+    required final List<String> correctAnswers,
+    required final List<String> incorrectAnswers,
+    required final List<String> allAnswers,
+    final String? explanation,
+    final int pointsEarned,
+    final int possiblePoints,
+  }) = _$QuizAnswerImpl;
 
   factory _QuizAnswer.fromJson(Map<String, dynamic> json) =
       _$QuizAnswerImpl.fromJson;

@@ -34,10 +34,7 @@ abstract class _$QuizPageController extends BuildlessNotifier<void> {
   late final String topicId;
   late final String categoryId;
 
-  void build({
-    required String topicId,
-    required String categoryId,
-  });
+  void build({required String topicId, required String categoryId});
 }
 
 /// Handles UI logic and interactions for the QuizPage.
@@ -62,20 +59,14 @@ class QuizPageControllerFamily extends Family<void> {
     required String topicId,
     required String categoryId,
   }) {
-    return QuizPageControllerProvider(
-      topicId: topicId,
-      categoryId: categoryId,
-    );
+    return QuizPageControllerProvider(topicId: topicId, categoryId: categoryId);
   }
 
   @override
   QuizPageControllerProvider getProviderOverride(
     covariant QuizPageControllerProvider provider,
   ) {
-    return call(
-      topicId: provider.topicId,
-      categoryId: provider.categoryId,
-    );
+    return call(topicId: provider.topicId, categoryId: provider.categoryId);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -105,21 +96,22 @@ class QuizPageControllerProvider
     required String topicId,
     required String categoryId,
   }) : this._internal(
-          () => QuizPageController()
-            ..topicId = topicId
-            ..categoryId = categoryId,
-          from: quizPageControllerProvider,
-          name: r'quizPageControllerProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$quizPageControllerHash,
-          dependencies: QuizPageControllerFamily._dependencies,
-          allTransitiveDependencies:
-              QuizPageControllerFamily._allTransitiveDependencies,
-          topicId: topicId,
-          categoryId: categoryId,
-        );
+         () =>
+             QuizPageController()
+               ..topicId = topicId
+               ..categoryId = categoryId,
+         from: quizPageControllerProvider,
+         name: r'quizPageControllerProvider',
+         debugGetCreateSourceHash:
+             const bool.fromEnvironment('dart.vm.product')
+                 ? null
+                 : _$quizPageControllerHash,
+         dependencies: QuizPageControllerFamily._dependencies,
+         allTransitiveDependencies:
+             QuizPageControllerFamily._allTransitiveDependencies,
+         topicId: topicId,
+         categoryId: categoryId,
+       );
 
   QuizPageControllerProvider._internal(
     super._createNotifier, {
@@ -136,13 +128,8 @@ class QuizPageControllerProvider
   final String categoryId;
 
   @override
-  void runNotifierBuild(
-    covariant QuizPageController notifier,
-  ) {
-    return notifier.build(
-      topicId: topicId,
-      categoryId: categoryId,
-    );
+  void runNotifierBuild(covariant QuizPageController notifier) {
+    return notifier.build(topicId: topicId, categoryId: categoryId);
   }
 
   @override
@@ -150,9 +137,10 @@ class QuizPageControllerProvider
     return ProviderOverride(
       origin: this,
       override: QuizPageControllerProvider._internal(
-        () => create()
-          ..topicId = topicId
-          ..categoryId = categoryId,
+        () =>
+            create()
+              ..topicId = topicId
+              ..categoryId = categoryId,
         from: from,
         name: null,
         dependencies: null,
@@ -206,5 +194,6 @@ class _QuizPageControllerProviderElement
   @override
   String get categoryId => (origin as QuizPageControllerProvider).categoryId;
 }
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -20,14 +20,15 @@ String _$quizAnswersNotifierHash() =>
 @ProviderFor(QuizAnswersNotifier)
 final quizAnswersNotifierProvider =
     NotifierProvider<QuizAnswersNotifier, List<QuizAnswer>>.internal(
-  QuizAnswersNotifier.new,
-  name: r'quizAnswersNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$quizAnswersNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      QuizAnswersNotifier.new,
+      name: r'quizAnswersNotifierProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$quizAnswersNotifierHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$QuizAnswersNotifier = Notifier<List<QuizAnswer>>;
 // ignore_for_file: type=lint

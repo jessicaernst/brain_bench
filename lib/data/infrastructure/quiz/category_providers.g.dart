@@ -33,9 +33,7 @@ abstract class _$Categories
     extends BuildlessAutoDisposeAsyncNotifier<List<Category>> {
   late final String languageCode;
 
-  FutureOr<List<Category>> build(
-    String languageCode,
-  );
+  FutureOr<List<Category>> build(String languageCode);
 }
 
 /// See also [Categories].
@@ -48,21 +46,15 @@ class CategoriesFamily extends Family<AsyncValue<List<Category>>> {
   const CategoriesFamily();
 
   /// See also [Categories].
-  CategoriesProvider call(
-    String languageCode,
-  ) {
-    return CategoriesProvider(
-      languageCode,
-    );
+  CategoriesProvider call(String languageCode) {
+    return CategoriesProvider(languageCode);
   }
 
   @override
   CategoriesProvider getProviderOverride(
     covariant CategoriesProvider provider,
   ) {
-    return call(
-      provider.languageCode,
-    );
+    return call(provider.languageCode);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -84,21 +76,19 @@ class CategoriesFamily extends Family<AsyncValue<List<Category>>> {
 class CategoriesProvider
     extends AutoDisposeAsyncNotifierProviderImpl<Categories, List<Category>> {
   /// See also [Categories].
-  CategoriesProvider(
-    String languageCode,
-  ) : this._internal(
-          () => Categories()..languageCode = languageCode,
-          from: categoriesProvider,
-          name: r'categoriesProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$categoriesHash,
-          dependencies: CategoriesFamily._dependencies,
-          allTransitiveDependencies:
-              CategoriesFamily._allTransitiveDependencies,
-          languageCode: languageCode,
-        );
+  CategoriesProvider(String languageCode)
+    : this._internal(
+        () => Categories()..languageCode = languageCode,
+        from: categoriesProvider,
+        name: r'categoriesProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$categoriesHash,
+        dependencies: CategoriesFamily._dependencies,
+        allTransitiveDependencies: CategoriesFamily._allTransitiveDependencies,
+        languageCode: languageCode,
+      );
 
   CategoriesProvider._internal(
     super._createNotifier, {
@@ -113,12 +103,8 @@ class CategoriesProvider
   final String languageCode;
 
   @override
-  FutureOr<List<Category>> runNotifierBuild(
-    covariant Categories notifier,
-  ) {
-    return notifier.build(
-      languageCode,
-    );
+  FutureOr<List<Category>> runNotifierBuild(covariant Categories notifier) {
+    return notifier.build(languageCode);
   }
 
   @override
@@ -139,7 +125,7 @@ class CategoriesProvider
 
   @override
   AutoDisposeAsyncNotifierProviderElement<Categories, List<Category>>
-      createElement() {
+  createElement() {
     return _CategoriesProviderElement(this);
   }
 
@@ -172,5 +158,6 @@ class _CategoriesProviderElement
   @override
   String get languageCode => (origin as CategoriesProvider).languageCode;
 }
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

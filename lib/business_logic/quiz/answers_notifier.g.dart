@@ -18,14 +18,15 @@ String _$answersNotifierHash() => r'd231ee4b4bc7bf4db289de4a79b1ecca89416d2e';
 @ProviderFor(AnswersNotifier)
 final answersNotifierProvider =
     NotifierProvider<AnswersNotifier, List<Answer>>.internal(
-  AnswersNotifier.new,
-  name: r'answersNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$answersNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      AnswersNotifier.new,
+      name: r'answersNotifierProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$answersNotifierHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$AnswersNotifier = Notifier<List<Answer>>;
 // ignore_for_file: type=lint
