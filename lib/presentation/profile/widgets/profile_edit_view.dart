@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:brain_bench/core/component_widgets/glass_card_view.dart';
-import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
+import 'package:brain_bench/core/shared_widgets/cards/glass_card_view.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/hooks/shared/use_image_picker_wrapper.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
@@ -65,8 +65,9 @@ class ProfileEditView extends HookWidget {
     ImageProvider? displayImage;
     // Use the hook's state for the preview
     if (imagePickerLogic.selectedImage.value != null) {
-      displayImage =
-          FileImage(File(imagePickerLogic.selectedImage.value!.path));
+      displayImage = FileImage(
+        File(imagePickerLogic.selectedImage.value!.path),
+      );
     } else if (userImageUrl != null && userImageUrl!.isNotEmpty) {
       // Fallback to userImageUrl if hook state is null
       displayImage = NetworkImage(userImageUrl!);
@@ -99,8 +100,9 @@ class ProfileEditView extends HookWidget {
                     backgroundImage:
                         displayImage, // Uses image from hook or URL
                     onBackgroundImageError: (exception, stackTrace) {
-                      _logger
-                          .warning('Error loading profile image: $exception');
+                      _logger.warning(
+                        'Error loading profile image: $exception',
+                      );
                     },
                   ),
                 ),
@@ -109,8 +111,9 @@ class ProfileEditView extends HookWidget {
                   padding: const EdgeInsets.all(4.0),
                   child: CircleAvatar(
                     radius: 24,
-                    backgroundColor: theme.colorScheme.surface
-                        .withAlpha((0.95 * 255).toInt()),
+                    backgroundColor: theme.colorScheme.surface.withAlpha(
+                      (0.95 * 255).toInt(),
+                    ),
                     child: IconButton(
                       icon: Icon(
                         defaultTargetPlatform == TargetPlatform.iOS
@@ -132,8 +135,9 @@ class ProfileEditView extends HookWidget {
           // Display Name TextField
           TextField(
             controller: displayNameController,
-            style:
-                textTheme.bodyLarge?.copyWith(color: BrainBenchColors.deepDive),
+            style: textTheme.bodyLarge?.copyWith(
+              color: BrainBenchColors.deepDive,
+            ),
             textAlign: TextAlign.start,
             decoration: InputDecoration(
               hintText: localizations.profileDisplayNameLabel,
@@ -149,8 +153,8 @@ class ProfileEditView extends HookWidget {
             controller: emailController,
             readOnly: true,
             style: textTheme.bodyLarge?.copyWith(
-                color:
-                    BrainBenchColors.deepDive.withAlpha((0.6 * 255).toInt())),
+              color: BrainBenchColors.deepDive.withAlpha((0.6 * 255).toInt()),
+            ),
             textAlign: TextAlign.start,
             decoration: InputDecoration(
               hintText: localizations.profileEmailLabel,
@@ -164,7 +168,7 @@ class ProfileEditView extends HookWidget {
             title: localizations.profileEditBtnLbl,
             isActive: isActive,
             onPressed: onPressed,
-          )
+          ),
         ],
       ),
     );

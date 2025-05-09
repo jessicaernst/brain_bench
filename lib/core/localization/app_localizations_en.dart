@@ -319,4 +319,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileLoadError => 'Error loading profile data.';
+
+  @override
+  String get homeActualCategorySectionTitle => 'actual';
+
+  @override
+  String get statusLoadingLabel => 'Loading...';
+
+  @override
+  String get homeActualCategoryDescriptionPrompt => 'Select a category to see details.';
+
+  @override
+  String get homeActualCategoryNoCategories => 'No categories available.';
+
+  @override
+  String get homeActualCategoryErrorLoading => 'Error loading categories:';
+
+  @override
+  String get genericErrorMessage => 'Something went wrong. Please try again later.';
 }

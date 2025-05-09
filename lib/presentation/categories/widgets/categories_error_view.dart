@@ -1,4 +1,4 @@
-import 'package:brain_bench/core/component_widgets/profile_button_view.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/profile_button_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 
@@ -26,18 +26,17 @@ class CategoriesErrorView extends StatelessWidget {
           Opacity(
             opacity: 0.5,
             // Prevents touch events
-            child: IgnorePointer(
-              child: ProfileButtonView(),
-            ),
+            child: IgnorePointer(child: ProfileButtonView()),
           ),
           SizedBox(width: 16),
         ],
       ),
       body: Center(
-          child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Text('${AppLocalizations.of(context)!.errorGeneric}: $error'),
-      )),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text('${AppLocalizations.of(context)!.errorGeneric}: $error'),
+        ),
+      ),
     );
   }
 }

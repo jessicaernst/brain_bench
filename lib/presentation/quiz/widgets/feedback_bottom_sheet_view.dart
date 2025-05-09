@@ -1,7 +1,7 @@
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_state_notifier.dart';
-import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/core/utils/quiz_filtering.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
@@ -41,7 +41,8 @@ class FeedbackBottomSheetView extends ConsumerWidget {
             : localizations.finishQuizBtnLbl;
 
     _logger.fine(
-        'Building FeedbackBottomSheetView. Correct: ${filtered.correct.length}, Incorrect: ${filtered.incorrect.length}, Missed: ${filtered.missed.length}');
+      'Building FeedbackBottomSheetView. Correct: ${filtered.correct.length}, Incorrect: ${filtered.incorrect.length}, Missed: ${filtered.missed.length}',
+    );
 
     return SingleChildScrollView(
       child: Padding(
@@ -60,8 +61,10 @@ class FeedbackBottomSheetView extends ConsumerWidget {
             if (filtered.correct.isNotEmpty) ...[
               Row(
                 children: [
-                  const Icon(Icons.check_circle,
-                      color: BrainBenchColors.correctAnswerGlass),
+                  const Icon(
+                    Icons.check_circle,
+                    color: BrainBenchColors.correctAnswerGlass,
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     localizations.feedbackBSheetCorrectAnswers,
@@ -74,8 +77,9 @@ class FeedbackBottomSheetView extends ConsumerWidget {
                   padding: const EdgeInsets.only(left: 24.0),
                   child: Text(
                     '- ${_getLocalizedAnswerText(a)}',
-                    style: textTheme.bodyMedium
-                        ?.copyWith(color: BrainBenchColors.correctAnswerGlass),
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: BrainBenchColors.correctAnswerGlass,
+                    ),
                   ),
                 ),
               ),
@@ -86,8 +90,10 @@ class FeedbackBottomSheetView extends ConsumerWidget {
             if (filtered.incorrect.isNotEmpty) ...[
               Row(
                 children: [
-                  const Icon(Icons.cancel,
-                      color: BrainBenchColors.falseQuestionGlass),
+                  const Icon(
+                    Icons.cancel,
+                    color: BrainBenchColors.falseQuestionGlass,
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     localizations.feedbackBSheetWrongAnswers,
@@ -100,8 +106,9 @@ class FeedbackBottomSheetView extends ConsumerWidget {
                   padding: const EdgeInsets.only(left: 24.0),
                   child: Text(
                     '- ${_getLocalizedAnswerText(a)}',
-                    style: textTheme.bodyMedium
-                        ?.copyWith(color: BrainBenchColors.falseQuestionGlass),
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: BrainBenchColors.falseQuestionGlass,
+                    ),
                   ),
                 ),
               ),

@@ -1,7 +1,7 @@
 import 'package:brain_bench/business_logic/categories/categories_provider.dart';
-import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
-import 'package:brain_bench/core/component_widgets/no_data_available_view.dart';
-import 'package:brain_bench/core/component_widgets/progress_indicator_bar_view.dart';
+import 'package:brain_bench/core/shared_widgets/appbars/back_nav_app_bar.dart';
+import 'package:brain_bench/core/shared_widgets/error_views/no_data_available_view.dart';
+import 'package:brain_bench/core/shared_widgets/progress_bars/progress_indicator_bar_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/infrastructure/quiz/topic_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
@@ -18,10 +18,7 @@ import 'package:logging/logging.dart';
 final Logger _logger = Logger('TopicsPage');
 
 class TopicsPage extends ConsumerStatefulWidget {
-  const TopicsPage({
-    super.key,
-    required this.categoryId,
-  });
+  const TopicsPage({super.key, required this.categoryId});
 
   final String categoryId;
 
@@ -43,7 +40,8 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
     final isExpandedRaw = _expandedStates[stateKey];
     if (isExpandedRaw is! bool) {
       _logger.severe(
-          '❌ Invalid expanded state for topic ${topic.id} (status: $isDone): $isExpandedRaw. Resetting to false.');
+        '❌ Invalid expanded state for topic ${topic.id} (status: $isDone): $isExpandedRaw. Resetting to false.',
+      );
       return false;
     }
     return isExpandedRaw;
@@ -54,11 +52,13 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
     final languageCode = Localizations.localeOf(context).languageCode;
     final localizations = AppLocalizations.of(context)!;
 
-    final topicsAsync =
-        ref.watch(topicsProvider(widget.categoryId, languageCode));
+    final topicsAsync = ref.watch(
+      topicsProvider(widget.categoryId, languageCode),
+    );
 
-    final categoryAsync =
-        ref.watch(categoryByIdProvider(widget.categoryId, languageCode));
+    final categoryAsync = ref.watch(
+      categoryByIdProvider(widget.categoryId, languageCode),
+    );
 
     final userStateAsync = ref.watch(currentUserModelProvider);
     AppUser? user;
@@ -92,7 +92,8 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
               data: (topics) {
                 if (topics.isEmpty) {
                   _logger.warning(
-                      '⚠️ No topics found for Category ID: ${widget.categoryId}');
+                    '⚠️ No topics found for Category ID: ${widget.categoryId}',
+                  );
                   return const NoDataAvailableView(
                     text: '❌  No topics available.',
                   );
@@ -151,45 +152,50 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
                             _showDoneTopics = expanded;
                           });
                         },
-                        children: doneTopics.map((topic) {
-                          const isDone = true;
-                          final stateKey = '${topic.id}_$isDone';
-                          final isExpanded = _getExpandedState(topic, isDone);
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 16),
-                            child: TopicCard(
-                              isExpanded: isExpanded,
-                              onToggle: () {
-                                setState(() {
-                                  _expandedStates[stateKey] =
-                                      !_expandedStates[stateKey]!;
-                                });
-                              },
-                              onPressed: () {
-                                context.goNamed(
-                                  AppRouteNames.quiz,
-                                  pathParameters: {
-                                    'topicId': topic.id,
-                                    'categoryId': widget.categoryId,
+                        children:
+                            doneTopics.map((topic) {
+                              const isDone = true;
+                              final stateKey = '${topic.id}_$isDone';
+                              final isExpanded = _getExpandedState(
+                                topic,
+                                isDone,
+                              );
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 16),
+                                child: TopicCard(
+                                  isExpanded: isExpanded,
+                                  onToggle: () {
+                                    setState(() {
+                                      _expandedStates[stateKey] =
+                                          !_expandedStates[stateKey]!;
+                                    });
                                   },
-                                );
-                              },
-                              topic: topic,
-                            ),
-                          );
-                        }).toList(),
+                                  onPressed: () {
+                                    context.goNamed(
+                                      AppRouteNames.quiz,
+                                      pathParameters: {
+                                        'topicId': topic.id,
+                                        'categoryId': widget.categoryId,
+                                      },
+                                    );
+                                  },
+                                  topic: topic,
+                                ),
+                              );
+                            }).toList(),
                       ),
                   ],
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, _) => Center(
-                child: Text(
-                  'Error loading topics: $error',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              error:
+                  (error, _) => Center(
+                    child: Text(
+                      'Error loading topics: $error',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
             ),
           ),
         ],

@@ -1,7 +1,7 @@
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
-import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
-import 'package:brain_bench/core/component_widgets/progress_indicator_bar_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.dart';
+import 'package:brain_bench/core/shared_widgets/progress_bars/progress_indicator_bar_view.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:brain_bench/presentation/quiz/widgets/answer_list_view.dart';
@@ -45,8 +45,11 @@ class QuizQuestionDisplay extends StatelessWidget {
           AnswerListView(
             question: currentQuestion,
             isMultipleChoice: isMultipleChoice,
-            onAnswerSelected: (answerId) => answersNotifier
-                .toggleAnswerSelection(answerId, isMultipleChoice),
+            onAnswerSelected:
+                (answerId) => answersNotifier.toggleAnswerSelection(
+                  answerId,
+                  isMultipleChoice,
+                ),
             // AnswerListView fetches its own answers via provider
           ),
           const SizedBox(height: 24),

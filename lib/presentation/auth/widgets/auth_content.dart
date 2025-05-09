@@ -1,4 +1,4 @@
-import 'package:brain_bench/core/component_widgets/glass_card_view.dart';
+import 'package:brain_bench/core/shared_widgets/cards/glass_card_view.dart';
 import 'package:brain_bench/presentation/auth/widgets/login_content_view.dart';
 import 'package:brain_bench/presentation/auth/widgets/sign_up_content_view.dart';
 import 'package:flutter/material.dart';
@@ -56,24 +56,27 @@ class AuthContent extends StatelessWidget {
           // Use SingleChildScrollView to prevent overflow when keyboard appears
           return SingleChildScrollView(
             // Adjust scroll physics based on keyboard visibility
-            physics: isKeyboardVisible
-                ? const ClampingScrollPhysics() // Allow scrolling if needed
-                : const NeverScrollableScrollPhysics(), // Disable scrolling otherwise
+            physics:
+                isKeyboardVisible
+                    ? const ClampingScrollPhysics() // Allow scrolling if needed
+                    : const NeverScrollableScrollPhysics(), // Disable scrolling otherwise
             padding: EdgeInsets.only(
               left: 24,
               right: 24,
               top: 32, // Fixed top padding
               // Dynamic bottom padding based on keyboard visibility
-              bottom: isKeyboardVisible
-                  ? mediaQuery.viewInsets.bottom +
-                      16 // Space for keyboard + buffer
-                  : 32, // Fixed bottom padding otherwise
+              bottom:
+                  isKeyboardVisible
+                      ? mediaQuery.viewInsets.bottom +
+                          16 // Space for keyboard + buffer
+                      : 32, // Fixed bottom padding otherwise
             ),
             // Ensure the content area tries to fill the available height
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 // Calculate minimum height considering keyboard and padding
-                minHeight: constraints.maxHeight -
+                minHeight:
+                    constraints.maxHeight -
                     (isKeyboardVisible ? mediaQuery.viewInsets.bottom : 0) -
                     64, // Adjusted height (top+bottom padding)
               ),
@@ -99,10 +102,13 @@ class AuthContent extends StatelessWidget {
                           // Direction depends on whether switching to Login or SignUp
                           begin: Offset(isSwitchingToLogin ? -1.0 : 1.0, 0.0),
                           end: Offset.zero,
-                        ).animate(CurvedAnimation(
-                          parent: animation,
-                          curve: Curves.easeOutCubic, // Smooth transition curve
-                        ));
+                        ).animate(
+                          CurvedAnimation(
+                            parent: animation,
+                            curve:
+                                Curves.easeOutCubic, // Smooth transition curve
+                          ),
+                        );
                         // Fade animation for the switch
                         final fade = CurvedAnimation(
                           parent: animation,
@@ -119,38 +125,40 @@ class AuthContent extends StatelessWidget {
                         );
                       },
                       // The child widget to display, based on the `isLogin` state
-                      child: isLogin
-                          ? GlassCardView(
-                              // Unique key for AnimatedSwitcher to identify the child
-                              key: const ValueKey('login'),
-                              content: LoginContentView(
-                                emailController: emailController,
-                                passwordController: passwordController,
-                                isButtonEnabled: isButtonEnabled,
-                                onLoginPressed: onLoginPressed,
-                                // Pass the callback to switch *to* SignUp
-                                onSignUpPressed: onSwitchToSignUpPressed,
-                                onResetPasswordPressed: onResetPasswordPressed,
-                                onGoogleLoginPressed: onGoogleLoginPressed,
-                                onAppleLoginPressed: onAppleLoginPressed,
+                      child:
+                          isLogin
+                              ? GlassCardView(
+                                // Unique key for AnimatedSwitcher to identify the child
+                                key: const ValueKey('login'),
+                                content: LoginContentView(
+                                  emailController: emailController,
+                                  passwordController: passwordController,
+                                  isButtonEnabled: isButtonEnabled,
+                                  onLoginPressed: onLoginPressed,
+                                  // Pass the callback to switch *to* SignUp
+                                  onSignUpPressed: onSwitchToSignUpPressed,
+                                  onResetPasswordPressed:
+                                      onResetPasswordPressed,
+                                  onGoogleLoginPressed: onGoogleLoginPressed,
+                                  onAppleLoginPressed: onAppleLoginPressed,
+                                ),
+                              )
+                              : GlassCardView(
+                                // Unique key for AnimatedSwitcher
+                                key: const ValueKey('signup'),
+                                content: SignUpContentView(
+                                  emailController: emailSignUpController,
+                                  passwordController: passwordSignUpController,
+                                  repeatPasswordController:
+                                      repeatPasswordSignUpController,
+                                  isButtonEnabled: isButtonEnabled,
+                                  // Pass the callback to switch *back* to Login
+                                  onBackPressed: onSwitchToLoginPressed,
+                                  onSignUpPressed: onSignUpPressed,
+                                  onGoogleLoginPressed: onGoogleLoginPressed,
+                                  onAppleLoginPressed: onAppleLoginPressed,
+                                ),
                               ),
-                            )
-                          : GlassCardView(
-                              // Unique key for AnimatedSwitcher
-                              key: const ValueKey('signup'),
-                              content: SignUpContentView(
-                                emailController: emailSignUpController,
-                                passwordController: passwordSignUpController,
-                                repeatPasswordController:
-                                    repeatPasswordSignUpController,
-                                isButtonEnabled: isButtonEnabled,
-                                // Pass the callback to switch *back* to Login
-                                onBackPressed: onSwitchToLoginPressed,
-                                onSignUpPressed: onSignUpPressed,
-                                onGoogleLoginPressed: onGoogleLoginPressed,
-                                onAppleLoginPressed: onAppleLoginPressed,
-                              ),
-                            ),
                     ),
                   ),
                 ),

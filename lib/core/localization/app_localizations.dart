@@ -718,6 +718,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error loading profile data.'**
   String get profileLoadError;
+
+  /// Title for the section on the home screen displaying the currently active category.
+  ///
+  /// In en, this message translates to:
+  /// **'actual'**
+  String get homeActualCategorySectionTitle;
+
+  /// Generic text indicating that content is currently loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get statusLoadingLabel;
+
+  /// Prompt message in the actual category view when no category is selected or details are not yet loaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a category to see details.'**
+  String get homeActualCategoryDescriptionPrompt;
+
+  /// Message displayed in the actual category view when there are no categories to show.
+  ///
+  /// In en, this message translates to:
+  /// **'No categories available.'**
+  String get homeActualCategoryNoCategories;
+
+  /// Error message prefix displayed in the actual category view when categories fail to load.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading categories:'**
+  String get homeActualCategoryErrorLoading;
+
+  /// A generic error message displayed to the user when an unexpected error occurs.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again later.'**
+  String get genericErrorMessage;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

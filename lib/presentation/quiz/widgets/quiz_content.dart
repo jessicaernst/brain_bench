@@ -1,6 +1,6 @@
 import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_state_notifier.dart';
-import 'package:brain_bench/core/component_widgets/no_data_available_view.dart';
+import 'package:brain_bench/core/shared_widgets/error_views/no_data_available_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
@@ -38,27 +38,32 @@ class QuizContent extends ConsumerWidget {
     if (quizState.questions.isEmpty) {
       if (questions.isEmpty) {
         // This case is handled by the parent's listener, but good to have a fallback UI
-        _logger
-            .warning('⚠️ No questions found for Topic ID: (in _QuizContent)');
+        _logger.warning(
+          '⚠️ No questions found for Topic ID: (in _QuizContent)',
+        );
         return NoDataAvailableView(
-            text: localizations.quizNoQuestionsAvailable);
+          text: localizations.quizNoQuestionsAvailable,
+        );
       }
       _logger.fine(
-          'Waiting for QuizViewModel initialization... (in _QuizContent)');
+        'Waiting for QuizViewModel initialization... (in _QuizContent)',
+      );
       return const Center(child: CircularProgressIndicator());
     }
 
     // --- Loading Condition 2: ViewModel is loading answers ---
     if (quizState.isLoadingAnswers) {
       _logger.fine(
-          '⏳ QuizViewModel is loading answers for index ${quizState.currentIndex}... (in _QuizContent)');
+        '⏳ QuizViewModel is loading answers for index ${quizState.currentIndex}... (in _QuizContent)',
+      );
       return const Center(child: CircularProgressIndicator());
     }
 
     // --- Fallback Check: Answers still empty after loading finished ---
     if (currentAnswers.isEmpty) {
       _logger.warning(
-          '⚠️ isLoadingAnswers is false, but currentAnswers is empty. Potential issue loading answers for index ${quizState.currentIndex}. (in _QuizContent)');
+        '⚠️ isLoadingAnswers is false, but currentAnswers is empty. Potential issue loading answers for index ${quizState.currentIndex}. (in _QuizContent)',
+      );
       // Show loading or error? Let's keep loading for now.
       return const Center(child: CircularProgressIndicator());
     }
@@ -67,7 +72,8 @@ class QuizContent extends ConsumerWidget {
     if (quizState.currentIndex < 0 ||
         quizState.currentIndex >= quizState.questions.length) {
       _logger.severe(
-          '❌ Invalid currentIndex (${quizState.currentIndex}) in _QuizContent build.');
+        '❌ Invalid currentIndex (${quizState.currentIndex}) in _QuizContent build.',
+      );
       return Center(child: Text('Internal error: Invalid question index.'));
     }
 
@@ -79,7 +85,8 @@ class QuizContent extends ConsumerWidget {
     final double progress = quizViewModel.getProgress();
 
     _logger.finer(
-        'Displaying question index: ${quizState.currentIndex}, ID: ${currentQuestion.id} (in _QuizContent)');
+      'Displaying question index: ${quizState.currentIndex}, ID: ${currentQuestion.id} (in _QuizContent)',
+    );
 
     // Delegate to the previously extracted _QuizQuestionDisplay
     return QuizQuestionDisplay(
@@ -91,8 +98,9 @@ class QuizContent extends ConsumerWidget {
       currentAnswers: currentAnswers,
       onSubmit: () {
         // Encapsulate submit logic here
-        final answersForCheck =
-            ref.read(answersNotifierProvider); // Read fresh state
+        final answersForCheck = ref.read(
+          answersNotifierProvider,
+        ); // Read fresh state
         if (answersForCheck.any((answer) => answer.isSelected)) {
           _logger.info('🟢 Submit button pressed (via _QuizContent)');
           quizViewModel.checkAnswers();

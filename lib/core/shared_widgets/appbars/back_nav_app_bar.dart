@@ -1,14 +1,10 @@
-import 'package:brain_bench/core/component_widgets/profile_button_view.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/profile_button_view.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
+import 'package:flutter/material.dart';
 
 class BackNavAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const BackNavAppBar({
-    super.key,
-    required this.title,
-    required this.onBack,
-  });
+  const BackNavAppBar({super.key, required this.title, required this.onBack});
 
   final String title;
   final VoidCallback? onBack;
@@ -28,9 +24,7 @@ class BackNavAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         onPressed: onBack,
       ),
-      actions: const [
-        ProfileButtonView(),
-      ],
+      actions: const [ProfileButtonView()],
     );
   }
 }

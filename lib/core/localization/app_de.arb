@@ -415,5 +415,29 @@
     "profileLoadError": "Fehler beim Laden des Profils.",
     "@profileLoadError": {
         "description": "Error message shown when loading the profile fails"
+    },
+    "homeActualCategorySectionTitle": "aktuell",
+    "@homeActualCategorySectionTitle": {
+        "description": "Title for the section on the home screen displaying the currently active category."
+    },
+    "statusLoadingLabel": "Lädt...",
+    "@statusLoadingLabel": {
+        "description": "Generic text indicating that content is currently loading."
+    },
+    "homeActualCategoryDescriptionPrompt": "Wähle eine Kategorie, um Details anzuzeigen.",
+    "@homeActualCategoryDescriptionPrompt": {
+        "description": "Prompt message in the actual category view when no category is selected or details are not yet loaded."
+    },
+    "homeActualCategoryNoCategories": "Keine Kategorien verfügbar.",
+    "@homeActualCategoryNoCategories": {
+        "description": "Message displayed in the actual category view when there are no categories to show."
+    },
+    "homeActualCategoryErrorLoading": "Fehler beim Laden der Kategorien:",
+    "@homeActualCategoryErrorLoading": {
+        "description": "Error message prefix displayed in the actual category view when categories fail to load."
+    },
+    "genericErrorMessage": "Etwas ist schiefgelaufen. Bitte versuche es später erneut.",
+    "@genericErrorMessage": {
+        "description": "Eine generische Fehlermeldung, die dem Benutzer angezeigt wird, wenn ein unerwarteter Fehler auftritt."
     }
 }

@@ -1,6 +1,6 @@
 import 'package:brain_bench/business_logic/categories/categories_provider.dart';
+import 'package:brain_bench/core/shared_widgets/progress_bars/dash_evolution_progress_dircle_view.dart';
 import 'package:brain_bench/core/styles/colors.dart';
-import 'package:brain_bench/core/component_widgets/dash_evolution_progress_dircle_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -26,9 +26,10 @@ class CategoryRowView extends HookConsumerWidget {
 
     final theme = Theme.of(context);
     final bool isDarkMode = theme.brightness == Brightness.dark;
-    final Color selectedColor = isDarkMode
-        ? BrainBenchColors.flutterSky
-        : BrainBenchColors.blueprintBlue;
+    final Color selectedColor =
+        isDarkMode
+            ? BrainBenchColors.flutterSky
+            : BrainBenchColors.blueprintBlue;
 
     return GestureDetector(
       onTap: () {
@@ -42,16 +43,15 @@ class CategoryRowView extends HookConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         spacing: 24,
         children: [
-          DashEvolutionProgressCircleView(
-            progress: progress,
-          ),
+          DashEvolutionProgressCircleView(progress: progress),
           Text(
             categoryTitle,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: isSelected
+              color:
+                  isSelected
                       ? selectedColor
                       : Theme.of(context).textTheme.bodyMedium?.color,
-                ),
+            ),
             textAlign: TextAlign.start,
           ),
         ],

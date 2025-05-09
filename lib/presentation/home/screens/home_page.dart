@@ -1,4 +1,4 @@
-import 'package:brain_bench/core/component_widgets/profile_button_view.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/profile_button_view.dart';
 import 'package:brain_bench/core/extensions/responsive_context.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
@@ -43,42 +43,42 @@ class HomePage extends ConsumerWidget {
         description:
             'Learn how to structure layouts using advanced Figma UI blocks.',
         imageUrl: Assets.carouselTest.image12.path,
-        categoryId: '',
+        categoryId: '2b3c4d5e-design-002',
       ),
       Carousel.create(
         title: 'Design Systems: Image 13',
         description:
             'Understand how to build scalable and reusable design systems.',
         imageUrl: Assets.carouselTest.image13.path,
-        categoryId: '',
+        categoryId: '2b3c4d5e-design-002',
       ),
       Carousel.create(
         title: 'Typography Tricks: Image 14',
         description:
             'Typography techniques to improve readability and design harmony.',
         imageUrl: Assets.carouselTest.image14.path,
-        categoryId: '',
+        categoryId: '2b3c4d5e-design-002',
       ),
       Carousel.create(
         title: 'Modern Layouts: Image 15',
         description:
             'Explore advanced layout techniques with grids and spacing.',
         imageUrl: Assets.carouselTest.image15.path,
-        categoryId: '',
+        categoryId: '2b3c4d5e-design-002',
       ),
       Carousel.create(
         title: 'Component-Based UI: Image 16',
         description:
             'Discover how to build component-driven interfaces in Figma.',
         imageUrl: Assets.carouselTest.image16.path,
-        categoryId: '',
+        categoryId: '2b3c4d5e-design-002',
       ),
       Carousel.create(
         title: 'Figma Intro: Image',
         description:
             'Start designing mobile apps with a beginner-friendly mockup. Start designing mobile apps with a beginner-friendly mockup. Start designing mobile apps with a beginner-friendly mockup.',
         imageUrl: Assets.carouselTest.image.path,
-        categoryId: '',
+        categoryId: '2b3c4d5e-design-002',
       ),
     ];
 

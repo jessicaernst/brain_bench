@@ -1,6 +1,6 @@
+import 'package:brain_bench/core/shared_widgets/progress_bars/gradient_progress_indicator.dart';
 import 'package:brain_bench/core/styles/gradient_colors.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
-import 'package:brain_bench/core/component_widgets/gradient_progress_indicator.dart';
 import 'package:flutter/material.dart';
 
 class DashEvolutionProgressCircleView extends StatelessWidget {
@@ -13,12 +13,12 @@ class DashEvolutionProgressCircleView extends StatelessWidget {
   final double progress;
   final double size;
 
-  // Determines the image path based on the progress value
-  // Progress is divided into ranges:
-  // - 0.0 to <0.25: evolution1
-  // - 0.25 to <0.75: evolution2
-  // - 0.75 to <1.0: evolution3
-  // - 1.0: evolution4
+  /// Determines the image path based on the progress value
+  /// Progress is divided into ranges:
+  /// - 0.0 to <0.25: evolution1
+  /// - 0.25 to <0.75: evolution2
+  /// - 0.75 to <1.0: evolution3
+  /// - 1.0: evolution4
   String _getImagePath(double progress) {
     if (progress < 0.25) {
       return Assets.images.evolution1.path;
@@ -33,7 +33,7 @@ class DashEvolutionProgressCircleView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Determine which image to display based on the progress
+    /// Determine which image to display based on the progress
     final imagePath = _getImagePath(progress);
 
     return Stack(
@@ -55,8 +55,9 @@ class DashEvolutionProgressCircleView extends StatelessWidget {
           // *0.35 ensures that the circle (avatar) is smaller than the outer indicator,
           // creating an aesthetically pleasing size ratio between the progress indicator
           // and the inner image.
-          backgroundImage:
-              AssetImage(imagePath), // Dynamic image based on progress
+          backgroundImage: AssetImage(
+            imagePath,
+          ), // Dynamic image based on progress
           backgroundColor:
               Colors.transparent, // Transparent background to match design
         ),

@@ -1,5 +1,5 @@
-import 'package:brain_bench/core/component_widgets/profile_button_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/profile_button_view.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,10 +40,7 @@ class ResultPage extends ConsumerWidget {
             children: [
               Align(
                 alignment: Alignment.centerRight,
-                child: Assets.images.dashLogo.image(
-                  width: 350,
-                  height: 350,
-                ),
+                child: Assets.images.dashLogo.image(width: 350, height: 350),
               ),
               const SizedBox(height: 20),
               Text(

@@ -1,8 +1,8 @@
 import 'package:brain_bench/business_logic/locale/locale_provider.dart'; // Import locale provider
 import 'package:brain_bench/business_logic/theme/theme_provider.dart';
-import 'package:brain_bench/core/component_widgets/close_nav_app_bar.dart';
-import 'package:brain_bench/core/component_widgets/glass_card_view.dart';
-import 'package:brain_bench/core/component_widgets/profile_settings_page_background.dart';
+import 'package:brain_bench/core/shared_widgets/appbars/close_nav_app_bar.dart';
+import 'package:brain_bench/core/shared_widgets/cards/glass_card_view.dart';
+import 'package:brain_bench/core/shared_widgets/backgrounds/profile_settings_page_background.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/presentation/settings/widgets/error_content_view.dart';
@@ -20,7 +20,9 @@ class SettingsPage extends ConsumerWidget {
 
   // Helper function to determine the switch state based on theme mode and current brightness
   bool _calculateIsSwitchOn(
-      AsyncValue<ThemeMode> themeModeAsyncValue, bool isDarkMode) {
+    AsyncValue<ThemeMode> themeModeAsyncValue,
+    bool isDarkMode,
+  ) {
     // Use the value if available (even in error state due to copyWithPrevious)
     final currentThemeMode = themeModeAsyncValue.valueOrNull;
     if (currentThemeMode != null) {
@@ -44,29 +46,36 @@ class SettingsPage extends ConsumerWidget {
     final theme = Theme.of(context);
 
     final bool isDarkMode = theme.brightness == Brightness.dark;
-    final Color iconColor = isDarkMode
-        ? BrainBenchColors.flutterSky.withAlpha((0.8 * 255).toInt())
-        : BrainBenchColors.deepDive.withAlpha((0.6 * 255).toInt());
-    final Color dividerColor = isDarkMode
-        ? BrainBenchColors.cloudCanvas.withAlpha((0.3 * 255).toInt())
-        : BrainBenchColors.deepDive.withAlpha((0.3 * 255).toInt());
+    final Color iconColor =
+        isDarkMode
+            ? BrainBenchColors.flutterSky.withAlpha((0.8 * 255).toInt())
+            : BrainBenchColors.deepDive.withAlpha((0.6 * 255).toInt());
+    final Color dividerColor =
+        isDarkMode
+            ? BrainBenchColors.cloudCanvas.withAlpha((0.3 * 255).toInt())
+            : BrainBenchColors.deepDive.withAlpha((0.3 * 255).toInt());
 
     // --- Watch States ---
     final themeModeAsyncValue = ref.watch(themeModeNotifierProvider);
-    final localeAsyncValue =
-        ref.watch(localeNotifierProvider); // Watch locale state
+    final localeAsyncValue = ref.watch(
+      localeNotifierProvider,
+    ); // Watch locale state
 
     // --- Calculate Theme States ---
-    final bool isSwitchOn =
-        _calculateIsSwitchOn(themeModeAsyncValue, isDarkMode);
-    final bool isThemeBusy = themeModeAsyncValue.isLoading ||
+    final bool isSwitchOn = _calculateIsSwitchOn(
+      themeModeAsyncValue,
+      isDarkMode,
+    );
+    final bool isThemeBusy =
+        themeModeAsyncValue.isLoading ||
         themeModeAsyncValue.isRefreshing ||
         themeModeAsyncValue.isReloading;
     final bool hasThemeSaveError =
         themeModeAsyncValue is AsyncError && themeModeAsyncValue.hasValue;
 
     // --- Calculate Locale States ---
-    final bool isLocaleBusy = localeAsyncValue.isLoading ||
+    final bool isLocaleBusy =
+        localeAsyncValue.isLoading ||
         localeAsyncValue.isRefreshing ||
         localeAsyncValue.isReloading;
     final bool hasLocaleSaveError =
@@ -78,9 +87,9 @@ class SettingsPage extends ConsumerWidget {
         return; // Don't change if busy or in error state
       }
       _logger.info('Theme mode toggled via Switch: $newValue');
-      await ref.read(themeModeNotifierProvider.notifier).setThemeMode(
-            newValue ? ThemeMode.dark : ThemeMode.light,
-          );
+      await ref
+          .read(themeModeNotifierProvider.notifier)
+          .setThemeMode(newValue ? ThemeMode.dark : ThemeMode.light);
     }
 
     // --- Theme Refresh Handler (for error recovery) ---
@@ -158,10 +167,7 @@ class SettingsPage extends ConsumerWidget {
                             ),
                         ],
                       ),
-                      Divider(
-                        height: 0.7,
-                        color: dividerColor,
-                      ),
+                      Divider(height: 0.7, color: dividerColor),
                       // --- Language Row ---
                       Row(
                         children: [

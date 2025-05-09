@@ -34,17 +34,19 @@ final class ProfileButtonView extends ConsumerWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color:
-                Theme.of(context).primaryColor.withAlpha((0.4 * 255).toInt()),
+            color: Theme.of(
+              context,
+            ).primaryColor.withAlpha((0.4 * 255).toInt()),
             width: 2.0,
           ),
         ),
         child: CircleAvatar(
           radius: 18,
           backgroundColor: Colors.transparent,
-          backgroundImage: userImageUrl != null
-              ? NetworkImage(userImageUrl) as ImageProvider
-              : Assets.images.evolution4.provider(),
+          backgroundImage:
+              userImageUrl != null
+                  ? NetworkImage(userImageUrl) as ImageProvider
+                  : Assets.images.evolution4.provider(),
           onBackgroundImageError: (exception, stackTrace) {
             _logger.warning('Error loading user image: $exception');
           },
@@ -63,53 +65,57 @@ final class ProfileButtonView extends ConsumerWidget {
             break;
         }
       },
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-        PopupMenuItem<String>(
-          value: 'profile',
-          child: ListTile(
-            leading: Icon(
-              CupertinoIcons.profile_circled,
-              color: isDarkMode
-                  ? BrainBenchColors.cloudCanvas
-                  : BrainBenchColors.deepDive,
+      itemBuilder:
+          (BuildContext context) => <PopupMenuEntry<String>>[
+            PopupMenuItem<String>(
+              value: 'profile',
+              child: ListTile(
+                leading: Icon(
+                  CupertinoIcons.profile_circled,
+                  color:
+                      isDarkMode
+                          ? BrainBenchColors.cloudCanvas
+                          : BrainBenchColors.deepDive,
+                ),
+                title: Text(
+                  localizations.profileMenuProfile,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
             ),
-            title: Text(
-              localizations.profileMenuProfile,
-              style: Theme.of(context).textTheme.bodyLarge,
+            PopupMenuItem<String>(
+              value: 'settings',
+              child: ListTile(
+                leading: Icon(
+                  CupertinoIcons.settings,
+                  color:
+                      isDarkMode
+                          ? BrainBenchColors.cloudCanvas
+                          : BrainBenchColors.deepDive,
+                ),
+                title: Text(
+                  localizations.profileMenuSettings,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
             ),
-          ),
-        ),
-        PopupMenuItem<String>(
-          value: 'settings',
-          child: ListTile(
-            leading: Icon(
-              CupertinoIcons.settings,
-              color: isDarkMode
-                  ? BrainBenchColors.cloudCanvas
-                  : BrainBenchColors.deepDive,
+            PopupMenuItem<String>(
+              value: 'logout',
+              child: ListTile(
+                leading: Icon(
+                  Icons.logout,
+                  color:
+                      isDarkMode
+                          ? BrainBenchColors.cloudCanvas
+                          : BrainBenchColors.deepDive,
+                ),
+                title: Text(
+                  localizations.profileMenuLogout,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
             ),
-            title: Text(
-              localizations.profileMenuSettings,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ),
-        ),
-        PopupMenuItem<String>(
-          value: 'logout',
-          child: ListTile(
-            leading: Icon(
-              Icons.logout,
-              color: isDarkMode
-                  ? BrainBenchColors.cloudCanvas
-                  : BrainBenchColors.deepDive,
-            ),
-            title: Text(
-              localizations.profileMenuLogout,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ),
-        ),
-      ],
+          ],
     );
   }
 }

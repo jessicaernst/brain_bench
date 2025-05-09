@@ -1,5 +1,5 @@
-import 'package:brain_bench/core/component_widgets/profile_button_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/profile_button_view.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesLoadingView extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:brain_bench/business_logic/profile/profile_notifier.dart';
-import 'package:brain_bench/core/component_widgets/close_nav_app_bar.dart';
-import 'package:brain_bench/core/component_widgets/profile_settings_page_background.dart';
+import 'package:brain_bench/core/shared_widgets/appbars/close_nav_app_bar.dart';
+import 'package:brain_bench/core/shared_widgets/backgrounds/profile_settings_page_background.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
@@ -35,9 +35,10 @@ class ProfilePage extends HookConsumerWidget {
     final displayNameController = useTextEditingController();
     final emailController = useTextEditingController();
     final bool isDarkMode = theme.brightness == Brightness.dark;
-    final Color iconColor = isDarkMode
-        ? BrainBenchColors.flutterSky
-        : BrainBenchColors.deepDive.withAlpha((0.6 * 255).toInt());
+    final Color iconColor =
+        isDarkMode
+            ? BrainBenchColors.flutterSky
+            : BrainBenchColors.deepDive.withAlpha((0.6 * 255).toInt());
 
     final profileUpdateState = ref.watch(profileNotifierProvider);
 
@@ -48,7 +49,8 @@ class ProfilePage extends HookConsumerWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                  '${localizations.profileUpdateError}: ${error.toString()}'),
+                '${localizations.profileUpdateError}: ${error.toString()}',
+              ),
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
@@ -77,8 +79,10 @@ class ProfilePage extends HookConsumerWidget {
         emailController.text = user.email;
       }
 
-      final subscription =
-          ref.listenManual(currentUserModelProvider, (_, next) {
+      final subscription = ref.listenManual(currentUserModelProvider, (
+        _,
+        next,
+      ) {
         next.whenData((state) {
           if (state is UserModelData) updateControllers(state.user);
         });
@@ -92,19 +96,21 @@ class ProfilePage extends HookConsumerWidget {
     }, [userStateAsync, isEditing.value]);
 
     final String? userImageUrl = userStateAsync.when(
-      data: (state) => switch (state) {
-        UserModelData(:final user) => user.photoUrl,
-        _ => null,
-      },
+      data:
+          (state) => switch (state) {
+            UserModelData(:final user) => user.photoUrl,
+            _ => null,
+          },
       loading: () => null,
       error: (err, stack) => null,
     );
 
     final originalDisplayName = userStateAsync.when(
-      data: (state) => switch (state) {
-        UserModelData(:final user) => user.displayName ?? '',
-        _ => '',
-      },
+      data:
+          (state) => switch (state) {
+            UserModelData(:final user) => user.displayName ?? '',
+            _ => '',
+          },
       loading: () => 'Loading...',
       error: (err, stack) => 'Error',
     );
@@ -125,14 +131,16 @@ class ProfilePage extends HookConsumerWidget {
     void handleSaveChanges() {
       if (!isSaveEnabled) {
         _logger.info(
-            'Save button pressed but not enabled (Loading: ${profileUpdateState.isLoading}, HasChanges: $hasChanges). Ignoring.');
+          'Save button pressed but not enabled (Loading: ${profileUpdateState.isLoading}, HasChanges: $hasChanges). Ignoring.',
+        );
         return;
       }
 
       final finalDisplayName = displayNameController.text.trim();
 
       _logger.info(
-          'Save changes pressed. Original Name: "$originalDisplayName", New Name: "$finalDisplayName"');
+        'Save changes pressed. Original Name: "$originalDisplayName", New Name: "$finalDisplayName"',
+      );
       _logger.fine('Selected Image: ${selectedImage.value?.path ?? "None"}');
 
       if (nameChanged && finalDisplayName.isEmpty) {
@@ -143,9 +151,9 @@ class ProfilePage extends HookConsumerWidget {
       }
 
       _logger.info('Changes detected, calling profile update notifier.');
-      ref.read(profileNotifierProvider.notifier).updateProfile(
-            displayName: finalDisplayName,
-          );
+      ref
+          .read(profileNotifierProvider.notifier)
+          .updateProfile(displayName: finalDisplayName);
     }
 
     void toggleEditMode() {
@@ -186,41 +194,46 @@ class ProfilePage extends HookConsumerWidget {
 
     IconData? leadingAppBarIcon;
     if (isEditing.value) {
-      leadingAppBarIcon = defaultTargetPlatform == TargetPlatform.iOS
-          ? CupertinoIcons.chevron_back
-          : Icons.arrow_back;
+      leadingAppBarIcon =
+          defaultTargetPlatform == TargetPlatform.iOS
+              ? CupertinoIcons.chevron_back
+              : Icons.arrow_back;
     }
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: CloseNavAppBar(
-        title: isEditing.value
-            ? localizations.profileEditAppBarTitle
-            : localizations.profileAppBarTitle,
+        title:
+            isEditing.value
+                ? localizations.profileEditAppBarTitle
+                : localizations.profileAppBarTitle,
         onBack: backAction,
         leadingIconColor: iconColor,
         leadingIcon: leadingAppBarIcon,
         actions: [
           IconButton(
-            icon: profileUpdateState.isLoading
-                ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CupertinoActivityIndicator(radius: 10),
-                  )
-                : (isEditing.value
-                    ? (defaultTargetPlatform == TargetPlatform.iOS
-                        ? Icon(CupertinoIcons.floppy_disk, color: iconColor)
-                        : Icon(Icons.save, color: iconColor))
-                    : (defaultTargetPlatform == TargetPlatform.iOS
-                        ? Icon(CupertinoIcons.pencil, color: iconColor)
-                        : Icon(Icons.edit, color: iconColor))),
-            onPressed: isEditing.value
-                ? (isSaveEnabled ? handleSaveChanges : backAction)
-                : toggleEditMode,
-            tooltip: isEditing.value
-                ? localizations.profileSaveTooltip
-                : localizations.profileEditTooltip,
+            icon:
+                profileUpdateState.isLoading
+                    ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CupertinoActivityIndicator(radius: 10),
+                    )
+                    : (isEditing.value
+                        ? (defaultTargetPlatform == TargetPlatform.iOS
+                            ? Icon(CupertinoIcons.floppy_disk, color: iconColor)
+                            : Icon(Icons.save, color: iconColor))
+                        : (defaultTargetPlatform == TargetPlatform.iOS
+                            ? Icon(CupertinoIcons.pencil, color: iconColor)
+                            : Icon(Icons.edit, color: iconColor))),
+            onPressed:
+                isEditing.value
+                    ? (isSaveEnabled ? handleSaveChanges : backAction)
+                    : toggleEditMode,
+            tooltip:
+                isEditing.value
+                    ? localizations.profileSaveTooltip
+                    : localizations.profileEditTooltip,
           ),
         ],
       ),
@@ -232,34 +245,36 @@ class ProfilePage extends HookConsumerWidget {
               data: (state) {
                 return switch (state) {
                   UserModelData(:final user) => ProfileContentView(
-                      previousIsEditing: previousIsEditing,
-                      isEditing: isEditing,
-                      displayNameController: displayNameController,
-                      emailController: emailController,
-                      localizations: localizations,
-                      textTheme: textTheme,
-                      theme: theme,
-                      userImageUrl: userImageUrl,
-                      isSaveEnabled: isSaveEnabled,
-                      selectedImage: selectedImage,
-                      userAsyncValue: AsyncData(user),
-                      handleImageSelection: handleImageSelection,
-                      handleSaveChanges: handleSaveChanges,
-                    ),
-                  UserModelLoading() =>
-                    const Center(child: CupertinoActivityIndicator()),
+                    previousIsEditing: previousIsEditing,
+                    isEditing: isEditing,
+                    displayNameController: displayNameController,
+                    emailController: emailController,
+                    localizations: localizations,
+                    textTheme: textTheme,
+                    theme: theme,
+                    userImageUrl: userImageUrl,
+                    isSaveEnabled: isSaveEnabled,
+                    selectedImage: selectedImage,
+                    userAsyncValue: AsyncData(user),
+                    handleImageSelection: handleImageSelection,
+                    handleSaveChanges: handleSaveChanges,
+                  ),
+                  UserModelLoading() => const Center(
+                    child: CupertinoActivityIndicator(),
+                  ),
                   UserModelUnauthenticated() => Center(
-                      child: Text(localizations.profileUserNotFound),
-                    ),
+                    child: Text(localizations.profileUserNotFound),
+                  ),
                   UserModelError(:final message) => Center(
-                      child:
-                          Text('${localizations.profileLoadError}: $message'),
-                    ),
+                    child: Text('${localizations.profileLoadError}: $message'),
+                  ),
                 };
               },
               loading: () => const Center(child: CupertinoActivityIndicator()),
-              error: (error, stack) => Center(
-                  child: Text('${localizations.profileLoadError}: $error')),
+              error:
+                  (error, stack) => Center(
+                    child: Text('${localizations.profileLoadError}: $error'),
+                  ),
             ),
           ),
         ],

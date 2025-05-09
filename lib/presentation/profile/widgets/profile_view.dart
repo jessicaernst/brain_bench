@@ -1,4 +1,4 @@
-import 'package:brain_bench/core/component_widgets/glass_card_view.dart';
+import 'package:brain_bench/core/shared_widgets/cards/glass_card_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
@@ -55,9 +55,10 @@ class ProfileView extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 80,
                     backgroundColor: Colors.transparent,
-                    backgroundImage: userImageUrl != null
-                        ? NetworkImage(userImageUrl!) as ImageProvider
-                        : Assets.images.evolution4.provider(),
+                    backgroundImage:
+                        userImageUrl != null
+                            ? NetworkImage(userImageUrl!) as ImageProvider
+                            : Assets.images.evolution4.provider(),
                     onBackgroundImageError: (exception, stackTrace) {
                       _logger.warning('Error loading user image: $exception');
                     },

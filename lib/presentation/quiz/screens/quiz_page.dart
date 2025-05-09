@@ -1,7 +1,7 @@
 import 'package:brain_bench/business_logic/quiz/quiz_state_notifier.dart';
-import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
-import 'package:brain_bench/core/component_widgets/no_data_available_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/shared_widgets/appbars/back_nav_app_bar.dart';
+import 'package:brain_bench/core/shared_widgets/error_views/no_data_available_view.dart';
 import 'package:brain_bench/data/infrastructure/quiz/question_providers.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:brain_bench/presentation/quiz/controller/quiz_page_controller.dart';
@@ -9,87 +9,80 @@ import 'package:brain_bench/presentation/quiz/widgets/quiz_body_view.dart';
 import 'package:brain_bench/presentation/quiz/widgets/quiz_error_view.dart';
 import 'package:brain_bench/presentation/quiz/widgets/quiz_loading_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
 
 final Logger _logger = Logger('QuizPage');
 
-class QuizPage extends ConsumerStatefulWidget {
-  QuizPage({
-    super.key,
-    required this.topicId,
-    required this.categoryId,
-  });
+/// The page that displays the quiz.
+class QuizPage extends HookConsumerWidget {
+  const QuizPage({super.key, required this.topicId, required this.categoryId});
 
   final String topicId;
   final String categoryId;
 
   @override
-  ConsumerState<QuizPage> createState() => _QuizPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final localizations = AppLocalizations.of(context)!;
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final theme = Theme.of(context);
 
-class _QuizPageState extends ConsumerState<QuizPage> {
-  @override
-  Widget build(BuildContext context) {
-    final String languageCode = Localizations.localeOf(context).languageCode;
-    final AppLocalizations localizations = AppLocalizations.of(context)!;
-
-    _logger.finer(
-        'Build QuizPage for Topic ID: ${widget.topicId}, Language: $languageCode');
-
-    final controller = ref.read(quizPageControllerProvider(
-            topicId: widget.topicId, categoryId: widget.categoryId)
-        .notifier);
-
-    final QuizStateNotifier quizViewModel =
-        ref.read(quizStateNotifierProvider.notifier);
-    final AsyncValue<List<Question>> questionsAsync =
-        ref.watch(questionsProvider(widget.topicId, languageCode));
-
-    // Listener to initialize the quiz when questions are loaded
-    ref.listen<AsyncValue<List<Question>>>(
-      questionsProvider(widget.topicId, languageCode),
-      (previous, next) {
-        if (!mounted) return;
-        final scaffoldMessenger = ScaffoldMessenger.of(context);
-        final theme = Theme.of(context);
-
-        if (next is AsyncData<List<Question>>) {
-          final questions = next.value;
-          if (questions.isNotEmpty &&
-              ref.read(quizStateNotifierProvider).questions.isEmpty) {
-            _logger.info(
-                'questionsProvider has data, triggering quiz initialization...');
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (mounted &&
-                  ref.read(quizStateNotifierProvider).questions.isEmpty) {
-                quizViewModel.initializeQuizIfNeeded(questions, languageCode);
-              }
-            });
-          } else if (questions.isEmpty) {
-            _logger.warning(
-                'questionsProvider returned empty list. QuizBodyView will handle display.');
-          }
-        } else if (next is AsyncError) {
-          _logger.severe('Error in questionsProvider listener: ${next.error}');
-          if (mounted) {
-            controller.showErrorSnackBar(scaffoldMessenger, theme,
-                () => mounted, localizations.quizErrorLoadingQuestions);
-          }
-        }
-      },
+    final controller = ref.watch(
+      quizPageControllerProvider(
+        topicId: topicId,
+        categoryId: categoryId,
+      ).notifier,
     );
+
+    final quizViewModel = ref.read(quizStateNotifierProvider.notifier);
+    final questionsAsync = ref.watch(questionsProvider(topicId, languageCode));
+
+    useEffect(() {
+      _logger.fine(
+        'Setting up questions listener for topicId=$topicId, lang=$languageCode',
+      );
+
+      final subscription = ref.listenManual<AsyncValue<List<Question>>>(
+        questionsProvider(topicId, languageCode),
+        (previous, next) {
+          if (next is AsyncData<List<Question>>) {
+            final questions = next.value;
+            if (questions.isNotEmpty &&
+                ref.read(quizStateNotifierProvider).questions.isEmpty) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (ref.read(quizStateNotifierProvider).questions.isEmpty) {
+                  quizViewModel.initializeQuizIfNeeded(questions, languageCode);
+                }
+              });
+            }
+          } else if (next is AsyncError) {
+            controller.showErrorSnackBar(
+              scaffoldMessenger,
+              theme,
+              () => context.mounted,
+              localizations.quizErrorLoadingQuestions,
+            );
+          }
+        },
+      );
+
+      return subscription.close;
+    }, const []);
 
     return Scaffold(
       appBar: BackNavAppBar(
         title: localizations.quizAppBarTitle,
-        onBack: () => controller.handleBackButton(context, () => mounted),
+        onBack:
+            () => controller.handleBackButton(context, () => context.mounted),
       ),
       body: questionsAsync.when(
         data: (questions) {
           if (questions.isEmpty) {
             _logger.warning(
-                'No questions available for topic ${widget.topicId}. Displaying NoDataAvailableView.');
+              'No questions available for topic $topicId. Showing fallback view.',
+            );
             return NoDataAvailableView(
               text: localizations.quizErrorNoQuestions,
             );
@@ -100,16 +93,17 @@ class _QuizPageState extends ConsumerState<QuizPage> {
             localizations: localizations,
             languageCode: languageCode,
             controller: controller,
-            isMountedCheck: () => mounted,
+            isMountedCheck: () => context.mounted,
             buildContext: context,
           );
         },
         loading: () => const QuizLoadingView(),
-        error: (error, stack) => QuizErrorView(
-          error: error,
-          stack: stack,
-          localizations: localizations,
-        ),
+        error:
+            (error, stack) => QuizErrorView(
+              error: error,
+              stack: stack,
+              localizations: localizations,
+            ),
       ),
     );
   }

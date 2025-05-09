@@ -319,4 +319,22 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get profileLoadError => 'Fehler beim Laden des Profils.';
+
+  @override
+  String get homeActualCategorySectionTitle => 'aktuell';
+
+  @override
+  String get statusLoadingLabel => 'Lädt...';
+
+  @override
+  String get homeActualCategoryDescriptionPrompt => 'Wähle eine Kategorie, um Details anzuzeigen.';
+
+  @override
+  String get homeActualCategoryNoCategories => 'Keine Kategorien verfügbar.';
+
+  @override
+  String get homeActualCategoryErrorLoading => 'Fehler beim Laden der Kategorien:';
+
+  @override
+  String get genericErrorMessage => 'Etwas ist schiefgelaufen. Bitte versuche es später erneut.';
 }

@@ -415,5 +415,29 @@
     "profileLoadError": "Error loading profile data.",
     "@profileLoadError": {
         "description": "Error message shown on profile page if user data fails to load"
+    },
+    "homeActualCategorySectionTitle": "actual",
+    "@homeActualCategorySectionTitle": {
+        "description": "Title for the section on the home screen displaying the currently active category."
+    },
+    "statusLoadingLabel": "Loading...",
+    "@statusLoadingLabel": {
+        "description": "Generic text indicating that content is currently loading."
+    },
+    "homeActualCategoryDescriptionPrompt": "Select a category to see details.",
+    "@homeActualCategoryDescriptionPrompt": {
+        "description": "Prompt message in the actual category view when no category is selected or details are not yet loaded."
+    },
+    "homeActualCategoryNoCategories": "No categories available.",
+    "@homeActualCategoryNoCategories": {
+        "description": "Message displayed in the actual category view when there are no categories to show."
+    },
+    "homeActualCategoryErrorLoading": "Error loading categories:",
+    "@homeActualCategoryErrorLoading": {
+        "description": "Error message prefix displayed in the actual category view when categories fail to load."
+    },
+    "genericErrorMessage": "Something went wrong. Please try again later.",
+    "@genericErrorMessage": {
+        "description": "A generic error message displayed to the user when an unexpected error occurs."
     }
 }

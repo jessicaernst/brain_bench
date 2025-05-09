@@ -1,5 +1,5 @@
-import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/presentation/auth/widgets/login_divider_view.dart';
 import 'package:brain_bench/presentation/auth/widgets/social_login_button_view.dart';
@@ -36,7 +36,8 @@ class LoginContentView extends HookWidget {
     final passwordError = useState<String?>(null);
 
     final emailRegex = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+    );
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -54,8 +55,10 @@ class LoginContentView extends HookWidget {
               TextField(
                 controller: emailController,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: BrainBenchColors.deepDive
-                        .withAlpha((0.6 * 255).toInt())),
+                  color: BrainBenchColors.deepDive.withAlpha(
+                    (0.6 * 255).toInt(),
+                  ),
+                ),
                 decoration: InputDecoration(
                   hintText: localizations.authEmail,
                   errorText: emailError.value,
@@ -69,8 +72,10 @@ class LoginContentView extends HookWidget {
               TextField(
                 controller: passwordController,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: BrainBenchColors.deepDive
-                        .withAlpha((0.6 * 255).toInt())),
+                  color: BrainBenchColors.deepDive.withAlpha(
+                    (0.6 * 255).toInt(),
+                  ),
+                ),
                 obscureText: !showPassword.value,
                 enableSuggestions: false,
                 autocorrect: false,
@@ -80,8 +85,9 @@ class LoginContentView extends HookWidget {
                   suffixIcon: IconButton(
                     icon: Icon(
                       size: 20,
-                      color: BrainBenchColors.deepDive
-                          .withAlpha((0.6 * 255).toInt()),
+                      color: BrainBenchColors.deepDive.withAlpha(
+                        (0.6 * 255).toInt(),
+                      ),
                       showPassword.value
                           ? Icons.visibility
                           : Icons.visibility_off,
@@ -167,9 +173,7 @@ class LoginContentView extends HookWidget {
           ),
         ),
         const SizedBox(height: 32),
-        LoginDividerView(
-          title: localizations.authDividerLoginText,
-        ),
+        LoginDividerView(title: localizations.authDividerLoginText),
         const SizedBox(height: 24),
         SocialLoginButtonView(
           onGoogleLoginPressed: onGoogleLoginPressed,

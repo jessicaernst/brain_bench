@@ -1,8 +1,8 @@
 import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
 import 'package:brain_bench/business_logic/categories/categories_provider.dart';
-import 'package:brain_bench/core/component_widgets/back_nav_app_bar.dart';
-import 'package:brain_bench/core/component_widgets/dash_evolution_progress_dircle_view.dart';
-import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
+import 'package:brain_bench/core/shared_widgets/appbars/back_nav_app_bar.dart';
+import 'package:brain_bench/core/shared_widgets/progress_bars/dash_evolution_progress_dircle_view.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/user/user_model_state.dart';
@@ -15,10 +15,7 @@ import 'package:logging/logging.dart';
 Logger logger = Logger('CategoryDetailsPage');
 
 class CategoryDetailsPage extends ConsumerWidget {
-  const CategoryDetailsPage({
-    super.key,
-    required this.categoryId,
-  });
+  const CategoryDetailsPage({super.key, required this.categoryId});
 
   final String categoryId;
 
@@ -27,14 +24,16 @@ class CategoryDetailsPage extends ConsumerWidget {
     final String languageCode = Localizations.localeOf(context).languageCode;
     final AppLocalizations localizations = AppLocalizations.of(context)!;
 
-    final categoryAsync =
-        ref.watch(categoryByIdProvider(categoryId, languageCode));
+    final categoryAsync = ref.watch(
+      categoryByIdProvider(categoryId, languageCode),
+    );
 
     return Scaffold(
       appBar: BackNavAppBar(
         title: categoryAsync.maybeWhen(
-          data: (category) =>
-              languageCode == 'de' ? category.nameDe : category.nameEn,
+          data:
+              (category) =>
+                  languageCode == 'de' ? category.nameDe : category.nameEn,
           orElse: () => localizations.categoryDetailsTitle,
         ),
         onBack: () {
@@ -50,18 +49,20 @@ class CategoryDetailsPage extends ConsumerWidget {
           final userState = ref.watch(currentUserModelProvider);
 
           final progress = userState.when(
-            data: (state) => switch (state) {
-              UserModelData(:final user) =>
-                user.categoryProgress[categoryId] ?? 0.0,
-              _ => 0.0,
-            },
+            data:
+                (state) => switch (state) {
+                  UserModelData(:final user) =>
+                    user.categoryProgress[categoryId] ?? 0.0,
+                  _ => 0.0,
+                },
             loading: () => 0.0,
             error: (_, __) => 0.0,
           );
 
-          final String description = languageCode == 'de'
-              ? category.descriptionDe
-              : category.descriptionEn;
+          final String description =
+              languageCode == 'de'
+                  ? category.descriptionDe
+                  : category.descriptionEn;
           final String subtitle =
               languageCode == 'de' ? category.subtitleDe : category.subtitleEn;
 
@@ -115,7 +116,10 @@ class CategoryDetailsPage extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) {
           logger.severe(
-              'Error loading category $categoryId: $error', error, stack);
+            'Error loading category $categoryId: $error',
+            error,
+            stack,
+          );
           return Center(
             child: Padding(
               padding: const EdgeInsets.all(16.0),

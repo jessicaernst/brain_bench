@@ -1,4 +1,4 @@
-import 'package:brain_bench/core/component_widgets/card_expandable_content.dart';
+import 'package:brain_bench/core/shared_widgets/cards/card_expandable_content.dart';
 import 'package:brain_bench/core/styles/gradient_colors.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_card_expandable_content.dart';
 import 'package:flutter/material.dart';

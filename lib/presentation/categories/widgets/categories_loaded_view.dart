@@ -1,7 +1,7 @@
-import 'package:brain_bench/business_logic/categories/categories_provider.dart'; // Assuming selectedCategoryNotifierProvider is here
-import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
-import 'package:brain_bench/core/component_widgets/profile_button_view.dart';
+import 'package:brain_bench/business_logic/categories/categories_provider.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/profile_button_view.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
@@ -66,7 +66,8 @@ class CategoriesLoadedView extends ConsumerWidget {
             (category) => category.id == selectedCategoryId,
           );
           _logger.info(
-              'Navigating to category details for categoryId: ${selectedCategory.id}');
+            'Navigating to category details for categoryId: ${selectedCategory.id}',
+          );
           context.pushNamed(
             AppRouteNames.categoryDetails,
             pathParameters: {'categoryId': selectedCategoryId},
@@ -74,17 +75,13 @@ class CategoriesLoadedView extends ConsumerWidget {
         } catch (e) {
           _logger.severe('Error finding selected category: $e');
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(localizations.errorCategoryNotFound),
-            ),
+            SnackBar(content: Text(localizations.errorCategoryNotFound)),
           );
         }
       } else {
         _logger.warning('No category selected for navigation.');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(localizations.errorNoCategorySelected),
-          ),
+          SnackBar(content: Text(localizations.errorNoCategorySelected)),
         );
       }
     }
@@ -103,10 +100,7 @@ class CategoriesLoadedView extends ConsumerWidget {
             ),
           ),
         ),
-        actions: const [
-          ProfileButtonView(),
-          SizedBox(width: 16),
-        ],
+        actions: const [ProfileButtonView(), SizedBox(width: 16)],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -118,9 +112,12 @@ class CategoriesLoadedView extends ConsumerWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: categories
-                      .map((category) => _mapCategoryToWidget(category, user))
-                      .toList(),
+                  children:
+                      categories
+                          .map(
+                            (category) => _mapCategoryToWidget(category, user),
+                          )
+                          .toList(),
                 ),
               ),
             ),

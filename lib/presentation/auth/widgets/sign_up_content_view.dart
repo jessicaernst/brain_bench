@@ -1,5 +1,5 @@
-import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/presentation/auth/widgets/login_divider_view.dart';
 import 'package:brain_bench/presentation/auth/widgets/social_login_button_view.dart';
@@ -43,7 +43,8 @@ class SignUpContentView extends HookWidget {
     final repeatPasswordFocusNode = useFocusNode();
 
     final emailRegex = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+    );
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -62,9 +63,9 @@ class SignUpContentView extends HookWidget {
                 controller: emailController,
                 focusNode: emailFocusNode,
                 style: TextTheme.of(context).bodyMedium?.copyWith(
-                      // Changed here
-                      color: BrainBenchColors.deepDive,
-                    ),
+                  // Changed here
+                  color: BrainBenchColors.deepDive,
+                ),
                 decoration: InputDecoration(
                   hintText: localizations.authEmail,
                   errorText: emailError.value,
@@ -83,17 +84,18 @@ class SignUpContentView extends HookWidget {
                 enableSuggestions: false,
                 autocorrect: false,
                 style: TextTheme.of(context).bodyMedium?.copyWith(
-                      // Changed here
-                      color: BrainBenchColors.deepDive,
-                    ),
+                  // Changed here
+                  color: BrainBenchColors.deepDive,
+                ),
                 decoration: InputDecoration(
                   hintText: localizations.authPassword,
                   errorText: passwordError.value,
                   suffixIcon: IconButton(
                     icon: Icon(
                       size: 20,
-                      color: BrainBenchColors.deepDive
-                          .withAlpha((0.6 * 255).toInt()),
+                      color: BrainBenchColors.deepDive.withAlpha(
+                        (0.6 * 255).toInt(),
+                      ),
                       showPassword.value
                           ? Icons.visibility
                           : Icons.visibility_off,
@@ -115,17 +117,18 @@ class SignUpContentView extends HookWidget {
                 obscureText: !showRepeatPassword.value,
                 enableSuggestions: false,
                 autocorrect: false,
-                style: TextTheme.of(context).bodyMedium?.copyWith(
-                      color: BrainBenchColors.deepDive,
-                    ),
+                style: TextTheme.of(
+                  context,
+                ).bodyMedium?.copyWith(color: BrainBenchColors.deepDive),
                 decoration: InputDecoration(
                   hintText: localizations.authRepeatPassword,
                   errorText: repeatPasswordError.value,
                   suffixIcon: IconButton(
                     icon: Icon(
                       size: 20,
-                      color: BrainBenchColors.deepDive
-                          .withAlpha((0.6 * 255).toInt()),
+                      color: BrainBenchColors.deepDive.withAlpha(
+                        (0.6 * 255).toInt(),
+                      ),
                       showRepeatPassword.value
                           ? Icons.visibility
                           : Icons.visibility_off,
@@ -208,9 +211,7 @@ class SignUpContentView extends HookWidget {
           ),
         ),
         const SizedBox(height: 32),
-        LoginDividerView(
-          title: localizations.authDividerRegisterText,
-        ),
+        LoginDividerView(title: localizations.authDividerRegisterText),
         const SizedBox(height: 24),
         SocialLoginButtonView(
           onGoogleLoginPressed: onGoogleLoginPressed,

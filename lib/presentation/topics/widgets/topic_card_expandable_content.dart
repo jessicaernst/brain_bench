@@ -1,6 +1,6 @@
 import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
-import 'package:brain_bench/core/component_widgets/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.dart';
 import 'package:flutter/material.dart';
 
 class TopicCardExpandableContent extends StatelessWidget {
