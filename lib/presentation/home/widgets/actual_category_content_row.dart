@@ -27,7 +27,7 @@ class ActualCategoryContentRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -55,7 +55,7 @@ class ActualCategoryContentRow extends StatelessWidget {
                       constraints: const BoxConstraints(),
                       icon: Icon(
                         Icons.unfold_more,
-                        size: 24,
+                        size: 32,
                         color:
                             isDarkMode
                                 ? BrainBenchColors.cloudCanvas.withAlpha(
@@ -74,6 +74,7 @@ class ActualCategoryContentRow extends StatelessWidget {
                 AutoHyphenatingText(
                   displayedDescription,
                   maxLines: descriptionMaxLines,
+                  overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
