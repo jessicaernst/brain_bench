@@ -69,8 +69,7 @@ class _CupertinoPickerContentState<T> extends State<CupertinoPickerContent<T>> {
         Theme.of(context).textTheme.bodyMedium ?? const TextStyle();
     // TextStyle for the selected item
     final TextStyle bodyLargeStyle =
-        Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 20) ??
-        bodyMediumStyle;
+        Theme.of(context).textTheme.bodyLarge ?? bodyMediumStyle;
 
     final Color overlayBackgroundColor =
         widget.selectedItemHighlightColor ??
