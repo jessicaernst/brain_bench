@@ -722,7 +722,7 @@ abstract class AppLocalizations {
   /// Title for the section on the home screen displaying the currently active category.
   ///
   /// In en, this message translates to:
-  /// **'actual'**
+  /// **'current'**
   String get homeActualCategorySectionTitle;
 
   /// Generic text indicating that content is currently loading.

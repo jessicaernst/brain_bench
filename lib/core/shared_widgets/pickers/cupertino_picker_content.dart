@@ -2,6 +2,9 @@ import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// A widget that represents the content of a CupertinoPicker.
+///
+/// This widget displays a list of items in a scrollable picker view. It allows the user to select an item and confirms the selection when the done button is pressed.
 class CupertinoPickerContent<T> extends StatefulWidget {
   final List<T> items;
   final T? initialSelectedItem;
@@ -82,22 +85,22 @@ class _CupertinoPickerContentState<T> extends State<CupertinoPickerContent<T>> {
       color: widget.backgroundColor,
       child: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(color: widget.backgroundColor),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                CupertinoButton(
-                  child: Text(
-                    widget.localizations.pickerDoneButton,
-                    style: TextStyle(color: widget.doneButtonColor),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              CupertinoButton(
+                child: Text(
+                  widget.localizations.pickerDoneButton,
+                  style: TextStyle(
+                    color: widget.doneButtonColor,
+                    fontWeight: FontWeight.w600,
                   ),
-                  onPressed: () {
-                    widget.onConfirmed(_tempSelectedItem);
-                  },
                 ),
-              ],
-            ),
+                onPressed: () {
+                  widget.onConfirmed(_tempSelectedItem);
+                },
+              ),
+            ],
           ),
           Expanded(
             child: SafeArea(

@@ -416,7 +416,7 @@
     "@profileLoadError": {
         "description": "Error message shown on profile page if user data fails to load"
     },
-    "homeActualCategorySectionTitle": "actual",
+    "homeActualCategorySectionTitle": "current",
     "@homeActualCategorySectionTitle": {
         "description": "Title for the section on the home screen displaying the currently active category."
     },
