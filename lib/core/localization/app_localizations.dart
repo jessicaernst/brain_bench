@@ -407,6 +407,18 @@ abstract class AppLocalizations {
   /// **'Done'**
   String get pickerDoneButton;
 
+  /// The name for the 'Automatic' option in a picker
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic'**
+  String get pickerOptionAutomatic;
+
+  /// The description for the 'Automatic' option in a picker
+  ///
+  /// In en, this message translates to:
+  /// **'Let the app choose a category for you.'**
+  String get pickerOptionAutomaticDescription;
+
   /// Title of the app bar for the profile
   ///
   /// In en, this message translates to:

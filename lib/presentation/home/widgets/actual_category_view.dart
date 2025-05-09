@@ -44,6 +44,17 @@ class ActualCategoryView extends HookConsumerWidget {
     final int descriptionMaxLines = isSmallScreenValue ? 2 : 3;
 
     // Update the selected category
+    // Define the "Automatic" category option
+    final Category automaticCategory = Category(
+      id: '___automatic___',
+      nameEn: localizations.pickerOptionAutomatic,
+      nameDe: localizations.pickerOptionAutomatic,
+      descriptionEn: localizations.pickerOptionAutomaticDescription,
+      descriptionDe: localizations.pickerOptionAutomaticDescription,
+      subtitleEn: '',
+      subtitleDe: '',
+    );
+
     void updateSelectedCategory(Category category) {
       selectedCategory.value = category;
     }
@@ -51,6 +62,9 @@ class ActualCategoryView extends HookConsumerWidget {
     // Show the category picker
     void showCategoryPicker(BuildContext context, List<Category> categories) {
       _logger.finer('Category picker opened.');
+      // Prepend the "Automatic" option to the list of categories
+      final List<Category> pickerItems = [automaticCategory, ...categories];
+
       final Color pickerBackgroundColor =
           isDarkMode ? BrainBenchColors.deepDive : BrainBenchColors.cloudCanvas;
       final Color pickerDoneButtonColor =
@@ -63,7 +77,8 @@ class ActualCategoryView extends HookConsumerWidget {
           context: context,
           builder:
               (BuildContext popupContext) => CupertinoPickerContent<Category>(
-                items: categories,
+                // Use pickerItems
+                items: pickerItems,
                 initialSelectedItem: selectedCategory.value,
                 itemDisplayNameBuilder:
                     (Category cat) =>
@@ -86,7 +101,7 @@ class ActualCategoryView extends HookConsumerWidget {
           backgroundColor: pickerBackgroundColor,
           builder: (BuildContext sheetContext) {
             return MaterialListPicker<Category>(
-              items: categories,
+              items: pickerItems, // Use pickerItems
               selectedItem: selectedCategory.value,
               itemDisplayNameBuilder:
                   (Category cat) =>
@@ -146,13 +161,19 @@ class ActualCategoryView extends HookConsumerWidget {
     // Initialize selectedCategory when categories are first loaded and no category is selected yet.
     useEffect(
       () {
-        if (categories.isNotEmpty && selectedCategory.value == null) {
+        // If no category is selected yet (could be initial load or after "Automatic" was unselected somehow)
+        // and there are actual categories available, select the first actual category.
+        // If "Automatic" is already selected, this condition (selectedCategory.value == null) will be false.
+        if (selectedCategory.value == null && categories.isNotEmpty) {
           // Schedule the state update for after the current build phase.
           WidgetsBinding.instance.addPostFrameCallback((_) {
             // Double-check the condition inside the callback,
             // as the state might have changed or the widget might have been disposed.
-            if (selectedCategory.value == null && categories.isNotEmpty) {
-              // Check again
+            if (context.mounted &&
+                selectedCategory.value == null &&
+                categories.isNotEmpty) {
+              // If still null, default to the first *real* category
+              // or consider defaulting to 'automaticCategory' if that's preferred.
               _logger.info(
                 'Initial category selected: ${categories.first.id} - ${languageCode == 'de' ? categories.first.nameDe : categories.first.nameEn}',
               );
@@ -162,7 +183,11 @@ class ActualCategoryView extends HookConsumerWidget {
         }
         return null; // No cleanup needed for this effect.
       },
-      [categories, selectedCategory.value],
+      [
+        categories,
+        selectedCategory.value,
+        automaticCategory,
+      ], // Add automaticCategory to dependencies
     ); // Re-run if categories or selectedCategory.value changes
 
     _logger.finest(
@@ -170,24 +195,39 @@ class ActualCategoryView extends HookConsumerWidget {
     );
 
     // Retrieve the displayed category name, description, and progress
-    final String displayedCategoryName =
-        selectedCategory.value == null
-            ? localizations.statusLoadingLabel
-            : (languageCode == 'de'
-                ? selectedCategory.value!.nameDe
-                : selectedCategory.value!.nameEn);
+    String displayedCategoryName;
+    String displayedDescription;
+    double displayedProgress;
 
-    final String displayedDescription =
-        selectedCategory.value == null
-            ? localizations.homeActualCategoryDescriptionPrompt
-            : (languageCode == 'de'
-                ? selectedCategory.value!.descriptionDe
-                : selectedCategory.value!.descriptionEn);
-
-    final double displayedProgress =
-        (selectedCategory.value != null && currentUser != null)
-            ? (currentUser.categoryProgress[selectedCategory.value!.id] ?? 0.0)
-            : 0.0;
+    if (selectedCategory.value == null) {
+      displayedCategoryName = localizations.statusLoadingLabel;
+      displayedDescription = localizations.homeActualCategoryDescriptionPrompt;
+      displayedProgress = 0.0;
+    } else if (selectedCategory.value!.id == automaticCategory.id) {
+      displayedCategoryName =
+          languageCode == 'de'
+              ? automaticCategory.nameDe
+              : automaticCategory.nameEn;
+      displayedDescription =
+          languageCode == 'de'
+              ? automaticCategory.descriptionDe
+              : automaticCategory.descriptionEn;
+      displayedProgress = 0.0;
+    } else {
+      displayedCategoryName =
+          languageCode == 'de'
+              ? selectedCategory.value!.nameDe
+              : selectedCategory.value!.nameEn;
+      displayedDescription =
+          languageCode == 'de'
+              ? selectedCategory.value!.descriptionDe
+              : selectedCategory.value!.descriptionEn;
+      displayedProgress =
+          (currentUser != null)
+              ? (currentUser.categoryProgress[selectedCategory.value!.id] ??
+                  0.0)
+              : 0.0;
+    }
 
     // Build the actual category view
     return Column(

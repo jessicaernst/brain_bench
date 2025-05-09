@@ -165,6 +165,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pickerDoneButton => 'Fertig';
 
   @override
+  String get pickerOptionAutomatic => 'Automatisch';
+
+  @override
+  String get pickerOptionAutomaticDescription => 'Lass die App eine Kategorie für dich auswählen.';
+
+  @override
   String get profileAppBarTitle => 'Profil';
 
   @override

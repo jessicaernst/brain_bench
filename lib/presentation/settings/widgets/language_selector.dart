@@ -103,9 +103,10 @@ class LanguageSelector extends ConsumerWidget {
         children: [
           Text(
             displayName(currentLocale),
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: textColor),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: textColor,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(width: 4),
           Icon(Icons.unfold_more, size: 20, color: textColor),

@@ -208,6 +208,14 @@
     "@pickerDoneButton": {
         "description": "Label for the 'Done' button in pickers"
     },
+    "pickerOptionAutomatic": "Automatisch",
+    "@pickerOptionAutomatic": {
+        "description": "The name for the 'Automatic' option in a picker"
+    },
+    "pickerOptionAutomaticDescription": "Lass die App eine Kategorie für dich auswählen.",
+    "@pickerOptionAutomaticDescription": {
+        "description": "The description for the 'Automatic' option in a picker"
+    },
     "profileAppBarTitle": "Profil",
     "@profileAppBarTitle": {
         "description": "Title of the app bar for the profile"
