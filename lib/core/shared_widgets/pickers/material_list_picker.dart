@@ -39,29 +39,34 @@ class MaterialListPicker<T> extends StatelessWidget {
       color:
           backgroundColor ?? Theme.of(context).bottomSheetTheme.backgroundColor,
       child: SafeArea(
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: items.length,
-          itemBuilder: (BuildContext context, int index) {
-            final item = items[index];
-            bool isActuallySelected;
-            if (itemEqualityComparer != null) {
-              isActuallySelected = itemEqualityComparer!(selectedItem, item);
-            } else {
-              isActuallySelected = selectedItem == item;
-            }
-            return ListTile(
-              title: Text(
-                itemDisplayNameBuilder(item),
-                style: defaultTextStyle,
-              ),
-              onTap: () => onItemSelected(item),
-              selected: isActuallySelected,
-              selectedTileColor:
-                  selectedTileColor ??
-                  Theme.of(context).primaryColor.withAlpha((0.1 * 255).toInt()),
-            );
-          },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: items.length,
+            itemBuilder: (BuildContext context, int index) {
+              final item = items[index];
+              bool isActuallySelected;
+              if (itemEqualityComparer != null) {
+                isActuallySelected = itemEqualityComparer!(selectedItem, item);
+              } else {
+                isActuallySelected = selectedItem == item;
+              }
+              return ListTile(
+                title: Text(
+                  itemDisplayNameBuilder(item),
+                  style: defaultTextStyle,
+                ),
+                onTap: () => onItemSelected(item),
+                selected: isActuallySelected,
+                selectedTileColor:
+                    selectedTileColor ??
+                    Theme.of(
+                      context,
+                    ).primaryColor.withAlpha((0.1 * 255).toInt()),
+              );
+            },
+          ),
         ),
       ),
     );
