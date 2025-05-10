@@ -410,13 +410,13 @@ abstract class AppLocalizations {
   /// The name for the 'Automatic' option in a picker
   ///
   /// In en, this message translates to:
-  /// **'Automatic'**
+  /// **'Welcome'**
   String get pickerOptionAutomatic;
 
   /// The description for the 'Automatic' option in a picker
   ///
   /// In en, this message translates to:
-  /// **'Let the app choose a category for you.'**
+  /// **'The app automatically selects a new category for you after each completed quiz.'**
   String get pickerOptionAutomaticDescription;
 
   /// Error message when user data is not available on the quiz results page.

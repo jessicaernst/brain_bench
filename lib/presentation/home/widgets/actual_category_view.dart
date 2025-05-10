@@ -45,10 +45,9 @@ class ActualCategoryView extends HookConsumerWidget {
     final int descriptionMaxLines = isSmallScreenValue ? 2 : 3;
 
     // Update the selected category
-    // Define and memoize the "Automatic" category option
-    final automaticCategory = useMemoized(() {
+    final welcomeCategory = useMemoized(() {
       return Category(
-        id: '___automatic___',
+        id: '___welcome___',
         nameEn: localizations.pickerOptionAutomatic,
         nameDe: localizations.pickerOptionAutomatic,
         descriptionEn: localizations.pickerOptionAutomaticDescription,
@@ -114,7 +113,7 @@ class ActualCategoryView extends HookConsumerWidget {
           determineInitialCategory(
             // Use the imported function
             loadedLastSelectedIdFromPrefs: loadedLastSelectedIdFromPrefs,
-            automaticCategory: automaticCategory,
+            automaticCategory: welcomeCategory,
             backendCategories: categories,
             currentUser: currentUser,
             languageCode: languageCode,
@@ -136,7 +135,7 @@ class ActualCategoryView extends HookConsumerWidget {
       },
       [
         asyncLastSelectedIdFromPrefs,
-        automaticCategory,
+        welcomeCategory,
         categories,
         currentUser,
         ref,
@@ -155,7 +154,7 @@ class ActualCategoryView extends HookConsumerWidget {
 
     final DisplayedCategoryInfo displayInfo = getDisplayedCategoryInfo(
       selectedCategoryValue: selectedCategory.value,
-      automaticCategory: automaticCategory,
+      automaticCategory: welcomeCategory,
       currentUser: currentUser,
       localizations: localizations,
       languageCode: languageCode,
@@ -181,7 +180,7 @@ class ActualCategoryView extends HookConsumerWidget {
               () => showActualCategoryPicker(
                 context: context,
                 currentCategories: categories,
-                automaticCategory: automaticCategory,
+                automaticCategory: welcomeCategory,
                 currentSelectedCategory: selectedCategory.value,
                 languageCode: languageCode,
                 localizations: localizations,

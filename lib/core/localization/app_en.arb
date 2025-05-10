@@ -208,11 +208,11 @@
     "@pickerDoneButton": {
         "description": "Label for the 'Done' button in pickers"
     },
-    "pickerOptionAutomatic": "Automatic",
+    "pickerOptionAutomatic": "Welcome",
     "@pickerOptionAutomatic": {
         "description": "The name for the 'Automatic' option in a picker"
     },
-    "pickerOptionAutomaticDescription": "Let the app choose a category for you.",
+    "pickerOptionAutomaticDescription": "The app automatically selects a new category for you after each completed quiz.",
     "@pickerOptionAutomaticDescription": {
         "description": "The description for the 'Automatic' option in a picker"
     },

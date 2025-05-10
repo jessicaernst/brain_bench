@@ -165,10 +165,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pickerDoneButton => 'Done';
 
   @override
-  String get pickerOptionAutomatic => 'Automatic';
+  String get pickerOptionAutomatic => 'Welcome';
 
   @override
-  String get pickerOptionAutomaticDescription => 'Let the app choose a category for you.';
+  String get pickerOptionAutomaticDescription => 'The app automatically selects a new category for you after each completed quiz.';
 
   @override
   String get quizResultsUserNotAvailable => 'User data not available. Please try again later.';
