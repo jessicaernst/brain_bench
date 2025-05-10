@@ -59,8 +59,10 @@ class FakeSaveResultNotifier extends AutoDisposeAsyncNotifier<void>
   }
 
   @override
-  Future<void> markTopicAsDone(
-      {required String categoryId, required String topicId}) async {
+  Future<void> markTopicAsDone({
+    required String categoryId,
+    required String topicId,
+  }) async {
     markTopicAsDoneCallCount++;
     lastMarkedTopicId = topicId;
     lastMarkedCategoryId = categoryId;
@@ -140,32 +142,35 @@ QuizAnswer createQuizAnswer({
 }
 
 final quizAnswerCorrect1 = createQuizAnswer(
-    questionId: 'q1',
-    givenAnswers: ['a1'],
-    correctAnswers: ['a1'],
-    allAnswers: ['a1', 'a2'],
-    pointsEarned: 1,
-    possiblePoints: 1);
+  questionId: 'q1',
+  givenAnswers: ['a1'],
+  correctAnswers: ['a1'],
+  allAnswers: ['a1', 'a2'],
+  pointsEarned: 1,
+  possiblePoints: 1,
+);
 final quizAnswerIncorrect1 = createQuizAnswer(
-    questionId: 'q2',
-    givenAnswers: ['a2'],
-    correctAnswers: ['a3'],
-    allAnswers: ['a2', 'a3'],
-    pointsEarned: 0,
-    possiblePoints: 1);
+  questionId: 'q2',
+  givenAnswers: ['a2'],
+  correctAnswers: ['a3'],
+  allAnswers: ['a2', 'a3'],
+  pointsEarned: 0,
+  possiblePoints: 1,
+);
 final quizAnswerPartial1 = createQuizAnswer(
-    questionId: 'q3',
-    givenAnswers: ['a4'],
-    correctAnswers: ['a4', 'a5'],
-    allAnswers: ['a4', 'a5', 'a6'],
-    pointsEarned: 1,
-    possiblePoints: 2);
+  questionId: 'q3',
+  givenAnswers: ['a4'],
+  correctAnswers: ['a4', 'a5'],
+  allAnswers: ['a4', 'a5', 'a6'],
+  pointsEarned: 1,
+  possiblePoints: 2,
+);
 final List<QuizAnswer> sampleAnswersAllCorrect = [quizAnswerCorrect1];
 final List<QuizAnswer> sampleAnswersAllIncorrect = [quizAnswerIncorrect1];
 final List<QuizAnswer> sampleAnswersMixed = [
   quizAnswerCorrect1,
   quizAnswerIncorrect1,
-  quizAnswerPartial1
+  quizAnswerPartial1,
 ];
 final List<QuizAnswer> sampleAnswersEmpty = [];
 
@@ -191,18 +196,20 @@ MockAppUser _createDefaultMockUser() {
   // Basic stub for copyWith.call - returns the same user by default
   // Tests needing specific copyWith results will need more detailed stubbing
   // REMOVED orElse from any() calls
-  when(() => mockCopyWith.call(
-        id: any(named: 'id'),
-        uid: any(named: 'uid'),
-        email: any(named: 'email'),
-        language: any(named: 'language'),
-        themeMode: any(named: 'themeMode'),
-        isTopicDone: any(named: 'isTopicDone'),
-        categoryProgress: any(named: 'categoryProgress'),
-        displayName: any(named: 'displayName'),
-        photoUrl: any(named: 'photoUrl'),
-        profileImageUrl: any(named: 'profileImageUrl'),
-      )).thenReturn(user); // Default: return same mock
+  when(
+    () => mockCopyWith.call(
+      id: any(named: 'id'),
+      uid: any(named: 'uid'),
+      email: any(named: 'email'),
+      language: any(named: 'language'),
+      themeMode: any(named: 'themeMode'),
+      isTopicDone: any(named: 'isTopicDone'),
+      categoryProgress: any(named: 'categoryProgress'),
+      displayName: any(named: 'displayName'),
+      photoUrl: any(named: 'photoUrl'),
+      profileImageUrl: any(named: 'profileImageUrl'),
+    ),
+  ).thenReturn(user); // Default: return same mock
 
   return user;
 }
@@ -242,8 +249,9 @@ void main() {
       currentUserModelProvider.overrideWith(
         (ref) => Stream.value(UserModelState.data(currentUser)),
       ),
-      quizMockDatabaseRepositoryProvider
-          .overrideWith((ref) => Future.value(currentDbRepo)),
+      quizMockDatabaseRepositoryProvider.overrideWith(
+        (ref) => Future.value(currentDbRepo),
+      ),
       if (topics != null)
         topicsProvider('c1', 'en').overrideWith((ref) => Future.value(topics)),
       ...additionalOverrides,
@@ -255,8 +263,9 @@ void main() {
     // --- Initial State & Build group ---
     group('Initial State & Build', () {
       test('builds with initial state', () {
-        final container =
-            createContainer(initialQuizAnswers: sampleAnswersMixed);
+        final container = createContainer(
+          initialQuizAnswers: sampleAnswersMixed,
+        );
         addTearDown(container.dispose);
 
         container.read(quizResultNotifierProvider.notifier); // Trigger build
@@ -295,12 +304,15 @@ void main() {
 
       test('toggleView: correct -> incorrect (with delay)', () async {
         // Arrange
-        final container =
-            createContainer(initialQuizAnswers: sampleAnswersMixed);
+        final container = createContainer(
+          initialQuizAnswers: sampleAnswersMixed,
+        );
         addTearDown(container.dispose);
 
-        final subscription =
-            container.listen(quizResultNotifierProvider, (_, __) {});
+        final subscription = container.listen(
+          quizResultNotifierProvider,
+          (_, __) {},
+        );
         addTearDown(subscription.close);
 
         final notifier = container.read(quizResultNotifierProvider.notifier);
@@ -313,61 +325,80 @@ void main() {
 
         // Optional: Prüfe den Zwischenzustand direkt nach dem zweiten Toggle
         final intermediateState = container.read(quizResultNotifierProvider);
-        expect(intermediateState.selectedView, SelectedView.correct,
-            reason: 'Should be correct immediately after starting switch');
-        expect(intermediateState.expandedAnswers, isEmpty,
-            reason: 'Should be empty immediately after starting switch');
+        expect(
+          intermediateState.selectedView,
+          SelectedView.correct,
+          reason: 'Should be correct immediately after starting switch',
+        );
+        expect(
+          intermediateState.expandedAnswers,
+          isEmpty,
+          reason: 'Should be empty immediately after starting switch',
+        );
 
         // Warte auf den Delay im Notifier
         await Future.delayed(
-            const Duration(milliseconds: 300)); // Länger als 200ms
+          const Duration(milliseconds: 300),
+        ); // Länger als 200ms
 
         // Gib Riverpod eine Chance, den State-Update aus dem Future zu verarbeiten
         await container.pump(); // Oder await Future.delayed(Duration.zero);
 
         // Assert: Prüfe den finalen Zustand
         final finalState = container.read(quizResultNotifierProvider);
-        expect(finalState.selectedView,
-            SelectedView.incorrect, // <-- Sollte jetzt korrekt sein
-            reason: "Should be 'incorrect' after delay");
+        expect(
+          finalState.selectedView,
+          SelectedView.incorrect, // <-- Sollte jetzt korrekt sein
+          reason: "Should be 'incorrect' after delay",
+        );
         expect(finalState.expandedAnswers, isEmpty); // Sollte leer bleiben
       });
 
       test(
-          'toggleView: correct -> incorrect -> cancelled to none (during delay)',
-          () async {
-        // This test might need review depending on how cancellation should work.
-        // The current implementation in the notifier (this.state=...) should handle it.
-        final notifier = container.read(quizResultNotifierProvider.notifier);
-        notifier.toggleView(SelectedView.correct);
-        await Future.delayed(const Duration(milliseconds: 10));
-        notifier.toggleView(SelectedView.incorrect); // Start switch
-        await Future.delayed(
-            const Duration(milliseconds: 50)); // During the delay
-        notifier.toggleView(SelectedView
-            .correct); // Toggle original OFF -> should cancel switch and go to none
-        await Future.delayed(const Duration(
-            milliseconds: 300)); // Wait longer than remaining delay
+        'toggleView: correct -> incorrect -> cancelled to none (during delay)',
+        () async {
+          // This test might need review depending on how cancellation should work.
+          // The current implementation in the notifier (this.state=...) should handle it.
+          final notifier = container.read(quizResultNotifierProvider.notifier);
+          notifier.toggleView(SelectedView.correct);
+          await Future.delayed(const Duration(milliseconds: 10));
+          notifier.toggleView(SelectedView.incorrect); // Start switch
+          await Future.delayed(
+            const Duration(milliseconds: 50),
+          ); // During the delay
+          notifier.toggleView(
+            SelectedView.correct,
+          ); // Toggle original OFF -> should cancel switch and go to none
+          await Future.delayed(
+            const Duration(milliseconds: 300),
+          ); // Wait longer than remaining delay
 
-        final state = container.read(quizResultNotifierProvider);
-        expect(state.selectedView, SelectedView.none,
-            reason: "Should be 'none' after cancellation");
-      });
+          final state = container.read(quizResultNotifierProvider);
+          expect(
+            state.selectedView,
+            SelectedView.none,
+            reason: "Should be 'none' after cancellation",
+          );
+        },
+      );
 
       // --- toggleExplanation tests ---
       test('toggleExplanation: adds questionId', () {
         final notifier = container.read(quizResultNotifierProvider.notifier);
         notifier.toggleExplanation('q1');
-        expect(
-            container.read(quizResultNotifierProvider).expandedAnswers, {'q1'});
+        expect(container.read(quizResultNotifierProvider).expandedAnswers, {
+          'q1',
+        });
       });
 
       test('toggleExplanation: removes questionId', () {
         final notifier = container.read(quizResultNotifierProvider.notifier);
         notifier.toggleExplanation('q1'); // Add
         notifier.toggleExplanation('q1'); // Remove
-        expect(container.read(quizResultNotifierProvider).expandedAnswers,
-            isEmpty);
+        expect(
+          container.read(quizResultNotifierProvider).expandedAnswers,
+          isEmpty,
+        );
       });
     });
 
@@ -384,58 +415,71 @@ void main() {
         expect(notifier.getFilteredAnswers(), isEmpty);
       });
       test(
-          'getFilteredAnswers: returns correct answers for SelectedView.correct',
-          () {
-        final notifier = container.read(quizResultNotifierProvider.notifier);
-        notifier.toggleView(SelectedView.correct);
-        final filtered = notifier.getFilteredAnswers();
-        expect(filtered.length, 1);
-        expect(filtered.first.questionId, 'q1');
-      });
+        'getFilteredAnswers: returns correct answers for SelectedView.correct',
+        () {
+          final notifier = container.read(quizResultNotifierProvider.notifier);
+          notifier.toggleView(SelectedView.correct);
+          final filtered = notifier.getFilteredAnswers();
+          expect(filtered.length, 1);
+          expect(filtered.first.questionId, 'q1');
+        },
+      );
       test(
-          'getFilteredAnswers: returns incorrect answers for SelectedView.incorrect',
-          () {
-        final notifier = container.read(quizResultNotifierProvider.notifier);
-        notifier.toggleView(SelectedView.incorrect);
-        final filtered = notifier.getFilteredAnswers();
-        expect(filtered.length, 2);
-        expect(filtered.map((a) => a.questionId), containsAll(['q2', 'q3']));
-      });
+        'getFilteredAnswers: returns incorrect answers for SelectedView.incorrect',
+        () {
+          final notifier = container.read(quizResultNotifierProvider.notifier);
+          notifier.toggleView(SelectedView.incorrect);
+          final filtered = notifier.getFilteredAnswers();
+          expect(filtered.length, 2);
+          expect(filtered.map((a) => a.questionId), containsAll(['q2', 'q3']));
+        },
+      );
       test('hasCorrectAnswers: returns true when correct answers exist', () {
         final notifier = container.read(quizResultNotifierProvider.notifier);
         expect(notifier.hasCorrectAnswers(), isTrue);
       });
-      test('hasCorrectAnswers: returns false when no correct answers exist',
-          () {
-        final specificContainer =
-            createContainer(initialQuizAnswers: sampleAnswersAllIncorrect);
-        addTearDown(specificContainer.dispose);
-        final notifier =
-            specificContainer.read(quizResultNotifierProvider.notifier);
-        expect(notifier.hasCorrectAnswers(), isFalse);
-      });
-      test('hasIncorrectAnswers: returns true when incorrect answers exist',
-          () {
-        final notifier = container.read(quizResultNotifierProvider.notifier);
-        expect(notifier.hasIncorrectAnswers(), isTrue);
-      });
-      test('hasIncorrectAnswers: returns false when no incorrect answers exist',
-          () {
-        final specificContainer =
-            createContainer(initialQuizAnswers: sampleAnswersAllCorrect);
-        addTearDown(specificContainer.dispose);
-        final notifier =
-            specificContainer.read(quizResultNotifierProvider.notifier);
-        expect(notifier.hasIncorrectAnswers(), isFalse);
-      });
+      test(
+        'hasCorrectAnswers: returns false when no correct answers exist',
+        () {
+          final specificContainer = createContainer(
+            initialQuizAnswers: sampleAnswersAllIncorrect,
+          );
+          addTearDown(specificContainer.dispose);
+          final notifier = specificContainer.read(
+            quizResultNotifierProvider.notifier,
+          );
+          expect(notifier.hasCorrectAnswers(), isFalse);
+        },
+      );
+      test(
+        'hasIncorrectAnswers: returns true when incorrect answers exist',
+        () {
+          final notifier = container.read(quizResultNotifierProvider.notifier);
+          expect(notifier.hasIncorrectAnswers(), isTrue);
+        },
+      );
+      test(
+        'hasIncorrectAnswers: returns false when no incorrect answers exist',
+        () {
+          final specificContainer = createContainer(
+            initialQuizAnswers: sampleAnswersAllCorrect,
+          );
+          addTearDown(specificContainer.dispose);
+          final notifier = specificContainer.read(
+            quizResultNotifierProvider.notifier,
+          );
+          expect(notifier.hasIncorrectAnswers(), isFalse);
+        },
+      );
     });
 
     // --- Calculations group ---
     group('Calculations', () {
       // Tests remain logically the same, add addTearDown
       test('calculates points and percentage correctly for mixed results', () {
-        final container =
-            createContainer(initialQuizAnswers: sampleAnswersMixed);
+        final container = createContainer(
+          initialQuizAnswers: sampleAnswersMixed,
+        );
         addTearDown(container.dispose);
         final notifier = container.read(quizResultNotifierProvider.notifier);
         expect(notifier.calculateUserPoints(), 2);
@@ -444,15 +488,18 @@ void main() {
         expect(notifier.isQuizPassed(), isFalse);
       });
       test('calculates points and percentage correctly for all correct', () {
-        final container = createContainer(initialQuizAnswers: [
-          quizAnswerCorrect1,
-          createQuizAnswer(
+        final container = createContainer(
+          initialQuizAnswers: [
+            quizAnswerCorrect1,
+            createQuizAnswer(
               questionId: 'q4',
               correctAnswers: ['a', 'b'],
               givenAnswers: ['a', 'b'],
               pointsEarned: 2,
-              possiblePoints: 2)
-        ]);
+              possiblePoints: 2,
+            ),
+          ],
+        );
         addTearDown(container.dispose);
         final notifier = container.read(quizResultNotifierProvider.notifier);
         expect(notifier.calculateUserPoints(), 3);
@@ -461,8 +508,9 @@ void main() {
         expect(notifier.isQuizPassed(), isTrue);
       });
       test('calculates points and percentage correctly for all incorrect', () {
-        final container =
-            createContainer(initialQuizAnswers: sampleAnswersAllIncorrect);
+        final container = createContainer(
+          initialQuizAnswers: sampleAnswersAllIncorrect,
+        );
         addTearDown(container.dispose);
         final notifier = container.read(quizResultNotifierProvider.notifier);
         expect(notifier.calculateUserPoints(), 0);
@@ -471,8 +519,9 @@ void main() {
         expect(notifier.isQuizPassed(), isFalse);
       });
       test('handles division by zero when calculating percentage', () {
-        final container =
-            createContainer(initialQuizAnswers: sampleAnswersEmpty);
+        final container = createContainer(
+          initialQuizAnswers: sampleAnswersEmpty,
+        );
         addTearDown(container.dispose);
         final notifier = container.read(quizResultNotifierProvider.notifier);
         expect(notifier.calculateUserPoints(), 0);
@@ -526,18 +575,20 @@ void main() {
 
         // Stub the call method on the copyWith object to return a NEW mock
         // REMOVED orElse from any() calls
-        when(() => mockCopyWith.call(
-              id: any(named: 'id'),
-              uid: any(named: 'uid'),
-              email: any(named: 'email'),
-              language: any(named: 'language'),
-              themeMode: any(named: 'themeMode'),
-              isTopicDone: any(named: 'isTopicDone'),
-              categoryProgress: any(named: 'categoryProgress'),
-              displayName: any(named: 'displayName'),
-              photoUrl: any(named: 'photoUrl'),
-              profileImageUrl: any(named: 'profileImageUrl'),
-            )).thenAnswer((invocation) {
+        when(
+          () => mockCopyWith.call(
+            id: any(named: 'id'),
+            uid: any(named: 'uid'),
+            email: any(named: 'email'),
+            language: any(named: 'language'),
+            themeMode: any(named: 'themeMode'),
+            isTopicDone: any(named: 'isTopicDone'),
+            categoryProgress: any(named: 'categoryProgress'),
+            displayName: any(named: 'displayName'),
+            photoUrl: any(named: 'photoUrl'),
+            profileImageUrl: any(named: 'profileImageUrl'),
+          ),
+        ).thenAnswer((invocation) {
           // Create a *new* MockAppUser for the result
           final copiedUser = MockAppUser();
           final copiedUserCopyWith =
@@ -549,10 +600,12 @@ void main() {
           final emailArg = invocation.namedArguments[#email];
           final langArg = invocation.namedArguments[#language];
           final themeArg = invocation.namedArguments[#themeMode];
-          final topicDoneArg = invocation.namedArguments[#isTopicDone]
-              as Map<String, Map<String, bool>>?;
-          final progressArg = invocation.namedArguments[#categoryProgress]
-              as Map<String, double>?;
+          final topicDoneArg =
+              invocation.namedArguments[#isTopicDone]
+                  as Map<String, Map<String, bool>>?;
+          final progressArg =
+              invocation.namedArguments[#categoryProgress]
+                  as Map<String, double>?;
           // Handle potential freezed object for nullables
           final displayArg = invocation.namedArguments[#displayName];
           final photoArg = invocation.namedArguments[#photoUrl];
@@ -568,14 +621,16 @@ void main() {
           final newTopicDone = topicDoneArg ?? user.isTopicDone;
           final newProgress = progressArg ?? user.categoryProgress;
           // Handle nullables using the freezed object check
-          final newDisplayName = (displayArg == freezed
-              ? user.displayName
-              : displayArg as String?);
+          final newDisplayName =
+              (displayArg == freezed
+                  ? user.displayName
+                  : displayArg as String?);
           final newPhotoUrl =
               (photoArg == freezed ? user.photoUrl : photoArg as String?);
-          final newProfileImageUrl = (profileImgArg == freezed
-              ? user.profileImageUrl
-              : profileImgArg as String?);
+          final newProfileImageUrl =
+              (profileImgArg == freezed
+                  ? user.profileImageUrl
+                  : profileImgArg as String?);
 
           when(() => copiedUser.id).thenReturn(newId);
           when(() => copiedUser.uid).thenReturn(newUid);
@@ -592,20 +647,22 @@ void main() {
           when(() => copiedUser.copyWith).thenReturn(copiedUserCopyWith);
           // Stub the call method on the *new* copyWith object (can often just return itself or the new user)
           // REMOVED orElse from any() calls
-          when(() => copiedUserCopyWith.call(
-                    id: any(named: 'id'),
-                    uid: any(named: 'uid'),
-                    email: any(named: 'email'),
-                    language: any(named: 'language'),
-                    themeMode: any(named: 'themeMode'),
-                    isTopicDone: any(named: 'isTopicDone'),
-                    categoryProgress: any(named: 'categoryProgress'),
-                    displayName: any(named: 'displayName'),
-                    photoUrl: any(named: 'photoUrl'),
-                    profileImageUrl: any(named: 'profileImageUrl'),
-                  ))
-              .thenReturn(
-                  copiedUser); // Simplistic stub for copied user's copyWith
+          when(
+            () => copiedUserCopyWith.call(
+              id: any(named: 'id'),
+              uid: any(named: 'uid'),
+              email: any(named: 'email'),
+              language: any(named: 'language'),
+              themeMode: any(named: 'themeMode'),
+              isTopicDone: any(named: 'isTopicDone'),
+              categoryProgress: any(named: 'categoryProgress'),
+              displayName: any(named: 'displayName'),
+              photoUrl: any(named: 'photoUrl'),
+              profileImageUrl: any(named: 'profileImageUrl'),
+            ),
+          ).thenReturn(
+            copiedUser,
+          ); // Simplistic stub for copied user's copyWith
 
           // print("copyWith called, returning new mock user with isTopicDone: $newTopicDone"); // Debug print
           return copiedUser; // Return the newly stubbed mock
@@ -614,37 +671,45 @@ void main() {
         return user;
       }
 
-      test('saveQuizResult calls saveResultNotifier with correct Result data',
-          () async {
-        // Arrange
-        final fakeNotifier = FakeSaveResultNotifier();
-        // Use default stubbed mock user
-        final container = createContainer(
+      test(
+        'saveQuizResult calls saveResultNotifier with correct Result data',
+        () async {
+          // Arrange
+          final fakeNotifier = FakeSaveResultNotifier();
+          // Use default stubbed mock user
+          final container = createContainer(
             initialQuizAnswers: sampleAnswersMixed,
-            saveResultNotifier: fakeNotifier);
-        addTearDown(container.dispose);
-        final notifier = container.read(quizResultNotifierProvider.notifier);
+            saveResultNotifier: fakeNotifier,
+          );
+          addTearDown(container.dispose);
+          final notifier = container.read(quizResultNotifierProvider.notifier);
 
-        // Act
-        await notifier.saveQuizResult(testCategoryId, testTopicId, testUserId);
+          // Act
+          await notifier.saveQuizResult(
+            testCategoryId,
+            testTopicId,
+            testUserId,
+          );
 
-        // Assert
-        expect(fakeNotifier.saveResultCallCount, 1);
-        final capturedResult = fakeNotifier.lastSavedResult;
-        expect(capturedResult, isNotNull);
-        expect(capturedResult!.categoryId, testCategoryId);
-        expect(capturedResult.topicId, testTopicId);
-        expect(capturedResult.userId, testUserId);
-        expect(capturedResult.correct, 2);
-        expect(capturedResult.total, 4);
-        expect(capturedResult.score, 50.0);
-        expect(capturedResult.isPassed, isFalse);
-        const listEquality = DeepCollectionEquality();
-        expect(
+          // Assert
+          expect(fakeNotifier.saveResultCallCount, 1);
+          final capturedResult = fakeNotifier.lastSavedResult;
+          expect(capturedResult, isNotNull);
+          expect(capturedResult!.categoryId, testCategoryId);
+          expect(capturedResult.topicId, testTopicId);
+          expect(capturedResult.userId, testUserId);
+          expect(capturedResult.correct, 2);
+          expect(capturedResult.total, 4);
+          expect(capturedResult.score, 50.0);
+          expect(capturedResult.isPassed, isFalse);
+          const listEquality = DeepCollectionEquality();
+          expect(
             listEquality.equals(capturedResult.quizAnswers, sampleAnswersMixed),
-            isTrue);
-        expect(capturedResult.timestamp, isNotNull);
-      });
+            isTrue,
+          );
+          expect(capturedResult.timestamp, isNotNull);
+        },
+      );
 
       test('saveQuizResult handles errors from saveResultNotifier', () async {
         // Arrange
@@ -653,128 +718,149 @@ void main() {
         fakeNotifier.setErrorToThrowOnSave(testError);
 
         final container = createContainer(
-            initialQuizAnswers: sampleAnswersMixed,
-            saveResultNotifier: fakeNotifier);
+          initialQuizAnswers: sampleAnswersMixed,
+          saveResultNotifier: fakeNotifier,
+        );
         addTearDown(container.dispose);
         final notifier = container.read(quizResultNotifierProvider.notifier);
 
         // Act & Assert
         await expectLater(
-            notifier.saveQuizResult(testCategoryId, testTopicId, testUserId),
-            completes);
+          notifier.saveQuizResult(testCategoryId, testTopicId, testUserId),
+          completes,
+        );
         expect(fakeNotifier.saveResultCallCount, 1);
       });
 
       test(
-          'markTopicAsDone fetches dependencies, updates user, and invalidates provider',
-          () async {
-        // Arrange
-        final mockTopics = [
-          MockTopic(id: 't1'),
-          MockTopic(id: 't2'),
-          MockTopic(id: 't3'),
-        ];
+        'markTopicAsDone fetches dependencies, updates user, and invalidates provider',
+        () async {
+          // Arrange
+          final mockTopics = [
+            MockTopic(id: 't1'),
+            MockTopic(id: 't2'),
+            MockTopic(id: 't3'),
+          ];
 
-        // Use the helper to set up detailed stubbing for copyWith
-        final initialUser =
-            setupMockUserForCopyWith(id: testUserId, initialTopicDone: {
-          'c1': {'t2': true}
-        }, initialProgress: {
-          'c1': 1.0 / 3.0
-        });
+          // Use the helper to set up detailed stubbing for copyWith
+          final initialUser = setupMockUserForCopyWith(
+            id: testUserId,
+            initialTopicDone: {
+              'c1': {'t2': true},
+            },
+            initialProgress: {'c1': 1.0 / 3.0},
+          );
 
-        final specificMockDbRepo = MockQuizMockDatabaseRepository();
-        final capturedUser = Completer<AppUser>();
-        when(() => specificMockDbRepo.updateUser(any<AppUser>()))
-            .thenAnswer((invocation) async {
-          final userArg = invocation.positionalArguments.first as AppUser;
-          // print("updateUser called with user.isTopicDone: ${userArg.isTopicDone}"); // Debug print
-          capturedUser.complete(userArg);
-          return Future.value();
-        });
+          final specificMockDbRepo = MockQuizMockDatabaseRepository();
+          final capturedUser = Completer<AppUser>();
+          when(() => specificMockDbRepo.updateUser(any<AppUser>())).thenAnswer((
+            invocation,
+          ) async {
+            final userArg = invocation.positionalArguments.first as AppUser;
+            // print("updateUser called with user.isTopicDone: ${userArg.isTopicDone}"); // Debug print
+            capturedUser.complete(userArg);
+            return Future.value();
+          });
 
-        final container = createContainer(
-          initialQuizAnswers: sampleAnswersMixed,
-          user: initialUser, // Pass the stubbed MockAppUser instance
-          topics: mockTopics,
-          databaseRepo: specificMockDbRepo,
-        );
-        addTearDown(container.dispose);
-        final notifier = container.read(quizResultNotifierProvider.notifier);
-
-        // Act
-        await notifier.markTopicAsDone(testTopicId, testCategoryId);
-
-        // Assert
-        verify(() => specificMockDbRepo.updateUser(any<AppUser>())).called(1);
-
-        // Asserts should now work because copyWith was stubbed correctly
-        final updatedUser = await capturedUser.future;
-        expect(updatedUser.id, testUserId);
-        // Check the state *after* the copyWith call inside markTopicAsDone
-        // These assertions rely on the `thenAnswer` in `setupMockUserForCopyWith` correctly
-        // creating and stubbing the `copiedUser`.
-        expect(updatedUser.isTopicDone[testCategoryId]?['t1'], isTrue,
-            reason: 't1 should be marked done');
-        expect(updatedUser.isTopicDone[testCategoryId]?['t2'], isTrue,
-            reason: 't2 should still be done');
-        expect(updatedUser.isTopicDone[testCategoryId]?['t3'], isNull);
-        expect(updatedUser.categoryProgress[testCategoryId],
-            closeTo(2.0 / 3.0, 0.001));
-      });
-
-      // --- Error Handling Tests (should now work correctly) ---
-      test('markTopicAsDone throws if user fetch fails', () async {
-        final container = createContainer(
+          final container = createContainer(
             initialQuizAnswers: sampleAnswersMixed,
-            additionalOverrides: [
-              currentUserModelProvider.overrideWith(
-                (ref) => Stream.value(const UserModelState.unauthenticated()),
-              ),
-            ]);
-        addTearDown(container.dispose);
-        final notifier = container.read(quizResultNotifierProvider.notifier);
+            user: initialUser, // Pass the stubbed MockAppUser instance
+            topics: mockTopics,
+            databaseRepo: specificMockDbRepo,
+          );
+          addTearDown(container.dispose);
+          final notifier = container.read(quizResultNotifierProvider.notifier);
 
-        await expectLater(
-            notifier.markTopicAsDone(testTopicId, testCategoryId),
-            throwsA(isA<Exception>().having(
-                (e) => e.toString(), 'message', contains('User not found'))));
-      });
+          // Act
+          // Pass the initialUser object as the first argument
+          await notifier.markTopicAsDone(
+            initialUser,
+            testTopicId,
+            testCategoryId,
+          );
+
+          // Assert
+          verify(() => specificMockDbRepo.updateUser(any<AppUser>())).called(1);
+
+          // Asserts should now work because copyWith was stubbed correctly
+          final updatedUser = await capturedUser.future;
+          expect(updatedUser.id, testUserId);
+          // Check the state *after* the copyWith call inside markTopicAsDone
+          // These assertions rely on the `thenAnswer` in `setupMockUserForCopyWith` correctly
+          // creating and stubbing the `copiedUser`.
+          expect(
+            updatedUser.isTopicDone[testCategoryId]?['t1'],
+            isTrue,
+            reason: 't1 should be marked done',
+          );
+          expect(
+            updatedUser.isTopicDone[testCategoryId]?['t2'],
+            isTrue,
+            reason: 't2 should still be done',
+          );
+          expect(updatedUser.isTopicDone[testCategoryId]?['t3'], isNull);
+          expect(
+            updatedUser.categoryProgress[testCategoryId],
+            closeTo(2.0 / 3.0, 0.001),
+          );
+        },
+      );
+
+      // --- Error Handling Tests  ---
 
       test('markTopicAsDone throws if repo fetch fails', () async {
         final testError = Exception('Repo fetch failed');
         // Use default stubbed user is fine here as copyWith isn't reached
         final container = createContainer(
-            initialQuizAnswers: sampleAnswersMixed,
-            user:
-                _createDefaultMockUser(), // Or setupMockUserForCopyWith if needed
-            additionalOverrides: [
-              quizMockDatabaseRepositoryProvider
-                  .overrideWith((ref) => Future.error(testError))
-            ]);
+          initialQuizAnswers: sampleAnswersMixed,
+          user:
+              _createDefaultMockUser(), // Or setupMockUserForCopyWith if needed
+          additionalOverrides: [
+            quizMockDatabaseRepositoryProvider.overrideWith(
+              (ref) => Future.error(testError),
+            ),
+          ],
+        );
         addTearDown(container.dispose);
         final notifier = container.read(quizResultNotifierProvider.notifier);
 
-        await expectLater(notifier.markTopicAsDone(testTopicId, testCategoryId),
-            throwsA(testError));
+        // Pass a mock user
+        await expectLater(
+          notifier.markTopicAsDone(
+            _createDefaultMockUser(),
+            testTopicId,
+            testCategoryId,
+          ),
+          throwsA(testError),
+        );
       });
 
       test('markTopicAsDone throws if topics fetch fails', () async {
         final testError = Exception('Topics fetch failed');
         // Use default stubbed user is fine here as copyWith isn't reached
         final container = createContainer(
-            initialQuizAnswers: sampleAnswersMixed,
-            user:
-                _createDefaultMockUser(), // Or setupMockUserForCopyWith if needed
-            additionalOverrides: [
-              topicsProvider(testCategoryId, 'en')
-                  .overrideWith((ref) => Future.error(testError))
-            ]);
+          initialQuizAnswers: sampleAnswersMixed,
+          user:
+              _createDefaultMockUser(), // Or setupMockUserForCopyWith if needed
+          additionalOverrides: [
+            topicsProvider(
+              testCategoryId,
+              'en',
+            ).overrideWith((ref) => Future.error(testError)),
+          ],
+        );
         addTearDown(container.dispose);
         final notifier = container.read(quizResultNotifierProvider.notifier);
 
-        await expectLater(notifier.markTopicAsDone(testTopicId, testCategoryId),
-            throwsA(testError));
+        // Pass a mock user
+        await expectLater(
+          notifier.markTopicAsDone(
+            _createDefaultMockUser(),
+            testTopicId,
+            testCategoryId,
+          ),
+          throwsA(testError),
+        );
       });
 
       // --- FINALIZED Test ---
@@ -789,21 +875,26 @@ void main() {
         final initialUser = setupMockUserForCopyWith(id: testUserId);
 
         // Stub updateUser on *this* mock to throw the error
-        when(() => specificMockDbRepo.updateUser(any<AppUser>()))
-            .thenThrow(testError);
+        when(
+          () => specificMockDbRepo.updateUser(any<AppUser>()),
+        ).thenThrow(testError);
 
         final container = createContainer(
-            initialQuizAnswers: sampleAnswersMixed,
-            user: initialUser, // Pass the stubbed mock user
-            topics: mockTopics,
-            databaseRepo: specificMockDbRepo);
+          initialQuizAnswers: sampleAnswersMixed,
+          user: initialUser, // Pass the stubbed mock user
+          topics: mockTopics,
+          databaseRepo: specificMockDbRepo,
+        );
         addTearDown(container.dispose);
         final notifier = container.read(quizResultNotifierProvider.notifier);
 
         // Act & Assert
         // Should now correctly catch the intended Exception
-        await expectLater(notifier.markTopicAsDone(testTopicId, testCategoryId),
-            throwsA(testError));
+        // Pass the initialUser object
+        await expectLater(
+          notifier.markTopicAsDone(initialUser, testTopicId, testCategoryId),
+          throwsA(testError),
+        );
 
         // Verify updateUser was called (even though it threw)
         verify(() => specificMockDbRepo.updateUser(any<AppUser>())).called(1);
