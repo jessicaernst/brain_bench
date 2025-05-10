@@ -1,14 +1,15 @@
 import 'package:brain_bench/business_logic/home/home_providers.dart';
 import 'package:brain_bench/core/extensions/responsive_context.dart';
+import 'package:brain_bench/core/hooks/actual_category_hooks.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/utils/actual_category_utils.dart';
 import 'package:brain_bench/data/infrastructure/quiz/category_providers.dart';
 import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/category/category.dart';
+import 'package:brain_bench/data/models/home/displayed_category_info.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/models/user/user_model_state.dart';
-import 'package:brain_bench/data/models/home/displayed_category_info.dart';
 import 'package:brain_bench/presentation/home/widgets/actual_category_content_row.dart';
 import 'package:brain_bench/presentation/home/widgets/actual_category_header.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
 
-final _logger = Logger('ActualCategoryView');
+final Logger _logger = Logger('ActualCategoryView');
 
 /// A widget that displays the actual category view.
 class ActualCategoryView extends HookConsumerWidget {
@@ -33,7 +34,7 @@ class ActualCategoryView extends HookConsumerWidget {
     // Retrieve the async categories and user model state using hooks
     final asyncCategories = ref.watch(categoriesProvider(languageCode));
     final userModelState = ref.watch(currentUserModelProvider);
-    final selectedCategory = useState<Category?>(null);
+    final localSelectedCategory = useState<Category?>(null);
     // Watch the new provider for the ID from SharedPreferences
     final asyncLastSelectedIdFromPrefs = ref.watch(
       lastSelectedCategoryIdFromPrefsProvider,
@@ -47,7 +48,7 @@ class ActualCategoryView extends HookConsumerWidget {
 
     // Update the selected category
     void updateSelectedCategory(Category category) async {
-      selectedCategory.value = category;
+      localSelectedCategory.value = category;
       // Update den globalen Provider nur, wenn sich die Kategorie-ID geändert hat
       final currentCategoryId = ref.read(selectedHomeCategoryProvider);
       if (currentCategoryId != category.id) {
@@ -98,48 +99,31 @@ class ActualCategoryView extends HookConsumerWidget {
       _ => null,
     };
 
-    useEffect(() {
-      // This effect runs when the component mounts or its dependencies change.
-      // It sets an initial category or updates it based on SharedPreferences or user data.
-      // Check if the last selected ID from preferences is loaded
-      // and if the selected category is not already set.
-      asyncLastSelectedIdFromPrefs.whenData((loadedLastSelectedIdFromPrefs) {
-        determineInitialCategory(
-          loadedLastSelectedIdFromPrefs: loadedLastSelectedIdFromPrefs,
-          backendCategories: categories,
-          currentUser: currentUser,
-          languageCode: languageCode,
-          ref: ref,
-        ).then((categoryToSet) {
-          if (!context.mounted) return;
-          if (categoryToSet != null) {
-            if (selectedCategory.value == null ||
-                selectedCategory.value!.id != categoryToSet.id) {
-              _logger.finer(
-                'Updating selectedCategory.value to: ${categoryToSet.id}',
-              );
-              selectedCategory.value = categoryToSet;
+    final initialCategoryFromHook = useDeterminedInitialCategory(
+      ref: ref,
+      asyncLastSelectedIdFromPrefs: asyncLastSelectedIdFromPrefs,
+      categories: categories,
+      currentUser: currentUser,
+      languageCode: languageCode,
+      localizations: localizations,
+    );
 
-              final currentGlobalCategoryId = ref.read(
-                selectedHomeCategoryProvider,
-              );
-              if (currentGlobalCategoryId != categoryToSet.id) {
-                ref
-                    .read(selectedHomeCategoryProvider.notifier)
-                    .update(categoryToSet.id);
-                _logger.info(
-                  'Updated selectedHomeCategoryProvider with initial ID: ${categoryToSet.id}',
-                );
-              }
-            }
-          }
-        });
-      });
+    // Set the local selected category based on the hook's result
+    useEffect(() {
+      if (initialCategoryFromHook != null) {
+        // Update the local state only if the ID has changed
+        if (localSelectedCategory.value?.id != initialCategoryFromHook.id) {
+          _logger.finer(
+            'View: Aktualisiere localSelectedCategory.value vom Hook: ${initialCategoryFromHook.id}',
+          );
+          localSelectedCategory.value = initialCategoryFromHook;
+        }
+      }
       return null;
-    }, [asyncLastSelectedIdFromPrefs, categories, currentUser]);
+    }, [initialCategoryFromHook]);
 
     _logger.finest(
-      'Building ActualCategoryView with selected category: ${selectedCategory.value?.id ?? "none"}',
+      'Building ActualCategoryView with selected category: ${localSelectedCategory.value?.id ?? "none"}',
     );
 
     if (categories.isEmpty) {
@@ -149,7 +133,7 @@ class ActualCategoryView extends HookConsumerWidget {
     }
 
     final DisplayedCategoryInfo displayInfo = getDisplayedCategoryInfo(
-      selectedCategoryValue: selectedCategory.value,
+      selectedCategoryValue: localSelectedCategory.value,
       backendCategories: categories,
       currentUser: currentUser,
       localizations: localizations,
@@ -176,7 +160,7 @@ class ActualCategoryView extends HookConsumerWidget {
               () => showActualCategoryPicker(
                 context: context,
                 currentCategories: categories,
-                currentSelectedCategory: selectedCategory.value,
+                currentSelectedCategory: localSelectedCategory.value,
                 languageCode: languageCode,
                 localizations: localizations,
                 isDarkMode: isDarkMode,

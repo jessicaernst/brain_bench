@@ -6,8 +6,8 @@ import 'package:brain_bench/core/shared_widgets/pickers/material_list_picker.dar
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
 import 'package:brain_bench/data/models/category/category.dart';
-import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/models/home/displayed_category_info.dart';
+import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -15,15 +15,40 @@ import 'package:logging/logging.dart';
 
 final _logger = Logger('ActualCategoryUtils');
 
-/// Determines the initial category based on the loaded last selected ID from preferences,
-/// the automatic category, the backend categories, the current user, the language code,
-/// and the widget reference.
-/// Returns the determined category.
+/// Creates a minimal, hardcoded "welcome" category.
+///
+/// This is used as a fallback if the "welcome" category cannot be loaded
+/// from the backend. It uses localized strings provided by [localizations].
+Category _createMinimalWelcomeCategory(AppLocalizations localizations) {
+  return Category(
+    id: 'welcome',
+    nameEn: localizations.pickerOptionAutomatic,
+    nameDe: localizations.pickerOptionAutomatic,
+    descriptionEn: localizations.pickerOptionAutomaticDescription,
+    descriptionDe: localizations.pickerOptionAutomaticDescription,
+    subtitleEn: 'Your starting point & quiz guide',
+    subtitleDe: 'Dein Startpunkt & Quiz-Leitfaden',
+  );
+}
+
+/// Determines the initial category to be displayed.
+///
+/// This function prioritizes:
+/// 1. The category ID stored in shared preferences ([loadedLastSelectedIdFromPrefs]).
+/// 2. The `lastPlayedCategoryId` from the [currentUser].
+/// 3. Defaults to an effective "welcome" category, which is either fetched
+///    from [backendCategories] or created using [_createMinimalWelcomeCategory]
+///    with the provided [localizations].
+///
+/// Uses [languageCode] for display purposes and [ref] to access repositories if needed.
+/// Returns the determined [Category] or `null` if no suitable category can be found
+/// (though it aims to always return the effective welcome category as a last resort).
 Future<Category?> determineInitialCategory({
   required String? loadedLastSelectedIdFromPrefs,
   required List<Category> backendCategories,
   required AppUser? currentUser,
   required String languageCode,
+  required AppLocalizations localizations,
   required WidgetRef ref,
 }) async {
   Category? categoryToSet;
@@ -41,9 +66,12 @@ Future<Category?> determineInitialCategory({
     );
   }
 
+  final Category effectiveWelcomeCategory =
+      welcomeCategoryFromDB ?? _createMinimalWelcomeCategory(localizations);
+
   final List<Category> allAvailablePickerItems = [
-    if (welcomeCategoryFromDB != null) welcomeCategoryFromDB,
-    ...backendCategories,
+    effectiveWelcomeCategory,
+    ...backendCategories.where((cat) => cat.id != 'welcome'),
   ];
 
   if (lastSelectedId != null) {
@@ -79,18 +107,30 @@ Future<Category?> determineInitialCategory({
         );
       }
     }
-    // Default to welcome category from DB if available, otherwise null (caller should handle)
-    categoryToSet ??= welcomeCategoryFromDB;
+    // Default to the effective welcome category
+    categoryToSet ??= effectiveWelcomeCategory;
     _logger.info(
-      'Category to set (after fallbacks): ${categoryToSet?.id} - ${languageCode == 'de' ? categoryToSet?.nameDe : categoryToSet?.nameEn}',
+      'Category to set (after fallbacks): ${categoryToSet.id} - ${languageCode == 'de' ? categoryToSet.nameDe : categoryToSet.nameEn}',
     );
   }
   return categoryToSet;
 }
 
-/// Shows the actual category picker.
-/// Requires the build context, current categories, automatic category, current selected category,
-/// language code, localizations, isDarkMode flag, and the onCategorySelected callback.
+/// Displays a platform-adaptive category picker.
+///
+/// Shows a Cupertino-style picker on iOS and a Material-style bottom sheet
+/// on other platforms.
+/// The picker lists [currentCategories], ensuring the "welcome" category
+/// (either from [currentCategories] or a minimal fallback created using [localizations])
+/// is always an option, typically at the top.
+///
+/// - [context]: The build context.
+/// - [currentCategories]: The list of categories fetched from the backend.
+/// - [currentSelectedCategory]: The category currently selected, to pre-select in the picker.
+/// - [languageCode]: The current language code for displaying category names.
+/// - [localizations]: For localized strings like "Done" button text.
+/// - [isDarkMode]: To style the picker according to the current theme.
+/// - [onCategorySelected]: Callback invoked when a category is chosen.
 void showActualCategoryPicker({
   required BuildContext context,
   required List<Category> currentCategories,
@@ -102,24 +142,28 @@ void showActualCategoryPicker({
 }) {
   _logger.finer('Category picker opened.');
 
-  // Find the "welcome" category from the backend list to potentially place it first
-  Category? welcomeCategoryFromDB;
+  Category effectiveWelcomeCategory; // Made non-final
   // Create a mutable copy to avoid modifying the original list from the provider
   final List<Category> otherCategories = List.from(currentCategories);
+
   try {
-    welcomeCategoryFromDB = otherCategories.firstWhere(
+    // Try to find the "welcome" category from the provided currentCategories
+    final Category welcomeCategoryFromDB = otherCategories.firstWhere(
       (cat) => cat.id == 'welcome',
     );
     // Remove it from otherCategories to avoid duplication if found
     otherCategories.removeWhere((cat) => cat.id == 'welcome');
+    effectiveWelcomeCategory = welcomeCategoryFromDB;
   } catch (e) {
     _logger.finer(
       'Welcome category not found in currentCategories for picker.',
     );
+    // If not found in DB, we will use a minimal hardcoded one for the picker
+    effectiveWelcomeCategory = _createMinimalWelcomeCategory(localizations);
   }
 
   final List<Category> pickerItems = [
-    if (welcomeCategoryFromDB != null) welcomeCategoryFromDB,
+    effectiveWelcomeCategory,
     ...otherCategories,
   ];
 
@@ -177,9 +221,14 @@ void showActualCategoryPicker({
   }
 }
 
-/// Retrieves the displayed category information based on the selected category value,
-/// automatic category, current user, localizations, and language code.
-/// Returns the displayed category information.
+/// Computes display-friendly information for a given category.
+///
+/// If [selectedCategoryValue] is `null`, it returns loading/prompt information.
+/// If [selectedCategoryValue] is the "welcome" category, it uses details from
+/// an effective "welcome" category (from [backendCategories] or a minimal fallback
+/// created using [localizations]).
+/// Otherwise, it uses details from [selectedCategoryValue] and calculates progress
+/// based on [currentUser]'s data.
 DisplayedCategoryInfo getDisplayedCategoryInfo({
   required Category? selectedCategoryValue,
   required List<Category> backendCategories,
@@ -191,14 +240,20 @@ DisplayedCategoryInfo getDisplayedCategoryInfo({
   String description;
   double progress;
 
-  // Find the "welcome" category from the backend list
-  Category? welcomeCategoryFromDB;
+  Category effectiveWelcomeCategory;
+
   try {
-    welcomeCategoryFromDB = backendCategories.firstWhere(
+    // Try to find the "welcome" category from the backend list
+    final Category welcomeCategoryFromDB = backendCategories.firstWhere(
       (cat) => cat.id == 'welcome',
     );
+    effectiveWelcomeCategory = welcomeCategoryFromDB; // Use the one from DB
   } catch (e) {
     _logger.finer('Welcome category not found for display info generation.');
+    // If not found in DB, we will use a minimal hardcoded one
+    effectiveWelcomeCategory = _createMinimalWelcomeCategory(
+      localizations,
+    ); // Assign fallback here
   }
 
   if (selectedCategoryValue == null) {
@@ -206,15 +261,16 @@ DisplayedCategoryInfo getDisplayedCategoryInfo({
     description = localizations.homeActualCategoryDescriptionPrompt;
     progress = 0.0;
   } else if (selectedCategoryValue.id == 'welcome' &&
-      welcomeCategoryFromDB != null) {
+      effectiveWelcomeCategory.id == 'welcome') {
+    // Check against effective one
     name =
         languageCode == 'de'
-            ? welcomeCategoryFromDB.nameDe
-            : welcomeCategoryFromDB.nameEn;
+            ? effectiveWelcomeCategory.nameDe
+            : effectiveWelcomeCategory.nameEn;
     description =
         languageCode == 'de'
-            ? welcomeCategoryFromDB.descriptionDe
-            : welcomeCategoryFromDB.descriptionEn;
+            ? effectiveWelcomeCategory.descriptionDe
+            : effectiveWelcomeCategory.descriptionEn;
     progress = 0.0;
   } else {
     name =
