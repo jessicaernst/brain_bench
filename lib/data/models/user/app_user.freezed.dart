@@ -33,6 +33,7 @@ mixin _$AppUser {
   Map<String, Map<String, bool>> get isTopicDone =>
       throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
+  String? get lastPlayedCategoryId => throw _privateConstructorUsedError;
 
   /// Serializes this AppUser to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -59,6 +60,7 @@ abstract class $AppUserCopyWith<$Res> {
     Map<String, double> categoryProgress,
     Map<String, Map<String, bool>> isTopicDone,
     String id,
+    String? lastPlayedCategoryId,
   });
 }
 
@@ -87,6 +89,7 @@ class _$AppUserCopyWithImpl<$Res, $Val extends AppUser>
     Object? categoryProgress = null,
     Object? isTopicDone = null,
     Object? id = null,
+    Object? lastPlayedCategoryId = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -140,6 +143,11 @@ class _$AppUserCopyWithImpl<$Res, $Val extends AppUser>
                     ? _value.id
                     : id // ignore: cast_nullable_to_non_nullable
                         as String,
+            lastPlayedCategoryId:
+                freezed == lastPlayedCategoryId
+                    ? _value.lastPlayedCategoryId
+                    : lastPlayedCategoryId // ignore: cast_nullable_to_non_nullable
+                        as String?,
           )
           as $Val,
     );
@@ -165,6 +173,7 @@ abstract class _$$AppUserImplCopyWith<$Res> implements $AppUserCopyWith<$Res> {
     Map<String, double> categoryProgress,
     Map<String, Map<String, bool>> isTopicDone,
     String id,
+    String? lastPlayedCategoryId,
   });
 }
 
@@ -192,6 +201,7 @@ class __$$AppUserImplCopyWithImpl<$Res>
     Object? categoryProgress = null,
     Object? isTopicDone = null,
     Object? id = null,
+    Object? lastPlayedCategoryId = freezed,
   }) {
     return _then(
       _$AppUserImpl(
@@ -245,6 +255,11 @@ class __$$AppUserImplCopyWithImpl<$Res>
                 ? _value.id
                 : id // ignore: cast_nullable_to_non_nullable
                     as String,
+        lastPlayedCategoryId:
+            freezed == lastPlayedCategoryId
+                ? _value.lastPlayedCategoryId
+                : lastPlayedCategoryId // ignore: cast_nullable_to_non_nullable
+                    as String?,
       ),
     );
   }
@@ -264,6 +279,7 @@ class _$AppUserImpl implements _AppUser {
     final Map<String, double> categoryProgress = const {},
     final Map<String, Map<String, bool>> isTopicDone = const {},
     required this.id,
+    this.lastPlayedCategoryId,
   }) : _categoryProgress = categoryProgress,
        _isTopicDone = isTopicDone;
 
@@ -306,10 +322,12 @@ class _$AppUserImpl implements _AppUser {
 
   @override
   final String id;
+  @override
+  final String? lastPlayedCategoryId;
 
   @override
   String toString() {
-    return 'AppUser(uid: $uid, email: $email, displayName: $displayName, photoUrl: $photoUrl, profileImageUrl: $profileImageUrl, themeMode: $themeMode, language: $language, categoryProgress: $categoryProgress, isTopicDone: $isTopicDone, id: $id)';
+    return 'AppUser(uid: $uid, email: $email, displayName: $displayName, photoUrl: $photoUrl, profileImageUrl: $profileImageUrl, themeMode: $themeMode, language: $language, categoryProgress: $categoryProgress, isTopicDone: $isTopicDone, id: $id, lastPlayedCategoryId: $lastPlayedCategoryId)';
   }
 
   @override
@@ -337,7 +355,9 @@ class _$AppUserImpl implements _AppUser {
               other._isTopicDone,
               _isTopicDone,
             ) &&
-            (identical(other.id, id) || other.id == id));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.lastPlayedCategoryId, lastPlayedCategoryId) ||
+                other.lastPlayedCategoryId == lastPlayedCategoryId));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -354,6 +374,7 @@ class _$AppUserImpl implements _AppUser {
     const DeepCollectionEquality().hash(_categoryProgress),
     const DeepCollectionEquality().hash(_isTopicDone),
     id,
+    lastPlayedCategoryId,
   );
 
   /// Create a copy of AppUser
@@ -382,6 +403,7 @@ abstract class _AppUser implements AppUser {
     final Map<String, double> categoryProgress,
     final Map<String, Map<String, bool>> isTopicDone,
     required final String id,
+    final String? lastPlayedCategoryId,
   }) = _$AppUserImpl;
 
   factory _AppUser.fromJson(Map<String, dynamic> json) = _$AppUserImpl.fromJson;
@@ -406,6 +428,8 @@ abstract class _AppUser implements AppUser {
   Map<String, Map<String, bool>> get isTopicDone;
   @override
   String get id;
+  @override
+  String? get lastPlayedCategoryId;
 
   /// Create a copy of AppUser
   /// with the given fields replaced by the non-null parameter values.

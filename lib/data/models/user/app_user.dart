@@ -16,6 +16,7 @@ class AppUser with _$AppUser {
     @Default({}) Map<String, double> categoryProgress,
     @Default({}) Map<String, Map<String, bool>> isTopicDone,
     required String id,
+    String? lastPlayedCategoryId,
   }) = _AppUser;
 
   factory AppUser.fromJson(Map<String, dynamic> json) =>

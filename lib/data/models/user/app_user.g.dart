@@ -26,6 +26,7 @@ _$AppUserImpl _$$AppUserImplFromJson(Map<String, dynamic> json) =>
           ) ??
           const {},
       id: json['id'] as String,
+      lastPlayedCategoryId: json['lastPlayedCategoryId'] as String?,
     );
 
 Map<String, dynamic> _$$AppUserImplToJson(_$AppUserImpl instance) =>
@@ -40,4 +41,5 @@ Map<String, dynamic> _$$AppUserImplToJson(_$AppUserImpl instance) =>
       'categoryProgress': instance.categoryProgress,
       'isTopicDone': instance.isTopicDone,
       'id': instance.id,
+      'lastPlayedCategoryId': instance.lastPlayedCategoryId,
     };

@@ -5,6 +5,7 @@ import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/shared_widgets/pickers/cupertino_picker_content.dart';
 import 'package:brain_bench/core/shared_widgets/pickers/material_list_picker.dart';
 import 'package:brain_bench/core/styles/colors.dart';
+import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart'; // Importiere deinen Provider
 import 'package:brain_bench/data/infrastructure/quiz/category_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/category/category.dart';
@@ -44,19 +45,33 @@ class ActualCategoryView extends HookConsumerWidget {
     final int descriptionMaxLines = isSmallScreenValue ? 2 : 3;
 
     // Update the selected category
-    // Define the "Automatic" category option
-    final Category automaticCategory = Category(
-      id: '___automatic___',
-      nameEn: localizations.pickerOptionAutomatic,
-      nameDe: localizations.pickerOptionAutomatic,
-      descriptionEn: localizations.pickerOptionAutomaticDescription,
-      descriptionDe: localizations.pickerOptionAutomaticDescription,
-      subtitleEn: '',
-      subtitleDe: '',
-    );
+    // Define and memoize the "Automatic" category option
+    final automaticCategory = useMemoized(() {
+      return Category(
+        id: '___automatic___',
+        nameEn: localizations.pickerOptionAutomatic,
+        nameDe: localizations.pickerOptionAutomatic,
+        descriptionEn: localizations.pickerOptionAutomaticDescription,
+        descriptionDe: localizations.pickerOptionAutomaticDescription,
+        subtitleEn: '',
+        subtitleDe: '',
+      );
+    }, [localizations]); // Re-memoize if localizations change
 
-    void updateSelectedCategory(Category category) {
+    // Update the selected category and save its ID using SettingsRepository
+    void updateSelectedCategory(Category category) async {
       selectedCategory.value = category;
+      try {
+        final settingsRepo = ref.read(settingsRepositoryProvider);
+        await settingsRepo.saveLastSelectedCategoryId(category.id);
+        _logger.info(
+          'Saved last selected category ID via Repository: ${category.id}',
+        );
+      } catch (e) {
+        _logger.warning(
+          'Failed to save last selected category ID via Repository: $e',
+        );
+      }
     }
 
     // Show the category picker
@@ -152,47 +167,100 @@ class ActualCategoryView extends HookConsumerWidget {
       _ => null,
     };
 
-    // Handle the case when there are no categories
-    if (categories.isEmpty) {
-      _logger.warning('No categories available to display.');
-      return Center(child: Text(localizations.homeActualCategoryNoCategories));
-    }
-
     // Initialize selectedCategory when categories are first loaded and no category is selected yet.
     useEffect(
       () {
-        // If no category is selected yet (could be initial load or after "Automatic" was unselected somehow)
-        // and there are actual categories available, select the first actual category.
-        // If "Automatic" is already selected, this condition (selectedCategory.value == null) will be false.
-        if (selectedCategory.value == null && categories.isNotEmpty) {
-          // Schedule the state update for after the current build phase.
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            // Double-check the condition inside the callback,
-            // as the state might have changed or the widget might have been disposed.
-            if (context.mounted &&
-                selectedCategory.value == null &&
-                categories.isNotEmpty) {
-              // If still null, default to the first *real* category
-              // or consider defaulting to 'automaticCategory' if that's preferred.
-              _logger.info(
-                'Initial category selected: ${categories.first.id} - ${languageCode == 'de' ? categories.first.nameDe : categories.first.nameEn}',
-              );
-              selectedCategory.value = categories.first;
+        // This effect runs when the component mounts or its dependencies change.
+        // It sets an initial category if `selectedCategory.value` is currently null.
+        if (selectedCategory.value == null) {
+          // Define an async function to perform the loading and state update
+          Future<void> loadAndSetInitialCategory() async {
+            if (!context.mounted) return; // Check mounted at the beginning
+
+            Category? categoryToSet;
+            final settingsRepo = ref.read(settingsRepositoryProvider);
+            final String? lastSelectedId =
+                await settingsRepo.loadLastSelectedCategoryId();
+
+            // Create a combined list of all available categories for lookup
+            // This includes "Automatic" and categories from the backend
+            final List<Category> allAvailablePickerItems = [
+              automaticCategory,
+              ...categories, // categories from asyncCategories.value
+            ];
+
+            if (lastSelectedId != null) {
+              try {
+                categoryToSet = allAvailablePickerItems.firstWhere(
+                  (cat) => cat.id == lastSelectedId,
+                );
+                _logger.info(
+                  'Initial category set from SharedPreferences (via Repo): ${categoryToSet.id} - ${languageCode == 'de' ? categoryToSet.nameDe : categoryToSet.nameEn}',
+                );
+              } catch (e) {
+                _logger.warning(
+                  'Last selected category ID "$lastSelectedId" from SharedPreferences (via Repo) not found in current picker items. Clearing pref.',
+                );
+                await settingsRepo.clearLastSelectedCategoryId(); // Clean up
+              }
             }
-          });
+
+            // Fallback logic if not found in SharedPreferences
+            if (categoryToSet == null) {
+              // Optional: Fallback to lastPlayedCategoryId from currentUser
+              final String? lastPlayedIdFromUser =
+                  currentUser?.lastPlayedCategoryId;
+              if (lastPlayedIdFromUser != null && categories.isNotEmpty) {
+                // only search in backend categories
+                try {
+                  categoryToSet = categories.firstWhere(
+                    (cat) => cat.id == lastPlayedIdFromUser,
+                  );
+                  _logger.info(
+                    'Initial category set from last played (user data): ${categoryToSet.id} - ${languageCode == 'de' ? categoryToSet.nameDe : categoryToSet.nameEn}',
+                  );
+                } catch (e) {
+                  _logger.warning(
+                    'Last played category ID "$lastPlayedIdFromUser" from user data not found in current backend categories.',
+                  );
+                }
+              }
+              // If still no category, default to "Automatic"
+              categoryToSet ??= automaticCategory;
+              _logger.info(
+                'Initial category (after fallbacks) set to: ${categoryToSet.id} - ${languageCode == 'de' ? categoryToSet.nameDe : categoryToSet.nameEn}',
+              );
+            }
+
+            // Final check before setting state
+            if (context.mounted && selectedCategory.value == null) {
+              selectedCategory.value = categoryToSet;
+            }
+          }
+
+          loadAndSetInitialCategory();
         }
         return null; // No cleanup needed for this effect.
       },
       [
-        categories,
         selectedCategory.value,
         automaticCategory,
+        categories, // Re-evaluate if backend categories change
+        currentUser, // Re-evaluate if user (and thus lastPlayedCategoryId) changes
+        ref, // To ensure ref.read can be safely used if the effect re-runs
       ], // Add automaticCategory to dependencies
     ); // Re-run if categories or selectedCategory.value changes
 
     _logger.finest(
       'Building ActualCategoryView with selected category: ${selectedCategory.value?.id ?? "none"}',
     );
+
+    // Log if backend categories are empty, but don't return early
+    if (categories.isEmpty) {
+      _logger.warning(
+        'No categories available from backend (excluding "Automatic" option). Picker will only show "Automatic".',
+      );
+    }
 
     // Retrieve the displayed category name, description, and progress
     String displayedCategoryName;
