@@ -21,7 +21,6 @@ final _logger = Logger('ActualCategoryUtils');
 /// Returns the determined category.
 Future<Category?> determineInitialCategory({
   required String? loadedLastSelectedIdFromPrefs,
-  required Category automaticCategory,
   required List<Category> backendCategories,
   required AppUser? currentUser,
   required String languageCode,
@@ -30,8 +29,20 @@ Future<Category?> determineInitialCategory({
   Category? categoryToSet;
   final String? lastSelectedId = loadedLastSelectedIdFromPrefs;
 
+  // Find the "welcome" category from the backend list
+  Category? welcomeCategoryFromDB;
+  try {
+    welcomeCategoryFromDB = backendCategories.firstWhere(
+      (cat) => cat.id == 'welcome',
+    );
+  } catch (e) {
+    _logger.warning(
+      'Welcome category with ID "welcome" not found in backend categories. This might lead to unexpected behavior if it is expected to always exist.',
+    );
+  }
+
   final List<Category> allAvailablePickerItems = [
-    automaticCategory,
+    if (welcomeCategoryFromDB != null) welcomeCategoryFromDB,
     ...backendCategories,
   ];
 
@@ -68,9 +79,10 @@ Future<Category?> determineInitialCategory({
         );
       }
     }
-    categoryToSet ??= automaticCategory;
+    // Default to welcome category from DB if available, otherwise null (caller should handle)
+    categoryToSet ??= welcomeCategoryFromDB;
     _logger.info(
-      'Category to set (after fallbacks): ${categoryToSet.id} - ${languageCode == 'de' ? categoryToSet.nameDe : categoryToSet.nameEn}',
+      'Category to set (after fallbacks): ${categoryToSet?.id} - ${languageCode == 'de' ? categoryToSet?.nameDe : categoryToSet?.nameEn}',
     );
   }
   return categoryToSet;
@@ -81,8 +93,7 @@ Future<Category?> determineInitialCategory({
 /// language code, localizations, isDarkMode flag, and the onCategorySelected callback.
 void showActualCategoryPicker({
   required BuildContext context,
-  required List<Category> currentCategories, // backend categories
-  required Category automaticCategory,
+  required List<Category> currentCategories,
   required Category? currentSelectedCategory,
   required String languageCode,
   required AppLocalizations localizations,
@@ -90,7 +101,27 @@ void showActualCategoryPicker({
   required void Function(Category) onCategorySelected,
 }) {
   _logger.finer('Category picker opened.');
-  final List<Category> pickerItems = [automaticCategory, ...currentCategories];
+
+  // Find the "welcome" category from the backend list to potentially place it first
+  Category? welcomeCategoryFromDB;
+  // Create a mutable copy to avoid modifying the original list from the provider
+  final List<Category> otherCategories = List.from(currentCategories);
+  try {
+    welcomeCategoryFromDB = otherCategories.firstWhere(
+      (cat) => cat.id == 'welcome',
+    );
+    // Remove it from otherCategories to avoid duplication if found
+    otherCategories.removeWhere((cat) => cat.id == 'welcome');
+  } catch (e) {
+    _logger.finer(
+      'Welcome category not found in currentCategories for picker.',
+    );
+  }
+
+  final List<Category> pickerItems = [
+    if (welcomeCategoryFromDB != null) welcomeCategoryFromDB,
+    ...otherCategories,
+  ];
 
   final Color pickerBackgroundColor =
       isDarkMode ? BrainBenchColors.deepDive : BrainBenchColors.cloudCanvas;
@@ -151,7 +182,7 @@ void showActualCategoryPicker({
 /// Returns the displayed category information.
 DisplayedCategoryInfo getDisplayedCategoryInfo({
   required Category? selectedCategoryValue,
-  required Category automaticCategory,
+  required List<Category> backendCategories,
   required AppUser? currentUser,
   required AppLocalizations localizations,
   required String languageCode,
@@ -160,19 +191,30 @@ DisplayedCategoryInfo getDisplayedCategoryInfo({
   String description;
   double progress;
 
+  // Find the "welcome" category from the backend list
+  Category? welcomeCategoryFromDB;
+  try {
+    welcomeCategoryFromDB = backendCategories.firstWhere(
+      (cat) => cat.id == 'welcome',
+    );
+  } catch (e) {
+    _logger.finer('Welcome category not found for display info generation.');
+  }
+
   if (selectedCategoryValue == null) {
     name = localizations.statusLoadingLabel;
     description = localizations.homeActualCategoryDescriptionPrompt;
     progress = 0.0;
-  } else if (selectedCategoryValue.id == automaticCategory.id) {
+  } else if (selectedCategoryValue.id == 'welcome' &&
+      welcomeCategoryFromDB != null) {
     name =
         languageCode == 'de'
-            ? automaticCategory.nameDe
-            : automaticCategory.nameEn;
+            ? welcomeCategoryFromDB.nameDe
+            : welcomeCategoryFromDB.nameEn;
     description =
         languageCode == 'de'
-            ? automaticCategory.descriptionDe
-            : automaticCategory.descriptionEn;
+            ? welcomeCategoryFromDB.descriptionDe
+            : welcomeCategoryFromDB.descriptionEn;
     progress = 0.0;
   } else {
     name =

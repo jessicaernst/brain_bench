@@ -1,6 +1,15 @@
 {
     "categories": [
         {
+            "id": "welcome",
+            "nameEn": "Welcome",
+            "nameDe": "Willkommen",
+            "subtitleEn": "Your starting point & quiz guide",
+            "subtitleDe": "Dein Startpunkt & Quiz-Leitfaden",
+            "descriptionEn": "The app automatically selects a new category for you after each completed quiz.",
+            "descriptionDe": "Die App wählt nach jedem Quiz automatisch eine neue Kategorie für dich aus."
+        },
+        {
             "id": "1a2b3c4d-ecosystem-001",
             "nameEn": "Ecosystem",
             "nameDe": "Ökosystem",

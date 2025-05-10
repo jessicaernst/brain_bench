@@ -1,6 +1,7 @@
-import 'package:brain_bench/core/shared_widgets/buttons/profile_button_view.dart';
+import 'package:brain_bench/business_logic/home/home_providers.dart'; // Importiere den Provider
 import 'package:brain_bench/core/extensions/responsive_context.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/profile_button_view.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/models/home/carousel.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
@@ -12,12 +13,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
 
+/// The home page widget that displays a carousel of articles.
 class HomePage extends ConsumerWidget {
   HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
+    final String? selectedCategoryId = ref.watch(selectedHomeCategoryProvider);
+
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     final bool isSmallScreenValue = context.isSmallScreen;
@@ -37,7 +41,7 @@ class HomePage extends ConsumerWidget {
     final double appBarTitleSize =
         isSmallScreenValue ? 28 : (baseTitleStyle?.fontSize ?? 36);
 
-    final List<Carousel> carouselItems = [
+    final List<Carousel> articleItems = [
       Carousel.create(
         title: 'Mastering UI: Image 12',
         description:
@@ -80,9 +84,174 @@ class HomePage extends ConsumerWidget {
         imageUrl: Assets.carouselTest.image.path,
         categoryId: '2b3c4d5e-design-002',
       ),
+      Carousel.create(
+        title: 'Ecosystem - Intro Module',
+        description: 'A great place to get started with this topic.',
+        imageUrl: Assets.carouselTest.image12.path,
+        categoryId: '1a2b3c4d-ecosystem-001',
+      ),
+      Carousel.create(
+        title: 'Ecosystem - Fundamentals',
+        description: 'Understand the essential principles and concepts.',
+        imageUrl: Assets.carouselTest.image13.path,
+        categoryId: '1a2b3c4d-ecosystem-001',
+      ),
+      Carousel.create(
+        title: 'Ecosystem - Core Techniques',
+        description: 'Learn practical approaches and best practices.',
+        imageUrl: Assets.carouselTest.image14.path,
+        categoryId: '1a2b3c4d-ecosystem-001',
+      ),
+      Carousel.create(
+        title: 'Ecosystem - Advanced Concepts',
+        description: 'Explore more complex techniques and patterns.',
+        imageUrl: Assets.carouselTest.image15.path,
+        categoryId: '1a2b3c4d-ecosystem-001',
+      ),
+      Carousel.create(
+        title: 'Ecosystem - Applied Learning',
+        description: 'See how the concepts work in real-world examples.',
+        imageUrl: Assets.carouselTest.image16.path,
+        categoryId: '1a2b3c4d-ecosystem-001',
+      ),
+      Carousel.create(
+        title: 'Ecosystem - Quick Start',
+        description: 'Jump right in with a guided example.',
+        imageUrl: Assets.carouselTest.image.path,
+        categoryId: '1a2b3c4d-ecosystem-001',
+      ),
+      Carousel.create(
+        title: 'Coding - Intro Module',
+        description: 'A great place to get started with this topic.',
+        imageUrl: Assets.carouselTest.image12.path,
+        categoryId: 'f711e799-3ebe-46d3-9d78-722e2d024cec',
+      ),
+      Carousel.create(
+        title: 'Coding - Fundamentals',
+        description: 'Understand the essential principles and concepts.',
+        imageUrl: Assets.carouselTest.image13.path,
+        categoryId: 'f711e799-3ebe-46d3-9d78-722e2d024cec',
+      ),
+      Carousel.create(
+        title: 'Coding - Core Techniques',
+        description: 'Learn practical approaches and best practices.',
+        imageUrl: Assets.carouselTest.image14.path,
+        categoryId: 'f711e799-3ebe-46d3-9d78-722e2d024cec',
+      ),
+      Carousel.create(
+        title: 'Coding - Advanced Concepts',
+        description: 'Explore more complex techniques and patterns.',
+        imageUrl: Assets.carouselTest.image15.path,
+        categoryId: 'f711e799-3ebe-46d3-9d78-722e2d024cec',
+      ),
+      Carousel.create(
+        title: 'Coding - Applied Learning',
+        description: 'See how the concepts work in real-world examples.',
+        imageUrl: Assets.carouselTest.image16.path,
+        categoryId: 'f711e799-3ebe-46d3-9d78-722e2d024cec',
+      ),
+      Carousel.create(
+        title: 'Coding - Quick Start',
+        description: 'Jump right in with a guided example.',
+        imageUrl: Assets.carouselTest.image.path,
+        categoryId: 'f711e799-3ebe-46d3-9d78-722e2d024cec',
+      ),
+      Carousel.create(
+        title: 'Flutter - Intro Module',
+        description: 'A great place to get started with this topic.',
+        imageUrl: Assets.carouselTest.image12.path,
+        categoryId: '3c4d5e6f-flutter-003',
+      ),
+      Carousel.create(
+        title: 'Flutter - Fundamentals',
+        description: 'Understand the essential principles and concepts.',
+        imageUrl: Assets.carouselTest.image13.path,
+        categoryId: '3c4d5e6f-flutter-003',
+      ),
+      Carousel.create(
+        title: 'Flutter - Core Techniques',
+        description: 'Learn practical approaches and best practices.',
+        imageUrl: Assets.carouselTest.image14.path,
+        categoryId: '3c4d5e6f-flutter-003',
+      ),
+      Carousel.create(
+        title: 'Flutter - Advanced Concepts',
+        description: 'Explore more complex techniques and patterns.',
+        imageUrl: Assets.carouselTest.image15.path,
+        categoryId: '3c4d5e6f-flutter-003',
+      ),
+      Carousel.create(
+        title: 'Flutter - Applied Learning',
+        description: 'See how the concepts work in real-world examples.',
+        imageUrl: Assets.carouselTest.image16.path,
+        categoryId: '3c4d5e6f-flutter-003',
+      ),
+      Carousel.create(
+        title: 'Flutter - Quick Start',
+        description: 'Jump right in with a guided example.',
+        imageUrl: Assets.carouselTest.image.path,
+        categoryId: '3c4d5e6f-flutter-003',
+      ),
+      Carousel.create(
+        title: 'Welcome - Getting Started',
+        description:
+            'Learn how BrainBench works and what to expect from your quiz journey.',
+        imageUrl: Assets.carouselTest.image12.path,
+        categoryId: 'welcome',
+      ),
+      Carousel.create(
+        title: 'Welcome - Your First Quiz',
+        description:
+            'Get ready for your first quiz – we’ll guide you through each step.',
+        imageUrl: Assets.carouselTest.image13.path,
+        categoryId: 'welcome',
+      ),
+      Carousel.create(
+        title: 'Welcome - Categories & Topics',
+        description:
+            'Discover how content is structured into categories and topics.',
+        imageUrl: Assets.carouselTest.image14.path,
+        categoryId: 'welcome',
+      ),
+      Carousel.create(
+        title: 'Welcome - Progress Tracking',
+        description:
+            'See how your progress is saved and visualized across all topics.',
+        imageUrl: Assets.carouselTest.image15.path,
+        categoryId: 'welcome',
+      ),
+      Carousel.create(
+        title: 'Welcome - Earning Results',
+        description:
+            'Understand how results are calculated and how to improve over time.',
+        imageUrl: Assets.carouselTest.image16.path,
+        categoryId: 'welcome',
+      ),
+      Carousel.create(
+        title: 'Welcome - Customize Your Learning',
+        description:
+            'Explore how to switch themes, languages and pick what to focus on.',
+        imageUrl: Assets.carouselTest.image.path,
+        categoryId: 'welcome',
+      ),
     ];
 
-    carouselItems.shuffle();
+    List<Carousel> itemsForCarousel;
+
+    final List<Carousel> baseArticlesForSelection =
+        (selectedCategoryId == null)
+            ? articleItems
+            : articleItems
+                .where((item) => item.categoryId == selectedCategoryId)
+                .toList();
+
+    if (baseArticlesForSelection.isNotEmpty) {
+      itemsForCarousel = List.from(baseArticlesForSelection)..shuffle();
+    } else {
+      itemsForCarousel = List.from(
+        articleItems.where((item) => item.categoryId == 'welcome'),
+      )..shuffle();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -129,8 +298,10 @@ class HomePage extends ConsumerWidget {
               ),
               Expanded(
                 child: InfiniteCarousel(
+                  key: ValueKey(selectedCategoryId ?? 'all'),
                   items:
-                      carouselItems.map((item) {
+                      itemsForCarousel.map((item) {
+                        // Verwende itemsForCarousel
                         return InfiniteCarouselItem(
                           content: CarouselCardContent(
                             item: item,

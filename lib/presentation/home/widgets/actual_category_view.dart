@@ -1,5 +1,7 @@
+import 'package:brain_bench/business_logic/home/home_providers.dart';
 import 'package:brain_bench/core/extensions/responsive_context.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/utils/actual_category_utils.dart';
 import 'package:brain_bench/data/infrastructure/quiz/category_providers.dart';
 import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
@@ -7,7 +9,6 @@ import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/presentation/home/models/displayed_category_info.dart';
-import 'package:brain_bench/presentation/home/utils/actual_category_utils.dart';
 import 'package:brain_bench/presentation/home/widgets/actual_category_content_row.dart';
 import 'package:brain_bench/presentation/home/widgets/actual_category_header.dart';
 import 'package:flutter/material.dart';
@@ -45,21 +46,16 @@ class ActualCategoryView extends HookConsumerWidget {
     final int descriptionMaxLines = isSmallScreenValue ? 2 : 3;
 
     // Update the selected category
-    final welcomeCategory = useMemoized(() {
-      return Category(
-        id: '___welcome___',
-        nameEn: localizations.pickerOptionAutomatic,
-        nameDe: localizations.pickerOptionAutomatic,
-        descriptionEn: localizations.pickerOptionAutomaticDescription,
-        descriptionDe: localizations.pickerOptionAutomaticDescription,
-        subtitleEn: '',
-        subtitleDe: '',
-      );
-    }, [localizations]); // Re-memoize if localizations change
-
-    // Update the selected category and save its ID using SettingsRepository
     void updateSelectedCategory(Category category) async {
       selectedCategory.value = category;
+      // Update den globalen Provider nur, wenn sich die Kategorie-ID geändert hat
+      final currentCategoryId = ref.read(selectedHomeCategoryProvider);
+      if (currentCategoryId != category.id) {
+        ref.read(selectedHomeCategoryProvider.notifier).update(category.id);
+        _logger.info(
+          'Updated selectedHomeCategoryProvider with ID: ${category.id}',
+        );
+      }
       try {
         final settingsRepo = ref.read(settingsRepositoryProvider);
         await settingsRepo.saveLastSelectedCategoryId(category.id);
@@ -102,45 +98,47 @@ class ActualCategoryView extends HookConsumerWidget {
       _ => null,
     };
 
-    useEffect(
-      () {
-        // This effect runs when the component mounts or its dependencies change.
-        // It sets an initial category or updates it based on SharedPreferences or user data.
-        // Check if the last selected ID from preferences is loaded
-        // and if the selected category is not already set.
-        asyncLastSelectedIdFromPrefs.whenData((loadedLastSelectedIdFromPrefs) {
-          // Call the outsourced logic
-          determineInitialCategory(
-            // Use the imported function
-            loadedLastSelectedIdFromPrefs: loadedLastSelectedIdFromPrefs,
-            automaticCategory: welcomeCategory,
-            backendCategories: categories,
-            currentUser: currentUser,
-            languageCode: languageCode,
-            ref: ref,
-          ).then((categoryToSet) {
-            if (!context.mounted) return;
-            if (categoryToSet != null) {
-              if (selectedCategory.value == null ||
-                  selectedCategory.value!.id != categoryToSet.id) {
-                _logger.finer(
-                  'Updating selectedCategory.value to: ${categoryToSet.id}',
+    useEffect(() {
+      // This effect runs when the component mounts or its dependencies change.
+      // It sets an initial category or updates it based on SharedPreferences or user data.
+      // Check if the last selected ID from preferences is loaded
+      // and if the selected category is not already set.
+      asyncLastSelectedIdFromPrefs.whenData((loadedLastSelectedIdFromPrefs) {
+        // Call the outsourced logic
+        determineInitialCategory(
+          // Use the imported function
+          loadedLastSelectedIdFromPrefs: loadedLastSelectedIdFromPrefs,
+          backendCategories: categories,
+          currentUser: currentUser,
+          languageCode: languageCode,
+          ref: ref,
+        ).then((categoryToSet) {
+          if (!context.mounted) return;
+          if (categoryToSet != null) {
+            if (selectedCategory.value == null ||
+                selectedCategory.value!.id != categoryToSet.id) {
+              _logger.finer(
+                'Updating selectedCategory.value to: ${categoryToSet.id}',
+              );
+              selectedCategory.value = categoryToSet;
+              // Update den globalen Provider nur, wenn sich die Kategorie-ID geändert hat
+              final currentGlobalCategoryId = ref.read(
+                selectedHomeCategoryProvider,
+              );
+              if (currentGlobalCategoryId != categoryToSet.id) {
+                ref
+                    .read(selectedHomeCategoryProvider.notifier)
+                    .update(categoryToSet.id);
+                _logger.info(
+                  'Updated selectedHomeCategoryProvider with initial ID: ${categoryToSet.id}',
                 );
-                selectedCategory.value = categoryToSet;
               }
             }
-          });
+          }
         });
-        return null;
-      },
-      [
-        asyncLastSelectedIdFromPrefs,
-        welcomeCategory,
-        categories,
-        currentUser,
-        ref,
-      ],
-    );
+      });
+      return null;
+    }, [asyncLastSelectedIdFromPrefs, categories, currentUser]);
 
     _logger.finest(
       'Building ActualCategoryView with selected category: ${selectedCategory.value?.id ?? "none"}',
@@ -154,7 +152,7 @@ class ActualCategoryView extends HookConsumerWidget {
 
     final DisplayedCategoryInfo displayInfo = getDisplayedCategoryInfo(
       selectedCategoryValue: selectedCategory.value,
-      automaticCategory: welcomeCategory,
+      backendCategories: categories,
       currentUser: currentUser,
       localizations: localizations,
       languageCode: languageCode,
@@ -180,7 +178,6 @@ class ActualCategoryView extends HookConsumerWidget {
               () => showActualCategoryPicker(
                 context: context,
                 currentCategories: categories,
-                automaticCategory: welcomeCategory,
                 currentSelectedCategory: selectedCategory.value,
                 languageCode: languageCode,
                 localizations: localizations,
