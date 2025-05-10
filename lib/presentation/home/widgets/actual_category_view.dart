@@ -8,7 +8,7 @@ import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/models/user/user_model_state.dart';
-import 'package:brain_bench/presentation/home/models/displayed_category_info.dart';
+import 'package:brain_bench/data/models/home/displayed_category_info.dart';
 import 'package:brain_bench/presentation/home/widgets/actual_category_content_row.dart';
 import 'package:brain_bench/presentation/home/widgets/actual_category_header.dart';
 import 'package:flutter/material.dart';

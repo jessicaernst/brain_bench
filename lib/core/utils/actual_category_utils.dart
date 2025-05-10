@@ -7,7 +7,7 @@ import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
 import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
-import 'package:brain_bench/presentation/home/models/displayed_category_info.dart';
+import 'package:brain_bench/data/models/home/displayed_category_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
