@@ -171,6 +171,21 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pickerOptionAutomaticDescription => 'Lass die App eine Kategorie für dich auswählen.';
 
   @override
+  String get quizResultsUserNotAvailable => 'Benutzerdaten nicht verfügbar. Bitte versuche es später erneut.';
+
+  @override
+  String get quizResultsSaveLastCategoryError => 'Konnte die zuletzt gespielte Kategorie nicht speichern.';
+
+  @override
+  String get quizResultsRetryButton => 'Erneut versuchen';
+
+  @override
+  String get quizResultsSaveLastCategorySuccess => 'Letzte Kategorie erfolgreich gespeichert.';
+
+  @override
+  String get quizResultsSaveLastCategoryRetryFailed => 'Speichern der letzten Kategorie ist fehlgeschlagen. Bitte später erneut versuchen.';
+
+  @override
   String get profileAppBarTitle => 'Profil';
 
   @override

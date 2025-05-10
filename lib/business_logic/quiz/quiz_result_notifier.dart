@@ -38,7 +38,8 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   QuizResultState build() {
     final quizAnswers = ref.watch(quizAnswersNotifierProvider);
     _logger.fine(
-        'QuizResultNotifier build() - initial state: ${quizAnswers.length} answers');
+      'QuizResultNotifier build() - initial state: ${quizAnswers.length} answers',
+    );
     return QuizResultState(
       selectedView: SelectedView.none,
       expandedAnswers: {},
@@ -59,8 +60,10 @@ class QuizResultNotifier extends _$QuizResultNotifier {
 
     if (currentView == newView) {
       _logger.fine('Toggling view OFF: $currentView -> none');
-      state =
-          state.copyWith(selectedView: SelectedView.none, expandedAnswers: {});
+      state = state.copyWith(
+        selectedView: SelectedView.none,
+        expandedAnswers: {},
+      );
     } else if (currentView != SelectedView.none &&
         newView != SelectedView.none) {
       // Switching between Correct and Incorrect: Collapse first, then switch view after delay
@@ -75,8 +78,9 @@ class QuizResultNotifier extends _$QuizResultNotifier {
           state = state.copyWith(selectedView: newView);
           _logger.fine('Delayed view switch complete: -> $newView');
         } else {
-          _logger
-              .fine('Delayed view switch aborted (state changed during delay)');
+          _logger.fine(
+            'Delayed view switch aborted (state changed during delay)',
+          );
         }
       });
     } else {
@@ -104,7 +108,8 @@ class QuizResultNotifier extends _$QuizResultNotifier {
 
   List<QuizAnswer> getFilteredAnswers() {
     _logger.fine(
-        'getFilteredAnswers called with current selectedView: ${state.selectedView}');
+      'getFilteredAnswers called with current selectedView: ${state.selectedView}',
+    );
     return _filterAnswersByView(state.quizAnswers, state.selectedView);
   }
 
@@ -152,19 +157,24 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   // --- Database Interaction Methods ---
 
   Future<void> saveQuizResult(
-      String categoryId, String topicId, String userId) async {
+    String categoryId,
+    String topicId,
+    String userId,
+  ) async {
     _logger.info(
-        'Attempting to save quiz result for categoryId: $categoryId, topicId: $topicId');
+      'Attempting to save quiz result for categoryId: $categoryId, topicId: $topicId',
+    );
     try {
       final result = Result.create(
-          categoryId: categoryId,
-          topicId: topicId,
-          correct: calculateUserPoints(),
-          total: calculateTotalPossiblePoints(),
-          score: calculatePercentage(),
-          isPassed: isQuizPassed(),
-          quizAnswers: state.quizAnswers,
-          userId: userId);
+        categoryId: categoryId,
+        topicId: topicId,
+        correct: calculateUserPoints(),
+        total: calculateTotalPossiblePoints(),
+        score: calculatePercentage(),
+        isPassed: isQuizPassed(),
+        quizAnswers: state.quizAnswers,
+        userId: userId,
+      );
 
       await ref.read(saveResultNotifierProvider.notifier).saveResult(result);
       _logger.info('✅ Quiz result saved successfully.');
@@ -177,7 +187,8 @@ class QuizResultNotifier extends _$QuizResultNotifier {
 
   Future<void> markTopicAsDone(String topicId, String categoryId) async {
     _logger.info(
-        'Attempting to mark topic $topicId as done in category $categoryId');
+      'Attempting to mark topic $topicId as done in category $categoryId',
+    );
     AppUser? user;
     List<Topic>? topics;
     QuizMockDatabaseRepository? repo;
@@ -187,34 +198,81 @@ class QuizResultNotifier extends _$QuizResultNotifier {
       topics = await _fetchCategoryTopics(categoryId);
     } catch (e, s) {
       _logger.severe(
-          '❌ Error fetching prerequisites for markTopicAsDone: $e', e, s);
+        '❌ Error fetching prerequisites for markTopicAsDone: $e',
+        e,
+        s,
+      );
       rethrow;
     }
 
     try {
-      final updatedTopicDoneMap =
-          _updateTopicCompletionStatus(user, categoryId, topicId);
+      final updatedTopicDoneMap = _updateTopicCompletionStatus(
+        user,
+        categoryId,
+        topicId,
+      );
       final progress = _calculateCategoryProgress(
-          topics, updatedTopicDoneMap[categoryId] ?? {});
+        topics,
+        updatedTopicDoneMap[categoryId] ?? {},
+      );
       _logger.fine(
-          'Calculated progress for category $categoryId: ${(progress * 100).toStringAsFixed(1)}%');
+        'Calculated progress for category $categoryId: ${(progress * 100).toStringAsFixed(1)}%',
+      );
 
       final userWithProgress = user.copyWith(
         isTopicDone: updatedTopicDoneMap,
-        categoryProgress: {
-          ...user.categoryProgress,
-          categoryId: progress,
-        },
+        categoryProgress: {...user.categoryProgress, categoryId: progress},
       );
       await repo.updateUser(userWithProgress);
       ref.invalidate(currentUserModelProvider);
 
       _logger.info('✅ Topic $topicId marked as done for category $categoryId.');
       _logger.info(
-          '✅ Progress for $categoryId: ${(progress * 100).toStringAsFixed(1)}%');
+        '✅ Progress for $categoryId: ${(progress * 100).toStringAsFixed(1)}%',
+      );
     } catch (e, s) {
       _logger.severe('❌ Error updating user data in markTopicAsDone: $e', e, s);
       rethrow;
+    }
+  }
+
+  /// Updates the last played category ID for the current user in the database.
+  Future<void> updateLastPlayedCategory(
+    String categoryId,
+    String userId,
+  ) async {
+    _logger.info(
+      'Attempting to update lastPlayedCategoryId to "$categoryId" for user "$userId".',
+    );
+    try {
+      // Fetch the user object that will actually be modified.
+      final AppUser fetchedUser = await _fetchCurrentUser();
+
+      if (fetchedUser.id != userId) {
+        final errorMessage =
+            'User ID mismatch: Provided ID "$userId" does not match current user ID "${fetchedUser.id}". Cannot update last played category.';
+        _logger.severe(errorMessage);
+        throw Exception(errorMessage); // Throw an exception on mismatch
+      }
+
+      final QuizMockDatabaseRepository repo = await _fetchRepository();
+      await repo.updateUser(
+        // The update is performed on the userToModify object, using its ID.
+        // Now that we've confirmed fetchedUser.id == userId, we use fetchedUser.
+        fetchedUser.copyWith(lastPlayedCategoryId: categoryId),
+      );
+      ref.invalidate(currentUserModelProvider);
+      _logger.info(
+        // Log with the ID of the user record that was actually updated.
+        '✅ Successfully updated lastPlayedCategoryId to "$categoryId" for user "${fetchedUser.id}".',
+      );
+    } catch (e, s) {
+      _logger.severe(
+        '❌ Error updating lastPlayedCategoryId for user "$userId": $e',
+        e,
+        s,
+      );
+      rethrow; // Re-throw the exception so the caller can handle it.
     }
   }
 
@@ -255,10 +313,15 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   }
 
   Map<String, Map<String, bool>> _updateTopicCompletionStatus(
-      AppUser user, String categoryId, String topicId) {
-    final updatedMap = Map<String, Map<String, bool>>.from(user.isTopicDone.map(
-      (key, value) => MapEntry(key, Map<String, bool>.from(value)),
-    ));
+    AppUser user,
+    String categoryId,
+    String topicId,
+  ) {
+    final updatedMap = Map<String, Map<String, bool>>.from(
+      user.isTopicDone.map(
+        (key, value) => MapEntry(key, Map<String, bool>.from(value)),
+      ),
+    );
     final categoryMap = updatedMap.putIfAbsent(categoryId, () => {});
     categoryMap[topicId] = true;
     _logger.finer('Updated topic completion status for $categoryId - $topicId');
@@ -266,11 +329,14 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   }
 
   List<QuizAnswer> _filterAnswersByView(
-      List<QuizAnswer> answers, SelectedView view) {
+    List<QuizAnswer> answers,
+    SelectedView view,
+  ) {
     switch (view) {
       case SelectedView.none:
         _logger.finer(
-            'Filtering: Returning empty list because selectedView is none');
+          'Filtering: Returning empty list because selectedView is none',
+        );
         return [];
       case SelectedView.correct:
         _logger.finer('Filtering for correct answers');
@@ -303,7 +369,9 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   }
 
   double _calculateCategoryProgress(
-      List<Topic> categoryTopics, Map<String, bool> doneTopicsMap) {
+    List<Topic> categoryTopics,
+    Map<String, bool> doneTopicsMap,
+  ) {
     if (categoryTopics.isEmpty) return 0.0;
     final passedTopicsCount =
         categoryTopics.where((t) => doneTopicsMap[t.id] == true).length;

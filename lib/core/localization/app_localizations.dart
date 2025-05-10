@@ -419,6 +419,36 @@ abstract class AppLocalizations {
   /// **'Let the app choose a category for you.'**
   String get pickerOptionAutomaticDescription;
 
+  /// Error message when user data is not available on the quiz results page.
+  ///
+  /// In en, this message translates to:
+  /// **'User data not available. Please try again later.'**
+  String get quizResultsUserNotAvailable;
+
+  /// Error message when saving the last played category fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the last played category.'**
+  String get quizResultsSaveLastCategoryError;
+
+  /// Label for the retry button in a SnackBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get quizResultsRetryButton;
+
+  /// Success message when the last played category is saved after a retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Last category saved successfully.'**
+  String get quizResultsSaveLastCategorySuccess;
+
+  /// Error message when retrying to save the last played category also fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving the last category failed. Please try again later.'**
+  String get quizResultsSaveLastCategoryRetryFailed;
+
   /// Title of the app bar for the profile
   ///
   /// In en, this message translates to:

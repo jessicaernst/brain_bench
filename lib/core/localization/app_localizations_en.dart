@@ -171,6 +171,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pickerOptionAutomaticDescription => 'Let the app choose a category for you.';
 
   @override
+  String get quizResultsUserNotAvailable => 'User data not available. Please try again later.';
+
+  @override
+  String get quizResultsSaveLastCategoryError => 'Could not save the last played category.';
+
+  @override
+  String get quizResultsRetryButton => 'Retry';
+
+  @override
+  String get quizResultsSaveLastCategorySuccess => 'Last category saved successfully.';
+
+  @override
+  String get quizResultsSaveLastCategoryRetryFailed => 'Saving the last category failed. Please try again later.';
+
+  @override
   String get profileAppBarTitle => 'Profile';
 
   @override

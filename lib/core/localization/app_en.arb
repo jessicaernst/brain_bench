@@ -216,6 +216,26 @@
     "@pickerOptionAutomaticDescription": {
         "description": "The description for the 'Automatic' option in a picker"
     },
+    "quizResultsUserNotAvailable": "User data not available. Please try again later.",
+    "@quizResultsUserNotAvailable": {
+        "description": "Error message when user data is not available on the quiz results page."
+    },
+    "quizResultsSaveLastCategoryError": "Could not save the last played category.",
+    "@quizResultsSaveLastCategoryError": {
+        "description": "Error message when saving the last played category fails."
+    },
+    "quizResultsRetryButton": "Retry",
+    "@quizResultsRetryButton": {
+        "description": "Label for the retry button in a SnackBar."
+    },
+    "quizResultsSaveLastCategorySuccess": "Last category saved successfully.",
+    "@quizResultsSaveLastCategorySuccess": {
+        "description": "Success message when the last played category is saved after a retry."
+    },
+    "quizResultsSaveLastCategoryRetryFailed": "Saving the last category failed. Please try again later.",
+    "@quizResultsSaveLastCategoryRetryFailed": {
+        "description": "Error message when retrying to save the last played category also fails."
+    },
     "profileAppBarTitle": "Profile",
     "@profileAppBarTitle": {
         "description": "Title of the app bar for the profile"

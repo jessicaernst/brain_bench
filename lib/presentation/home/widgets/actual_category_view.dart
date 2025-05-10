@@ -1,19 +1,15 @@
-import 'dart:io' show Platform;
-
 import 'package:brain_bench/core/extensions/responsive_context.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
-import 'package:brain_bench/core/shared_widgets/pickers/cupertino_picker_content.dart';
-import 'package:brain_bench/core/shared_widgets/pickers/material_list_picker.dart';
-import 'package:brain_bench/core/styles/colors.dart';
-import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart'; // Importiere deinen Provider
 import 'package:brain_bench/data/infrastructure/quiz/category_providers.dart';
+import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/models/user/user_model_state.dart';
+import 'package:brain_bench/presentation/home/models/displayed_category_info.dart';
+import 'package:brain_bench/presentation/home/utils/actual_category_utils.dart';
 import 'package:brain_bench/presentation/home/widgets/actual_category_content_row.dart';
 import 'package:brain_bench/presentation/home/widgets/actual_category_header.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -37,6 +33,10 @@ class ActualCategoryView extends HookConsumerWidget {
     final asyncCategories = ref.watch(categoriesProvider(languageCode));
     final userModelState = ref.watch(currentUserModelProvider);
     final selectedCategory = useState<Category?>(null);
+    // Watch the new provider for the ID from SharedPreferences
+    final asyncLastSelectedIdFromPrefs = ref.watch(
+      lastSelectedCategoryIdFromPrefsProvider,
+    );
 
     // Determine the size and spacing based on the screen size
     final bool isSmallScreenValue = context.isSmallScreen;
@@ -74,70 +74,6 @@ class ActualCategoryView extends HookConsumerWidget {
       }
     }
 
-    // Show the category picker
-    void showCategoryPicker(BuildContext context, List<Category> categories) {
-      _logger.finer('Category picker opened.');
-      // Prepend the "Automatic" option to the list of categories
-      final List<Category> pickerItems = [automaticCategory, ...categories];
-
-      final Color pickerBackgroundColor =
-          isDarkMode ? BrainBenchColors.deepDive : BrainBenchColors.cloudCanvas;
-      final Color pickerDoneButtonColor =
-          isDarkMode
-              ? BrainBenchColors.flutterSky
-              : BrainBenchColors.blueprintBlue;
-
-      if (Platform.isIOS) {
-        showCupertinoModalPopup<void>(
-          context: context,
-          builder:
-              (BuildContext popupContext) => CupertinoPickerContent<Category>(
-                // Use pickerItems
-                items: pickerItems,
-                initialSelectedItem: selectedCategory.value,
-                itemDisplayNameBuilder:
-                    (Category cat) =>
-                        languageCode == 'de' ? cat.nameDe : cat.nameEn,
-                onConfirmed: (Category cat) {
-                  _logger.info(
-                    'Category selected via iOS picker: ${cat.id} - ${languageCode == 'de' ? cat.nameDe : cat.nameEn}',
-                  );
-                  updateSelectedCategory(cat);
-                  Navigator.pop(popupContext);
-                },
-                localizations: localizations,
-                doneButtonColor: pickerDoneButtonColor,
-                backgroundColor: pickerBackgroundColor,
-              ),
-        );
-      } else {
-        showModalBottomSheet<void>(
-          context: context,
-          backgroundColor: pickerBackgroundColor,
-          builder: (BuildContext sheetContext) {
-            return MaterialListPicker<Category>(
-              items: pickerItems, // Use pickerItems
-              selectedItem: selectedCategory.value,
-              itemDisplayNameBuilder:
-                  (Category cat) =>
-                      languageCode == 'de' ? cat.nameDe : cat.nameEn,
-              onItemSelected: (Category cat) {
-                _logger.info(
-                  'Category selected via Android picker: ${cat.id} - ${languageCode == 'de' ? cat.nameDe : cat.nameEn}',
-                );
-                updateSelectedCategory(cat);
-                Navigator.pop(sheetContext);
-              },
-              itemEqualityComparer: (Category? selectedCat, Category listCat) {
-                if (selectedCat == null) return false;
-                return selectedCat.id == listCat.id;
-              },
-            );
-          },
-        );
-      }
-    }
-
     // Handle loading and error states
     if (asyncCategories.isLoading || userModelState.isLoading) {
       _logger.finer('Loading categories or user data...');
@@ -167,135 +103,63 @@ class ActualCategoryView extends HookConsumerWidget {
       _ => null,
     };
 
-    // Initialize selectedCategory when categories are first loaded and no category is selected yet.
     useEffect(
       () {
         // This effect runs when the component mounts or its dependencies change.
-        // It sets an initial category if `selectedCategory.value` is currently null.
-        if (selectedCategory.value == null) {
-          // Define an async function to perform the loading and state update
-          Future<void> loadAndSetInitialCategory() async {
-            if (!context.mounted) return; // Check mounted at the beginning
-
-            Category? categoryToSet;
-            final settingsRepo = ref.read(settingsRepositoryProvider);
-            final String? lastSelectedId =
-                await settingsRepo.loadLastSelectedCategoryId();
-
-            // Create a combined list of all available categories for lookup
-            // This includes "Automatic" and categories from the backend
-            final List<Category> allAvailablePickerItems = [
-              automaticCategory,
-              ...categories, // categories from asyncCategories.value
-            ];
-
-            if (lastSelectedId != null) {
-              try {
-                categoryToSet = allAvailablePickerItems.firstWhere(
-                  (cat) => cat.id == lastSelectedId,
+        // It sets an initial category or updates it based on SharedPreferences or user data.
+        // Check if the last selected ID from preferences is loaded
+        // and if the selected category is not already set.
+        asyncLastSelectedIdFromPrefs.whenData((loadedLastSelectedIdFromPrefs) {
+          // Call the outsourced logic
+          determineInitialCategory(
+            // Use the imported function
+            loadedLastSelectedIdFromPrefs: loadedLastSelectedIdFromPrefs,
+            automaticCategory: automaticCategory,
+            backendCategories: categories,
+            currentUser: currentUser,
+            languageCode: languageCode,
+            ref: ref,
+          ).then((categoryToSet) {
+            if (!context.mounted) return;
+            if (categoryToSet != null) {
+              if (selectedCategory.value == null ||
+                  selectedCategory.value!.id != categoryToSet.id) {
+                _logger.finer(
+                  'Updating selectedCategory.value to: ${categoryToSet.id}',
                 );
-                _logger.info(
-                  'Initial category set from SharedPreferences (via Repo): ${categoryToSet.id} - ${languageCode == 'de' ? categoryToSet.nameDe : categoryToSet.nameEn}',
-                );
-              } catch (e) {
-                _logger.warning(
-                  'Last selected category ID "$lastSelectedId" from SharedPreferences (via Repo) not found in current picker items. Clearing pref.',
-                );
-                await settingsRepo.clearLastSelectedCategoryId(); // Clean up
+                selectedCategory.value = categoryToSet;
               }
             }
-
-            // Fallback logic if not found in SharedPreferences
-            if (categoryToSet == null) {
-              // Optional: Fallback to lastPlayedCategoryId from currentUser
-              final String? lastPlayedIdFromUser =
-                  currentUser?.lastPlayedCategoryId;
-              if (lastPlayedIdFromUser != null && categories.isNotEmpty) {
-                // only search in backend categories
-                try {
-                  categoryToSet = categories.firstWhere(
-                    (cat) => cat.id == lastPlayedIdFromUser,
-                  );
-                  _logger.info(
-                    'Initial category set from last played (user data): ${categoryToSet.id} - ${languageCode == 'de' ? categoryToSet.nameDe : categoryToSet.nameEn}',
-                  );
-                } catch (e) {
-                  _logger.warning(
-                    'Last played category ID "$lastPlayedIdFromUser" from user data not found in current backend categories.',
-                  );
-                }
-              }
-              // If still no category, default to "Automatic"
-              categoryToSet ??= automaticCategory;
-              _logger.info(
-                'Initial category (after fallbacks) set to: ${categoryToSet.id} - ${languageCode == 'de' ? categoryToSet.nameDe : categoryToSet.nameEn}',
-              );
-            }
-
-            // Final check before setting state
-            if (context.mounted && selectedCategory.value == null) {
-              selectedCategory.value = categoryToSet;
-            }
-          }
-
-          loadAndSetInitialCategory();
-        }
-        return null; // No cleanup needed for this effect.
+          });
+        });
+        return null;
       },
       [
-        selectedCategory.value,
+        asyncLastSelectedIdFromPrefs,
         automaticCategory,
-        categories, // Re-evaluate if backend categories change
-        currentUser, // Re-evaluate if user (and thus lastPlayedCategoryId) changes
-        ref, // To ensure ref.read can be safely used if the effect re-runs
-      ], // Add automaticCategory to dependencies
-    ); // Re-run if categories or selectedCategory.value changes
+        categories,
+        currentUser,
+        ref,
+      ],
+    );
 
     _logger.finest(
       'Building ActualCategoryView with selected category: ${selectedCategory.value?.id ?? "none"}',
     );
 
-    // Log if backend categories are empty, but don't return early
     if (categories.isEmpty) {
       _logger.warning(
         'No categories available from backend (excluding "Automatic" option). Picker will only show "Automatic".',
       );
     }
 
-    // Retrieve the displayed category name, description, and progress
-    String displayedCategoryName;
-    String displayedDescription;
-    double displayedProgress;
-
-    if (selectedCategory.value == null) {
-      displayedCategoryName = localizations.statusLoadingLabel;
-      displayedDescription = localizations.homeActualCategoryDescriptionPrompt;
-      displayedProgress = 0.0;
-    } else if (selectedCategory.value!.id == automaticCategory.id) {
-      displayedCategoryName =
-          languageCode == 'de'
-              ? automaticCategory.nameDe
-              : automaticCategory.nameEn;
-      displayedDescription =
-          languageCode == 'de'
-              ? automaticCategory.descriptionDe
-              : automaticCategory.descriptionEn;
-      displayedProgress = 0.0;
-    } else {
-      displayedCategoryName =
-          languageCode == 'de'
-              ? selectedCategory.value!.nameDe
-              : selectedCategory.value!.nameEn;
-      displayedDescription =
-          languageCode == 'de'
-              ? selectedCategory.value!.descriptionDe
-              : selectedCategory.value!.descriptionEn;
-      displayedProgress =
-          (currentUser != null)
-              ? (currentUser.categoryProgress[selectedCategory.value!.id] ??
-                  0.0)
-              : 0.0;
-    }
+    final DisplayedCategoryInfo displayInfo = getDisplayedCategoryInfo(
+      selectedCategoryValue: selectedCategory.value,
+      automaticCategory: automaticCategory,
+      currentUser: currentUser,
+      localizations: localizations,
+      languageCode: languageCode,
+    );
 
     // Build the actual category view
     return Column(
@@ -307,14 +171,23 @@ class ActualCategoryView extends HookConsumerWidget {
         ),
         SizedBox(height: verticalSpacing),
         ActualCategoryContentRow(
-          displayedProgress: displayedProgress,
+          displayedProgress: displayInfo.progress,
           dashSize: dashSize,
-          displayedCategoryName: displayedCategoryName,
-          displayedDescription: displayedDescription,
+          displayedCategoryName: displayInfo.name,
+          displayedDescription: displayInfo.description,
           descriptionMaxLines: descriptionMaxLines,
           isDarkMode: isDarkMode,
           onSwitchCategoryPressed:
-              () => showCategoryPicker(context, categories),
+              () => showActualCategoryPicker(
+                context: context,
+                currentCategories: categories,
+                automaticCategory: automaticCategory,
+                currentSelectedCategory: selectedCategory.value,
+                languageCode: languageCode,
+                localizations: localizations,
+                isDarkMode: isDarkMode,
+                onCategorySelected: updateSelectedCategory,
+              ),
         ),
       ],
     );
