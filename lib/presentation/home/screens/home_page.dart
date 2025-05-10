@@ -1,4 +1,4 @@
-import 'package:brain_bench/business_logic/home/home_providers.dart'; // Importiere den Provider
+import 'package:brain_bench/business_logic/home/home_providers.dart';
 import 'package:brain_bench/core/extensions/responsive_context.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/shared_widgets/buttons/profile_button_view.dart';

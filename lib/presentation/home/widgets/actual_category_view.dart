@@ -104,9 +104,7 @@ class ActualCategoryView extends HookConsumerWidget {
       // Check if the last selected ID from preferences is loaded
       // and if the selected category is not already set.
       asyncLastSelectedIdFromPrefs.whenData((loadedLastSelectedIdFromPrefs) {
-        // Call the outsourced logic
         determineInitialCategory(
-          // Use the imported function
           loadedLastSelectedIdFromPrefs: loadedLastSelectedIdFromPrefs,
           backendCategories: categories,
           currentUser: currentUser,
@@ -121,7 +119,7 @@ class ActualCategoryView extends HookConsumerWidget {
                 'Updating selectedCategory.value to: ${categoryToSet.id}',
               );
               selectedCategory.value = categoryToSet;
-              // Update den globalen Provider nur, wenn sich die Kategorie-ID geändert hat
+
               final currentGlobalCategoryId = ref.read(
                 selectedHomeCategoryProvider,
               );
