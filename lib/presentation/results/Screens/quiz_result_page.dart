@@ -87,7 +87,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
     );
 
     try {
-      await notifier.updateLastPlayedCategory(widget.categoryId, userData.uid);
+      await notifier.updateLastPlayedCategory(userData, widget.categoryId);
     } catch (e, stack) {
       _logger.severe(
         'Failed to update last played category for user ${userData.uid}: $e',
@@ -102,9 +102,10 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
               label: localizations.quizResultsRetryButton,
               onPressed: () async {
                 try {
+                  // Korrekter Aufruf auch hier
                   await notifier.updateLastPlayedCategory(
+                    userData,
                     widget.categoryId,
-                    userData.uid,
                   );
                   _logger.info(
                     'Retry for updateLastPlayedCategory successful.',
@@ -152,7 +153,11 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
     }
 
     if (notifier.isQuizPassed()) {
-      await notifier.markTopicAsDone(widget.topicId, widget.categoryId);
+      await notifier.markTopicAsDone(
+        userData,
+        widget.topicId,
+        widget.categoryId,
+      );
       _logger.info('✅ Fortschritt & Topic als "done" gespeichert.');
     }
 

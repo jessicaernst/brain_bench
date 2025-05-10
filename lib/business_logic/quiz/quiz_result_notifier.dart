@@ -7,7 +7,6 @@ import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
 import 'package:brain_bench/data/models/result/result.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
-import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -185,20 +184,22 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     }
   }
 
-  Future<void> markTopicAsDone(String topicId, String categoryId) async {
+  Future<void> markTopicAsDone(
+    AppUser user, // User-Objekt als Parameter
+    String topicId,
+    String categoryId,
+  ) async {
     _logger.info(
-      'Attempting to mark topic $topicId as done in category $categoryId',
+      'Attempting to mark topic $topicId as done in category $categoryId for user ${user.id}',
     );
-    AppUser? user;
     List<Topic>? topics;
     QuizMockDatabaseRepository? repo;
     try {
-      user = await _fetchCurrentUser();
       repo = await _fetchRepository();
       topics = await _fetchCategoryTopics(categoryId);
     } catch (e, s) {
       _logger.severe(
-        '❌ Error fetching prerequisites for markTopicAsDone: $e',
+        '❌ Error fetching repository or topics for markTopicAsDone: $e',
         e,
         s,
       );
@@ -238,37 +239,27 @@ class QuizResultNotifier extends _$QuizResultNotifier {
 
   /// Updates the last played category ID for the current user in the database.
   Future<void> updateLastPlayedCategory(
+    AppUser user, // User-Objekt als Parameter
     String categoryId,
-    String userId,
   ) async {
     _logger.info(
-      'Attempting to update lastPlayedCategoryId to "$categoryId" for user "$userId".',
+      'Attempting to update lastPlayedCategoryId to "$categoryId" for user "${user.id}".',
     );
     try {
-      // Fetch the user object that will actually be modified.
-      final AppUser fetchedUser = await _fetchCurrentUser();
-
-      if (fetchedUser.id != userId) {
-        final errorMessage =
-            'User ID mismatch: Provided ID "$userId" does not match current user ID "${fetchedUser.id}". Cannot update last played category.';
-        _logger.severe(errorMessage);
-        throw Exception(errorMessage); // Throw an exception on mismatch
-      }
-
       final QuizMockDatabaseRepository repo = await _fetchRepository();
       await repo.updateUser(
         // The update is performed on the userToModify object, using its ID.
-        // Now that we've confirmed fetchedUser.id == userId, we use fetchedUser.
-        fetchedUser.copyWith(lastPlayedCategoryId: categoryId),
+        // Use the passed user object directly.
+        user.copyWith(lastPlayedCategoryId: categoryId),
       );
       ref.invalidate(currentUserModelProvider);
       _logger.info(
         // Log with the ID of the user record that was actually updated.
-        '✅ Successfully updated lastPlayedCategoryId to "$categoryId" for user "${fetchedUser.id}".',
+        '✅ Successfully updated lastPlayedCategoryId to "$categoryId" for user "${user.id}".',
       );
     } catch (e, s) {
       _logger.severe(
-        '❌ Error updating lastPlayedCategoryId for user "$userId": $e',
+        '❌ Error updating lastPlayedCategoryId for user "${user.id}": $e',
         e,
         s,
       );
@@ -277,28 +268,6 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   }
 
   // --- Private Helper Functions ---
-
-  Future<AppUser> _fetchCurrentUser() async {
-    _logger.fine('Attempting to fetch current user...');
-    try {
-      final state = await ref.read(currentUserModelProvider.future);
-
-      final user = switch (state) {
-        UserModelData(:final user) => user,
-        UserModelUnauthenticated() =>
-          throw Exception('⚠️ User is not authenticated'),
-        UserModelLoading() => throw Exception('⚠️ Still loading user'),
-        UserModelError(:final message, :final uid) =>
-          throw Exception('⚠️ Failed to fetch user [$uid]: $message'),
-      };
-
-      _logger.fine('Fetched current user successfully: ${user.id}');
-      return user;
-    } catch (e, s) {
-      _logger.warning('⚠️ Cannot proceed: Error fetching user: $e', e, s);
-      throw Exception('User not found');
-    }
-  }
 
   Future<QuizMockDatabaseRepository> _fetchRepository() async {
     final repo = await ref.read(quizMockDatabaseRepositoryProvider.future);
