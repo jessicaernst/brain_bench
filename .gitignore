@@ -99,6 +99,7 @@ android/app/google-services-*.json
 android/app/debug
 android/app/profile
 android/app/release
+android/app/.cxx/
 
 # -----------------------------
 # 🔥 Firebase/Secrets/Security
@@ -135,5 +136,3 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
-android/app/.cxx/Debug/hsh6h1i2/arm64-v8a/configure_fingerprint.bin
-
