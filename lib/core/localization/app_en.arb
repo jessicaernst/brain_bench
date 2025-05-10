@@ -4,17 +4,13 @@
     "@appTitle": {
         "description": "The title of the application"
     },
-    "answerExpandableExplanationHeader": "Explanation:",
-    "@answerExpandableExplanationHeader": {
-        "description": "The header of the expandable explanation in the answer page"
+    "cancel": "Cancel",
+    "@cancel": {
+        "description": "Label for a generic cancel button, typically used in dialogs."
     },
-    "answerExpandableNoExplanation": "No explanation available",
-    "@answerExpandableNoExplanation": {
-        "description": "The message displayed when there is no explanation available"
-    },
-    "answerExpandableQuestionHeader": "Question:",
-    "@answerExpandableQuestionHeader": {
-        "description": "The header of the expandable question in the answer page"
+    "statusLoadingLabel": "Loading...",
+    "@statusLoadingLabel": {
+        "description": "Generic text indicating that content is currently loading."
     },
     "appBarTitleCategories": "Categories",
     "@appBarTitleCategories": {
@@ -124,6 +120,30 @@
     "@bottomNavigationResults": {
         "description": "The title of the results page in the bottom navigation bar"
     },
+    "homeActualCategoryDescriptionPrompt": "Select a category to see details.",
+    "@homeActualCategoryDescriptionPrompt": {
+        "description": "Prompt message in the actual category view when no category is selected or details are not yet loaded."
+    },
+    "homeActualCategoryErrorLoading": "Error loading categories:",
+    "@homeActualCategoryErrorLoading": {
+        "description": "Error message prefix displayed in the actual category view when categories fail to load."
+    },
+    "homeActualCategoryNoCategories": "No categories available.",
+    "@homeActualCategoryNoCategories": {
+        "description": "Message displayed in the actual category view when there are no categories to show."
+    },
+    "homeActualCategorySectionTitle": "current",
+    "@homeActualCategorySectionTitle": {
+        "description": "Title for the section on the home screen displaying the currently active category."
+    },
+    "pickerOptionAutomatic": "Welcome",
+    "@pickerOptionAutomatic": {
+        "description": "The name for the 'Automatic' option in a picker"
+    },
+    "pickerOptionAutomaticDescription": "The app automatically selects a new category for you after each completed quiz.",
+    "@pickerOptionAutomaticDescription": {
+        "description": "The description for the 'Automatic' option in a picker"
+    },
     "categoryDetailsErrorLoading": "Error loading category details:",
     "@categoryDetailsErrorLoading": {
         "description": "Error message prefix displayed when category details fail to load."
@@ -140,25 +160,25 @@
     "@chooseCategoryBtnLbl": {
         "description": "The label of the button to choose a category"
     },
-    "errorCategoryNotFound": "Category not found",
-    "@errorCategoryNotFound": {
-        "description": "Error message displayed when the category is not found"
+    "topicsDone": "Done",
+    "@topicsDone": {
+        "description": "The label for the done topics"
     },
-    "errorGeneric": "An unexpected error occurred.",
-    "@errorGeneric": {
-        "description": "Generic error message shown in a SnackBar for unexpected issues."
+    "topicsTitle": "Topics",
+    "@topicsTitle": {
+        "description": "The title of the topics page"
     },
-    "errorNavigationFailed": "Navigation failed. Please try again.",
-    "@errorNavigationFailed": {
-        "description": "Generic error message shown in a SnackBar when navigating between screens fails."
+    "answerExpandableExplanationHeader": "Explanation:",
+    "@answerExpandableExplanationHeader": {
+        "description": "The header of the expandable explanation in the answer page"
     },
-    "errorNoCategorySelected": "Category not selected",
-    "@errorNoCategorySelected": {
-        "description": "Error message displayed when no category is selected"
+    "answerExpandableNoExplanation": "No explanation available",
+    "@answerExpandableNoExplanation": {
+        "description": "The message displayed when there is no explanation available"
     },
-    "errorSavingData": "Error saving your answer.",
-    "@errorSavingData": {
-        "description": "Error message shown in a SnackBar when saving the user's quiz answer attempt fails."
+    "answerExpandableQuestionHeader": "Question:",
+    "@answerExpandableQuestionHeader": {
+        "description": "The header of the expandable question in the answer page"
     },
     "feedBackBottomSheetTitle": "Results",
     "@feedBackBottomSheetTitle": {
@@ -180,61 +200,77 @@
     "@finishQuizBtnLbl": {
         "description": "The label of the button to finish the quiz"
     },
-    "languageNameEnglish": "English",
-    "@languageNameEnglish": {
-        "description": "The name of the English language"
-    },
-    "languageNameGerman": "German",
-    "@languageNameGerman": {
-        "description": "The name of the German language"
-    },
     "nextQuestionBtnLbl": "Next Question",
     "@nextQuestionBtnLbl": {
         "description": "The label of the button to go to the next question"
     },
-    "notFoundAppBarTitle": "Page Not Found",
-    "@notFoundAppBarTitle": {
-        "description": "App bar title for the 404 error page"
+    "quizAppBarTitle": "Quiz",
+    "@quizAppBarTitle": {
+        "description": "The title of the quiz page in the app bar"
     },
-    "notFoundErrorDetailsLabel": "Error details:",
-    "@notFoundErrorDetailsLabel": {
-        "description": "Label preceding the technical error details on the 404 page"
+    "quizCompletedMsg": "🎉 Quiz Completed",
+    "@quizCompletedMsg": {
+        "description": "The message displayed when the quiz is completed"
     },
-    "notFoundHeading": "404 - Page Not Found",
-    "@notFoundHeading": {
-        "description": "Main heading displayed on the 404 error page"
+    "quizNoQuestionsAvailable": "No questions available for this topic yet.",
+    "@quizNoQuestionsAvailable": {
+        "description": "Message displayed in the quiz page when no questions are found for the selected topic."
     },
-    "pickerDoneButton": "Done",
-    "@pickerDoneButton": {
-        "description": "Label for the 'Done' button in pickers"
+    "startQuizBtnLbl": "Start Quiz",
+    "@startQuizBtnLbl": {
+        "description": "The label of the button to start the quiz"
     },
-    "pickerOptionAutomatic": "Welcome",
-    "@pickerOptionAutomatic": {
-        "description": "The name for the 'Automatic' option in a picker"
+    "submitAnswerBtnLbl": "Done",
+    "@submitAnswerBtnLbl": {
+        "description": "The label of the button to submit an answer"
     },
-    "pickerOptionAutomaticDescription": "The app automatically selects a new category for you after each completed quiz.",
-    "@pickerOptionAutomaticDescription": {
-        "description": "The description for the 'Automatic' option in a picker"
+    "quizResultBtnLbl": "Back to topic selection",
+    "@quizResultBtnLbl": {
+        "description": "The label of the button to view the quiz results"
     },
-    "quizResultsUserNotAvailable": "User data not available. Please try again later.",
-    "@quizResultsUserNotAvailable": {
-        "description": "Error message when user data is not available on the quiz results page."
+    "quizResultFailed": "Failed",
+    "@quizResultFailed": {
+        "description": "The label for the failed quiz result"
     },
-    "quizResultsSaveLastCategoryError": "Could not save the last played category.",
-    "@quizResultsSaveLastCategoryError": {
-        "description": "Error message when saving the last played category fails."
+    "quizResultPassed": "Passed",
+    "@quizResultPassed": {
+        "description": "The label for the passed quiz result"
+    },
+    "quizResultScore": "Score",
+    "@quizResultScore": {
+        "description": "The label for the quiz result score"
+    },
+    "quizResultsAppBarTitle": "Quiz Results",
+    "@quizResultsAppBarTitle": {
+        "description": "The title of the quiz results page in the app bar"
+    },
+    "quizResultsNotSaved": "Quiz results not saved",
+    "@quizResultsNotSaved": {
+        "description": "The message displayed when the quiz results are not saved"
     },
     "quizResultsRetryButton": "Retry",
     "@quizResultsRetryButton": {
         "description": "Label for the retry button in a SnackBar."
     },
-    "quizResultsSaveLastCategorySuccess": "Last category saved successfully.",
-    "@quizResultsSaveLastCategorySuccess": {
-        "description": "Success message when the last played category is saved after a retry."
+    "quizResultsSaveLastCategoryError": "Could not save the last played category.",
+    "@quizResultsSaveLastCategoryError": {
+        "description": "Error message when saving the last played category fails."
     },
     "quizResultsSaveLastCategoryRetryFailed": "Saving the last category failed. Please try again later.",
     "@quizResultsSaveLastCategoryRetryFailed": {
         "description": "Error message when retrying to save the last played category also fails."
+    },
+    "quizResultsSaveLastCategorySuccess": "Last category saved successfully.",
+    "@quizResultsSaveLastCategorySuccess": {
+        "description": "Success message when the last played category is saved after a retry."
+    },
+    "quizResultsUserNotAvailable": "User data not available. Please try again later.",
+    "@quizResultsUserNotAvailable": {
+        "description": "Error message when user data is not available on the quiz results page."
+    },
+    "quizToggleExplanation": "Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!",
+    "@quizToggleExplanation": {
+        "description": "The label for the toggle explanation button"
     },
     "profileAppBarTitle": "Profile",
     "@profileAppBarTitle": {
@@ -275,6 +311,10 @@
     "profileImagePickerError": "Error selecting an image.",
     "@profileImagePickerError": {
         "description": "Error message shown on profile page if image selection fails"
+    },
+    "profileLoadError": "Error loading profile data.",
+    "@profileLoadError": {
+        "description": "Error message shown on profile page if user data fails to load"
     },
     "profileMenuLogout": "Logout",
     "@profileMenuLogout": {
@@ -320,57 +360,13 @@
     "@profileUserNotFound": {
         "description": "Message shown on profile page if the user data is null"
     },
-    "quizAppBarTitle": "Quiz",
-    "@quizAppBarTitle": {
-        "description": "The title of the quiz page in the app bar"
+    "languageNameEnglish": "English",
+    "@languageNameEnglish": {
+        "description": "The name of the English language"
     },
-    "quizCompletedMsg": "🎉 Quiz Completed",
-    "@quizCompletedMsg": {
-        "description": "The message displayed when the quiz is completed"
-    },
-    "quizErrorLoadingNextQuestion": "Error loading next question.",
-    "@quizErrorLoadingNextQuestion": {
-        "description": "Error message shown in a SnackBar when loading the next quiz question fails."
-    },
-    "quizErrorLoadingQuestions": "Error loading questions:",
-    "@quizErrorLoadingQuestions": {
-        "description": "Error message prefix displayed when questions fail to load in the quiz page."
-    },
-    "quizErrorNoQuestions": "No questions found for this topic.",
-    "@quizErrorNoQuestions": {
-        "description": "Message displayed in the quiz page body or SnackBar when no questions are found for the selected topic."
-    },
-    "quizNoQuestionsAvailable": "No questions available for this topic yet.",
-    "@quizNoQuestionsAvailable": {
-        "description": "Message displayed in the quiz page when no questions are found for the selected topic."
-    },
-    "quizResultBtnLbl": "Back to topic selection",
-    "@quizResultBtnLbl": {
-        "description": "The label of the button to view the quiz results"
-    },
-    "quizResultFailed": "Failed",
-    "@quizResultFailed": {
-        "description": "The label for the failed quiz result"
-    },
-    "quizResultPassed": "Passed",
-    "@quizResultPassed": {
-        "description": "The label for the passed quiz result"
-    },
-    "quizResultScore": "Score",
-    "@quizResultScore": {
-        "description": "The label for the quiz result score"
-    },
-    "quizResultsAppBarTitle": "Quiz Results",
-    "@quizResultsAppBarTitle": {
-        "description": "The title of the quiz results page in the app bar"
-    },
-    "quizResultsNotSaved": "Quiz results not saved",
-    "@quizResultsNotSaved": {
-        "description": "The message displayed when the quiz results are not saved"
-    },
-    "quizToggleExplanation": "Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!",
-    "@quizToggleExplanation": {
-        "description": "The label for the toggle explanation button"
+    "languageNameGerman": "German",
+    "@languageNameGerman": {
+        "description": "The name of the German language"
     },
     "settingsAppBarTitle": "Settings",
     "@settingsAppBarTitle": {
@@ -396,21 +392,53 @@
     "@settingsThemeToggleLabel": {
         "description": "Label for the theme (dark/light mode) toggle switch"
     },
-    "startQuizBtnLbl": "Start Quiz",
-    "@startQuizBtnLbl": {
-        "description": "The label of the button to start the quiz"
+    "errorCategoryNotFound": "Category not found",
+    "@errorCategoryNotFound": {
+        "description": "Error message displayed when the category is not found"
     },
-    "submitAnswerBtnLbl": "Done",
-    "@submitAnswerBtnLbl": {
-        "description": "The label of the button to submit an answer"
+    "errorGeneric": "An unexpected error occurred.",
+    "@errorGeneric": {
+        "description": "Generic error message shown in a SnackBar for unexpected issues."
     },
-    "topicsDone": "Done",
-    "@topicsDone": {
-        "description": "The label for the done topics"
+    "errorNavigationFailed": "Navigation failed. Please try again.",
+    "@errorNavigationFailed": {
+        "description": "Generic error message shown in a SnackBar when navigating between screens fails."
     },
-    "topicsTitle": "Topics",
-    "@topicsTitle": {
-        "description": "The title of the topics page"
+    "errorNoCategorySelected": "Category not selected",
+    "@errorNoCategorySelected": {
+        "description": "Error message displayed when no category is selected"
+    },
+    "errorSavingData": "Error saving your answer.",
+    "@errorSavingData": {
+        "description": "Error message shown in a SnackBar when saving the user's quiz answer attempt fails."
+    },
+    "notFoundAppBarTitle": "Page Not Found",
+    "@notFoundAppBarTitle": {
+        "description": "App bar title for the 404 error page"
+    },
+    "notFoundErrorDetailsLabel": "Error details:",
+    "@notFoundErrorDetailsLabel": {
+        "description": "Label preceding the technical error details on the 404 page"
+    },
+    "notFoundHeading": "404 - Page Not Found",
+    "@notFoundHeading": {
+        "description": "Main heading displayed on the 404 error page"
+    },
+    "quizErrorLoadingNextQuestion": "Error loading next question.",
+    "@quizErrorLoadingNextQuestion": {
+        "description": "Error message shown in a SnackBar when loading the next quiz question fails."
+    },
+    "quizErrorLoadingQuestions": "Error loading questions:",
+    "@quizErrorLoadingQuestions": {
+        "description": "Error message prefix displayed when questions fail to load in the quiz page."
+    },
+    "quizErrorNoQuestions": "No questions found for this topic.",
+    "@quizErrorNoQuestions": {
+        "description": "Message displayed in the quiz page body or SnackBar when no questions are found for the selected topic."
+    },
+    "genericErrorMessage": "Something went wrong. Please try again later.",
+    "@genericErrorMessage": {
+        "description": "A generic error message displayed to the user when an unexpected error occurs."
     },
     "permissionRequiredTitle": "Permission Required",
     "@permissionRequiredTitle": {
@@ -436,36 +464,8 @@
     "@openSettings": {
         "description": "Label for a button that opens the application's settings page in the device settings."
     },
-    "cancel": "Cancel",
-    "@cancel": {
-        "description": "Label for a generic cancel button, typically used in dialogs."
-    },
-    "profileLoadError": "Error loading profile data.",
-    "@profileLoadError": {
-        "description": "Error message shown on profile page if user data fails to load"
-    },
-    "homeActualCategorySectionTitle": "current",
-    "@homeActualCategorySectionTitle": {
-        "description": "Title for the section on the home screen displaying the currently active category."
-    },
-    "statusLoadingLabel": "Loading...",
-    "@statusLoadingLabel": {
-        "description": "Generic text indicating that content is currently loading."
-    },
-    "homeActualCategoryDescriptionPrompt": "Select a category to see details.",
-    "@homeActualCategoryDescriptionPrompt": {
-        "description": "Prompt message in the actual category view when no category is selected or details are not yet loaded."
-    },
-    "homeActualCategoryNoCategories": "No categories available.",
-    "@homeActualCategoryNoCategories": {
-        "description": "Message displayed in the actual category view when there are no categories to show."
-    },
-    "homeActualCategoryErrorLoading": "Error loading categories:",
-    "@homeActualCategoryErrorLoading": {
-        "description": "Error message prefix displayed in the actual category view when categories fail to load."
-    },
-    "genericErrorMessage": "Something went wrong. Please try again later.",
-    "@genericErrorMessage": {
-        "description": "A generic error message displayed to the user when an unexpected error occurs."
+    "pickerDoneButton": "Done",
+    "@pickerDoneButton": {
+        "description": "Label for the 'Done' button in pickers"
     }
 }

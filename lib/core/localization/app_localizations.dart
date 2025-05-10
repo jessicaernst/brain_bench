@@ -101,23 +101,17 @@ abstract class AppLocalizations {
   /// **'BrainBench'**
   String get appTitle;
 
-  /// The header of the expandable explanation in the answer page
+  /// Label for a generic cancel button, typically used in dialogs.
   ///
   /// In en, this message translates to:
-  /// **'Explanation:'**
-  String get answerExpandableExplanationHeader;
+  /// **'Cancel'**
+  String get cancel;
 
-  /// The message displayed when there is no explanation available
+  /// Generic text indicating that content is currently loading.
   ///
   /// In en, this message translates to:
-  /// **'No explanation available'**
-  String get answerExpandableNoExplanation;
-
-  /// The header of the expandable question in the answer page
-  ///
-  /// In en, this message translates to:
-  /// **'Question:'**
-  String get answerExpandableQuestionHeader;
+  /// **'Loading...'**
+  String get statusLoadingLabel;
 
   /// The title of the categories page in the app bar
   ///
@@ -281,6 +275,42 @@ abstract class AppLocalizations {
   /// **'Results'**
   String get bottomNavigationResults;
 
+  /// Prompt message in the actual category view when no category is selected or details are not yet loaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a category to see details.'**
+  String get homeActualCategoryDescriptionPrompt;
+
+  /// Error message prefix displayed in the actual category view when categories fail to load.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading categories:'**
+  String get homeActualCategoryErrorLoading;
+
+  /// Message displayed in the actual category view when there are no categories to show.
+  ///
+  /// In en, this message translates to:
+  /// **'No categories available.'**
+  String get homeActualCategoryNoCategories;
+
+  /// Title for the section on the home screen displaying the currently active category.
+  ///
+  /// In en, this message translates to:
+  /// **'current'**
+  String get homeActualCategorySectionTitle;
+
+  /// The name for the 'Automatic' option in a picker
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get pickerOptionAutomatic;
+
+  /// The description for the 'Automatic' option in a picker
+  ///
+  /// In en, this message translates to:
+  /// **'The app automatically selects a new category for you after each completed quiz.'**
+  String get pickerOptionAutomaticDescription;
+
   /// Error message prefix displayed when category details fail to load.
   ///
   /// In en, this message translates to:
@@ -305,35 +335,35 @@ abstract class AppLocalizations {
   /// **'Choose Category'**
   String get chooseCategoryBtnLbl;
 
-  /// Error message displayed when the category is not found
+  /// The label for the done topics
   ///
   /// In en, this message translates to:
-  /// **'Category not found'**
-  String get errorCategoryNotFound;
+  /// **'Done'**
+  String get topicsDone;
 
-  /// Generic error message shown in a SnackBar for unexpected issues.
+  /// The title of the topics page
   ///
   /// In en, this message translates to:
-  /// **'An unexpected error occurred.'**
-  String get errorGeneric;
+  /// **'Topics'**
+  String get topicsTitle;
 
-  /// Generic error message shown in a SnackBar when navigating between screens fails.
+  /// The header of the expandable explanation in the answer page
   ///
   /// In en, this message translates to:
-  /// **'Navigation failed. Please try again.'**
-  String get errorNavigationFailed;
+  /// **'Explanation:'**
+  String get answerExpandableExplanationHeader;
 
-  /// Error message displayed when no category is selected
+  /// The message displayed when there is no explanation available
   ///
   /// In en, this message translates to:
-  /// **'Category not selected'**
-  String get errorNoCategorySelected;
+  /// **'No explanation available'**
+  String get answerExpandableNoExplanation;
 
-  /// Error message shown in a SnackBar when saving the user's quiz answer attempt fails.
+  /// The header of the expandable question in the answer page
   ///
   /// In en, this message translates to:
-  /// **'Error saving your answer.'**
-  String get errorSavingData;
+  /// **'Question:'**
+  String get answerExpandableQuestionHeader;
 
   /// The title of the bottom sheet that displays the quiz results
   ///
@@ -365,71 +395,77 @@ abstract class AppLocalizations {
   /// **'Show Results'**
   String get finishQuizBtnLbl;
 
-  /// The name of the English language
-  ///
-  /// In en, this message translates to:
-  /// **'English'**
-  String get languageNameEnglish;
-
-  /// The name of the German language
-  ///
-  /// In en, this message translates to:
-  /// **'German'**
-  String get languageNameGerman;
-
   /// The label of the button to go to the next question
   ///
   /// In en, this message translates to:
   /// **'Next Question'**
   String get nextQuestionBtnLbl;
 
-  /// App bar title for the 404 error page
+  /// The title of the quiz page in the app bar
   ///
   /// In en, this message translates to:
-  /// **'Page Not Found'**
-  String get notFoundAppBarTitle;
+  /// **'Quiz'**
+  String get quizAppBarTitle;
 
-  /// Label preceding the technical error details on the 404 page
+  /// The message displayed when the quiz is completed
   ///
   /// In en, this message translates to:
-  /// **'Error details:'**
-  String get notFoundErrorDetailsLabel;
+  /// **'🎉 Quiz Completed'**
+  String get quizCompletedMsg;
 
-  /// Main heading displayed on the 404 error page
+  /// Message displayed in the quiz page when no questions are found for the selected topic.
   ///
   /// In en, this message translates to:
-  /// **'404 - Page Not Found'**
-  String get notFoundHeading;
+  /// **'No questions available for this topic yet.'**
+  String get quizNoQuestionsAvailable;
 
-  /// Label for the 'Done' button in pickers
+  /// The label of the button to start the quiz
+  ///
+  /// In en, this message translates to:
+  /// **'Start Quiz'**
+  String get startQuizBtnLbl;
+
+  /// The label of the button to submit an answer
   ///
   /// In en, this message translates to:
   /// **'Done'**
-  String get pickerDoneButton;
+  String get submitAnswerBtnLbl;
 
-  /// The name for the 'Automatic' option in a picker
+  /// The label of the button to view the quiz results
   ///
   /// In en, this message translates to:
-  /// **'Welcome'**
-  String get pickerOptionAutomatic;
+  /// **'Back to topic selection'**
+  String get quizResultBtnLbl;
 
-  /// The description for the 'Automatic' option in a picker
+  /// The label for the failed quiz result
   ///
   /// In en, this message translates to:
-  /// **'The app automatically selects a new category for you after each completed quiz.'**
-  String get pickerOptionAutomaticDescription;
+  /// **'Failed'**
+  String get quizResultFailed;
 
-  /// Error message when user data is not available on the quiz results page.
+  /// The label for the passed quiz result
   ///
   /// In en, this message translates to:
-  /// **'User data not available. Please try again later.'**
-  String get quizResultsUserNotAvailable;
+  /// **'Passed'**
+  String get quizResultPassed;
 
-  /// Error message when saving the last played category fails.
+  /// The label for the quiz result score
   ///
   /// In en, this message translates to:
-  /// **'Could not save the last played category.'**
-  String get quizResultsSaveLastCategoryError;
+  /// **'Score'**
+  String get quizResultScore;
+
+  /// The title of the quiz results page in the app bar
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Results'**
+  String get quizResultsAppBarTitle;
+
+  /// The message displayed when the quiz results are not saved
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz results not saved'**
+  String get quizResultsNotSaved;
 
   /// Label for the retry button in a SnackBar.
   ///
@@ -437,17 +473,35 @@ abstract class AppLocalizations {
   /// **'Retry'**
   String get quizResultsRetryButton;
 
-  /// Success message when the last played category is saved after a retry.
+  /// Error message when saving the last played category fails.
   ///
   /// In en, this message translates to:
-  /// **'Last category saved successfully.'**
-  String get quizResultsSaveLastCategorySuccess;
+  /// **'Could not save the last played category.'**
+  String get quizResultsSaveLastCategoryError;
 
   /// Error message when retrying to save the last played category also fails.
   ///
   /// In en, this message translates to:
   /// **'Saving the last category failed. Please try again later.'**
   String get quizResultsSaveLastCategoryRetryFailed;
+
+  /// Success message when the last played category is saved after a retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Last category saved successfully.'**
+  String get quizResultsSaveLastCategorySuccess;
+
+  /// Error message when user data is not available on the quiz results page.
+  ///
+  /// In en, this message translates to:
+  /// **'User data not available. Please try again later.'**
+  String get quizResultsUserNotAvailable;
+
+  /// The label for the toggle explanation button
+  ///
+  /// In en, this message translates to:
+  /// **'Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!'**
+  String get quizToggleExplanation;
 
   /// Title of the app bar for the profile
   ///
@@ -508,6 +562,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error selecting an image.'**
   String get profileImagePickerError;
+
+  /// Error message shown on profile page if user data fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading profile data.'**
+  String get profileLoadError;
 
   /// Menu item text for logging the user out
   ///
@@ -575,83 +635,17 @@ abstract class AppLocalizations {
   /// **'User data not found.'**
   String get profileUserNotFound;
 
-  /// The title of the quiz page in the app bar
+  /// The name of the English language
   ///
   /// In en, this message translates to:
-  /// **'Quiz'**
-  String get quizAppBarTitle;
+  /// **'English'**
+  String get languageNameEnglish;
 
-  /// The message displayed when the quiz is completed
+  /// The name of the German language
   ///
   /// In en, this message translates to:
-  /// **'🎉 Quiz Completed'**
-  String get quizCompletedMsg;
-
-  /// Error message shown in a SnackBar when loading the next quiz question fails.
-  ///
-  /// In en, this message translates to:
-  /// **'Error loading next question.'**
-  String get quizErrorLoadingNextQuestion;
-
-  /// Error message prefix displayed when questions fail to load in the quiz page.
-  ///
-  /// In en, this message translates to:
-  /// **'Error loading questions:'**
-  String get quizErrorLoadingQuestions;
-
-  /// Message displayed in the quiz page body or SnackBar when no questions are found for the selected topic.
-  ///
-  /// In en, this message translates to:
-  /// **'No questions found for this topic.'**
-  String get quizErrorNoQuestions;
-
-  /// Message displayed in the quiz page when no questions are found for the selected topic.
-  ///
-  /// In en, this message translates to:
-  /// **'No questions available for this topic yet.'**
-  String get quizNoQuestionsAvailable;
-
-  /// The label of the button to view the quiz results
-  ///
-  /// In en, this message translates to:
-  /// **'Back to topic selection'**
-  String get quizResultBtnLbl;
-
-  /// The label for the failed quiz result
-  ///
-  /// In en, this message translates to:
-  /// **'Failed'**
-  String get quizResultFailed;
-
-  /// The label for the passed quiz result
-  ///
-  /// In en, this message translates to:
-  /// **'Passed'**
-  String get quizResultPassed;
-
-  /// The label for the quiz result score
-  ///
-  /// In en, this message translates to:
-  /// **'Score'**
-  String get quizResultScore;
-
-  /// The title of the quiz results page in the app bar
-  ///
-  /// In en, this message translates to:
-  /// **'Quiz Results'**
-  String get quizResultsAppBarTitle;
-
-  /// The message displayed when the quiz results are not saved
-  ///
-  /// In en, this message translates to:
-  /// **'Quiz results not saved'**
-  String get quizResultsNotSaved;
-
-  /// The label for the toggle explanation button
-  ///
-  /// In en, this message translates to:
-  /// **'Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!'**
-  String get quizToggleExplanation;
+  /// **'German'**
+  String get languageNameGerman;
 
   /// Title of the app bar for settings
   ///
@@ -689,29 +683,77 @@ abstract class AppLocalizations {
   /// **'Theme'**
   String get settingsThemeToggleLabel;
 
-  /// The label of the button to start the quiz
+  /// Error message displayed when the category is not found
   ///
   /// In en, this message translates to:
-  /// **'Start Quiz'**
-  String get startQuizBtnLbl;
+  /// **'Category not found'**
+  String get errorCategoryNotFound;
 
-  /// The label of the button to submit an answer
+  /// Generic error message shown in a SnackBar for unexpected issues.
   ///
   /// In en, this message translates to:
-  /// **'Done'**
-  String get submitAnswerBtnLbl;
+  /// **'An unexpected error occurred.'**
+  String get errorGeneric;
 
-  /// The label for the done topics
+  /// Generic error message shown in a SnackBar when navigating between screens fails.
   ///
   /// In en, this message translates to:
-  /// **'Done'**
-  String get topicsDone;
+  /// **'Navigation failed. Please try again.'**
+  String get errorNavigationFailed;
 
-  /// The title of the topics page
+  /// Error message displayed when no category is selected
   ///
   /// In en, this message translates to:
-  /// **'Topics'**
-  String get topicsTitle;
+  /// **'Category not selected'**
+  String get errorNoCategorySelected;
+
+  /// Error message shown in a SnackBar when saving the user's quiz answer attempt fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving your answer.'**
+  String get errorSavingData;
+
+  /// App bar title for the 404 error page
+  ///
+  /// In en, this message translates to:
+  /// **'Page Not Found'**
+  String get notFoundAppBarTitle;
+
+  /// Label preceding the technical error details on the 404 page
+  ///
+  /// In en, this message translates to:
+  /// **'Error details:'**
+  String get notFoundErrorDetailsLabel;
+
+  /// Main heading displayed on the 404 error page
+  ///
+  /// In en, this message translates to:
+  /// **'404 - Page Not Found'**
+  String get notFoundHeading;
+
+  /// Error message shown in a SnackBar when loading the next quiz question fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading next question.'**
+  String get quizErrorLoadingNextQuestion;
+
+  /// Error message prefix displayed when questions fail to load in the quiz page.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading questions:'**
+  String get quizErrorLoadingQuestions;
+
+  /// Message displayed in the quiz page body or SnackBar when no questions are found for the selected topic.
+  ///
+  /// In en, this message translates to:
+  /// **'No questions found for this topic.'**
+  String get quizErrorNoQuestions;
+
+  /// A generic error message displayed to the user when an unexpected error occurs.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again later.'**
+  String get genericErrorMessage;
 
   /// Title for dialogs explaining that a permission is needed.
   ///
@@ -749,53 +791,11 @@ abstract class AppLocalizations {
   /// **'Open Settings'**
   String get openSettings;
 
-  /// Label for a generic cancel button, typically used in dialogs.
+  /// Label for the 'Done' button in pickers
   ///
   /// In en, this message translates to:
-  /// **'Cancel'**
-  String get cancel;
-
-  /// Error message shown on profile page if user data fails to load
-  ///
-  /// In en, this message translates to:
-  /// **'Error loading profile data.'**
-  String get profileLoadError;
-
-  /// Title for the section on the home screen displaying the currently active category.
-  ///
-  /// In en, this message translates to:
-  /// **'current'**
-  String get homeActualCategorySectionTitle;
-
-  /// Generic text indicating that content is currently loading.
-  ///
-  /// In en, this message translates to:
-  /// **'Loading...'**
-  String get statusLoadingLabel;
-
-  /// Prompt message in the actual category view when no category is selected or details are not yet loaded.
-  ///
-  /// In en, this message translates to:
-  /// **'Select a category to see details.'**
-  String get homeActualCategoryDescriptionPrompt;
-
-  /// Message displayed in the actual category view when there are no categories to show.
-  ///
-  /// In en, this message translates to:
-  /// **'No categories available.'**
-  String get homeActualCategoryNoCategories;
-
-  /// Error message prefix displayed in the actual category view when categories fail to load.
-  ///
-  /// In en, this message translates to:
-  /// **'Error loading categories:'**
-  String get homeActualCategoryErrorLoading;
-
-  /// A generic error message displayed to the user when an unexpected error occurs.
-  ///
-  /// In en, this message translates to:
-  /// **'Something went wrong. Please try again later.'**
-  String get genericErrorMessage;
+  /// **'Done'**
+  String get pickerDoneButton;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

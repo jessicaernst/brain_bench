@@ -12,13 +12,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'BrainBench';
 
   @override
-  String get answerExpandableExplanationHeader => 'Explanation:';
+  String get cancel => 'Cancel';
 
   @override
-  String get answerExpandableNoExplanation => 'No explanation available';
-
-  @override
-  String get answerExpandableQuestionHeader => 'Question:';
+  String get statusLoadingLabel => 'Loading...';
 
   @override
   String get appBarTitleCategories => 'Categories';
@@ -102,6 +99,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bottomNavigationResults => 'Results';
 
   @override
+  String get homeActualCategoryDescriptionPrompt => 'Select a category to see details.';
+
+  @override
+  String get homeActualCategoryErrorLoading => 'Error loading categories:';
+
+  @override
+  String get homeActualCategoryNoCategories => 'No categories available.';
+
+  @override
+  String get homeActualCategorySectionTitle => 'current';
+
+  @override
+  String get pickerOptionAutomatic => 'Welcome';
+
+  @override
+  String get pickerOptionAutomaticDescription => 'The app automatically selects a new category for you after each completed quiz.';
+
+  @override
   String get categoryDetailsErrorLoading => 'Error loading category details:';
 
   @override
@@ -114,19 +129,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chooseCategoryBtnLbl => 'Choose Category';
 
   @override
-  String get errorCategoryNotFound => 'Category not found';
+  String get topicsDone => 'Done';
 
   @override
-  String get errorGeneric => 'An unexpected error occurred.';
+  String get topicsTitle => 'Topics';
 
   @override
-  String get errorNavigationFailed => 'Navigation failed. Please try again.';
+  String get answerExpandableExplanationHeader => 'Explanation:';
 
   @override
-  String get errorNoCategorySelected => 'Category not selected';
+  String get answerExpandableNoExplanation => 'No explanation available';
 
   @override
-  String get errorSavingData => 'Error saving your answer.';
+  String get answerExpandableQuestionHeader => 'Question:';
 
   @override
   String get feedBackBottomSheetTitle => 'Results';
@@ -144,46 +159,58 @@ class AppLocalizationsEn extends AppLocalizations {
   String get finishQuizBtnLbl => 'Show Results';
 
   @override
-  String get languageNameEnglish => 'English';
-
-  @override
-  String get languageNameGerman => 'German';
-
-  @override
   String get nextQuestionBtnLbl => 'Next Question';
 
   @override
-  String get notFoundAppBarTitle => 'Page Not Found';
+  String get quizAppBarTitle => 'Quiz';
 
   @override
-  String get notFoundErrorDetailsLabel => 'Error details:';
+  String get quizCompletedMsg => '🎉 Quiz Completed';
 
   @override
-  String get notFoundHeading => '404 - Page Not Found';
+  String get quizNoQuestionsAvailable => 'No questions available for this topic yet.';
 
   @override
-  String get pickerDoneButton => 'Done';
+  String get startQuizBtnLbl => 'Start Quiz';
 
   @override
-  String get pickerOptionAutomatic => 'Welcome';
+  String get submitAnswerBtnLbl => 'Done';
 
   @override
-  String get pickerOptionAutomaticDescription => 'The app automatically selects a new category for you after each completed quiz.';
+  String get quizResultBtnLbl => 'Back to topic selection';
 
   @override
-  String get quizResultsUserNotAvailable => 'User data not available. Please try again later.';
+  String get quizResultFailed => 'Failed';
 
   @override
-  String get quizResultsSaveLastCategoryError => 'Could not save the last played category.';
+  String get quizResultPassed => 'Passed';
+
+  @override
+  String get quizResultScore => 'Score';
+
+  @override
+  String get quizResultsAppBarTitle => 'Quiz Results';
+
+  @override
+  String get quizResultsNotSaved => 'Quiz results not saved';
 
   @override
   String get quizResultsRetryButton => 'Retry';
 
   @override
-  String get quizResultsSaveLastCategorySuccess => 'Last category saved successfully.';
+  String get quizResultsSaveLastCategoryError => 'Could not save the last played category.';
 
   @override
   String get quizResultsSaveLastCategoryRetryFailed => 'Saving the last category failed. Please try again later.';
+
+  @override
+  String get quizResultsSaveLastCategorySuccess => 'Last category saved successfully.';
+
+  @override
+  String get quizResultsUserNotAvailable => 'User data not available. Please try again later.';
+
+  @override
+  String get quizToggleExplanation => 'Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!';
 
   @override
   String get profileAppBarTitle => 'Profile';
@@ -214,6 +241,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileImagePickerError => 'Error selecting an image.';
+
+  @override
+  String get profileLoadError => 'Error loading profile data.';
 
   @override
   String get profileMenuLogout => 'Logout';
@@ -249,43 +279,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileUserNotFound => 'User data not found.';
 
   @override
-  String get quizAppBarTitle => 'Quiz';
+  String get languageNameEnglish => 'English';
 
   @override
-  String get quizCompletedMsg => '🎉 Quiz Completed';
-
-  @override
-  String get quizErrorLoadingNextQuestion => 'Error loading next question.';
-
-  @override
-  String get quizErrorLoadingQuestions => 'Error loading questions:';
-
-  @override
-  String get quizErrorNoQuestions => 'No questions found for this topic.';
-
-  @override
-  String get quizNoQuestionsAvailable => 'No questions available for this topic yet.';
-
-  @override
-  String get quizResultBtnLbl => 'Back to topic selection';
-
-  @override
-  String get quizResultFailed => 'Failed';
-
-  @override
-  String get quizResultPassed => 'Passed';
-
-  @override
-  String get quizResultScore => 'Score';
-
-  @override
-  String get quizResultsAppBarTitle => 'Quiz Results';
-
-  @override
-  String get quizResultsNotSaved => 'Quiz results not saved';
-
-  @override
-  String get quizToggleExplanation => 'Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!';
+  String get languageNameGerman => 'German';
 
   @override
   String get settingsAppBarTitle => 'Settings';
@@ -306,16 +303,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsThemeToggleLabel => 'Theme';
 
   @override
-  String get startQuizBtnLbl => 'Start Quiz';
+  String get errorCategoryNotFound => 'Category not found';
 
   @override
-  String get submitAnswerBtnLbl => 'Done';
+  String get errorGeneric => 'An unexpected error occurred.';
 
   @override
-  String get topicsDone => 'Done';
+  String get errorNavigationFailed => 'Navigation failed. Please try again.';
 
   @override
-  String get topicsTitle => 'Topics';
+  String get errorNoCategorySelected => 'Category not selected';
+
+  @override
+  String get errorSavingData => 'Error saving your answer.';
+
+  @override
+  String get notFoundAppBarTitle => 'Page Not Found';
+
+  @override
+  String get notFoundErrorDetailsLabel => 'Error details:';
+
+  @override
+  String get notFoundHeading => '404 - Page Not Found';
+
+  @override
+  String get quizErrorLoadingNextQuestion => 'Error loading next question.';
+
+  @override
+  String get quizErrorLoadingQuestions => 'Error loading questions:';
+
+  @override
+  String get quizErrorNoQuestions => 'No questions found for this topic.';
+
+  @override
+  String get genericErrorMessage => 'Something went wrong. Please try again later.';
 
   @override
   String get permissionRequiredTitle => 'Permission Required';
@@ -336,26 +357,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openSettings => 'Open Settings';
 
   @override
-  String get cancel => 'Cancel';
-
-  @override
-  String get profileLoadError => 'Error loading profile data.';
-
-  @override
-  String get homeActualCategorySectionTitle => 'current';
-
-  @override
-  String get statusLoadingLabel => 'Loading...';
-
-  @override
-  String get homeActualCategoryDescriptionPrompt => 'Select a category to see details.';
-
-  @override
-  String get homeActualCategoryNoCategories => 'No categories available.';
-
-  @override
-  String get homeActualCategoryErrorLoading => 'Error loading categories:';
-
-  @override
-  String get genericErrorMessage => 'Something went wrong. Please try again later.';
+  String get pickerDoneButton => 'Done';
 }

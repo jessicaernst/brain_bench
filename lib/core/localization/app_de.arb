@@ -4,17 +4,13 @@
     "@appTitle": {
         "description": "The title of the application"
     },
-    "answerExpandableExplanationHeader": "Erklärung:",
-    "@answerExpandableExplanationHeader": {
-        "description": "The header of the expandable explanation in the answer page"
+    "cancel": "Abbrechen",
+    "@cancel": {
+        "description": "Label for a generic cancel button, typically used in dialogs."
     },
-    "answerExpandableNoExplanation": "Keine Erklärung verfügbar",
-    "@answerExpandableNoExplanation": {
-        "description": "The message displayed when there is no explanation available"
-    },
-    "answerExpandableQuestionHeader": "Frage:",
-    "@answerExpandableQuestionHeader": {
-        "description": "The header of the expandable question in the answer page"
+    "statusLoadingLabel": "Lädt...",
+    "@statusLoadingLabel": {
+        "description": "Generic text indicating that content is currently loading."
     },
     "appBarTitleCategories": "Kategorien",
     "@appBarTitleCategories": {
@@ -124,6 +120,30 @@
     "@bottomNavigationResults": {
         "description": "The title of the results page in the bottom navigation bar"
     },
+    "homeActualCategoryDescriptionPrompt": "Wähle eine Kategorie, um Details anzuzeigen.",
+    "@homeActualCategoryDescriptionPrompt": {
+        "description": "Prompt message in the actual category view when no category is selected or details are not yet loaded."
+    },
+    "homeActualCategoryErrorLoading": "Fehler beim Laden der Kategorien:",
+    "@homeActualCategoryErrorLoading": {
+        "description": "Error message prefix displayed in the actual category view when categories fail to load."
+    },
+    "homeActualCategoryNoCategories": "Keine Kategorien verfügbar.",
+    "@homeActualCategoryNoCategories": {
+        "description": "Message displayed in the actual category view when there are no categories to show."
+    },
+    "homeActualCategorySectionTitle": "aktuell",
+    "@homeActualCategorySectionTitle": {
+        "description": "Title for the section on the home screen displaying the currently active category."
+    },
+    "pickerOptionAutomatic": "Willkommen",
+    "@pickerOptionAutomatic": {
+        "description": "The name for the 'Automatic' option in a picker"
+    },
+    "pickerOptionAutomaticDescription": "Die App wählt nach jedem Quiz automatisch eine neue Kategorie für dich aus.",
+    "@pickerOptionAutomaticDescription": {
+        "description": "The description for the 'Automatic' option in a picker"
+    },
     "categoryDetailsErrorLoading": "Fehler beim Laden der Kategorie-Details:",
     "@categoryDetailsErrorLoading": {
         "description": "Fehlermeldungspräfix, das angezeigt wird, wenn Kategorie-Details nicht geladen werden können."
@@ -140,25 +160,25 @@
     "@chooseCategoryBtnLbl": {
         "description": "The label of the button to choose a category"
     },
-    "errorCategoryNotFound": "Kategorie nicht gefunden",
-    "@errorCategoryNotFound": {
-        "description": "Error message displayed when the category is not found"
+    "topicsDone": "Erledigt",
+    "@topicsDone": {
+        "description": "The label for the done topics"
     },
-    "errorGeneric": "Ein unerwarteter Fehler ist aufgetreten.",
-    "@errorGeneric": {
-        "description": "Generic error message shown in a SnackBar for unexpected issues."
+    "topicsTitle": "Themen",
+    "@topicsTitle": {
+        "description": "The title of the topics page"
     },
-    "errorNavigationFailed": "Navigation fehlgeschlagen. Bitte versuche es erneut.",
-    "@errorNavigationFailed": {
-        "description": "Generic error message shown in a SnackBar when navigating between screens fails."
+    "answerExpandableExplanationHeader": "Erklärung:",
+    "@answerExpandableExplanationHeader": {
+        "description": "The header of the expandable explanation in the answer page"
     },
-    "errorNoCategorySelected": "Kategorie nicht ausgewählt",
-    "@errorNoCategorySelected": {
-        "description": "Error message displayed when no category is selected"
+    "answerExpandableNoExplanation": "Keine Erklärung verfügbar",
+    "@answerExpandableNoExplanation": {
+        "description": "The message displayed when there is no explanation available"
     },
-    "errorSavingData": "Fehler beim Speichern deiner Antwort.",
-    "@errorSavingData": {
-        "description": "Error message shown in a SnackBar when saving the user's quiz answer attempt fails."
+    "answerExpandableQuestionHeader": "Frage:",
+    "@answerExpandableQuestionHeader": {
+        "description": "The header of the expandable question in the answer page"
     },
     "feedBackBottomSheetTitle": "Ergebnisse",
     "@feedBackBottomSheetTitle": {
@@ -180,61 +200,77 @@
     "@finishQuizBtnLbl": {
         "description": "The label of the button to finish the quiz"
     },
-    "languageNameEnglish": "Englisch",
-    "@languageNameEnglish": {
-        "description": "The name of the English language"
-    },
-    "languageNameGerman": "Deutsch",
-    "@languageNameGerman": {
-        "description": "The name of the German language"
-    },
     "nextQuestionBtnLbl": "Nächste Frage",
     "@nextQuestionBtnLbl": {
         "description": "The label of the button to go to the next question"
     },
-    "notFoundAppBarTitle": "Seite nicht gefunden",
-    "@notFoundAppBarTitle": {
-        "description": "App bar title for the 404 error page"
+    "quizAppBarTitle": "Quiz",
+    "@quizAppBarTitle": {
+        "description": "The title of the quiz page in the app bar"
     },
-    "notFoundErrorDetailsLabel": "Fehlerdetails:",
-    "@notFoundErrorDetailsLabel": {
-        "description": "Label preceding the technical error details on the 404 page"
+    "quizCompletedMsg": "🎉 Quiz abgeschlossen",
+    "@quizCompletedMsg": {
+        "description": "The message displayed when the quiz is completed"
     },
-    "notFoundHeading": "404 - Seite nicht gefunden",
-    "@notFoundHeading": {
-        "description": "Main heading displayed on the 404 error page"
+    "quizNoQuestionsAvailable": "Für dieses Thema sind noch keine Fragen verfügbar.",
+    "@quizNoQuestionsAvailable": {
+        "description": "Meldung, die auf der Quizseite angezeigt wird, wenn keine Fragen für das ausgewählte Thema gefunden wurden."
     },
-    "pickerDoneButton": "Fertig",
-    "@pickerDoneButton": {
-        "description": "Label for the 'Done' button in pickers"
+    "startQuizBtnLbl": "Quiz starten",
+    "@startQuizBtnLbl": {
+        "description": "The label of the button to start the quiz"
     },
-    "pickerOptionAutomatic": "Willkommen",
-    "@pickerOptionAutomatic": {
-        "description": "The name for the 'Automatic' option in a picker"
+    "submitAnswerBtnLbl": "Fertig",
+    "@submitAnswerBtnLbl": {
+        "description": "The label of the button to submit an answer"
     },
-    "pickerOptionAutomaticDescription": "Die App wählt nach jedem Quiz automatisch eine neue Kategorie für dich aus.",
-    "@pickerOptionAutomaticDescription": {
-        "description": "The description for the 'Automatic' option in a picker"
+    "quizResultBtnLbl": "Zurück zur Themenauswahl",
+    "@quizResultBtnLbl": {
+        "description": "The label of the button to view the quiz results"
     },
-    "quizResultsUserNotAvailable": "Benutzerdaten nicht verfügbar. Bitte versuche es später erneut.",
-    "@quizResultsUserNotAvailable": {
-        "description": "Error message when user data is not available on the quiz results page."
+    "quizResultFailed": "Nicht bestanden",
+    "@quizResultFailed": {
+        "description": "The label for the failed quiz result"
     },
-    "quizResultsSaveLastCategoryError": "Konnte die zuletzt gespielte Kategorie nicht speichern.",
-    "@quizResultsSaveLastCategoryError": {
-        "description": "Error message when saving the last played category fails."
+    "quizResultPassed": "Bestanden",
+    "@quizResultPassed": {
+        "description": "The label for the passed quiz result"
+    },
+    "quizResultScore": "Punktzahl",
+    "@quizResultScore": {
+        "description": "The label for the quiz result score"
+    },
+    "quizResultsAppBarTitle": "Quiz Ergebnisse",
+    "@quizResultsAppBarTitle": {
+        "description": "The title of the quiz results page in the app bar"
+    },
+    "quizResultsNotSaved": "Keine Quiz Ergebnisse gespeichert",
+    "@quizResultsNotSaved": {
+        "description": "The message displayed when the quiz results are not saved"
     },
     "quizResultsRetryButton": "Erneut versuchen",
     "@quizResultsRetryButton": {
         "description": "Label for the retry button in a SnackBar."
     },
-    "quizResultsSaveLastCategorySuccess": "Letzte Kategorie erfolgreich gespeichert.",
-    "@quizResultsSaveLastCategorySuccess": {
-        "description": "Success message when the last played category is saved after a retry."
+    "quizResultsSaveLastCategoryError": "Konnte die zuletzt gespielte Kategorie nicht speichern.",
+    "@quizResultsSaveLastCategoryError": {
+        "description": "Error message when saving the last played category fails."
     },
     "quizResultsSaveLastCategoryRetryFailed": "Speichern der letzten Kategorie ist fehlgeschlagen. Bitte später erneut versuchen.",
     "@quizResultsSaveLastCategoryRetryFailed": {
         "description": "Error message when retrying to save the last played category also fails."
+    },
+    "quizResultsSaveLastCategorySuccess": "Letzte Kategorie erfolgreich gespeichert.",
+    "@quizResultsSaveLastCategorySuccess": {
+        "description": "Success message when the last played category is saved after a retry."
+    },
+    "quizResultsUserNotAvailable": "Benutzerdaten nicht verfügbar. Bitte versuche es später erneut.",
+    "@quizResultsUserNotAvailable": {
+        "description": "Error message when user data is not available on the quiz results page."
+    },
+    "quizToggleExplanation": "Hier kannst du zwischen deinen richtigen und falschen Antworten filtern. Tippe dafür auf die Daumen!",
+    "@quizToggleExplanation": {
+        "description": "The label for the toggle explanation button"
     },
     "profileAppBarTitle": "Profil",
     "@profileAppBarTitle": {
@@ -275,6 +311,10 @@
     "profileImagePickerError": "Fehler bei der Bildauswahl.",
     "@profileImagePickerError": {
         "description": "Error message shown on profile page if image selection fails"
+    },
+    "profileLoadError": "Fehler beim Laden des Profils.",
+    "@profileLoadError": {
+        "description": "Error message shown when loading the profile fails"
     },
     "profileMenuLogout": "Abmelden",
     "@profileMenuLogout": {
@@ -320,57 +360,13 @@
     "@profileUserNotFound": {
         "description": "Message shown on profile page if the user data is null"
     },
-    "quizAppBarTitle": "Quiz",
-    "@quizAppBarTitle": {
-        "description": "The title of the quiz page in the app bar"
+    "languageNameEnglish": "Englisch",
+    "@languageNameEnglish": {
+        "description": "The name of the English language"
     },
-    "quizCompletedMsg": "🎉 Quiz abgeschlossen",
-    "@quizCompletedMsg": {
-        "description": "The message displayed when the quiz is completed"
-    },
-    "quizErrorLoadingNextQuestion": "Fehler beim Laden der nächsten Frage.",
-    "@quizErrorLoadingNextQuestion": {
-        "description": "Error message shown in a SnackBar when loading the next quiz question fails."
-    },
-    "quizErrorLoadingQuestions": "Fehler beim Laden der Fragen:",
-    "@quizErrorLoadingQuestions": {
-        "description": "Fehlermeldungspräfix, das angezeigt wird, wenn Fragen auf der Quizseite nicht geladen werden können."
-    },
-    "quizErrorNoQuestions": "Keine Fragen für dieses Thema gefunden.",
-    "@quizErrorNoQuestions": {
-        "description": "Message displayed in the quiz page body or SnackBar when no questions are found for the selected topic."
-    },
-    "quizNoQuestionsAvailable": "Für dieses Thema sind noch keine Fragen verfügbar.",
-    "@quizNoQuestionsAvailable": {
-        "description": "Meldung, die auf der Quizseite angezeigt wird, wenn keine Fragen für das ausgewählte Thema gefunden wurden."
-    },
-    "quizResultBtnLbl": "Zurück zur Themenauswahl",
-    "@quizResultBtnLbl": {
-        "description": "The label of the button to view the quiz results"
-    },
-    "quizResultFailed": "Nicht bestanden",
-    "@quizResultFailed": {
-        "description": "The label for the failed quiz result"
-    },
-    "quizResultPassed": "Bestanden",
-    "@quizResultPassed": {
-        "description": "The label for the passed quiz result"
-    },
-    "quizResultScore": "Punktzahl",
-    "@quizResultScore": {
-        "description": "The label for the quiz result score"
-    },
-    "quizResultsAppBarTitle": "Quiz Ergebnisse",
-    "@quizResultsAppBarTitle": {
-        "description": "The title of the quiz results page in the app bar"
-    },
-    "quizResultsNotSaved": "Keine Quiz Ergebnisse gespeichert",
-    "@quizResultsNotSaved": {
-        "description": "The message displayed when the quiz results are not saved"
-    },
-    "quizToggleExplanation": "Hier kannst du zwischen deinen richtigen und falschen Antworten filtern. Tippe dafür auf die Daumen!",
-    "@quizToggleExplanation": {
-        "description": "The label for the toggle explanation button"
+    "languageNameGerman": "Deutsch",
+    "@languageNameGerman": {
+        "description": "The name of the German language"
     },
     "settingsAppBarTitle": "Einstellungen",
     "@settingsAppBarTitle": {
@@ -396,21 +392,53 @@
     "@settingsThemeToggleLabel": {
         "description": "Label for the theme (dark/light mode) toggle switch"
     },
-    "startQuizBtnLbl": "Quiz starten",
-    "@startQuizBtnLbl": {
-        "description": "The label of the button to start the quiz"
+    "errorCategoryNotFound": "Kategorie nicht gefunden",
+    "@errorCategoryNotFound": {
+        "description": "Error message displayed when the category is not found"
     },
-    "submitAnswerBtnLbl": "Fertig",
-    "@submitAnswerBtnLbl": {
-        "description": "The label of the button to submit an answer"
+    "errorGeneric": "Ein unerwarteter Fehler ist aufgetreten.",
+    "@errorGeneric": {
+        "description": "Generic error message shown in a SnackBar for unexpected issues."
     },
-    "topicsDone": "Erledigt",
-    "@topicsDone": {
-        "description": "The label for the done topics"
+    "errorNavigationFailed": "Navigation fehlgeschlagen. Bitte versuche es erneut.",
+    "@errorNavigationFailed": {
+        "description": "Generic error message shown in a SnackBar when navigating between screens fails."
     },
-    "topicsTitle": "Themen",
-    "@topicsTitle": {
-        "description": "The title of the topics page"
+    "errorNoCategorySelected": "Kategorie nicht ausgewählt",
+    "@errorNoCategorySelected": {
+        "description": "Error message displayed when no category is selected"
+    },
+    "errorSavingData": "Fehler beim Speichern deiner Antwort.",
+    "@errorSavingData": {
+        "description": "Error message shown in a SnackBar when saving the user's quiz answer attempt fails."
+    },
+    "notFoundAppBarTitle": "Seite nicht gefunden",
+    "@notFoundAppBarTitle": {
+        "description": "App bar title for the 404 error page"
+    },
+    "notFoundErrorDetailsLabel": "Fehlerdetails:",
+    "@notFoundErrorDetailsLabel": {
+        "description": "Label preceding the technical error details on the 404 page"
+    },
+    "notFoundHeading": "404 - Seite nicht gefunden",
+    "@notFoundHeading": {
+        "description": "Main heading displayed on the 404 error page"
+    },
+    "quizErrorLoadingNextQuestion": "Fehler beim Laden der nächsten Frage.",
+    "@quizErrorLoadingNextQuestion": {
+        "description": "Error message shown in a SnackBar when loading the next quiz question fails."
+    },
+    "quizErrorLoadingQuestions": "Fehler beim Laden der Fragen:",
+    "@quizErrorLoadingQuestions": {
+        "description": "Fehlermeldungspräfix, das angezeigt wird, wenn Fragen auf der Quizseite nicht geladen werden können."
+    },
+    "quizErrorNoQuestions": "Keine Fragen für dieses Thema gefunden.",
+    "@quizErrorNoQuestions": {
+        "description": "Message displayed in the quiz page body or SnackBar when no questions are found for the selected topic."
+    },
+    "genericErrorMessage": "Etwas ist schiefgelaufen. Bitte versuche es später erneut.",
+    "@genericErrorMessage": {
+        "description": "Eine generische Fehlermeldung, die dem Benutzer angezeigt wird, wenn ein unerwarteter Fehler auftritt."
     },
     "permissionRequiredTitle": "Berechtigung erforderlich",
     "@permissionRequiredTitle": {
@@ -436,36 +464,8 @@
     "@openSettings": {
         "description": "Label for a button that opens the application's settings page in the device settings."
     },
-    "cancel": "Abbrechen",
-    "@cancel": {
-        "description": "Label for a generic cancel button, typically used in dialogs."
-    },
-    "profileLoadError": "Fehler beim Laden des Profils.",
-    "@profileLoadError": {
-        "description": "Error message shown when loading the profile fails"
-    },
-    "homeActualCategorySectionTitle": "aktuell",
-    "@homeActualCategorySectionTitle": {
-        "description": "Title for the section on the home screen displaying the currently active category."
-    },
-    "statusLoadingLabel": "Lädt...",
-    "@statusLoadingLabel": {
-        "description": "Generic text indicating that content is currently loading."
-    },
-    "homeActualCategoryDescriptionPrompt": "Wähle eine Kategorie, um Details anzuzeigen.",
-    "@homeActualCategoryDescriptionPrompt": {
-        "description": "Prompt message in the actual category view when no category is selected or details are not yet loaded."
-    },
-    "homeActualCategoryNoCategories": "Keine Kategorien verfügbar.",
-    "@homeActualCategoryNoCategories": {
-        "description": "Message displayed in the actual category view when there are no categories to show."
-    },
-    "homeActualCategoryErrorLoading": "Fehler beim Laden der Kategorien:",
-    "@homeActualCategoryErrorLoading": {
-        "description": "Error message prefix displayed in the actual category view when categories fail to load."
-    },
-    "genericErrorMessage": "Etwas ist schiefgelaufen. Bitte versuche es später erneut.",
-    "@genericErrorMessage": {
-        "description": "Eine generische Fehlermeldung, die dem Benutzer angezeigt wird, wenn ein unerwarteter Fehler auftritt."
+    "pickerDoneButton": "Fertig",
+    "@pickerDoneButton": {
+        "description": "Label for the 'Done' button in pickers"
     }
 }
