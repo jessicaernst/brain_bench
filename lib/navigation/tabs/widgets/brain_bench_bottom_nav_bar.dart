@@ -17,16 +17,14 @@ class BrainBenchBottomNavBar extends StatelessWidget {
       double? width,
       double? height,
       ColorFilter? colorFilter,
-    }) icon,
+    })
+    icon,
     Color? color,
   }) {
     return icon(
       width: 24,
       height: 24,
-      colorFilter: ColorFilter.mode(
-        color ?? Colors.grey,
-        BlendMode.srcIn,
-      ),
+      colorFilter: ColorFilter.mode(color ?? Colors.grey, BlendMode.srcIn),
     );
   }
 

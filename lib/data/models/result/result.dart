@@ -30,19 +30,18 @@ class Result with _$Result {
     required double score,
     required bool isPassed,
     required List<QuizAnswer> quizAnswers,
-  }) =>
-      Result(
-        id: const Uuid().v4(),
-        userId: userId,
-        topicId: topicId,
-        categoryId: categoryId,
-        correct: correct,
-        total: total,
-        score: score,
-        isPassed: isPassed,
-        timestamp: DateTime.now(),
-        quizAnswers: quizAnswers,
-      );
+  }) => Result(
+    id: const Uuid().v4(),
+    userId: userId,
+    topicId: topicId,
+    categoryId: categoryId,
+    correct: correct,
+    total: total,
+    score: score,
+    isPassed: isPassed,
+    timestamp: DateTime.now(),
+    quizAnswers: quizAnswers,
+  );
 
   factory Result.fromJson(Map<String, dynamic> json) => _$ResultFromJson(json);
 }

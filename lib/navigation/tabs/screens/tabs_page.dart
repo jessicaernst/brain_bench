@@ -8,17 +8,19 @@ class TabsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isFullScreen =
-        GoRouterState.of(context).uri.toString().contains('/quiz');
+    final bool isFullScreen = GoRouterState.of(
+      context,
+    ).uri.toString().contains('/quiz');
 
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: isFullScreen
-          ? null
-          : BrainBenchBottomNavBar(
-              currentIndex: navigationShell.currentIndex,
-              onTabSelected: (index) => navigationShell.goBranch(index),
-            ),
+      bottomNavigationBar:
+          isFullScreen
+              ? null
+              : BrainBenchBottomNavBar(
+                currentIndex: navigationShell.currentIndex,
+                onTabSelected: (index) => navigationShell.goBranch(index),
+              ),
     );
   }
 }

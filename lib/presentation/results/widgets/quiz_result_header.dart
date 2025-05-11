@@ -26,35 +26,37 @@ class QuizResultHeader extends StatelessWidget {
     return AnimatedSize(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
-      child: isVisible
-          ? Padding(
-              padding: const EdgeInsets.all(24),
-              child: AnimatedOpacity(
-                opacity: 1.0,
-                duration: const Duration(milliseconds: 300),
-                child: Column(
-                  children: [
-                    Text(
-                      '${localizations.quizResultScore}: $userPoints / $totalPoints\n${percentage.toStringAsFixed(1)}%',
-                      style: BrainBenchTextStyles.title1(),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      isPassed
-                          ? localizations.quizResultPassed
-                          : localizations.quizResultFailed,
-                      style: BrainBenchTextStyles.title2Bold().copyWith(
-                        color: isPassed
-                            ? BrainBenchColors.correctAnswerGlass
-                            : BrainBenchColors.falseQuestionGlass,
+      child:
+          isVisible
+              ? Padding(
+                padding: const EdgeInsets.all(24),
+                child: AnimatedOpacity(
+                  opacity: 1.0,
+                  duration: const Duration(milliseconds: 300),
+                  child: Column(
+                    children: [
+                      Text(
+                        '${localizations.quizResultScore}: $userPoints / $totalPoints\n${percentage.toStringAsFixed(1)}%',
+                        style: BrainBenchTextStyles.title1(),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 16),
+                      Text(
+                        isPassed
+                            ? localizations.quizResultPassed
+                            : localizations.quizResultFailed,
+                        style: BrainBenchTextStyles.title2Bold().copyWith(
+                          color:
+                              isPassed
+                                  ? BrainBenchColors.correctAnswerGlass
+                                  : BrainBenchColors.falseQuestionGlass,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          : const SizedBox(height: 0),
+              )
+              : const SizedBox(height: 0),
     );
   }
 }

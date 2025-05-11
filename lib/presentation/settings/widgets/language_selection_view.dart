@@ -14,22 +14,25 @@ class LanguageSelectionView extends ConsumerWidget {
     final localeAsyncValue = ref.watch(localeNotifierProvider);
     final theme = Theme.of(context);
     final bool isDarkMode = theme.brightness == Brightness.dark;
-    final textColor = isDarkMode
-        ? BrainBenchColors.flutterSky
-        : BrainBenchColors.blueprintBlue;
+    final textColor =
+        isDarkMode
+            ? BrainBenchColors.flutterSky
+            : BrainBenchColors.blueprintBlue;
 
     return localeAsyncValue.when(
-      data: (currentLocale) => LanguageSelector(
-        currentLocale: currentLocale,
-        textColor: textColor,
-        isDarkMode: isDarkMode,
-      ),
+      data:
+          (currentLocale) => LanguageSelector(
+            currentLocale: currentLocale,
+            textColor: textColor,
+            isDarkMode: isDarkMode,
+          ),
       loading: () => LoadingIndicator(textColor: textColor),
-      error: (error, stackTrace) => ErrorIndicator(
-        error: error,
-        stackTrace: stackTrace,
-        textColor: textColor,
-      ),
+      error:
+          (error, stackTrace) => ErrorIndicator(
+            error: error,
+            stackTrace: stackTrace,
+            textColor: textColor,
+          ),
     );
   }
 }

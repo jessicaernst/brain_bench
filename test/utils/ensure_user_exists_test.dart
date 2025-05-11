@@ -38,9 +38,11 @@ void main() {
 
   group('ensureUserExistsIfNeeded', () {
     test('creates user if not found in DB', () async {
-      final container = ProviderContainer(overrides: [
-        quizMockDatabaseRepositoryProvider.overrideWith((_) async => mockDb),
-      ]);
+      final container = ProviderContainer(
+        overrides: [
+          quizMockDatabaseRepositoryProvider.overrideWith((_) async => mockDb),
+        ],
+      );
 
       when(() => mockDb.getUser(testUser.uid)).thenAnswer((_) async => null);
       when(() => mockDb.saveUser(any())).thenAnswer((_) async {});
@@ -51,12 +53,15 @@ void main() {
     });
 
     test('does nothing if user already exists and is up to date', () async {
-      final container = ProviderContainer(overrides: [
-        quizMockDatabaseRepositoryProvider.overrideWith((_) async => mockDb),
-      ]);
+      final container = ProviderContainer(
+        overrides: [
+          quizMockDatabaseRepositoryProvider.overrideWith((_) async => mockDb),
+        ],
+      );
 
-      when(() => mockDb.getUser(testUser.uid))
-          .thenAnswer((_) async => testUser);
+      when(
+        () => mockDb.getUser(testUser.uid),
+      ).thenAnswer((_) async => testUser);
 
       await ensureUserExistsIfNeeded(container.read, testUser);
 
@@ -64,9 +69,11 @@ void main() {
     });
 
     test('updates user if displayName changed', () async {
-      final container = ProviderContainer(overrides: [
-        quizMockDatabaseRepositoryProvider.overrideWith((_) async => mockDb),
-      ]);
+      final container = ProviderContainer(
+        overrides: [
+          quizMockDatabaseRepositoryProvider.overrideWith((_) async => mockDb),
+        ],
+      );
 
       final dbUser = testUser.copyWith(displayName: 'Old Name');
 
@@ -79,9 +86,11 @@ void main() {
     });
 
     test('skips if passed user is null', () async {
-      final container = ProviderContainer(overrides: [
-        quizMockDatabaseRepositoryProvider.overrideWith((_) async => mockDb),
-      ]);
+      final container = ProviderContainer(
+        overrides: [
+          quizMockDatabaseRepositoryProvider.overrideWith((_) async => mockDb),
+        ],
+      );
 
       await ensureUserExistsIfNeeded(container.read, null);
 

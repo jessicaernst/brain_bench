@@ -23,9 +23,12 @@ class TopicMainCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: isDarkMode
-              ? BrainBenchColors.darkModeGlass.withAlpha((0.5 * 255).toInt())
-              : BrainBenchColors.blueprintBlue,
+          color:
+              isDarkMode
+                  ? BrainBenchColors.darkModeGlass.withAlpha(
+                    (0.5 * 255).toInt(),
+                  )
+                  : BrainBenchColors.blueprintBlue,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -52,10 +55,7 @@ class TopicMainCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Assets.appIcons.evo4.image(
-              width: 55,
-              height: 55,
-            ),
+            Assets.appIcons.evo4.image(width: 55, height: 55),
             const SizedBox(width: 16),
             Expanded(
               child: Text(
@@ -72,9 +72,10 @@ class TopicMainCard extends StatelessWidget {
               child: Icon(
                 Icons.expand_more,
                 size: 30,
-                color: isDarkMode
-                    ? BrainBenchColors.cloudCanvas
-                    : BrainBenchColors.deepDive,
+                color:
+                    isDarkMode
+                        ? BrainBenchColors.cloudCanvas
+                        : BrainBenchColors.deepDive,
               ),
             ),
           ],

@@ -37,12 +37,14 @@ class AnswersNotifier extends _$AnswersNotifier {
     const listEquality = ListEquality();
     if (listEquality.equals(currentAnswerIds, newAnswerIds)) {
       _logger.info(
-          '🔹 Answers are already initialized for this question, skipping re-initialization.');
+        '🔹 Answers are already initialized for this question, skipping re-initialization.',
+      );
       return; // Prevent resetting if the same question's answers are already loaded
     }
 
-    _logger
-        .info('🔄 Initializing answers with ${initialAnswers.length} items.');
+    _logger.info(
+      '🔄 Initializing answers with ${initialAnswers.length} items.',
+    );
     state = initialAnswers;
   }
 
@@ -55,14 +57,16 @@ class AnswersNotifier extends _$AnswersNotifier {
   ///   - [answerId]: The ID of the answer to toggle.
   void toggleAnswer(String answerId) {
     _logger.info('Toggling answer selection for ID: $answerId');
-    state = state.map((answer) {
-      if (answer.id == answerId) {
-        _logger.fine(
-            '𝌡 Answer ${answer.id} selection changed to: ${!answer.isSelected}');
-        return answer.copyWith(isSelected: !answer.isSelected);
-      }
-      return answer;
-    }).toList();
+    state =
+        state.map((answer) {
+          if (answer.id == answerId) {
+            _logger.fine(
+              '𝌡 Answer ${answer.id} selection changed to: ${!answer.isSelected}',
+            );
+            return answer.copyWith(isSelected: !answer.isSelected);
+          }
+          return answer;
+        }).toList();
   }
 
   /// Reset all answers' `isSelected` states to `false`.
@@ -71,10 +75,11 @@ class AnswersNotifier extends _$AnswersNotifier {
   /// the state to `false`.
   void resetAnswers() {
     _logger.info('Resetting all answers.');
-    state = state.map((answer) {
-      _logger.fine('Resetting answer ${answer.id} selection to false.');
-      return answer.copyWith(isSelected: false);
-    }).toList();
+    state =
+        state.map((answer) {
+          _logger.fine('Resetting answer ${answer.id} selection to false.');
+          return answer.copyWith(isSelected: false);
+        }).toList();
   }
 
   /// Get a list of all selected answers.
@@ -99,16 +104,18 @@ class AnswersNotifier extends _$AnswersNotifier {
   void toggleAnswerSelection(String answerId, bool isMultipleChoice) {
     if (!isMultipleChoice) {
       // If it's not a multiple-choice question, deselect all other answers
-      state = state.map((answer) {
-        return answer.copyWith(isSelected: answer.id == answerId);
-      }).toList();
+      state =
+          state.map((answer) {
+            return answer.copyWith(isSelected: answer.id == answerId);
+          }).toList();
     } else {
       // If it's a multiple-choice question, toggle the selected state of the answer
-      state = state.map((answer) {
-        return answer.id == answerId
-            ? answer.copyWith(isSelected: !answer.isSelected)
-            : answer;
-      }).toList();
+      state =
+          state.map((answer) {
+            return answer.id == answerId
+                ? answer.copyWith(isSelected: !answer.isSelected)
+                : answer;
+          }).toList();
     }
 
     _logger.info('🔄 Answer selection updated for ID: $answerId');

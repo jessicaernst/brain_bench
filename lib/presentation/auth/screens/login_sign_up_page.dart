@@ -81,9 +81,7 @@ class LoginSignUpPage extends HookConsumerWidget {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(localizations.authPasswordResetEmailPrompt),
-          ),
+          SnackBar(content: Text(localizations.authPasswordResetEmailPrompt)),
         );
       }
     }

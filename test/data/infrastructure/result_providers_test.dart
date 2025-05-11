@@ -43,17 +43,20 @@ void main() {
 
   group('resultsProvider', () {
     test('returns results for current user', () async {
-      when(() => mockRepo.getResults(testUser.uid))
-          .thenAnswer((_) async => [testResult]);
+      when(
+        () => mockRepo.getResults(testUser.uid),
+      ).thenAnswer((_) async => [testResult]);
 
-      final container = ProviderContainer(overrides: [
-        quizMockDatabaseRepositoryProvider.overrideWith(
-          (ref) => Future.value(mockRepo),
-        ),
-        currentUserModelProvider.overrideWith(
-          (ref) => Stream.value(UserModelState.data(testUser)),
-        ),
-      ]);
+      final container = ProviderContainer(
+        overrides: [
+          quizMockDatabaseRepositoryProvider.overrideWith(
+            (ref) => Future.value(mockRepo),
+          ),
+          currentUserModelProvider.overrideWith(
+            (ref) => Stream.value(UserModelState.data(testUser)),
+          ),
+        ],
+      );
 
       final result = await container.read(resultsProvider.future);
 
@@ -62,19 +65,18 @@ void main() {
     });
 
     test('throws exception if no user is logged in', () async {
-      final container = ProviderContainer(overrides: [
-        quizMockDatabaseRepositoryProvider.overrideWith(
-          (ref) => Future.value(mockRepo),
-        ),
-        currentUserModelProvider.overrideWith(
-          (ref) => Stream.value(const UserModelState.unauthenticated()),
-        ),
-      ]);
-
-      expect(
-        () => container.read(resultsProvider.future),
-        throwsException,
+      final container = ProviderContainer(
+        overrides: [
+          quizMockDatabaseRepositoryProvider.overrideWith(
+            (ref) => Future.value(mockRepo),
+          ),
+          currentUserModelProvider.overrideWith(
+            (ref) => Stream.value(const UserModelState.unauthenticated()),
+          ),
+        ],
       );
+
+      expect(() => container.read(resultsProvider.future), throwsException);
     });
   });
 
@@ -82,14 +84,16 @@ void main() {
     test('saveResult saves result via repository', () async {
       when(() => mockRepo.saveResult(any())).thenAnswer((_) async {});
 
-      final container = ProviderContainer(overrides: [
-        quizMockDatabaseRepositoryProvider.overrideWith(
-          (ref) => Future.value(mockRepo),
-        ),
-        currentUserModelProvider.overrideWith(
-          (ref) => Stream.value(UserModelState.data(testUser)),
-        ),
-      ]);
+      final container = ProviderContainer(
+        overrides: [
+          quizMockDatabaseRepositoryProvider.overrideWith(
+            (ref) => Future.value(mockRepo),
+          ),
+          currentUserModelProvider.overrideWith(
+            (ref) => Stream.value(UserModelState.data(testUser)),
+          ),
+        ],
+      );
 
       final notifier = container.read(saveResultNotifierProvider.notifier);
 
@@ -99,17 +103,20 @@ void main() {
     });
 
     test('markTopicAsDone marks topic and invalidates user', () async {
-      when(() => mockRepo.markTopicAsDone('t1', 'cat1', testUser))
-          .thenAnswer((_) async {});
+      when(
+        () => mockRepo.markTopicAsDone('t1', 'cat1', testUser),
+      ).thenAnswer((_) async {});
 
-      final container = ProviderContainer(overrides: [
-        quizMockDatabaseRepositoryProvider.overrideWith(
-          (ref) => Future.value(mockRepo),
-        ),
-        currentUserModelProvider.overrideWith(
-          (ref) => Stream.value(UserModelState.data(testUser)),
-        ),
-      ]);
+      final container = ProviderContainer(
+        overrides: [
+          quizMockDatabaseRepositoryProvider.overrideWith(
+            (ref) => Future.value(mockRepo),
+          ),
+          currentUserModelProvider.overrideWith(
+            (ref) => Stream.value(UserModelState.data(testUser)),
+          ),
+        ],
+      );
 
       final notifier = container.read(saveResultNotifierProvider.notifier);
 
@@ -119,14 +126,16 @@ void main() {
     });
 
     test('markTopicAsDone throws if user is null', () async {
-      final container = ProviderContainer(overrides: [
-        quizMockDatabaseRepositoryProvider.overrideWith(
-          (ref) => Future.value(mockRepo),
-        ),
-        currentUserModelProvider.overrideWith(
-          (ref) => Stream.value(const UserModelState.unauthenticated()),
-        ),
-      ]);
+      final container = ProviderContainer(
+        overrides: [
+          quizMockDatabaseRepositoryProvider.overrideWith(
+            (ref) => Future.value(mockRepo),
+          ),
+          currentUserModelProvider.overrideWith(
+            (ref) => Stream.value(const UserModelState.unauthenticated()),
+          ),
+        ],
+      );
 
       final notifier = container.read(saveResultNotifierProvider.notifier);
 

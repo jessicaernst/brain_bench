@@ -11,8 +11,8 @@ class QuizResultExpandedView extends ConsumerWidget {
     required this.filteredAnswers,
     required double defaultPadding,
     required this.expandedAnswers,
-  })  : _scrollController = scrollController,
-        _defaultPadding = defaultPadding;
+  }) : _scrollController = scrollController,
+       _defaultPadding = defaultPadding;
 
   final ScrollController _scrollController;
   final List<QuizAnswer> filteredAnswers;
@@ -28,16 +28,15 @@ class QuizResultExpandedView extends ConsumerWidget {
     return Expanded(
       child: ListView.separated(
         controller: _scrollController,
-        padding: EdgeInsets.only(
-          bottom: bottomPadding,
-        ),
+        padding: EdgeInsets.only(bottom: bottomPadding),
         // ------------------------------------
         itemCount: filteredAnswers.length,
         separatorBuilder: (context, index) => SizedBox(height: _defaultPadding),
         itemBuilder: (context, index) {
           final answer = filteredAnswers[index];
-          final bool isCurrentlyExpanded =
-              expandedAnswers.contains(answer.questionId);
+          final bool isCurrentlyExpanded = expandedAnswers.contains(
+            answer.questionId,
+          );
           return AnswerCard(
             key: ValueKey(answer.questionId),
             answer: answer,

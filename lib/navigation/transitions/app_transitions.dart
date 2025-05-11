@@ -7,8 +7,12 @@ const Duration reverseTransitionDuration = Duration(milliseconds: 300);
 // --- Transition Builders ---
 
 /// Builds a slide-up transition (like a modal).
-Widget buildSlideUpTransition(BuildContext context, Animation<double> animation,
-    Animation<double> secondaryAnimation, Widget child) {
+Widget buildSlideUpTransition(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
   const begin = Offset(0.0, 1.0); // Start from bottom
   const end = Offset.zero;
   final curve = Curves.easeInOut; // Use easeInOut curve
@@ -16,19 +20,17 @@ Widget buildSlideUpTransition(BuildContext context, Animation<double> animation,
   final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
   final offsetAnimation = animation.drive(tween);
 
-  return SlideTransition(
-    position: offsetAnimation,
-    child: child,
-  );
+  return SlideTransition(position: offsetAnimation, child: child);
 }
 
 /// Builds a Cupertino-style (iOS) slide transition from the right
 /// with parallax effect on the outgoing screen, using easeInOut curve.
 Widget buildCupertinoSlideTransition(
-    BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
-    Widget child) {
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
   final curve = Curves.easeInOut; // Use easeInOut curve
 
   // Slide in from right for the entering page
@@ -44,8 +46,9 @@ Widget buildCupertinoSlideTransition(
   ).chain(CurveTween(curve: curve));
 
   return SlideTransition(
-    position:
-        secondaryAnimation.drive(slideOutTween), // Apply parallax to outgoing
+    position: secondaryAnimation.drive(
+      slideOutTween,
+    ), // Apply parallax to outgoing
     child: SlideTransition(
       position: animation.drive(slideInTween), // Apply slide-in to incoming
       child: child,

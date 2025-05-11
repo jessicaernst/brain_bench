@@ -105,9 +105,7 @@ Future<void> main() async {
   };
 
   // Lock orientation to portrait mode
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]);
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   // Remove splash screen after init
   FlutterNativeSplash.remove();

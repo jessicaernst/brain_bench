@@ -27,27 +27,30 @@ class AnswerListView extends StatelessWidget {
         vertical: MediaQuery.of(context).size.height * 0.03,
         horizontal: MediaQuery.of(context).size.width * 0.10,
       ),
-      child: Consumer(builder: (context, ref, child) {
-        // Get the list of answers from the AnswersNotifier
-        final answers = ref.watch(answersNotifierProvider);
+      child: Consumer(
+        builder: (context, ref, child) {
+          // Get the list of answers from the AnswersNotifier
+          final answers = ref.watch(answersNotifierProvider);
 
-        return ListView(
-          shrinkWrap: true,
-          children: answers.map((answer) {
-            final isSelected = answer.isSelected;
+          return ListView(
+            shrinkWrap: true,
+            children:
+                answers.map((answer) {
+                  final isSelected = answer.isSelected;
 
-            return GestureDetector(
-              onTap: () => onAnswerSelected(answer.id),
-              child: AnswerRowView(
-                selected: isSelected,
-                answer: answer,
-                isDarkMode: isDarkMode,
-                languageCode: languageCode,
-              ),
-            );
-          }).toList(),
-        );
-      }),
+                  return GestureDetector(
+                    onTap: () => onAnswerSelected(answer.id),
+                    child: AnswerRowView(
+                      selected: isSelected,
+                      answer: answer,
+                      isDarkMode: isDarkMode,
+                      languageCode: languageCode,
+                    ),
+                  );
+                }).toList(),
+          );
+        },
+      ),
     );
   }
 }

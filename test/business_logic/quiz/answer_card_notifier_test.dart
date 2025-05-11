@@ -19,8 +19,9 @@ void main() {
 
     test('initial state is false for a given questionId', () {
       // Act: Read the initial state for questionId1
-      final initialState =
-          container.read(answerCardExpandedProvider(questionId1));
+      final initialState = container.read(
+        answerCardExpandedProvider(questionId1),
+      );
 
       // Assert: Verify the initial state is false
       expect(initialState, isFalse);
@@ -28,8 +29,9 @@ void main() {
 
     test('toggle changes state from false to true', () {
       // Arrange: Get the notifier for questionId1
-      final notifier =
-          container.read(answerCardExpandedProvider(questionId1).notifier);
+      final notifier = container.read(
+        answerCardExpandedProvider(questionId1).notifier,
+      );
       // Verify initial state (optional but good practice)
       expect(container.read(answerCardExpandedProvider(questionId1)), isFalse);
 
@@ -42,8 +44,9 @@ void main() {
 
     test('toggle changes state from true to false', () {
       // Arrange: Get the notifier and toggle once to set state to true
-      final notifier =
-          container.read(answerCardExpandedProvider(questionId1).notifier);
+      final notifier = container.read(
+        answerCardExpandedProvider(questionId1).notifier,
+      );
       notifier.toggle();
       // Verify intermediate state
       expect(container.read(answerCardExpandedProvider(questionId1)), isTrue);
@@ -57,10 +60,12 @@ void main() {
 
     test('state for different questionIds is independent', () {
       // Arrange: Get notifiers for two different question IDs
-      final notifier1 =
-          container.read(answerCardExpandedProvider(questionId1).notifier);
-      final notifier2 =
-          container.read(answerCardExpandedProvider(questionId2).notifier);
+      final notifier1 = container.read(
+        answerCardExpandedProvider(questionId1).notifier,
+      );
+      final notifier2 = container.read(
+        answerCardExpandedProvider(questionId2).notifier,
+      );
 
       // Verify initial states for both are false
       expect(container.read(answerCardExpandedProvider(questionId1)), isFalse);

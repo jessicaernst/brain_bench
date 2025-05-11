@@ -5,8 +5,11 @@ import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Helper function to create mock Answer objects
-Answer _createAnswer(String id,
-    {bool isCorrect = false, bool isSelected = false}) {
+Answer _createAnswer(
+  String id, {
+  bool isCorrect = false,
+  bool isSelected = false,
+}) {
   return Answer(
     id: id,
     textDe: 'Text DE $id',
@@ -96,23 +99,25 @@ void main() {
       expect(result.missed.length, 1);
     });
 
-    test('should return empty lists if quizState IDs do not match any answers',
-        () {
-      // Arrange
-      final quizState = _createQuizState(
-        correct: ['x1', 'x2'],
-        incorrect: ['y1'],
-        missed: ['z1'],
-      );
+    test(
+      'should return empty lists if quizState IDs do not match any answers',
+      () {
+        // Arrange
+        final quizState = _createQuizState(
+          correct: ['x1', 'x2'],
+          incorrect: ['y1'],
+          missed: ['z1'],
+        );
 
-      // Act
-      final result = filterAnswers(quizState, allAnswersList);
+        // Act
+        final result = filterAnswers(quizState, allAnswersList);
 
-      // Assert
-      expect(result.correct, isEmpty);
-      expect(result.incorrect, isEmpty);
-      expect(result.missed, isEmpty);
-    });
+        // Assert
+        expect(result.correct, isEmpty);
+        expect(result.incorrect, isEmpty);
+        expect(result.missed, isEmpty);
+      },
+    );
 
     test('should handle only correct answers present in quizState', () {
       // Arrange
@@ -163,47 +168,49 @@ void main() {
     });
 
     test(
-        'should ignore answers in allCurrentAnswers not present in quizState lists',
-        () {
-      // Arrange
-      final quizState = _createQuizState(
-        correct: ['a1'], // answer1
-        incorrect: ['a4'], // answer4
-        // a2, a3, a5 are not mentioned in quizState lists
-      );
+      'should ignore answers in allCurrentAnswers not present in quizState lists',
+      () {
+        // Arrange
+        final quizState = _createQuizState(
+          correct: ['a1'], // answer1
+          incorrect: ['a4'], // answer4
+          // a2, a3, a5 are not mentioned in quizState lists
+        );
 
-      // Act
-      final result = filterAnswers(quizState, allAnswersList);
+        // Act
+        final result = filterAnswers(quizState, allAnswersList);
 
-      // Assert
-      expect(result.correct, containsAllInOrder([answer1]));
-      expect(result.correct.length, 1);
-      expect(result.incorrect, containsAllInOrder([answer4]));
-      expect(result.incorrect.length, 1);
-      expect(result.missed, isEmpty);
-    });
+        // Assert
+        expect(result.correct, containsAllInOrder([answer1]));
+        expect(result.correct.length, 1);
+        expect(result.incorrect, containsAllInOrder([answer4]));
+        expect(result.incorrect.length, 1);
+        expect(result.missed, isEmpty);
+      },
+    );
 
     test(
-        'should handle duplicate IDs in quizState lists gracefully (Set conversion)',
-        () {
-      // Arrange
-      final quizState = _createQuizState(
-        correct: ['a1', 'a1', 'a5'], // Duplicate 'a1'
-        incorrect: ['a2'],
-        missed: ['a3', 'a3'], // Duplicate 'a3'
-      );
+      'should handle duplicate IDs in quizState lists gracefully (Set conversion)',
+      () {
+        // Arrange
+        final quizState = _createQuizState(
+          correct: ['a1', 'a1', 'a5'], // Duplicate 'a1'
+          incorrect: ['a2'],
+          missed: ['a3', 'a3'], // Duplicate 'a3'
+        );
 
-      // Act
-      final result = filterAnswers(quizState, allAnswersList);
+        // Act
+        final result = filterAnswers(quizState, allAnswersList);
 
-      // Assert
-      // Duplicates in input lists are ignored due to Set conversion internally
-      expect(result.correct, containsAllInOrder([answer1, answer5]));
-      expect(result.correct.length, 2);
-      expect(result.incorrect, containsAllInOrder([answer2]));
-      expect(result.incorrect.length, 1);
-      expect(result.missed, containsAllInOrder([answer3]));
-      expect(result.missed.length, 1);
-    });
+        // Assert
+        // Duplicates in input lists are ignored due to Set conversion internally
+        expect(result.correct, containsAllInOrder([answer1, answer5]));
+        expect(result.correct.length, 2);
+        expect(result.incorrect, containsAllInOrder([answer2]));
+        expect(result.incorrect.length, 1);
+        expect(result.missed, containsAllInOrder([answer3]));
+        expect(result.missed.length, 1);
+      },
+    );
   });
 }

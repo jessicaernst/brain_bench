@@ -1,9 +1,9 @@
 import 'package:brain_bench/business_logic/auth/current_user_provider.dart';
+import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:logging/logging.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'router_refresh_notifier.g.dart';
 
@@ -28,32 +28,42 @@ class RouterRefreshNotifier extends ChangeNotifier {
   /// It immediately starts listening to the [currentUserProvider].
   RouterRefreshNotifier(this._ref) {
     _log.fine(
-        'Initializing RouterRefreshNotifier and listening to auth state.'); // Init-Log
+      'Initializing RouterRefreshNotifier and listening to auth state.',
+    ); // Init-Log
     // Listen to the authentication state provider.
-    _ref.listen<AsyncValue<AppUser?>>(currentUserProvider, (previous, next) {
-      if (previous != next) {
-        if (!_disposed) {
-          _log.info(
-              'Auth state changed: $previous -> $next. Notifying listeners.');
-          notifyListeners(); // <-- Notify only when state differs
+    _ref.listen<AsyncValue<AppUser?>>(
+      currentUserProvider,
+      (previous, next) {
+        if (previous != next) {
+          if (!_disposed) {
+            _log.info(
+              'Auth state changed: $previous -> $next. Notifying listeners.',
+            );
+            notifyListeners();
+          } else {
+            _log.fine('Notifier disposed, skipping notifyListeners.');
+          }
         } else {
-          _log.fine('Notifier disposed, skipping notifyListeners.');
+          _log.fine(
+            'Auth state did not change ($next). Skipping notification.',
+          );
         }
-      } else {
-        _log.fine('Auth state did not change ($next). Skipping notification.');
-      }
-      // --- END FIX ---
-    }, onError: (error, stackTrace) {
-      // Also notify on errors. You could potentially add a check here too
-      // if you wanted to avoid notifying on consecutive identical errors,
-      // but notifying on any error is usually desired for routing.
-      if (!_disposed) {
-        _log.severe(
-            'Error occurred in currentUserProvider stream', error, stackTrace);
-        // Consider if previous == AsyncError(error, stackTrace) check is needed
-        notifyListeners();
-      }
-    });
+      },
+      onError: (error, stackTrace) {
+        // Also notify on errors. You could potentially add a check here too
+        // if you wanted to avoid notifying on consecutive identical errors,
+        // but notifying on any error is usually desired for routing.
+        if (!_disposed) {
+          _log.severe(
+            'Error occurred in currentUserProvider stream',
+            error,
+            stackTrace,
+          );
+          // Consider if previous == AsyncError(error, stackTrace) check is needed
+          notifyListeners();
+        }
+      },
+    );
   }
 
   /// Cleans up resources when the notifier is disposed.

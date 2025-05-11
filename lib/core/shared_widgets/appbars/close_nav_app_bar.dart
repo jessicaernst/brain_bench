@@ -24,7 +24,8 @@ class CloseNavAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final IconData iconData = leadingIcon ??
+    final IconData iconData =
+        leadingIcon ??
         (defaultTargetPlatform == TargetPlatform.iOS
             ? CupertinoIcons.clear
             : Icons.close);
@@ -37,10 +38,7 @@ class CloseNavAppBar extends StatelessWidget implements PreferredSizeWidget {
       surfaceTintColor: Colors.transparent,
       centerTitle: true,
       leading: IconButton(
-        icon: Icon(
-          iconData,
-          color: leadingIconColor,
-        ),
+        icon: Icon(iconData, color: leadingIconColor),
         onPressed: onBack,
       ),
       actions: actions,

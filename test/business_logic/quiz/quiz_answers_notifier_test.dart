@@ -40,12 +40,12 @@ void main() {
         const questionText = 'What is Flutter?';
         const givenAnswers = ['A UI toolkit'];
         const correctAnswers = [
-          'A UI toolkit'
+          'A UI toolkit',
         ]; // Expected correct answers (as per API/data source)
         const allAnswers = ['A UI toolkit', 'A backend framework'];
         const explanation = 'Flutter is a UI toolkit from Google.';
         const allCorrectAnswers = [
-          'A UI toolkit'
+          'A UI toolkit',
         ]; // The definitive list of correct answers
 
         // Act
@@ -69,10 +69,14 @@ void main() {
         expect(addedAnswer.topicId, topicId);
         expect(addedAnswer.categoryId, categoryId);
         expect(addedAnswer.questionText, questionText);
-        expect(listEquality.equals(addedAnswer.givenAnswers, givenAnswers),
-            isTrue);
-        expect(listEquality.equals(addedAnswer.correctAnswers, correctAnswers),
-            isTrue);
+        expect(
+          listEquality.equals(addedAnswer.givenAnswers, givenAnswers),
+          isTrue,
+        );
+        expect(
+          listEquality.equals(addedAnswer.correctAnswers, correctAnswers),
+          isTrue,
+        );
         expect(listEquality.equals(addedAnswer.allAnswers, allAnswers), isTrue);
         expect(addedAnswer.explanation, explanation);
         expect(addedAnswer.pointsEarned, 1);
@@ -93,7 +97,7 @@ void main() {
         const allAnswers = ['A database', 'A programming language'];
         const explanation = 'Dart is a programming language.';
         const allCorrectAnswers = [
-          'A programming language'
+          'A programming language',
         ]; // Definitive correct
 
         // Act
@@ -114,64 +118,81 @@ void main() {
         expect(state.length, 1);
         final addedAnswer = state.first;
         expect(addedAnswer.questionId, questionId);
-        expect(listEquality.equals(addedAnswer.givenAnswers, givenAnswers),
-            isTrue);
-        expect(listEquality.equals(addedAnswer.correctAnswers, correctAnswers),
-            isTrue);
+        expect(
+          listEquality.equals(addedAnswer.givenAnswers, givenAnswers),
+          isTrue,
+        );
+        expect(
+          listEquality.equals(addedAnswer.correctAnswers, correctAnswers),
+          isTrue,
+        );
         expect(addedAnswer.pointsEarned, 0);
         expect(addedAnswer.possiblePoints, 1);
         expect(
-            listEquality.equals(
-                addedAnswer.incorrectAnswers, ['A programming language']),
-            isTrue);
+          listEquality.equals(addedAnswer.incorrectAnswers, [
+            'A programming language',
+          ]),
+          isTrue,
+        );
       });
 
       test(
-          'should add a partially correct answer (multiple choice, multiple correct)',
-          () {
-        // Arrange
-        final container = createContainer();
-        final notifier = container.read(quizAnswersNotifierProvider.notifier);
-        const questionId = 'q3';
-        const topicId = 't2';
-        const categoryId = 'c2';
-        const questionText = 'Select programming languages:';
-        const givenAnswers = ['Dart', 'Swift'];
-        const correctAnswers = ['Dart', 'Kotlin'];
-        const allAnswers = ['Dart', 'Swift', 'Kotlin', 'Flutter'];
-        const explanation = 'Dart and Kotlin are languages.';
-        const allCorrectAnswers = ['Dart', 'Kotlin'];
+        'should add a partially correct answer (multiple choice, multiple correct)',
+        () {
+          // Arrange
+          final container = createContainer();
+          final notifier = container.read(quizAnswersNotifierProvider.notifier);
+          const questionId = 'q3';
+          const topicId = 't2';
+          const categoryId = 'c2';
+          const questionText = 'Select programming languages:';
+          const givenAnswers = ['Dart', 'Swift'];
+          const correctAnswers = ['Dart', 'Kotlin'];
+          const allAnswers = ['Dart', 'Swift', 'Kotlin', 'Flutter'];
+          const explanation = 'Dart and Kotlin are languages.';
+          const allCorrectAnswers = ['Dart', 'Kotlin'];
 
-        // Act
-        notifier.addAnswer(
-          questionId: questionId,
-          topicId: topicId,
-          categoryId: categoryId,
-          questionText: questionText,
-          givenAnswers: givenAnswers,
-          correctAnswers: correctAnswers,
-          allAnswers: allAnswers,
-          explanation: explanation,
-          allCorrectAnswers: allCorrectAnswers,
-        );
-        final state = container.read(quizAnswersNotifierProvider);
+          // Act
+          notifier.addAnswer(
+            questionId: questionId,
+            topicId: topicId,
+            categoryId: categoryId,
+            questionText: questionText,
+            givenAnswers: givenAnswers,
+            correctAnswers: correctAnswers,
+            allAnswers: allAnswers,
+            explanation: explanation,
+            allCorrectAnswers: allCorrectAnswers,
+          );
+          final state = container.read(quizAnswersNotifierProvider);
 
-        // Assert
-        expect(state.length, 1);
-        final addedAnswer = state.first;
-        expect(addedAnswer.questionId, questionId);
-        expect(listEquality.equals(addedAnswer.givenAnswers, givenAnswers),
-            isTrue);
-        expect(listEquality.equals(addedAnswer.correctAnswers, correctAnswers),
-            isTrue);
-        expect(addedAnswer.pointsEarned,
-            1); // Only 'Dart' was correct out of the given answers
-        expect(addedAnswer.possiblePoints,
-            2); // 'Dart' and 'Kotlin' are the actual correct answers
-        // Missed 'Kotlin' (based on `correctAnswers` passed to addAnswer)
-        expect(listEquality.equals(addedAnswer.incorrectAnswers, ['Kotlin']),
-            isTrue);
-      });
+          // Assert
+          expect(state.length, 1);
+          final addedAnswer = state.first;
+          expect(addedAnswer.questionId, questionId);
+          expect(
+            listEquality.equals(addedAnswer.givenAnswers, givenAnswers),
+            isTrue,
+          );
+          expect(
+            listEquality.equals(addedAnswer.correctAnswers, correctAnswers),
+            isTrue,
+          );
+          expect(
+            addedAnswer.pointsEarned,
+            1,
+          ); // Only 'Dart' was correct out of the given answers
+          expect(
+            addedAnswer.possiblePoints,
+            2,
+          ); // 'Dart' and 'Kotlin' are the actual correct answers
+          // Missed 'Kotlin' (based on `correctAnswers` passed to addAnswer)
+          expect(
+            listEquality.equals(addedAnswer.incorrectAnswers, ['Kotlin']),
+            isTrue,
+          );
+        },
+      );
 
       test('should add an answer where user gave no answer', () {
         // Arrange
@@ -203,14 +224,20 @@ void main() {
         expect(state.length, 1);
         final addedAnswer = state.first;
         expect(addedAnswer.questionId, questionId);
-        expect(listEquality.equals(addedAnswer.givenAnswers, givenAnswers),
-            isTrue);
-        expect(listEquality.equals(addedAnswer.correctAnswers, correctAnswers),
-            isTrue);
+        expect(
+          listEquality.equals(addedAnswer.givenAnswers, givenAnswers),
+          isTrue,
+        );
+        expect(
+          listEquality.equals(addedAnswer.correctAnswers, correctAnswers),
+          isTrue,
+        );
         expect(addedAnswer.pointsEarned, 0);
         expect(addedAnswer.possiblePoints, 1);
-        expect(listEquality.equals(addedAnswer.incorrectAnswers, ['Paris']),
-            isTrue);
+        expect(
+          listEquality.equals(addedAnswer.incorrectAnswers, ['Paris']),
+          isTrue,
+        );
       });
 
       test('should add multiple answers sequentially', () {
@@ -274,41 +301,43 @@ void main() {
         expect(listEquality.equals(state[2].incorrectAnswers, ['F']), isTrue);
       });
 
-      test('should handle case with no correct answers possible (edge case)',
-          () {
-        // Arrange
-        final container = createContainer();
-        final notifier = container.read(quizAnswersNotifierProvider.notifier);
-        const questionId = 'q5';
-        const topicId = 't3';
-        const categoryId = 'c3';
-        const questionText = 'Impossible question';
-        const givenAnswers = ['A'];
-        const correctAnswers = <String>[];
-        const allAnswers = ['A', 'B'];
-        const allCorrectAnswers = <String>[];
+      test(
+        'should handle case with no correct answers possible (edge case)',
+        () {
+          // Arrange
+          final container = createContainer();
+          final notifier = container.read(quizAnswersNotifierProvider.notifier);
+          const questionId = 'q5';
+          const topicId = 't3';
+          const categoryId = 'c3';
+          const questionText = 'Impossible question';
+          const givenAnswers = ['A'];
+          const correctAnswers = <String>[];
+          const allAnswers = ['A', 'B'];
+          const allCorrectAnswers = <String>[];
 
-        // Act
-        notifier.addAnswer(
-          questionId: questionId,
-          topicId: topicId,
-          categoryId: categoryId,
-          questionText: questionText,
-          givenAnswers: givenAnswers,
-          correctAnswers: correctAnswers,
-          allAnswers: allAnswers,
-          allCorrectAnswers: allCorrectAnswers,
-        );
-        final state = container.read(quizAnswersNotifierProvider);
+          // Act
+          notifier.addAnswer(
+            questionId: questionId,
+            topicId: topicId,
+            categoryId: categoryId,
+            questionText: questionText,
+            givenAnswers: givenAnswers,
+            correctAnswers: correctAnswers,
+            allAnswers: allAnswers,
+            allCorrectAnswers: allCorrectAnswers,
+          );
+          final state = container.read(quizAnswersNotifierProvider);
 
-        // Assert
-        expect(state.length, 1);
-        final addedAnswer = state.first;
-        expect(addedAnswer.questionId, questionId);
-        expect(addedAnswer.pointsEarned, 0);
-        expect(addedAnswer.possiblePoints, 0);
-        expect(addedAnswer.incorrectAnswers, isEmpty);
-      });
+          // Assert
+          expect(state.length, 1);
+          final addedAnswer = state.first;
+          expect(addedAnswer.questionId, questionId);
+          expect(addedAnswer.pointsEarned, 0);
+          expect(addedAnswer.possiblePoints, 0);
+          expect(addedAnswer.incorrectAnswers, isEmpty);
+        },
+      );
     });
 
     group('reset', () {
@@ -327,8 +356,11 @@ void main() {
           allAnswers: ['A', 'B'],
           allCorrectAnswers: ['A'],
         );
-        expect(container.read(quizAnswersNotifierProvider), isNotEmpty,
-            reason: 'State should have an answer before reset');
+        expect(
+          container.read(quizAnswersNotifierProvider),
+          isNotEmpty,
+          reason: 'State should have an answer before reset',
+        );
 
         // Act
         notifier.reset();
@@ -342,8 +374,11 @@ void main() {
         // Arrange
         final container = createContainer();
         final notifier = container.read(quizAnswersNotifierProvider.notifier);
-        expect(container.read(quizAnswersNotifierProvider), isEmpty,
-            reason: 'State should be empty initially');
+        expect(
+          container.read(quizAnswersNotifierProvider),
+          isEmpty,
+          reason: 'State should be empty initially',
+        );
 
         // Act
         notifier.reset();

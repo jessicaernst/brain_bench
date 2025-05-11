@@ -11,11 +11,14 @@ final _logger = Logger('EnsureUser');
 typedef Reader = T Function<T>(ProviderListenable<T>);
 
 Future<bool> _ensureUserExistsIfNeededImpl(
-    Reader read, model.AppUser? appUser) async {
+  Reader read,
+  model.AppUser? appUser,
+) async {
   // Return bool
   if (appUser == null) {
     _logger.warning(
-        'ensureUserExistsIfNeeded called with null appUser. Skipping.');
+      'ensureUserExistsIfNeeded called with null appUser. Skipping.',
+    );
     return false;
   }
 
@@ -26,10 +29,12 @@ Future<bool> _ensureUserExistsIfNeededImpl(
       deviceContactInfo = await ContactChannel.getUserContactFromDevice();
       if (deviceContactInfo != null) {
         _logger.info(
-            'Successfully fetched device contact info: $deviceContactInfo');
+          'Successfully fetched device contact info: $deviceContactInfo',
+        );
       } else {
         _logger.info(
-            'No device contact info found, permission denied, or feature not available.');
+          'No device contact info found, permission denied, or feature not available.',
+        );
       }
     } catch (e, st) {
       _logger.warning('Error fetching device contact info: $e', e, st);
@@ -41,8 +46,9 @@ Future<bool> _ensureUserExistsIfNeededImpl(
     final existingDbUser = await db.getUser(appUser.uid);
 
     if (existingDbUser == null) {
-      _logger
-          .info('User ${appUser.uid} not found in DB. Creating new entry...');
+      _logger.info(
+        'User ${appUser.uid} not found in DB. Creating new entry...',
+      );
 
       String? finalDisplayName = appUser.displayName;
       final String? finalPhotoUrl = appUser.photoUrl;
@@ -53,7 +59,8 @@ Future<bool> _ensureUserExistsIfNeededImpl(
           (finalDisplayName == null || finalDisplayName.isEmpty)) {
         finalDisplayName = deviceContactInfo.name;
         _logger.info(
-            'Using device contact name "$finalDisplayName" for new user ${appUser.uid} as auth provider name was missing.');
+          'Using device contact name "$finalDisplayName" for new user ${appUser.uid} as auth provider name was missing.',
+        );
       }
 
       final newUser = appUser.copyWith(
@@ -77,7 +84,8 @@ Future<bool> _ensureUserExistsIfNeededImpl(
         updates['displayName'] = appUser.displayName;
         needsUpdate = true;
         _logger.fine(
-            'Detected displayName update for ${appUser.uid} from Auth Provider.');
+          'Detected displayName update for ${appUser.uid} from Auth Provider.',
+        );
       }
 
       if (appUser.photoUrl != null &&
@@ -85,7 +93,8 @@ Future<bool> _ensureUserExistsIfNeededImpl(
         updates['photoUrl'] = appUser.photoUrl;
         needsUpdate = true;
         _logger.fine(
-            'Detected photoUrl update for ${appUser.uid} from Auth Provider.');
+          'Detected photoUrl update for ${appUser.uid} from Auth Provider.',
+        );
       }
 
       final currentDisplayName =
@@ -97,12 +106,14 @@ Future<bool> _ensureUserExistsIfNeededImpl(
         updates['displayName'] = deviceContactInfo.name;
         needsUpdate = true;
         _logger.info(
-            'Updating displayName for ${appUser.uid} using device contact name "${deviceContactInfo.name}" as current name was missing.');
+          'Updating displayName for ${appUser.uid} using device contact name "${deviceContactInfo.name}" as current name was missing.',
+        );
       }
 
       if (needsUpdate) {
         _logger.info(
-            'Updating user ${appUser.uid} in DB with changes: ${updates.keys.join(', ')}');
+          'Updating user ${appUser.uid} in DB with changes: ${updates.keys.join(', ')}',
+        );
         final updatedUser = existingDbUser.copyWith(
           displayName: updates['displayName'],
           photoUrl: updates['photoUrl'],
@@ -116,9 +127,10 @@ Future<bool> _ensureUserExistsIfNeededImpl(
     }
   } catch (e, st) {
     _logger.severe(
-        'Error during DB interaction in ensureUserExistsIfNeeded for ${appUser.uid}: $e',
-        e,
-        st);
+      'Error during DB interaction in ensureUserExistsIfNeeded for ${appUser.uid}: $e',
+      e,
+      st,
+    );
     rethrow;
   }
 }

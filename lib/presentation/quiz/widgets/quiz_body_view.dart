@@ -28,8 +28,9 @@ class QuizBodyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (questions.isEmpty) {
-      _logger
-          .warning('Questions provider returned data, but the list is empty.');
+      _logger.warning(
+        'Questions provider returned data, but the list is empty.',
+      );
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -44,8 +45,12 @@ class QuizBodyView extends StatelessWidget {
       questions: questions,
       localizations: localizations,
       languageCode: languageCode,
-      showResultBottomSheet: () => controller.prepareAndShowResultBottomSheet(
-          buildContext, isMountedCheck, languageCode),
+      showResultBottomSheet:
+          () => controller.prepareAndShowResultBottomSheet(
+            buildContext,
+            isMountedCheck,
+            languageCode,
+          ),
     );
   }
 }

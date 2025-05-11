@@ -2,10 +2,7 @@ import 'package:brain_bench/core/styles/colors.dart';
 import 'package:flutter/material.dart';
 
 class ProgressIndicatorBarView extends StatelessWidget {
-  const ProgressIndicatorBarView({
-    super.key,
-    required this.progress,
-  });
+  const ProgressIndicatorBarView({super.key, required this.progress});
 
   final double progress;
 

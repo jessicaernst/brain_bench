@@ -59,61 +59,68 @@ void main() {
 
     // --- Tests ---
 
-    test('Default factory constructor creates instance with correct values',
-        () {
-      // Arrange & Act: testTopicWithProgress is already created
+    test(
+      'Default factory constructor creates instance with correct values',
+      () {
+        // Arrange & Act: testTopicWithProgress is already created
 
-      // Assert
-      expect(testTopicWithProgress.id, testId);
-      expect(testTopicWithProgress.nameEn, testNameEn);
-      expect(testTopicWithProgress.nameDe, testNameDe);
-      expect(testTopicWithProgress.descriptionEn, testDescriptionEn);
-      expect(testTopicWithProgress.descriptionDe, testDescriptionDe);
-      expect(testTopicWithProgress.categoryId, testCategoryId);
-      expect(testTopicWithProgress.progress, testProgress);
-    });
-
-    test('Default factory constructor uses default progress when not provided',
-        () {
-      // Arrange & Act: testTopicDefaultProgress is already created
-
-      // Assert
-      expect(testTopicDefaultProgress.progress, 0.0); // Verify default value
-    });
+        // Assert
+        expect(testTopicWithProgress.id, testId);
+        expect(testTopicWithProgress.nameEn, testNameEn);
+        expect(testTopicWithProgress.nameDe, testNameDe);
+        expect(testTopicWithProgress.descriptionEn, testDescriptionEn);
+        expect(testTopicWithProgress.descriptionDe, testDescriptionDe);
+        expect(testTopicWithProgress.categoryId, testCategoryId);
+        expect(testTopicWithProgress.progress, testProgress);
+      },
+    );
 
     test(
-        'Topic.create factory generates UUID and sets properties with default progress',
-        () {
-      // Arrange
-      const createNameEn = 'Dart Language';
-      const createNameDe = 'Dart Sprache';
-      const createDescriptionEn = 'Fundamentals of Dart.';
-      const createDescriptionDe = 'Grundlagen von Dart.';
-      const createCategoryId = 'cat-lang-789';
+      'Default factory constructor uses default progress when not provided',
+      () {
+        // Arrange & Act: testTopicDefaultProgress is already created
 
-      // Act
-      final createdTopic = Topic.create(
-        nameEn: createNameEn,
-        nameDe: createNameDe,
-        descriptionEn: createDescriptionEn,
-        descriptionDe: createDescriptionDe,
-        categoryId: createCategoryId,
-      );
+        // Assert
+        expect(testTopicDefaultProgress.progress, 0.0); // Verify default value
+      },
+    );
 
-      // Assert
-      expect(createdTopic.id, isNotEmpty);
-      expect(
+    test(
+      'Topic.create factory generates UUID and sets properties with default progress',
+      () {
+        // Arrange
+        const createNameEn = 'Dart Language';
+        const createNameDe = 'Dart Sprache';
+        const createDescriptionEn = 'Fundamentals of Dart.';
+        const createDescriptionDe = 'Grundlagen von Dart.';
+        const createCategoryId = 'cat-lang-789';
+
+        // Act
+        final createdTopic = Topic.create(
+          nameEn: createNameEn,
+          nameDe: createNameDe,
+          descriptionEn: createDescriptionEn,
+          descriptionDe: createDescriptionDe,
+          categoryId: createCategoryId,
+        );
+
+        // Assert
+        expect(createdTopic.id, isNotEmpty);
+        expect(
           Uuid.isValidUUID(
-              fromString: createdTopic.id,
-              validationMode: ValidationMode.strictRFC4122),
-          isTrue);
-      expect(createdTopic.nameEn, createNameEn);
-      expect(createdTopic.nameDe, createNameDe);
-      expect(createdTopic.descriptionEn, createDescriptionEn);
-      expect(createdTopic.descriptionDe, createDescriptionDe);
-      expect(createdTopic.categoryId, createCategoryId);
-      expect(createdTopic.progress, 0.0); // Verify default progress
-    });
+            fromString: createdTopic.id,
+            validationMode: ValidationMode.strictRFC4122,
+          ),
+          isTrue,
+        );
+        expect(createdTopic.nameEn, createNameEn);
+        expect(createdTopic.nameDe, createNameDe);
+        expect(createdTopic.descriptionEn, createDescriptionEn);
+        expect(createdTopic.descriptionDe, createDescriptionDe);
+        expect(createdTopic.categoryId, createCategoryId);
+        expect(createdTopic.progress, 0.0); // Verify default progress
+      },
+    );
 
     test('fromJson correctly deserializes JSON map with progress', () {
       // Arrange: testJsonWithProgress is defined above
@@ -126,28 +133,35 @@ void main() {
     });
 
     test(
-        'fromJson correctly deserializes JSON map and applies default progress',
-        () {
-      // Arrange: testJsonWithoutProgress is defined above
+      'fromJson correctly deserializes JSON map and applies default progress',
+      () {
+        // Arrange: testJsonWithoutProgress is defined above
 
-      // Act
-      final topicFromJson = Topic.fromJson(testJsonWithoutProgress);
+        // Act
+        final topicFromJson = Topic.fromJson(testJsonWithoutProgress);
 
-      // Assert
-      // Compare field by field because the original object was created with default
-      expect(topicFromJson.id, testTopicDefaultProgress.id);
-      expect(topicFromJson.nameEn, testTopicDefaultProgress.nameEn);
-      expect(topicFromJson.nameDe, testTopicDefaultProgress.nameDe);
-      expect(
-          topicFromJson.descriptionEn, testTopicDefaultProgress.descriptionEn);
-      expect(
-          topicFromJson.descriptionDe, testTopicDefaultProgress.descriptionDe);
-      expect(topicFromJson.categoryId, testTopicDefaultProgress.categoryId);
-      expect(topicFromJson.progress,
-          0.0); // Default applied during deserialization
-      // Or compare directly if the default object was created without specifying progress
-      expect(topicFromJson, equals(testTopicDefaultProgress));
-    });
+        // Assert
+        // Compare field by field because the original object was created with default
+        expect(topicFromJson.id, testTopicDefaultProgress.id);
+        expect(topicFromJson.nameEn, testTopicDefaultProgress.nameEn);
+        expect(topicFromJson.nameDe, testTopicDefaultProgress.nameDe);
+        expect(
+          topicFromJson.descriptionEn,
+          testTopicDefaultProgress.descriptionEn,
+        );
+        expect(
+          topicFromJson.descriptionDe,
+          testTopicDefaultProgress.descriptionDe,
+        );
+        expect(topicFromJson.categoryId, testTopicDefaultProgress.categoryId);
+        expect(
+          topicFromJson.progress,
+          0.0,
+        ); // Default applied during deserialization
+        // Or compare directly if the default object was created without specifying progress
+        expect(topicFromJson, equals(testTopicDefaultProgress));
+      },
+    );
 
     test('toJson correctly serializes object with explicit progress', () {
       // Arrange: testTopicWithProgress is defined above
@@ -211,8 +225,9 @@ void main() {
       );
       final topic2 = topic1.copyWith(id: 'diff-id-2'); // Different ID
       final topic3 = topic1.copyWith(nameDe: 'NameDe2'); // Different nameDe
-      final topic4 =
-          topic1.copyWith(categoryId: 'cat2'); // Different categoryId
+      final topic4 = topic1.copyWith(
+        categoryId: 'cat2',
+      ); // Different categoryId
       final topic5 = topic1.copyWith(progress: 0.9); // Different progress
 
       // Act & Assert
@@ -231,12 +246,15 @@ void main() {
 
       // Act
       final copiedWithId = testTopicWithProgress.copyWith(id: 'new-topic-id');
-      final copiedWithNameEn =
-          testTopicWithProgress.copyWith(nameEn: 'Advanced Flutter');
-      final copiedWithDescriptionDe =
-          testTopicWithProgress.copyWith(descriptionDe: 'Fortgeschritten.');
-      final copiedWithCategoryId =
-          testTopicWithProgress.copyWith(categoryId: 'new-cat-id');
+      final copiedWithNameEn = testTopicWithProgress.copyWith(
+        nameEn: 'Advanced Flutter',
+      );
+      final copiedWithDescriptionDe = testTopicWithProgress.copyWith(
+        descriptionDe: 'Fortgeschritten.',
+      );
+      final copiedWithCategoryId = testTopicWithProgress.copyWith(
+        categoryId: 'new-cat-id',
+      );
       final copiedWithProgress = testTopicWithProgress.copyWith(progress: 1.0);
 
       // Assert
@@ -248,7 +266,9 @@ void main() {
       expect(copiedWithNameEn.nameEn, 'Advanced Flutter');
       expect(copiedWithNameEn.id, testTopicWithProgress.id);
       expect(
-          copiedWithNameEn.descriptionEn, testTopicWithProgress.descriptionEn);
+        copiedWithNameEn.descriptionEn,
+        testTopicWithProgress.descriptionEn,
+      );
 
       expect(copiedWithDescriptionDe.descriptionDe, 'Fortgeschritten.');
       expect(copiedWithDescriptionDe.id, testTopicWithProgress.id);

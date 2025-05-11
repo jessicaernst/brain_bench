@@ -33,17 +33,20 @@ class ContactChannel {
   static Future<DeviceContactInfo?> getUserContactFromDevice() async {
     try {
       _logger.info(
-          'Invoking native method "getUserContact" on channel "$_channelName".');
+        'Invoking native method "getUserContact" on channel "$_channelName".',
+      );
 
       // Invoke the method. Expect a Map<String, String?> or null from Swift.
       // Using Map<Object?, Object?> for broader compatibility initially.
-      final result =
-          await _channel.invokeMethod<Map<Object?, Object?>>('getUserContact');
+      final result = await _channel.invokeMethod<Map<Object?, Object?>>(
+        'getUserContact',
+      );
 
       if (result == null) {
         // This likely means no contact was found or set up on the device.
         _logger.info(
-            '"getUserContact" returned null. No contact found or permission issue previously handled by native code.');
+          '"getUserContact" returned null. No contact found or permission issue previously handled by native code.',
+        );
         return null;
       }
 
@@ -61,18 +64,22 @@ class ContactChannel {
     } on PlatformException catch (e) {
       // Handle errors sent from the native side (e.g., permission denied).
       _logger.severe(
-          'PlatformException while calling "getUserContact": ${e.code} - ${e.message}',
-          e);
+        'PlatformException while calling "getUserContact": ${e.code} - ${e.message}',
+        e,
+      );
       if (e.code == 'PERMISSION_DENIED') {
         _logger.warning(
-            'Contact permission was denied by the user (reported by native code).');
+          'Contact permission was denied by the user (reported by native code).',
+        );
         // You might want to inform the user here or guide them to settings.
       } else if (e.code == 'PERMISSION_ERROR') {
         _logger.warning(
-            'Error during contact permission request (reported by native code).');
+          'Error during contact permission request (reported by native code).',
+        );
       } else if (e.code == 'FETCH_ERROR') {
-        _logger
-            .warning('Error fetching contact data (reported by native code).');
+        _logger.warning(
+          'Error fetching contact data (reported by native code).',
+        );
       }
       return null; // Return null on known errors or permission denial.
     } catch (e, st) {

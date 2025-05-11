@@ -3,11 +3,8 @@ import 'package:brain_bench/data/models/quiz/answer.dart'; // Make sure the path
 /// Represents the result of evaluating a list of answers.
 ///
 /// Contains lists for correctly selected, incorrectly selected, and missed correct answers.
-typedef AnswerEvaluationResult = ({
-  List<Answer> correct,
-  List<Answer> incorrect,
-  List<Answer> missed
-});
+typedef AnswerEvaluationResult =
+    ({List<Answer> correct, List<Answer> incorrect, List<Answer> missed});
 
 /// Evaluates a list of answers based on their selected and correct status.
 ///
@@ -33,6 +30,6 @@ AnswerEvaluationResult evaluateAnswers(List<Answer> answers) {
   return (
     correct: correctAnswers,
     incorrect: incorrectAnswers,
-    missed: missedCorrectAnswers
+    missed: missedCorrectAnswers,
   );
 }

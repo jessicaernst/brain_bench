@@ -61,8 +61,10 @@ class ThemeModeNotifier extends _$ThemeModeNotifier {
     } catch (e, stackTrace) {
       _logger.severe('Failed to save ThemeMode $mode', e, stackTrace);
       // Update state to error, preserving the optimistic value set before calling this.
-      final newState =
-          AsyncError<ThemeMode>(e, stackTrace).copyWithPrevious(state);
+      final newState = AsyncError<ThemeMode>(
+        e,
+        stackTrace,
+      ).copyWithPrevious(state);
       state = newState;
     }
   }
@@ -84,7 +86,8 @@ class ThemeModeNotifier extends _$ThemeModeNotifier {
     // Guard Clause 2: Handle case where state is not ready (loading/initial error)
     else if (!state.hasValue) {
       _logger.warning(
-          'Cannot set ThemeMode while initial state is loading/error.');
+        'Cannot set ThemeMode while initial state is loading/error.',
+      );
     }
     // Guard Clause 3: Handle redundant calls (setting the same mode again)
     else {
@@ -102,8 +105,9 @@ class ThemeModeNotifier extends _$ThemeModeNotifier {
       // Use the main setter function which handles state updates and persistence
       await setThemeMode(newMode);
     } else {
-      _logger
-          .warning('Cannot toggle theme while initial state is loading/error.');
+      _logger.warning(
+        'Cannot toggle theme while initial state is loading/error.',
+      );
     }
   }
 

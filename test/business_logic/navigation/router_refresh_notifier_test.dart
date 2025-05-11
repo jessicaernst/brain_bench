@@ -24,7 +24,7 @@ void main() {
   // --- Test Setup ---
   // Use a StreamController to manually emit auth states
   late StreamController<AppUser?>
-      authStateController; // <--- Use StreamController
+  authStateController; // <--- Use StreamController
 
   late ProviderContainer container;
   late RouterRefreshNotifier notifier;
@@ -33,8 +33,10 @@ void main() {
   setUp(() {
     // Create a new StreamController for each test
     // Use .broadcast() if the stream might be listened to multiple times, safer for tests
-    authStateController = StreamController<
-        AppUser?>.broadcast(); // <--- Initialize StreamController
+    authStateController =
+        StreamController<
+          AppUser?
+        >.broadcast(); // <--- Initialize StreamController
 
     // Reset the fake provider's state before each test
     container = ProviderContainer(
@@ -69,16 +71,17 @@ void main() {
   // --- Test Group ---
   group('RouterRefreshNotifier', () {
     test(
-        'initializes and listens to currentUserProvider (starts in loading state)',
-        () {
-      // Arrange: Setup is done in setUp()
-      // Act: Reading the provider in setUp initializes the listener.
-      // Assert: Expect no notifications initially.
-      expect(listeners.isEmpty, isTrue);
-      // Verify the initial state of the overridden provider (will be loading until stream emits)
-      final initialState = container.read(currentUserProvider);
-      expect(initialState, isA<AsyncLoading<AppUser?>>());
-    });
+      'initializes and listens to currentUserProvider (starts in loading state)',
+      () {
+        // Arrange: Setup is done in setUp()
+        // Act: Reading the provider in setUp initializes the listener.
+        // Assert: Expect no notifications initially.
+        expect(listeners.isEmpty, isTrue);
+        // Verify the initial state of the overridden provider (will be loading until stream emits)
+        final initialState = container.read(currentUserProvider);
+        expect(initialState, isA<AsyncLoading<AppUser?>>());
+      },
+    );
 
     test('notifies listeners when user logs in (null -> user)', () async {
       // Arrange: Stream is initially empty (loading state). Add initial null state.
@@ -97,7 +100,9 @@ void main() {
       expect(listeners.length, 1);
       // Optional: Verify the state of the provider itself
       expect(
-          container.read(currentUserProvider), AsyncData<AppUser?>(mockUser1));
+        container.read(currentUserProvider),
+        AsyncData<AppUser?>(mockUser1),
+      );
     });
 
     test('notifies listeners when user logs out (user -> null)', () async {
@@ -114,7 +119,9 @@ void main() {
       expect(listeners.length, 1);
       // Optional: Verify the state of the provider itself
       expect(
-          container.read(currentUserProvider), const AsyncData<AppUser?>(null));
+        container.read(currentUserProvider),
+        const AsyncData<AppUser?>(null),
+      );
     });
 
     test('notifies listeners when user changes (user1 -> user2)', () async {
@@ -131,7 +138,9 @@ void main() {
       expect(listeners.length, 1);
       // Optional: Verify the state of the provider itself
       expect(
-          container.read(currentUserProvider), AsyncData<AppUser?>(mockUser2));
+        container.read(currentUserProvider),
+        AsyncData<AppUser?>(mockUser2),
+      );
     });
 
     test('notifies listeners when auth stream emits an error', () async {
@@ -142,7 +151,9 @@ void main() {
 
       // Act: Emit an error on the stream
       authStateController.addError(
-          testException, StackTrace.empty); // <--- Use controller to emit error
+        testException,
+        StackTrace.empty,
+      ); // <--- Use controller to emit error
       await Future.microtask(() {});
 
       // Assert: Listener should have been called once
@@ -155,7 +166,9 @@ void main() {
     test('notifies listeners when auth state recovers from error', () async {
       // Arrange: Start with error state
       authStateController.addError(
-          testException, StackTrace.empty); // <--- Use controller to emit error
+        testException,
+        StackTrace.empty,
+      ); // <--- Use controller to emit error
       await Future.microtask(() {});
       listeners.clear();
 
@@ -167,40 +180,44 @@ void main() {
       expect(listeners.length, 1);
       // Optional: Verify the state of the provider itself
       expect(
-          container.read(currentUserProvider), AsyncData<AppUser?>(mockUser1));
+        container.read(currentUserProvider),
+        AsyncData<AppUser?>(mockUser1),
+      );
     });
 
     test(
-        'does NOT notify listeners if auth stream emits the same value consecutively',
-        () async {
-      // Arrange: Set initial state
-      authStateController.add(mockUser1); // <--- Use controller to emit
-      await Future.microtask(() {});
-      listeners.clear();
+      'does NOT notify listeners if auth stream emits the same value consecutively',
+      () async {
+        // Arrange: Set initial state
+        authStateController.add(mockUser1); // <--- Use controller to emit
+        await Future.microtask(() {});
+        listeners.clear();
 
-      // Act: Emit the *same* user object again
-      authStateController.add(mockUser1); // <--- Use controller to emit
-      await Future.microtask(() {});
+        // Act: Emit the *same* user object again
+        authStateController.add(mockUser1); // <--- Use controller to emit
+        await Future.microtask(() {});
 
-      // Assert: Listener should NOT have been called if Riverpod optimizes/compares
-      expect(listeners.isEmpty, isTrue);
-    });
+        // Assert: Listener should NOT have been called if Riverpod optimizes/compares
+        expect(listeners.isEmpty, isTrue);
+      },
+    );
 
     test(
-        'does NOT notify listeners if auth stream emits equivalent null value consecutively',
-        () async {
-      // Arrange: Set initial state to null
-      authStateController.add(null); // <--- Use controller to emit
-      await Future.microtask(() {});
-      listeners.clear();
+      'does NOT notify listeners if auth stream emits equivalent null value consecutively',
+      () async {
+        // Arrange: Set initial state to null
+        authStateController.add(null); // <--- Use controller to emit
+        await Future.microtask(() {});
+        listeners.clear();
 
-      // Act: Emit null again
-      authStateController.add(null); // <--- Use controller to emit
-      await Future.microtask(() {});
+        // Act: Emit null again
+        authStateController.add(null); // <--- Use controller to emit
+        await Future.microtask(() {});
 
-      // Assert: Listener should NOT have been called
-      expect(listeners.isEmpty, isTrue);
-    });
+        // Assert: Listener should NOT have been called
+        expect(listeners.isEmpty, isTrue);
+      },
+    );
 
     test('does NOT notify listeners after dispose is called', () async {
       // Arrange: Set initial state
@@ -227,9 +244,9 @@ void main() {
       // Check if it's NOT AutoDispose if keepAlive=true
       // Adjust based on your actual annotation
       expect(
-          provider,
-          isNot(
-              isA<AutoDisposeNotifierProvider>())); // Example if keepAlive=true
+        provider,
+        isNot(isA<AutoDisposeNotifierProvider>()),
+      ); // Example if keepAlive=true
       // expect(provider, isA<AutoDisposeNotifierProvider>()); // Example if keepAlive=false (default)
     });
   });

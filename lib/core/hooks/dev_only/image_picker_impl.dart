@@ -51,32 +51,36 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
                       Platform.isIOS
                           ? CupertinoIcons.photo_fill_on_rectangle_fill
                           : Icons.photo_library,
-                      color: isDarkMode
-                          ? BrainBenchColors.cloudCanvas
-                          : BrainBenchColors.deepDive,
+                      color:
+                          isDarkMode
+                              ? BrainBenchColors.cloudCanvas
+                              : BrainBenchColors.deepDive,
                     ),
                     title: Text(
                       localizations.profilePickFromGallery,
                       style: theme.textTheme.bodyLarge,
                     ),
-                    onTap: () =>
-                        Navigator.of(sheetContext).pop(ImageSource.gallery),
+                    onTap:
+                        () =>
+                            Navigator.of(sheetContext).pop(ImageSource.gallery),
                   ),
                   ListTile(
                     leading: Icon(
                       Platform.isIOS
                           ? CupertinoIcons.camera_fill
                           : Icons.camera_alt,
-                      color: isDarkMode
-                          ? BrainBenchColors.cloudCanvas
-                          : BrainBenchColors.deepDive,
+                      color:
+                          isDarkMode
+                              ? BrainBenchColors.cloudCanvas
+                              : BrainBenchColors.deepDive,
                     ),
                     title: Text(
                       localizations.profilePickFromCamera,
                       style: theme.textTheme.bodyLarge,
                     ),
-                    onTap: () =>
-                        Navigator.of(sheetContext).pop(ImageSource.camera),
+                    onTap:
+                        () =>
+                            Navigator.of(sheetContext).pop(ImageSource.camera),
                   ),
                 ],
               ),

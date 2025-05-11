@@ -85,14 +85,16 @@ class _TopicCardState extends State<TopicCard> with EnsureVisibleMixin {
         Padding(
           padding: const EdgeInsets.only(left: 16, right: 16),
           child: TopicCardExpandable(
-            description: languageCode == 'de'
-                ? widget.topic.descriptionDe
-                : widget.topic.descriptionEn,
+            description:
+                languageCode == 'de'
+                    ? widget.topic.descriptionDe
+                    : widget.topic.descriptionEn,
             onPressed: widget.onPressed,
             isExpanded: widget.isExpanded,
-            title: languageCode == 'de'
-                ? widget.topic.nameDe
-                : widget.topic.nameEn,
+            title:
+                languageCode == 'de'
+                    ? widget.topic.nameDe
+                    : widget.topic.nameEn,
           ),
         ),
       ],

@@ -16,19 +16,17 @@ void main() {
 
   setUp(() {
     mockRepo = MockQuizRepository();
-    fakeUser = const AppUser(
-      uid: '123',
-      id: '123',
-      email: 'test@example.com',
-    );
+    fakeUser = const AppUser(uid: '123', id: '123', email: 'test@example.com');
   });
 
   setUpAll(() {
-    registerFallbackValue(const AppUser(
-      uid: 'fallback',
-      id: 'fallback',
-      email: 'fallback@example.com',
-    ));
+    registerFallbackValue(
+      const AppUser(
+        uid: 'fallback',
+        id: 'fallback',
+        email: 'fallback@example.com',
+      ),
+    );
   });
 
   test('updateCategoryProgress updates user progress correctly', () async {
@@ -55,24 +53,26 @@ void main() {
     ];
     final userWithProgress = fakeUser.copyWith(
       isTopicDone: {
-        categoryId: {'t1': true, 't2': false}
+        categoryId: {'t1': true, 't2': false},
       },
     );
 
-    when(() => mockRepo.getTopics(categoryId, languageCode))
-        .thenAnswer((_) async => topics);
-    when(() => mockRepo.getUser(fakeUser.uid))
-        .thenAnswer((_) async => userWithProgress);
+    when(
+      () => mockRepo.getTopics(categoryId, languageCode),
+    ).thenAnswer((_) async => topics);
+    when(
+      () => mockRepo.getUser(fakeUser.uid),
+    ).thenAnswer((_) async => userWithProgress);
     when(() => mockRepo.updateUser(any())).thenAnswer((_) async {});
 
-    final container = ProviderContainer(overrides: [
-      quizMockDatabaseRepositoryProvider.overrideWith(
-        (ref) => Future.value(mockRepo),
-      ),
-      currentUserProvider.overrideWith(
-        (ref) => Stream.value(fakeUser),
-      )
-    ]);
+    final container = ProviderContainer(
+      overrides: [
+        quizMockDatabaseRepositoryProvider.overrideWith(
+          (ref) => Future.value(mockRepo),
+        ),
+        currentUserProvider.overrideWith((ref) => Stream.value(fakeUser)),
+      ],
+    );
 
     final notifier = container.read(categoriesProvider(languageCode).notifier);
 
@@ -81,9 +81,7 @@ void main() {
 
     final expectedProgress = 0.5;
     final expectedUpdatedUser = userWithProgress.copyWith(
-      categoryProgress: {
-        categoryId: expectedProgress,
-      },
+      categoryProgress: {categoryId: expectedProgress},
     );
 
     verify(() => mockRepo.updateUser(expectedUpdatedUser)).called(1);

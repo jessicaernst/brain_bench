@@ -28,8 +28,11 @@ class QuizPageController extends _$QuizPageController {
       ref.read(quizStateNotifierProvider.notifier);
 
   /// Handles moving to the next question or finishing the quiz.
-  Future<void> handleNextQuestionOrFinish(BuildContext context,
-      bool Function() isMounted, String languageCode) async {
+  Future<void> handleNextQuestionOrFinish(
+    BuildContext context,
+    bool Function() isMounted,
+    String languageCode,
+  ) async {
     final localizations = AppLocalizations.of(context)!;
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     final theme = Theme.of(context);
@@ -42,8 +45,12 @@ class QuizPageController extends _$QuizPageController {
       } catch (e, s) {
         _logger.severe('Failed to load next question: $e', e, s);
         if (!isMounted()) return;
-        showErrorSnackBar(scaffoldMessenger, theme, isMounted,
-            localizations.quizErrorLoadingNextQuestion);
+        showErrorSnackBar(
+          scaffoldMessenger,
+          theme,
+          isMounted,
+          localizations.quizErrorLoadingNextQuestion,
+        );
       }
     } else {
       _logger.info('🎉 Quiz completed. Attempting to navigate to results...');
@@ -59,8 +66,12 @@ class QuizPageController extends _$QuizPageController {
       } catch (e, s) {
         _logger.severe('Navigation to quiz results failed: $e', e, s);
         if (!isMounted()) return;
-        showErrorSnackBar(scaffoldMessenger, theme, isMounted,
-            localizations.errorNavigationFailed);
+        showErrorSnackBar(
+          scaffoldMessenger,
+          theme,
+          isMounted,
+          localizations.errorNavigationFailed,
+        );
       }
     }
   }
@@ -72,7 +83,10 @@ class QuizPageController extends _$QuizPageController {
 
   /// Gathers quiz answer data, saves it, and shows the result bottom sheet.
   void prepareAndShowResultBottomSheet(
-      BuildContext context, bool Function() isMounted, String languageCode) {
+    BuildContext context,
+    bool Function() isMounted,
+    String languageCode,
+  ) {
     final quizState = ref.read(quizStateNotifierProvider);
     final quizAnswerNotifier = ref.read(quizAnswersNotifierProvider.notifier);
     final currentLoadedAnswers = ref.read(answersNotifierProvider);
@@ -81,25 +95,39 @@ class QuizPageController extends _$QuizPageController {
         quizState.currentIndex < 0 ||
         quizState.currentIndex >= quizState.questions.length) {
       _logger.severe(
-          '❌ Cannot show result bottom sheet: Invalid quiz state or index.');
+        '❌ Cannot show result bottom sheet: Invalid quiz state or index.',
+      );
       if (!isMounted()) return;
-      showErrorSnackBar(ScaffoldMessenger.of(context), Theme.of(context),
-          isMounted, AppLocalizations.of(context)!.errorGeneric);
+      showErrorSnackBar(
+        ScaffoldMessenger.of(context),
+        Theme.of(context),
+        isMounted,
+        AppLocalizations.of(context)!.errorGeneric,
+      );
       return;
     }
     final currentQuestion = quizState.questions[quizState.currentIndex];
 
-    final selectedAnswers = currentLoadedAnswers
-        .where((answer) => answer.isSelected)
-        .map((answer) => languageCode == 'de' ? answer.textDe : answer.textEn)
-        .toList();
-    final allAnswers = currentLoadedAnswers
-        .map((answer) => languageCode == 'de' ? answer.textDe : answer.textEn)
-        .toList();
-    final correctAnswers = currentLoadedAnswers
-        .where((answer) => answer.isCorrect)
-        .map((answer) => languageCode == 'de' ? answer.textDe : answer.textEn)
-        .toList();
+    final selectedAnswers =
+        currentLoadedAnswers
+            .where((answer) => answer.isSelected)
+            .map(
+              (answer) => languageCode == 'de' ? answer.textDe : answer.textEn,
+            )
+            .toList();
+    final allAnswers =
+        currentLoadedAnswers
+            .map(
+              (answer) => languageCode == 'de' ? answer.textDe : answer.textEn,
+            )
+            .toList();
+    final correctAnswers =
+        currentLoadedAnswers
+            .where((answer) => answer.isCorrect)
+            .map(
+              (answer) => languageCode == 'de' ? answer.textDe : answer.textEn,
+            )
+            .toList();
     final explanation = currentQuestion.explanation;
     final allCorrectAnswersText = ref
         .read(quizStateNotifierProvider.notifier)
@@ -118,13 +146,18 @@ class QuizPageController extends _$QuizPageController {
         explanation: explanation,
         allCorrectAnswers: allCorrectAnswersText,
       );
-      _logger
-          .fine('Quiz answer attempt saved for question ${currentQuestion.id}');
+      _logger.fine(
+        'Quiz answer attempt saved for question ${currentQuestion.id}',
+      );
     } catch (e, s) {
       _logger.severe('Failed to save quiz answer attempt: $e', e, s);
       if (!isMounted()) return;
-      showErrorSnackBar(ScaffoldMessenger.of(context), Theme.of(context),
-          isMounted, AppLocalizations.of(context)!.errorSavingData);
+      showErrorSnackBar(
+        ScaffoldMessenger.of(context),
+        Theme.of(context),
+        isMounted,
+        AppLocalizations.of(context)!.errorSavingData,
+      );
     }
 
     _showFeedbackBottomSheet(context, isMounted, languageCode);
@@ -132,8 +165,9 @@ class QuizPageController extends _$QuizPageController {
 
   /// Handles the back button press: resets quiz and navigates.
   void handleBackButton(BuildContext context, bool Function() isMounted) {
-    _logger
-        .fine('Back button pressed, resetting quiz and navigating to topics.');
+    _logger.fine(
+      'Back button pressed, resetting quiz and navigating to topics.',
+    );
     quizStateNotifier.resetQuiz();
     if (!isMounted()) return;
     try {
@@ -144,13 +178,20 @@ class QuizPageController extends _$QuizPageController {
     } catch (e, s) {
       _logger.severe('Navigation back to topics failed: $e', e, s);
       if (!isMounted()) return;
-      showErrorSnackBar(ScaffoldMessenger.of(context), Theme.of(context),
-          isMounted, AppLocalizations.of(context)!.errorNavigationFailed);
+      showErrorSnackBar(
+        ScaffoldMessenger.of(context),
+        Theme.of(context),
+        isMounted,
+        AppLocalizations.of(context)!.errorNavigationFailed,
+      );
     }
   }
 
   void _showFeedbackBottomSheet(
-      BuildContext context, bool Function() isMounted, String languageCode) {
+    BuildContext context,
+    bool Function() isMounted,
+    String languageCode,
+  ) {
     if (!isMounted()) return;
     showModalBottomSheet(
       context: context,
@@ -169,8 +210,12 @@ class QuizPageController extends _$QuizPageController {
     );
   }
 
-  void showErrorSnackBar(ScaffoldMessengerState scaffoldMessenger,
-      ThemeData theme, bool Function() isMounted, String message) {
+  void showErrorSnackBar(
+    ScaffoldMessengerState scaffoldMessenger,
+    ThemeData theme,
+    bool Function() isMounted,
+    String message,
+  ) {
     if (!isMounted()) return;
     scaffoldMessenger.showSnackBar(
       SnackBar(

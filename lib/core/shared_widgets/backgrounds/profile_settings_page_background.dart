@@ -21,12 +21,12 @@ class ProfileSettingsPageBackground extends StatelessWidget {
     return Stack(
       children: [
         Positioned.fill(
-          child: isDarkMode
-              ? Assets.backgrounds.bgLoginSignUpDarkmode
-                  .image(fit: BoxFit.cover)
-              : Assets.backgrounds.signUp.image(
-                  fit: BoxFit.cover,
-                ),
+          child:
+              isDarkMode
+                  ? Assets.backgrounds.bgLoginSignUpDarkmode.image(
+                    fit: BoxFit.cover,
+                  )
+                  : Assets.backgrounds.signUp.image(fit: BoxFit.cover),
         ),
         Positioned(
           top: topPosition,

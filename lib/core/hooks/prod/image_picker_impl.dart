@@ -40,8 +40,9 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
 
   Future<void> pickImageInternal([BuildContext? context]) async {
     if (context == null) {
-      _logger
-          .warning('Context is null – required for picker UI and permissions.');
+      _logger.warning(
+        'Context is null – required for picker UI and permissions.',
+      );
       return;
     }
 
@@ -69,32 +70,36 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
                       Platform.isIOS
                           ? CupertinoIcons.photo_fill_on_rectangle_fill
                           : Icons.photo_library,
-                      color: isDarkMode
-                          ? BrainBenchColors.cloudCanvas
-                          : BrainBenchColors.deepDive,
+                      color:
+                          isDarkMode
+                              ? BrainBenchColors.cloudCanvas
+                              : BrainBenchColors.deepDive,
                     ),
                     title: Text(
                       localizations.profilePickFromGallery,
                       style: theme.textTheme.bodyLarge,
                     ),
-                    onTap: () =>
-                        Navigator.of(sheetContext).pop(ImageSource.gallery),
+                    onTap:
+                        () =>
+                            Navigator.of(sheetContext).pop(ImageSource.gallery),
                   ),
                   ListTile(
                     leading: Icon(
                       Platform.isIOS
                           ? CupertinoIcons.camera_fill
                           : Icons.camera_alt,
-                      color: isDarkMode
-                          ? BrainBenchColors.cloudCanvas
-                          : BrainBenchColors.deepDive,
+                      color:
+                          isDarkMode
+                              ? BrainBenchColors.cloudCanvas
+                              : BrainBenchColors.deepDive,
                     ),
                     title: Text(
                       localizations.profilePickFromCamera,
                       style: theme.textTheme.bodyLarge,
                     ),
-                    onTap: () =>
-                        Navigator.of(sheetContext).pop(ImageSource.camera),
+                    onTap:
+                        () =>
+                            Navigator.of(sheetContext).pop(ImageSource.camera),
                   ),
                 ],
               ),
@@ -138,7 +143,8 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
       _logger.info('iOS limited photo access granted');
       if (!context.mounted) {
         _logger.warning(
-            'Context not mounted before prompting for full photo access.');
+          'Context not mounted before prompting for full photo access.',
+        );
         return;
       }
       final upgraded = await _promptForFullPhotoAccess(context);
@@ -175,25 +181,28 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
       if (context.mounted) {
         showDialog(
           context: context,
-          builder: (ctx) => AlertDialog(
-            title: Text(localizations.permissionRequiredTitle),
-            content: Text(source == ImageSource.camera
-                ? localizations.permissionCameraPermanentlyDenied
-                : localizations.permissionPhotosPermanentlyDenied),
-            actions: <Widget>[
-              TextButton(
-                child: Text(localizations.cancel),
-                onPressed: () => Navigator.of(ctx).pop(),
+          builder:
+              (ctx) => AlertDialog(
+                title: Text(localizations.permissionRequiredTitle),
+                content: Text(
+                  source == ImageSource.camera
+                      ? localizations.permissionCameraPermanentlyDenied
+                      : localizations.permissionPhotosPermanentlyDenied,
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text(localizations.cancel),
+                    onPressed: () => Navigator.of(ctx).pop(),
+                  ),
+                  TextButton(
+                    child: Text(localizations.openSettings),
+                    onPressed: () {
+                      openAppSettings();
+                      Navigator.of(ctx).pop();
+                    },
+                  ),
+                ],
               ),
-              TextButton(
-                child: Text(localizations.openSettings),
-                onPressed: () {
-                  openAppSettings();
-                  Navigator.of(ctx).pop();
-                },
-              ),
-            ],
-          ),
         );
       }
     } else {
@@ -201,9 +210,11 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(source == ImageSource.camera
-                ? localizations.permissionCameraDenied
-                : localizations.permissionPhotosDenied),
+            content: Text(
+              source == ImageSource.camera
+                  ? localizations.permissionCameraDenied
+                  : localizations.permissionPhotosDenied,
+            ),
           ),
         );
       }
@@ -231,24 +242,26 @@ Future<int?> _getAndroidSdkVersion() async {
 Future<bool> _promptForFullPhotoAccess(BuildContext context) async {
   return await showDialog<bool>(
         context: context,
-        builder: (ctx) => AlertDialog(
-          title: const Text('Full Access Required'),
-          content: const Text(
-              'To select all photos, please allow full photo access in Settings.'),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () => Navigator.of(ctx).pop(false),
+        builder:
+            (ctx) => AlertDialog(
+              title: const Text('Full Access Required'),
+              content: const Text(
+                'To select all photos, please allow full photo access in Settings.',
+              ),
+              actions: [
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () => Navigator.of(ctx).pop(false),
+                ),
+                TextButton(
+                  child: const Text('Open Settings'),
+                  onPressed: () {
+                    openAppSettings();
+                    Navigator.of(ctx).pop(true);
+                  },
+                ),
+              ],
             ),
-            TextButton(
-              child: const Text('Open Settings'),
-              onPressed: () {
-                openAppSettings();
-                Navigator.of(ctx).pop(true);
-              },
-            ),
-          ],
-        ),
       ) ??
       false;
 }

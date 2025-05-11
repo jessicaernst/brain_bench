@@ -14,7 +14,8 @@ class LoggingService {
     Logger.root.level = Level.ALL;
     Logger.root.onRecord.listen((record) {
       print(
-          '${record.time}: ${record.level.name}: ${record.loggerName}: ${record.message}');
+        '${record.time}: ${record.level.name}: ${record.loggerName}: ${record.message}',
+      );
       if (record.error != null) {
         print(record.error);
       }

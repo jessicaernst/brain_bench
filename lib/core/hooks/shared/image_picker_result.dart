@@ -10,8 +10,5 @@ class ImagePickerResult {
   ///
   /// The [selectedImage] parameter is a [ValueNotifier] that holds the currently selected image.
   /// The [pickImage] parameter is a function that allows picking an image.
-  ImagePickerResult({
-    required this.selectedImage,
-    required this.pickImage,
-  });
+  ImagePickerResult({required this.selectedImage, required this.pickImage});
 }

@@ -56,20 +56,30 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   /// Copies the JSON asset files from the app bundle to the documents directory.
   Future<void> copyAssetsToDocuments() async {
     await _copyAssetToDocument(
-        'lib/data/data_source/results.json', resultsPath);
+      'lib/data/data_source/results.json',
+      resultsPath,
+    );
     await _copyAssetToDocument(
-        'lib/data/data_source/category.json', categoriesPath);
+      'lib/data/data_source/category.json',
+      categoriesPath,
+    );
     await _copyAssetToDocument('lib/data/data_source/topics.json', topicsPath);
     await _copyAssetToDocument(
-        'lib/data/data_source/questions.json', questionsPath);
+      'lib/data/data_source/questions.json',
+      questionsPath,
+    );
     await _copyAssetToDocument(
-        'lib/data/data_source/answers.json', answersPath);
+      'lib/data/data_source/answers.json',
+      answersPath,
+    );
     await _copyAssetToDocument('lib/data/data_source/user.json', userPath);
   }
 
   /// Copies a single asset file to the documents directory.
   Future<void> _copyAssetToDocument(
-      String assetPath, String documentPath) async {
+    String assetPath,
+    String documentPath,
+  ) async {
     final file = File(documentPath);
     if (!await file.exists()) {
       final byteData = await rootBundle.load(assetPath);
@@ -101,15 +111,17 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       final List<dynamic> jsonData = jsonMap['categories'];
 
       return jsonData
-          .map((e) => Category(
-                id: e['id'],
-                nameEn: e['nameEn'],
-                nameDe: e['nameDe'],
-                subtitleEn: e['subtitleEn'],
-                subtitleDe: e['subtitleDe'],
-                descriptionEn: e['descriptionEn'],
-                descriptionDe: e['descriptionDe'],
-              ))
+          .map(
+            (e) => Category(
+              id: e['id'],
+              nameEn: e['nameEn'],
+              nameDe: e['nameDe'],
+              subtitleEn: e['subtitleEn'],
+              subtitleDe: e['subtitleDe'],
+              descriptionEn: e['descriptionEn'],
+              descriptionDe: e['descriptionDe'],
+            ),
+          )
           .toList();
     } on FileSystemException catch (e) {
       _logger.severe('FileSystemException in getCategories: $e');
@@ -183,12 +195,15 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   ///   Returns an empty list if an error occurs.
   @override
   Future<List<Question>> getQuestions(
-      String topicId, String languageCode) async {
+    String topicId,
+    String languageCode,
+  ) async {
     try {
       final fileQuestion = File(questionsPath);
       final String questionJsonString = await fileQuestion.readAsString();
-      final Map<String, dynamic> questionJsonMap =
-          json.decode(questionJsonString);
+      final Map<String, dynamic> questionJsonMap = json.decode(
+        questionJsonString,
+      );
       final List<dynamic> questionJsonData = questionJsonMap['questions'];
 
       final fileAnswer = File(answersPath);
@@ -203,9 +218,10 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
           type: QuestionType.values.firstWhere(
             (type) => type.toString().split('.').last == e['type'],
           ),
-          answerIds: (e['answerIds'] as List<dynamic>)
-              .map((id) => id.toString())
-              .toList(),
+          answerIds:
+              (e['answerIds'] as List<dynamic>)
+                  .map((id) => id.toString())
+                  .toList(),
           explanation:
               languageCode == 'de' ? e['explanationDe'] : e['explanationEn'],
         );
@@ -237,7 +253,9 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   ///   Returns an empty list if an error occurs.
   @override
   Future<List<Answer>> getAnswers(
-      List<String> answerIds, String languageCode) async {
+    List<String> answerIds,
+    String languageCode,
+  ) async {
     try {
       _logger.info('getAnswers() aufgerufen für: $answerIds');
 
@@ -247,20 +265,25 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       final List<dynamic> jsonData = jsonMap['answers'];
 
       _logger.info(
-          'Geladene Antwortdaten: ${jsonData.length} Antworten gefunden.');
+        'Geladene Antwortdaten: ${jsonData.length} Antworten gefunden.',
+      );
 
-      final List<Answer> answers = jsonData
-          .where((e) => answerIds.contains(e['id']))
-          .map((e) => Answer(
-                id: e['id'],
-                textEn: e['textEn'],
-                textDe: e['textDe'],
-                isCorrect: e['isCorrect'],
-              ))
-          .toList();
+      final List<Answer> answers =
+          jsonData
+              .where((e) => answerIds.contains(e['id']))
+              .map(
+                (e) => Answer(
+                  id: e['id'],
+                  textEn: e['textEn'],
+                  textDe: e['textDe'],
+                  isCorrect: e['isCorrect'],
+                ),
+              )
+              .toList();
 
       _logger.info(
-          'Gefilterte Antworten: ${answers.length} von ${answerIds.length} IDs gefunden.');
+        'Gefilterte Antworten: ${answers.length} von ${answerIds.length} IDs gefunden.',
+      );
 
       return answers;
     } on FileSystemException catch (e) {
@@ -375,7 +398,10 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   ///   Logs an error if an exception occurs.
   @override
   Future<void> markTopicAsDone(
-      String topicId, String categoryId, AppUser user) async {
+    String topicId,
+    String categoryId,
+    AppUser user,
+  ) async {
     try {
       // ✅ Step 1: Update local topics.json (wie gehabt)
       final file = File(topicsPath);
@@ -393,19 +419,17 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       // ✅ Step 2: Update user.isTopicDone
       final updatedMap = {
         ...user.isTopicDone,
-        categoryId: {
-          ...(user.isTopicDone[categoryId] ?? {}),
-          topicId: true,
-        }
+        categoryId: {...(user.isTopicDone[categoryId] ?? {}), topicId: true},
       };
 
       // ✅ Step 3: Berechne neuen Fortschritt
       final fileTopics =
           jsonData.where((topic) => topic['categoryId'] == categoryId).toList();
 
-      final passedCount = fileTopics
-          .where((topic) => updatedMap[categoryId]?[topic['id']] == true)
-          .length;
+      final passedCount =
+          fileTopics
+              .where((topic) => updatedMap[categoryId]?[topic['id']] == true)
+              .length;
 
       final progress =
           fileTopics.isEmpty ? 0.0 : passedCount / fileTopics.length;
@@ -413,14 +437,12 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       // ✅ Step 4: Update user model
       final updatedUser = user.copyWith(
         isTopicDone: updatedMap,
-        categoryProgress: {
-          ...user.categoryProgress,
-          categoryId: progress,
-        },
+        categoryProgress: {...user.categoryProgress, categoryId: progress},
       );
 
       _logger.info(
-          '🔁 Fortschritt berechnet: ${(progress * 100).toStringAsFixed(1)}%');
+        '🔁 Fortschritt berechnet: ${(progress * 100).toStringAsFixed(1)}%',
+      );
 
       // ✅ Step 5: Speichern
       await updateUser(updatedUser);
@@ -449,8 +471,9 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       final List<dynamic> jsonData = jsonMap['categories'];
 
       // Find the category to update
-      final categoryIndex =
-          jsonData.indexWhere((cat) => cat['id'] == category.id);
+      final categoryIndex = jsonData.indexWhere(
+        (cat) => cat['id'] == category.id,
+      );
 
       if (categoryIndex == -1) {
         _logger.warning('Category with ID ${category.id} not found.');
@@ -472,7 +495,8 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       await file.writeAsString(jsonEncode(jsonMap), flush: true);
 
       _logger.info(
-          'Category ${category.id} updated in categories.json successfully!');
+        'Category ${category.id} updated in categories.json successfully!',
+      );
     } on FileSystemException catch (e) {
       _logger.severe('FileSystemException in updateCategory: $e');
     } on FormatException catch (e) {
@@ -490,9 +514,10 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
 
       final jsonString = await file.readAsString();
       final jsonMap = json.decode(jsonString);
-      final users = (jsonMap['users'] as List<dynamic>)
-          .where((e) => e['uid'] != userId)
-          .toList();
+      final users =
+          (jsonMap['users'] as List<dynamic>)
+              .where((e) => e['uid'] != userId)
+              .toList();
 
       jsonMap['users'] = users;
       await file.writeAsString(jsonEncode(jsonMap), flush: true);
@@ -512,10 +537,11 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       final jsonMap = json.decode(jsonString);
       final List users = jsonMap['users'] ?? [];
 
-      final userList = users
-          .map((e) => model.AppUser.fromJson(e))
-          .where((u) => u.uid == userId)
-          .toList();
+      final userList =
+          users
+              .map((e) => model.AppUser.fromJson(e))
+              .where((u) => u.uid == userId)
+              .toList();
 
       return userList.isNotEmpty ? userList.first : null;
     } catch (e) {
@@ -571,10 +597,11 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Future<void> updateUserProfile(
-      {required String userId,
-      required String displayName,
-      String? photoUrl}) async {
+  Future<void> updateUserProfile({
+    required String userId,
+    required String displayName,
+    String? photoUrl,
+  }) async {
     try {
       final file = File(userPath);
       if (!await file.exists()) {
@@ -587,7 +614,8 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       // Handle empty file content
       if (jsonString.isEmpty) {
         _logger.warning(
-            'User file is empty, cannot update profile for user $userId.');
+          'User file is empty, cannot update profile for user $userId.',
+        );
         return;
       }
       final jsonMap = json.decode(jsonString);
@@ -595,7 +623,8 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
           jsonMap['users'] ?? []; // Ensure 'users' list exists
 
       final index = users.indexWhere(
-          (e) => e is Map && e['uid'] == userId); // Ensure element is a Map
+        (e) => e is Map && e['uid'] == userId,
+      ); // Ensure element is a Map
 
       if (index == -1) {
         _logger.warning('User $userId not found for profile update.');
@@ -603,8 +632,9 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       }
 
       // Get the existing user data as a Map
-      final Map<String, dynamic> existingUserMap =
-          Map<String, dynamic>.from(users[index]);
+      final Map<String, dynamic> existingUserMap = Map<String, dynamic>.from(
+        users[index],
+      );
 
       // Create the updated user data
       // Keep all old fields and only overwrite the new ones
@@ -620,7 +650,8 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
         _logger.fine('Updating photoUrl for user $userId.');
       } else {
         _logger.fine(
-            'No new photoUrl provided for user $userId, keeping existing one.');
+          'No new photoUrl provided for user $userId, keeping existing one.',
+        );
       }
 
       // Replace the old entry in the list with the new one
@@ -629,17 +660,27 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       // Write the entire updated structure back
       jsonMap['users'] = users;
       await file.writeAsString(jsonEncode(jsonMap), flush: true);
-      _logger
-          .info('✅ Profile updated for user $userId. New name: $displayName');
+      _logger.info(
+        '✅ Profile updated for user $userId. New name: $displayName',
+      );
     } on FileSystemException catch (e, stack) {
       _logger.severe(
-          'FileSystemException in updateUserProfile for $userId: $e', e, stack);
+        'FileSystemException in updateUserProfile for $userId: $e',
+        e,
+        stack,
+      );
     } on FormatException catch (e, stack) {
       _logger.severe(
-          'FormatException in updateUserProfile for $userId: $e', e, stack);
+        'FormatException in updateUserProfile for $userId: $e',
+        e,
+        stack,
+      );
     } catch (e, stack) {
       _logger.severe(
-          'Unexpected error updating profile for $userId: $e', e, stack);
+        'Unexpected error updating profile for $userId: $e',
+        e,
+        stack,
+      );
     }
   }
 }

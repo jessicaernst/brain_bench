@@ -16,7 +16,7 @@ class FirebaseAuthRepository implements AuthRepository {
   final fb.FirebaseAuth _auth;
 
   FirebaseAuthRepository({fb.FirebaseAuth? auth})
-      : _auth = auth ?? fb.FirebaseAuth.instance {
+    : _auth = auth ?? fb.FirebaseAuth.instance {
     final locale = WidgetsBinding.instance.platformDispatcher.locale;
     _auth.setLanguageCode(locale.languageCode);
   }
@@ -35,8 +35,8 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   Stream<AppUser?> authStateChanges() {
     return _auth.authStateChanges().map(
-          (user) => user != null ? _mapFirebaseUser(user) : null,
-        );
+      (user) => user != null ? _mapFirebaseUser(user) : null,
+    );
   }
 
   @override
@@ -82,7 +82,8 @@ class FirebaseAuthRepository implements AuthRepository {
     } on fb.FirebaseAuthException catch (e) {
       _logger.severe('Firebase Auth Exception: ${e.code} - ${e.message}');
       throw Exception(
-          'Fehler beim Senden der E-Mail zum Zurücksetzen des Passworts: ${e.message}');
+        'Fehler beim Senden der E-Mail zum Zurücksetzen des Passworts: ${e.message}',
+      );
     } catch (e) {
       _logger.severe('Unexpected error during password reset: $e');
       throw Exception('Ein unerwarteter Fehler ist aufgetreten.');
@@ -133,7 +134,8 @@ class FirebaseAuthRepository implements AuthRepository {
     try {
       if (!Platform.isIOS && !Platform.isMacOS) {
         throw UnsupportedError(
-            'Apple Sign-In ist nur auf iOS/macOS verfügbar.');
+          'Apple Sign-In ist nur auf iOS/macOS verfügbar.',
+        );
       }
 
       final appleCredential = await SignInWithApple.getAppleIDCredential(
@@ -155,7 +157,8 @@ class FirebaseAuthRepository implements AuthRepository {
       throw Exception('Fehler beim Anmelden mit Apple: ${e.message}');
     } on PlatformException catch (e) {
       _logger.severe(
-          'Platform Exception during Apple Sign-In: ${e.code} - ${e.message}');
+        'Platform Exception during Apple Sign-In: ${e.code} - ${e.message}',
+      );
       throw Exception('Fehler beim Anmelden mit Apple: ${e.message}');
     } on UnsupportedError catch (e) {
       _logger.severe('Unsupported Error during Apple Sign-In: $e');

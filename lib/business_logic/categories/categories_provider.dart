@@ -32,13 +32,18 @@ class SelectedCategoryNotifier extends _$SelectedCategoryNotifier {
 
 @riverpod
 Future<Category> categoryById(
-    Ref ref, String categoryId, String languageCode) async {
+  Ref ref,
+  String categoryId,
+  String languageCode,
+) async {
   logger.info(
-      '🔄 Fetching category by ID: $categoryId for language: $languageCode');
+    '🔄 Fetching category by ID: $categoryId for language: $languageCode',
+  );
   final categories = await ref.watch(categoriesProvider(languageCode).future);
   try {
-    final category =
-        categories.firstWhere((category) => category.id == categoryId);
+    final category = categories.firstWhere(
+      (category) => category.id == categoryId,
+    );
     logger.info('✅ Category found: ${category.nameEn}');
     return category;
   } catch (e) {

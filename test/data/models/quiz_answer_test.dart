@@ -13,7 +13,7 @@ void main() {
     final testGivenAnswers = ['ans1', 'ans3']; // User selected ans1 and ans3
     final testCorrectAnswers = ['ans1', 'ans2']; // Correct are ans1 and ans2
     final testIncorrectAnswers = [
-      'ans3'
+      'ans3',
     ]; // Calculated: ans3 is given but not correct
     final testAllAnswers = ['ans1', 'ans2', 'ans3', 'ans4'];
     const testExplanation = 'This is why.';
@@ -85,86 +85,95 @@ void main() {
 
     // --- Tests ---
 
-    test('Default factory constructor creates instance with correct values',
-        () {
-      // Arrange & Act: testQuizAnswer is already created
+    test(
+      'Default factory constructor creates instance with correct values',
+      () {
+        // Arrange & Act: testQuizAnswer is already created
 
-      // Assert
-      expect(testQuizAnswer.id, testId);
-      expect(testQuizAnswer.topicId, testTopicId);
-      expect(testQuizAnswer.categoryId, testCategoryId);
-      expect(testQuizAnswer.questionId, testQuestionId);
-      expect(testQuizAnswer.questionText, testQuestionText);
-      expect(testQuizAnswer.givenAnswers, testGivenAnswers);
-      expect(testQuizAnswer.correctAnswers, testCorrectAnswers);
-      expect(testQuizAnswer.incorrectAnswers, testIncorrectAnswers);
-      expect(testQuizAnswer.allAnswers, testAllAnswers);
-      expect(testQuizAnswer.explanation, testExplanation);
-      expect(testQuizAnswer.pointsEarned, testPointsEarned);
-      expect(testQuizAnswer.possiblePoints, testPossiblePoints);
-    });
-
-    test('Default factory constructor uses default points when not provided',
-        () {
-      // Arrange & Act: testQuizAnswerDefaultPoints is already created
-
-      // Assert
-      expect(testQuizAnswerDefaultPoints.pointsEarned, 0);
-      expect(testQuizAnswerDefaultPoints.possiblePoints, 0);
-    });
+        // Assert
+        expect(testQuizAnswer.id, testId);
+        expect(testQuizAnswer.topicId, testTopicId);
+        expect(testQuizAnswer.categoryId, testCategoryId);
+        expect(testQuizAnswer.questionId, testQuestionId);
+        expect(testQuizAnswer.questionText, testQuestionText);
+        expect(testQuizAnswer.givenAnswers, testGivenAnswers);
+        expect(testQuizAnswer.correctAnswers, testCorrectAnswers);
+        expect(testQuizAnswer.incorrectAnswers, testIncorrectAnswers);
+        expect(testQuizAnswer.allAnswers, testAllAnswers);
+        expect(testQuizAnswer.explanation, testExplanation);
+        expect(testQuizAnswer.pointsEarned, testPointsEarned);
+        expect(testQuizAnswer.possiblePoints, testPossiblePoints);
+      },
+    );
 
     test(
-        'QuizAnswer.create factory generates UUID and calculates incorrectAnswers',
-        () {
-      // Arrange
-      const createTopicId = 'topic-create';
-      const createCategoryId = 'cat-create';
-      const createQuestionId = 'q-create';
-      const createQuestionText = 'Create Question?';
-      final createGiven = ['g1', 'g3', 'g4']; // Given
-      final createCorrect = ['g1', 'g2', 'g4']; // Correct
-      final createAll = ['g1', 'g2', 'g3', 'g4', 'g5'];
-      const createExplanation = 'Create Exp';
-      const createPoints = 5;
-      const createPossible = 10;
-      final expectedIncorrect = [
-        'g3'
-      ]; // Calculated: g3 is given but not correct
+      'Default factory constructor uses default points when not provided',
+      () {
+        // Arrange & Act: testQuizAnswerDefaultPoints is already created
 
-      // Act
-      final createdQuizAnswer = QuizAnswer.create(
-        topicId: createTopicId,
-        categoryId: createCategoryId,
-        questionId: createQuestionId,
-        questionText: createQuestionText,
-        givenAnswers: createGiven,
-        correctAnswers: createCorrect,
-        allAnswers: createAll,
-        explanation: createExplanation,
-        pointsEarned: createPoints,
-        possiblePoints: createPossible,
-      );
+        // Assert
+        expect(testQuizAnswerDefaultPoints.pointsEarned, 0);
+        expect(testQuizAnswerDefaultPoints.possiblePoints, 0);
+      },
+    );
 
-      // Assert
-      expect(createdQuizAnswer.id, isNotEmpty);
-      expect(
+    test(
+      'QuizAnswer.create factory generates UUID and calculates incorrectAnswers',
+      () {
+        // Arrange
+        const createTopicId = 'topic-create';
+        const createCategoryId = 'cat-create';
+        const createQuestionId = 'q-create';
+        const createQuestionText = 'Create Question?';
+        final createGiven = ['g1', 'g3', 'g4']; // Given
+        final createCorrect = ['g1', 'g2', 'g4']; // Correct
+        final createAll = ['g1', 'g2', 'g3', 'g4', 'g5'];
+        const createExplanation = 'Create Exp';
+        const createPoints = 5;
+        const createPossible = 10;
+        final expectedIncorrect = [
+          'g3',
+        ]; // Calculated: g3 is given but not correct
+
+        // Act
+        final createdQuizAnswer = QuizAnswer.create(
+          topicId: createTopicId,
+          categoryId: createCategoryId,
+          questionId: createQuestionId,
+          questionText: createQuestionText,
+          givenAnswers: createGiven,
+          correctAnswers: createCorrect,
+          allAnswers: createAll,
+          explanation: createExplanation,
+          pointsEarned: createPoints,
+          possiblePoints: createPossible,
+        );
+
+        // Assert
+        expect(createdQuizAnswer.id, isNotEmpty);
+        expect(
           Uuid.isValidUUID(
-              fromString: createdQuizAnswer.id,
-              validationMode: ValidationMode.strictRFC4122),
-          isTrue);
-      expect(createdQuizAnswer.topicId, createTopicId);
-      expect(createdQuizAnswer.categoryId, createCategoryId);
-      expect(createdQuizAnswer.questionId, createQuestionId);
-      expect(createdQuizAnswer.questionText, createQuestionText);
-      expect(createdQuizAnswer.givenAnswers, createGiven);
-      expect(createdQuizAnswer.correctAnswers, createCorrect);
-      expect(createdQuizAnswer.incorrectAnswers,
-          equals(expectedIncorrect)); // Verify calculation
-      expect(createdQuizAnswer.allAnswers, createAll);
-      expect(createdQuizAnswer.explanation, createExplanation);
-      expect(createdQuizAnswer.pointsEarned, createPoints);
-      expect(createdQuizAnswer.possiblePoints, createPossible);
-    });
+            fromString: createdQuizAnswer.id,
+            validationMode: ValidationMode.strictRFC4122,
+          ),
+          isTrue,
+        );
+        expect(createdQuizAnswer.topicId, createTopicId);
+        expect(createdQuizAnswer.categoryId, createCategoryId);
+        expect(createdQuizAnswer.questionId, createQuestionId);
+        expect(createdQuizAnswer.questionText, createQuestionText);
+        expect(createdQuizAnswer.givenAnswers, createGiven);
+        expect(createdQuizAnswer.correctAnswers, createCorrect);
+        expect(
+          createdQuizAnswer.incorrectAnswers,
+          equals(expectedIncorrect),
+        ); // Verify calculation
+        expect(createdQuizAnswer.allAnswers, createAll);
+        expect(createdQuizAnswer.explanation, createExplanation);
+        expect(createdQuizAnswer.pointsEarned, createPoints);
+        expect(createdQuizAnswer.possiblePoints, createPossible);
+      },
+    );
 
     test('QuizAnswer.create factory handles null explanation', () {
       // Arrange
@@ -174,17 +183,24 @@ void main() {
 
       // Act
       final createdQuizAnswer = QuizAnswer.create(
-        topicId: 't', categoryId: 'c', questionId: 'q', questionText: 'qt',
-        givenAnswers: createGiven, correctAnswers: createCorrect,
+        topicId: 't',
+        categoryId: 'c',
+        questionId: 'q',
+        questionText: 'qt',
+        givenAnswers: createGiven,
+        correctAnswers: createCorrect,
         allAnswers: createAll,
         explanation: null, // Explicitly null
-        pointsEarned: 1, possiblePoints: 1,
+        pointsEarned: 1,
+        possiblePoints: 1,
       );
 
       // Assert
       expect(createdQuizAnswer.explanation, isNull);
       expect(
-          createdQuizAnswer.incorrectAnswers, isEmpty); // Correct calculation
+        createdQuizAnswer.incorrectAnswers,
+        isEmpty,
+      ); // Correct calculation
     });
 
     test('fromJson correctly deserializes JSON map', () {
@@ -197,21 +213,23 @@ void main() {
       expect(answerFromJson, equals(testQuizAnswer));
     });
 
-    test('fromJson correctly deserializes JSON map and applies default points',
-        () {
-      // Arrange
-      final jsonWithoutPoints = Map<String, dynamic>.from(testJson);
-      jsonWithoutPoints.remove('pointsEarned');
-      jsonWithoutPoints.remove('possiblePoints');
+    test(
+      'fromJson correctly deserializes JSON map and applies default points',
+      () {
+        // Arrange
+        final jsonWithoutPoints = Map<String, dynamic>.from(testJson);
+        jsonWithoutPoints.remove('pointsEarned');
+        jsonWithoutPoints.remove('possiblePoints');
 
-      // Act
-      final answerFromJson = QuizAnswer.fromJson(jsonWithoutPoints);
+        // Act
+        final answerFromJson = QuizAnswer.fromJson(jsonWithoutPoints);
 
-      // Assert
-      expect(answerFromJson.id, testId);
-      expect(answerFromJson.pointsEarned, 0); // Default applied
-      expect(answerFromJson.possiblePoints, 0); // Default applied
-    });
+        // Assert
+        expect(answerFromJson.id, testId);
+        expect(answerFromJson.pointsEarned, 0); // Default applied
+        expect(answerFromJson.possiblePoints, 0); // Default applied
+      },
+    );
 
     test('toJson correctly serializes object', () {
       // Arrange: testQuizAnswer is defined above
@@ -282,8 +300,9 @@ void main() {
       );
       final answer2 = answer1.copyWith(id: 'diff-id-2'); // Different ID
       final answer3 = answer1.copyWith(pointsEarned: 5); // Different points
-      final answer4 =
-          answer1.copyWith(givenAnswers: ['b']); // Different given answers
+      final answer4 = answer1.copyWith(
+        givenAnswers: ['b'],
+      ); // Different given answers
 
       // Act & Assert
       expect(answer1 == answer2, isFalse);
@@ -299,12 +318,16 @@ void main() {
 
       // Act
       final copiedWithId = testQuizAnswer.copyWith(id: 'new-qa-id');
-      final copiedWithPoints =
-          testQuizAnswer.copyWith(pointsEarned: 0, possiblePoints: 1);
-      final copiedWithExplanation =
-          testQuizAnswer.copyWith(explanation: 'New explanation.');
-      final copiedWithNullExplanation =
-          testQuizAnswer.copyWith(explanation: null);
+      final copiedWithPoints = testQuizAnswer.copyWith(
+        pointsEarned: 0,
+        possiblePoints: 1,
+      );
+      final copiedWithExplanation = testQuizAnswer.copyWith(
+        explanation: 'New explanation.',
+      );
+      final copiedWithNullExplanation = testQuizAnswer.copyWith(
+        explanation: null,
+      );
       final copiedWithGiven = testQuizAnswer.copyWith(givenAnswers: ['ans1']);
 
       // Assert

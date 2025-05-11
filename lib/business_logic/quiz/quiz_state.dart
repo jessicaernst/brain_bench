@@ -47,16 +47,16 @@ class QuizState extends Equatable {
   /// Returns a [QuizState] with empty lists, a [currentIndex] of -1 (or 0 depending on logic),
   /// and [isLoadingAnswers] set to false.
   factory QuizState.initial() => const QuizState(
-        // Mark as const
-        questions: [],
-        // Set to -1 to align with 'Initial state is correct' test expectation.
-        // Adjust if 0 is the intended starting index after initialization.
-        currentIndex: -1,
-        correctAnswers: [],
-        incorrectAnswers: [],
-        missedCorrectAnswers: [],
-        isLoadingAnswers: false,
-      );
+    // Mark as const
+    questions: [],
+    // Set to -1 to align with 'Initial state is correct' test expectation.
+    // Adjust if 0 is the intended starting index after initialization.
+    currentIndex: -1,
+    correctAnswers: [],
+    incorrectAnswers: [],
+    missedCorrectAnswers: [],
+    isLoadingAnswers: false,
+  );
 
   /// Creates a copy of the current [QuizState] with potentially updated fields.
   ///
@@ -88,13 +88,13 @@ class QuizState extends Equatable {
   /// the instances are considered equal.
   @override
   List<Object?> get props => [
-        questions,
-        currentIndex,
-        correctAnswers,
-        incorrectAnswers,
-        missedCorrectAnswers,
-        isLoadingAnswers,
-      ];
+    questions,
+    currentIndex,
+    correctAnswers,
+    incorrectAnswers,
+    missedCorrectAnswers,
+    isLoadingAnswers,
+  ];
 
   /// Optional: Enhances the default `toString()` output for easier debugging.
   /// When true, `toString()` will include the class name and the `props`.

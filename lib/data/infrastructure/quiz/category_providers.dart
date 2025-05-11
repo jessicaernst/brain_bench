@@ -29,10 +29,12 @@ class Categories extends _$Categories {
     // WidgetRef ref, // <-- PARAMETER REMOVED
   ) async {
     // Use the notifier's 'ref' to read dependencies
-    final QuizMockDatabaseRepository repo =
-        await ref.read(quizMockDatabaseRepositoryProvider.future);
-    final AppUser? appUser =
-        await ref.read(currentUserProvider.future); // Read current user state
+    final QuizMockDatabaseRepository repo = await ref.read(
+      quizMockDatabaseRepositoryProvider.future,
+    );
+    final AppUser? appUser = await ref.read(
+      currentUserProvider.future,
+    ); // Read current user state
 
     if (appUser == null) {
       _logger.warning('Cannot update category progress: currentUser is null.');
@@ -40,24 +42,32 @@ class Categories extends _$Categories {
     }
 
     _logger.finer(
-        'Updating progress for category $categoryId, user ${appUser.uid}');
+      'Updating progress for category $categoryId, user ${appUser.uid}',
+    );
 
     try {
       // Fetch necessary data using the repository
-      final List<Topic> allTopics =
-          await repo.getTopics(categoryId, languageCode);
-      final AppUser? user =
-          await repo.getUser(appUser.uid); // Fetch user data from DB
+      final List<Topic> allTopics = await repo.getTopics(
+        categoryId,
+        languageCode,
+      );
+      final AppUser? user = await repo.getUser(
+        appUser.uid,
+      ); // Fetch user data from DB
 
       if (user == null) {
         _logger.warning(
-            'Cannot update category progress: User ${appUser.uid} not found in DB.');
+          'Cannot update category progress: User ${appUser.uid} not found in DB.',
+        );
         return; // Exit if user data not found in DB
       }
 
       // Calculate progress using the helper method
-      final double progress =
-          _calculateCategoryProgress(allTopics, user, categoryId);
+      final double progress = _calculateCategoryProgress(
+        allTopics,
+        user,
+        categoryId,
+      );
 
       // Create the updated user object
       final updatedUser = user.copyWith(
@@ -71,10 +81,14 @@ class Categories extends _$Categories {
       // Save the updated user data
       await repo.updateUser(updatedUser);
       _logger.info(
-          '✅ Category progress updated for $categoryId: $progress'); // Log in English
+        '✅ Category progress updated for $categoryId: $progress',
+      ); // Log in English
     } catch (e, s) {
       _logger.severe(
-          '❌ Error updating category progress for $categoryId', e, s);
+        '❌ Error updating category progress for $categoryId',
+        e,
+        s,
+      );
       // Re-throw the exception so the caller (e.g., UI) can handle it if needed
       rethrow;
     }
@@ -82,10 +96,14 @@ class Categories extends _$Categories {
 
   // Helper method remains the same
   double _calculateCategoryProgress(
-      List<Topic> topics, AppUser user, String categoryId) {
+    List<Topic> topics,
+    AppUser user,
+    String categoryId,
+  ) {
     if (topics.isEmpty) {
-      _logger
-          .finer('No topics found for category $categoryId, progress is 0.0');
+      _logger.finer(
+        'No topics found for category $categoryId, progress is 0.0',
+      );
       return 0.0;
     }
 
@@ -94,7 +112,8 @@ class Categories extends _$Categories {
         topics.where((t) => topicDoneMap[t.id] == true).length;
     final progress = passedTopicsCount / topics.length;
     _logger.finer(
-        'Calculated progress for $categoryId: $passedTopicsCount / ${topics.length} = $progress');
+      'Calculated progress for $categoryId: $passedTopicsCount / ${topics.length} = $progress',
+    );
     return progress;
   }
 }

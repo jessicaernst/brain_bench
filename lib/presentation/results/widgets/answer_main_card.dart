@@ -53,9 +53,10 @@ class AnswerMainCard extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 1),
             decoration: BoxDecoration(
-              gradient: isDarkMode
-                  ? BrainBenchGradients.answerCardDarkGradient
-                  : BrainBenchGradients.answerCardLightGradient,
+              gradient:
+                  isDarkMode
+                      ? BrainBenchGradients.answerCardDarkGradient
+                      : BrainBenchGradients.answerCardLightGradient,
               borderRadius: BorderRadius.circular(25),
             ),
             child: Row(
@@ -79,10 +80,7 @@ class AnswerMainCard extends StatelessWidget {
                 AnimatedRotation(
                   turns: isExpanded ? 0.5 : 0.0,
                   duration: const Duration(milliseconds: 300),
-                  child: Icon(
-                    Icons.expand_more,
-                    color: iconTextColor,
-                  ),
+                  child: Icon(Icons.expand_more, color: iconTextColor),
                 ),
               ],
             ),

@@ -52,7 +52,7 @@ class SplashPage extends HookConsumerWidget {
     useEffect(() {
       // Local variables within the effect scope.
       RiveAnimationController?
-          controllerInstance; // To manage the Rive animation controller
+      controllerInstance; // To manage the Rive animation controller
       Timer? minDisplayTimer; // To manage the minimum display timer
 
       /// Asynchronously loads the Rive animation file and prepares the Artboard.
@@ -113,7 +113,11 @@ class SplashPage extends HookConsumerWidget {
           // Attempt to navigate away from the splash screen now that the timer is done.
           // The function will check if the auth state is also ready.
           _checkAuthAndNavigate(
-              ref, context, minTimeElapsed.value, navigationTriggered);
+            ref,
+            context,
+            minTimeElapsed.value,
+            navigationTriggered,
+          );
         });
 
         // Optionally wait for Rive loading to complete. This ensures that any
@@ -146,11 +150,16 @@ class SplashPage extends HookConsumerWidget {
       // `next` represents the new state of the `currentUserProvider`.
       if (!next.isLoading) {
         _logger.info(
-            'Auth state resolved: isLoading=${next.isLoading}, hasValue=${next.hasValue}, hasError=${next.hasError}');
+          'Auth state resolved: isLoading=${next.isLoading}, hasValue=${next.hasValue}, hasError=${next.hasError}',
+        );
         // Attempt to navigate away from the splash screen now that the auth state is known.
         // The function will check if the minimum display time has also passed.
         _checkAuthAndNavigate(
-            ref, context, minTimeElapsed.value, navigationTriggered);
+          ref,
+          context,
+          minTimeElapsed.value,
+          navigationTriggered,
+        );
       }
     });
 
@@ -170,21 +179,24 @@ class SplashPage extends HookConsumerWidget {
             Positioned.fill(
               // Makes the image fill the entire screen
               child: Assets.backgrounds.lightMode.image(
-                fit: BoxFit
-                    .cover, // Cover the screen area, cropping if necessary
+                fit:
+                    BoxFit
+                        .cover, // Cover the screen area, cropping if necessary
               ),
             ),
           // Center the main content (Rive animation or loading indicator).
           Center(
             // Display the Rive animation if the artboard has loaded (`riveArtboard.value != null`).
-            child: riveArtboard.value != null
-                ? Rive(
-                    artboard: riveArtboard.value!, // Pass the loaded artboard
-                    fit: BoxFit
-                        .contain, // Adjust how the animation fits the space
-                  )
-                // Otherwise (while loading or if an error occurred), display a loading indicator.
-                : const CircularProgressIndicator(),
+            child:
+                riveArtboard.value != null
+                    ? Rive(
+                      artboard: riveArtboard.value!, // Pass the loaded artboard
+                      fit:
+                          BoxFit
+                              .contain, // Adjust how the animation fits the space
+                    )
+                    // Otherwise (while loading or if an error occurred), display a loading indicator.
+                    : const CircularProgressIndicator(),
           ),
         ],
       ),
@@ -201,7 +213,7 @@ class SplashPage extends HookConsumerWidget {
     BuildContext context, // BuildContext for navigation
     bool hasMinTimeElapsed, // Current state of the timer flag
     ValueNotifier<bool>
-        navigationTriggeredNotifier, // State hook to prevent double navigation
+    navigationTriggeredNotifier, // State hook to prevent double navigation
   ) {
     // --- Guard Clause: Prevent Multiple Navigations ---
     // If navigation has already been triggered, do nothing further.
@@ -225,7 +237,8 @@ class SplashPage extends HookConsumerWidget {
     if (canNavigate) {
       // Conditions met! Proceed with navigation.
       _logger.info(
-          'Conditions met for navigation: Min time elapsed and Auth resolved.');
+        'Conditions met for navigation: Min time elapsed and Auth resolved.',
+      );
       // Set the flag to true immediately to prevent this block from running again.
       navigationTriggeredNotifier.value = true;
 
@@ -245,7 +258,8 @@ class SplashPage extends HookConsumerWidget {
       // Log why navigation is not happening yet if conditions are not met.
       // This is useful for debugging.
       _logger.fine(
-          'Navigation conditions not yet met: minTimeElapsed=$hasMinTimeElapsed, authIsLoading=${userAsyncValue.isLoading}');
+        'Navigation conditions not yet met: minTimeElapsed=$hasMinTimeElapsed, authIsLoading=${userAsyncValue.isLoading}',
+      );
     }
   }
 }

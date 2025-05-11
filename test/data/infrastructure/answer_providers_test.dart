@@ -53,49 +53,60 @@ void main() {
 
   // --- Added Group ---
   group('answersProvider', () {
-    test('should fetch answers from repository and return list on success',
-        () async {
-      // Arrange
-      // Stub the getAnswers method to return the mock list when called with specific args
-      when(() => mockRepository.getAnswers(answerIds, languageCode))
-          .thenAnswer((_) async => mockAnswers);
+    test(
+      'should fetch answers from repository and return list on success',
+      () async {
+        // Arrange
+        // Stub the getAnswers method to return the mock list when called with specific args
+        when(
+          () => mockRepository.getAnswers(answerIds, languageCode),
+        ).thenAnswer((_) async => mockAnswers);
 
-      // Act
-      // Read the provider's future and await its result
-      final result =
-          await container.read(answersProvider(answerIds, languageCode).future);
+        // Act
+        // Read the provider's future and await its result
+        final result = await container.read(
+          answersProvider(answerIds, languageCode).future,
+        );
 
-      // Assert
-      // Verify the result matches the mock data
-      expect(result, equals(mockAnswers));
-      // Verify that the repository method was called exactly once with the correct arguments
-      verify(() => mockRepository.getAnswers(answerIds, languageCode))
-          .called(1);
-    });
+        // Assert
+        // Verify the result matches the mock data
+        expect(result, equals(mockAnswers));
+        // Verify that the repository method was called exactly once with the correct arguments
+        verify(
+          () => mockRepository.getAnswers(answerIds, languageCode),
+        ).called(1);
+      },
+    );
 
-    test('should return empty list when repository returns empty list',
-        () async {
-      // Arrange
-      // Stub the getAnswers method to return an empty list
-      when(() => mockRepository.getAnswers(answerIds, languageCode))
-          .thenAnswer((_) async => []);
+    test(
+      'should return empty list when repository returns empty list',
+      () async {
+        // Arrange
+        // Stub the getAnswers method to return an empty list
+        when(
+          () => mockRepository.getAnswers(answerIds, languageCode),
+        ).thenAnswer((_) async => []);
 
-      // Act
-      final result =
-          await container.read(answersProvider(answerIds, languageCode).future);
+        // Act
+        final result = await container.read(
+          answersProvider(answerIds, languageCode).future,
+        );
 
-      // Assert
-      expect(result, isEmpty);
-      verify(() => mockRepository.getAnswers(answerIds, languageCode))
-          .called(1);
-    });
+        // Assert
+        expect(result, isEmpty);
+        verify(
+          () => mockRepository.getAnswers(answerIds, languageCode),
+        ).called(1);
+      },
+    );
 
     test('should throw exception when repository throws exception', () async {
       // Arrange
       final testException = Exception('Database error');
       // Stub the getAnswers method to throw an exception
-      when(() => mockRepository.getAnswers(answerIds, languageCode))
-          .thenThrow(testException);
+      when(
+        () => mockRepository.getAnswers(answerIds, languageCode),
+      ).thenThrow(testException);
 
       // Act & Assert
       // Expect that awaiting the future from the provider throws the same exception
@@ -105,8 +116,9 @@ void main() {
         throwsA(testException),
       );
       // Verify the repository method was still called
-      verify(() => mockRepository.getAnswers(answerIds, languageCode))
-          .called(1);
+      verify(
+        () => mockRepository.getAnswers(answerIds, languageCode),
+      ).called(1);
     });
 
     test('should call repository with different arguments', () async {
@@ -114,17 +126,20 @@ void main() {
       final differentIds = ['diff1', 'diff2'];
       const differentLang = 'de';
       final differentMockAnswers = [_createAnswer('diff1')];
-      when(() => mockRepository.getAnswers(differentIds, differentLang))
-          .thenAnswer((_) async => differentMockAnswers);
+      when(
+        () => mockRepository.getAnswers(differentIds, differentLang),
+      ).thenAnswer((_) async => differentMockAnswers);
 
       // Act
-      final result = await container
-          .read(answersProvider(differentIds, differentLang).future);
+      final result = await container.read(
+        answersProvider(differentIds, differentLang).future,
+      );
 
       // Assert
       expect(result, equals(differentMockAnswers));
-      verify(() => mockRepository.getAnswers(differentIds, differentLang))
-          .called(1);
+      verify(
+        () => mockRepository.getAnswers(differentIds, differentLang),
+      ).called(1);
       // Verify the original arguments were NOT used in this specific call
       verifyNever(() => mockRepository.getAnswers(answerIds, languageCode));
     });

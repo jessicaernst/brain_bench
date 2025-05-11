@@ -6,10 +6,7 @@ abstract class BrainBenchGradients {
   static const LinearGradient loginBackgroundGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      BrainBenchColors.blueprintBlue,
-      BrainBenchColors.blueprintBlue,
-    ],
+    colors: [BrainBenchColors.blueprintBlue, BrainBenchColors.blueprintBlue],
   );
 
   // Login Card Background Gradient
@@ -58,10 +55,7 @@ abstract class BrainBenchGradients {
   static final LinearGradient darkModeGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      BrainBenchColors.flutterSky40,
-      BrainBenchColors.flutterSky10,
-    ],
+    colors: [BrainBenchColors.flutterSky40, BrainBenchColors.flutterSky10],
   );
 
   static LinearGradient correctAnswerGlass = LinearGradient(
@@ -70,7 +64,7 @@ abstract class BrainBenchGradients {
     stops: const [0.0, 1.0],
     colors: [
       BrainBenchColors.correctAnswerGlass.withAlpha((0.4 * 255).toInt()),
-      BrainBenchColors.correctAnswerGlass.withAlpha((0.1 * 255).toInt())
+      BrainBenchColors.correctAnswerGlass.withAlpha((0.1 * 255).toInt()),
     ],
   );
 
@@ -80,17 +74,14 @@ abstract class BrainBenchGradients {
     stops: const [0.0, 1.0],
     colors: [
       BrainBenchColors.falseQuestionGlass.withAlpha((0.4 * 255).toInt()),
-      BrainBenchColors.falseQuestionGlass.withAlpha((0.1 * 255).toInt())
+      BrainBenchColors.falseQuestionGlass.withAlpha((0.1 * 255).toInt()),
     ],
   );
 
   static final LinearGradient newsCarouselCardBack = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [
-      BrainBenchColors.flutterSky40,
-      BrainBenchColors.flutterSky10,
-    ],
+    colors: [BrainBenchColors.flutterSky40, BrainBenchColors.flutterSky10],
   );
 
   static final LinearGradient newsCarouselCardTop = LinearGradient(
@@ -117,21 +108,11 @@ abstract class BrainBenchGradients {
   );
 
   static final LinearGradient btnOverlayGradient = LinearGradient(
-    colors: [
-      Colors.white.withAlpha(
-        (0.3 * 255).toInt(),
-      ),
-      Colors.transparent,
-    ],
+    colors: [Colors.white.withAlpha((0.3 * 255).toInt()), Colors.transparent],
   );
 
   static final LinearGradient btnOverlayGradientDark = LinearGradient(
-    colors: [
-      Colors.white.withAlpha(
-        (0.4 * 255).toInt(),
-      ),
-      Colors.transparent,
-    ],
+    colors: [Colors.white.withAlpha((0.4 * 255).toInt()), Colors.transparent],
   );
 
   // Topic Card Gradients

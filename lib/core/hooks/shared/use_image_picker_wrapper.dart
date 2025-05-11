@@ -10,7 +10,8 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 /// A custom hook that wraps the image picker functionality.
 /// It determines if the device is a simulator and returns the result of the image picker.
 ImagePickerResult useImagePickerWrapper() {
-  final isSimulator = Platform.isIOS &&
+  final isSimulator =
+      Platform.isIOS &&
       kDebugMode &&
       Platform.environment.containsKey('SIMULATOR_DEVICE_NAME');
 

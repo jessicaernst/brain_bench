@@ -14,7 +14,6 @@ final _logger = Logger('ProfileNotifier');
 class ProfileNotifier extends _$ProfileNotifier {
   @override
   FutureOr<void> build() {
-    // No initial loading needed here.
     return null;
   }
 
@@ -27,14 +26,16 @@ class ProfileNotifier extends _$ProfileNotifier {
 
     try {
       // 1. Get the Database Repository (asynchronously)
-      final DatabaseRepository dbRepository =
-          await ref.read(quizMockDatabaseRepositoryProvider.future);
+      final DatabaseRepository dbRepository = await ref.read(
+        quizMockDatabaseRepositoryProvider.future,
+      );
 
       // 2. Get the current authentication state's AppUser? value
       //    Reading the latest value emitted by the currentUserProvider stream.
       //    This assumes the stream has emitted a value for the logged-in user.
-      final AsyncValue<AppUser?> authUserAsyncValue =
-          ref.read(currentUserProvider);
+      final AsyncValue<AppUser?> authUserAsyncValue = ref.read(
+        currentUserProvider,
+      );
 
       // 3. Extract the userId from the auth state AppUser
       //    valueOrNull safely gets the data if available, otherwise null.
@@ -43,8 +44,9 @@ class ProfileNotifier extends _$ProfileNotifier {
       // 4. Check if userId could be obtained (user is logged in and stream has emitted)
       if (userId == null || userId.isEmpty) {
         // This could happen if the user is not logged in, or the stream hasn't emitted yet.
-        final error =
-            Exception('User not authenticated or user ID not available');
+        final error = Exception(
+          'User not authenticated or user ID not available',
+        );
         _logger.warning('Profile update failed: ${error.toString()}');
         state = AsyncError(error, StackTrace.current);
         return;
@@ -63,7 +65,8 @@ class ProfileNotifier extends _$ProfileNotifier {
 
       // 5. Call the database repository method
       _logger.info(
-          'Calling updateUserProfile for user $userId with name: $displayName');
+        'Calling updateUserProfile for user $userId with name: $displayName',
+      );
       await dbRepository.updateUserProfile(
         userId: userId, // Use the extracted userId
         displayName: displayName,
@@ -74,7 +77,8 @@ class ProfileNotifier extends _$ProfileNotifier {
       // 6. Invalidate the provider that loads the *full* user model from the DB
       //    This ensures that UIs watching currentUserModelProvider get the updated data.
       ref.invalidate(
-          currentUserModelProvider); // Revert to currentUserModelProvider
+        currentUserModelProvider,
+      ); // Revert to currentUserModelProvider
       _logger.fine('Invalidated currentUserModelProvider.');
 
       // 7. Set state to success
@@ -86,7 +90,10 @@ class ProfileNotifier extends _$ProfileNotifier {
       final userIdForLog =
           ref.read(currentUserProvider).valueOrNull?.uid ?? 'unknown';
       _logger.severe(
-          'Failed to update profile for user $userIdForLog', e, stack);
+        'Failed to update profile for user $userIdForLog',
+        e,
+        stack,
+      );
       state = AsyncError(e, stack);
     }
   }

@@ -21,16 +21,13 @@ class QuizErrorView extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Assets.images.sadHam.image(
-              width: 200,
-              height: 200,
-            ),
+            Assets.images.sadHam.image(width: 200, height: 200),
             const SizedBox(height: 48),
             Text(
               localizations.quizErrorLoadingQuestions,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.error,
-                  ),
+                color: Theme.of(context).colorScheme.error,
+              ),
               textAlign: TextAlign.center,
             ),
           ],

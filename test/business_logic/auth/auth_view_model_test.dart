@@ -19,8 +19,10 @@ void main() {
   late MockAuthRepository mockAuthRepository;
 
   late Future<bool> Function(
-          ensure_user_exists.Reader, AppUser?) // <-- Update type here
-      originalEnsureUserExists;
+    ensure_user_exists.Reader,
+    AppUser?,
+  ) // <-- Update type here
+  originalEnsureUserExists;
 
   setUpAll(() {
     originalEnsureUserExists = ensure_user_exists.ensureUserExistsIfNeeded;
@@ -38,11 +40,12 @@ void main() {
 
   // Test data
   final testUser = AppUser(
-      uid: 'test-uid',
-      displayName: 'Test User',
-      photoUrl: 'test-url',
-      email: 'test@example.com',
-      id: 'test-uid');
+    uid: 'test-uid',
+    displayName: 'Test User',
+    photoUrl: 'test-url',
+    email: 'test@example.com',
+    id: 'test-uid',
+  );
   const testEmail = 'test@example.com';
   const testPassword = 'password';
   final testException = Exception('Test Exception');
@@ -58,7 +61,9 @@ void main() {
       );
       addTearDown(container.dispose);
       expect(
-          container.read(authViewModelProvider), const AsyncData<void>(null));
+        container.read(authViewModelProvider),
+        const AsyncData<void>(null),
+      );
     });
 
     // --- signIn Tests (Already implemented) ---
@@ -66,8 +71,9 @@ void main() {
       testWidgets('signIn - success', (WidgetTester tester) async {
         // Arrange
         mockAuthRepository = MockAuthRepository();
-        when(() => mockAuthRepository.signInWithEmail(any(), any()))
-            .thenAnswer((_) async => testUser);
+        when(
+          () => mockAuthRepository.signInWithEmail(any(), any()),
+        ).thenAnswer((_) async => testUser);
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
@@ -78,17 +84,18 @@ void main() {
         await tester.pumpWidget(
           ProviderScope(
             overrides: overrides,
-            child: MaterialApp(
-              home: Scaffold(body: Container()),
-            ),
+            child: MaterialApp(home: Scaffold(body: Container())),
           ),
         );
 
-        final container =
-            ProviderScope.containerOf(tester.element(find.byType(Scaffold)));
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(Scaffold)),
+        );
         final sub = container.listen<AsyncValue<void>>(
-            authViewModelProvider, (_, next) => states.add(next),
-            fireImmediately: true);
+          authViewModelProvider,
+          (_, next) => states.add(next),
+          fireImmediately: true,
+        );
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
@@ -108,17 +115,18 @@ void main() {
           const AsyncLoading<void>(),
           const AsyncData<void>(null),
         ]);
-        verify(() =>
-                mockAuthRepository.signInWithEmail(testEmail, testPassword))
-            .called(1);
+        verify(
+          () => mockAuthRepository.signInWithEmail(testEmail, testPassword),
+        ).called(1);
         verifyNoMoreInteractions(mockAuthRepository);
       });
 
       testWidgets('signIn - failure', (WidgetTester tester) async {
         // Arrange
         mockAuthRepository = MockAuthRepository();
-        when(() => mockAuthRepository.signInWithEmail(any(), any()))
-            .thenThrow(testException);
+        when(
+          () => mockAuthRepository.signInWithEmail(any(), any()),
+        ).thenThrow(testException);
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
@@ -129,17 +137,18 @@ void main() {
         await tester.pumpWidget(
           ProviderScope(
             overrides: overrides,
-            child: MaterialApp(
-              home: Scaffold(body: Container()),
-            ),
+            child: MaterialApp(home: Scaffold(body: Container())),
           ),
         );
 
-        final container =
-            ProviderScope.containerOf(tester.element(find.byType(Scaffold)));
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(Scaffold)),
+        );
         final sub = container.listen<AsyncValue<void>>(
-            authViewModelProvider, (_, next) => states.add(next),
-            fireImmediately: true);
+          authViewModelProvider,
+          (_, next) => states.add(next),
+          fireImmediately: true,
+        );
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
@@ -157,12 +166,15 @@ void main() {
         expect(states, [
           const AsyncData<void>(null),
           const AsyncLoading<void>(),
-          isA<AsyncError<void>>()
-              .having((e) => e.error, 'error', testException),
+          isA<AsyncError<void>>().having(
+            (e) => e.error,
+            'error',
+            testException,
+          ),
         ]);
-        verify(() =>
-                mockAuthRepository.signInWithEmail(testEmail, testPassword))
-            .called(1);
+        verify(
+          () => mockAuthRepository.signInWithEmail(testEmail, testPassword),
+        ).called(1);
         verifyNoMoreInteractions(mockAuthRepository);
       });
     });
@@ -172,8 +184,9 @@ void main() {
       testWidgets('signUp - success', (WidgetTester tester) async {
         // Arrange
         mockAuthRepository = MockAuthRepository();
-        when(() => mockAuthRepository.signUpWithEmail(any(), any()))
-            .thenAnswer((_) async => testUser);
+        when(
+          () => mockAuthRepository.signUpWithEmail(any(), any()),
+        ).thenAnswer((_) async => testUser);
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
@@ -187,11 +200,14 @@ void main() {
           ),
         );
 
-        final container =
-            ProviderScope.containerOf(tester.element(find.byType(Scaffold)));
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(Scaffold)),
+        );
         final sub = container.listen<AsyncValue<void>>(
-            authViewModelProvider, (_, next) => states.add(next),
-            fireImmediately: true);
+          authViewModelProvider,
+          (_, next) => states.add(next),
+          fireImmediately: true,
+        );
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
@@ -211,17 +227,18 @@ void main() {
           const AsyncLoading<void>(),
           const AsyncData<void>(null),
         ]);
-        verify(() =>
-                mockAuthRepository.signUpWithEmail(testEmail, testPassword))
-            .called(1);
+        verify(
+          () => mockAuthRepository.signUpWithEmail(testEmail, testPassword),
+        ).called(1);
         verifyNoMoreInteractions(mockAuthRepository);
       });
 
       testWidgets('signUp - failure', (WidgetTester tester) async {
         // Arrange
         mockAuthRepository = MockAuthRepository();
-        when(() => mockAuthRepository.signUpWithEmail(any(), any()))
-            .thenThrow(testException);
+        when(
+          () => mockAuthRepository.signUpWithEmail(any(), any()),
+        ).thenThrow(testException);
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
@@ -235,11 +252,14 @@ void main() {
           ),
         );
 
-        final container =
-            ProviderScope.containerOf(tester.element(find.byType(Scaffold)));
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(Scaffold)),
+        );
         final sub = container.listen<AsyncValue<void>>(
-            authViewModelProvider, (_, next) => states.add(next),
-            fireImmediately: true);
+          authViewModelProvider,
+          (_, next) => states.add(next),
+          fireImmediately: true,
+        );
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
@@ -257,12 +277,15 @@ void main() {
         expect(states, [
           const AsyncData<void>(null),
           const AsyncLoading<void>(),
-          isA<AsyncError<void>>()
-              .having((e) => e.error, 'error', testException),
+          isA<AsyncError<void>>().having(
+            (e) => e.error,
+            'error',
+            testException,
+          ),
         ]);
-        verify(() =>
-                mockAuthRepository.signUpWithEmail(testEmail, testPassword))
-            .called(1);
+        verify(
+          () => mockAuthRepository.signUpWithEmail(testEmail, testPassword),
+        ).called(1);
         verifyNoMoreInteractions(mockAuthRepository);
       });
     });
@@ -273,8 +296,9 @@ void main() {
         // Arrange
         mockAuthRepository = MockAuthRepository();
         // ViewModel now resets state on success, so we expect the final AsyncData
-        when(() => mockAuthRepository.signInWithGoogle())
-            .thenAnswer((_) async => testUser);
+        when(
+          () => mockAuthRepository.signInWithGoogle(),
+        ).thenAnswer((_) async => testUser);
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
@@ -288,11 +312,14 @@ void main() {
           ),
         );
 
-        final container =
-            ProviderScope.containerOf(tester.element(find.byType(Scaffold)));
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(Scaffold)),
+        );
         final sub = container.listen<AsyncValue<void>>(
-            authViewModelProvider, (_, next) => states.add(next),
-            fireImmediately: true);
+          authViewModelProvider,
+          (_, next) => states.add(next),
+          fireImmediately: true,
+        );
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
@@ -317,8 +344,9 @@ void main() {
       testWidgets('signInWithGoogle - failure', (WidgetTester tester) async {
         // Arrange
         mockAuthRepository = MockAuthRepository();
-        when(() => mockAuthRepository.signInWithGoogle())
-            .thenThrow(testException);
+        when(
+          () => mockAuthRepository.signInWithGoogle(),
+        ).thenThrow(testException);
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
@@ -332,11 +360,14 @@ void main() {
           ),
         );
 
-        final container =
-            ProviderScope.containerOf(tester.element(find.byType(Scaffold)));
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(Scaffold)),
+        );
         final sub = container.listen<AsyncValue<void>>(
-            authViewModelProvider, (_, next) => states.add(next),
-            fireImmediately: true);
+          authViewModelProvider,
+          (_, next) => states.add(next),
+          fireImmediately: true,
+        );
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
@@ -350,8 +381,11 @@ void main() {
         expect(states, [
           const AsyncData<void>(null),
           const AsyncLoading<void>(),
-          isA<AsyncError<void>>()
-              .having((e) => e.error, 'error', testException),
+          isA<AsyncError<void>>().having(
+            (e) => e.error,
+            'error',
+            testException,
+          ),
         ]);
         verify(() => mockAuthRepository.signInWithGoogle()).called(1);
         verifyNoMoreInteractions(mockAuthRepository);
@@ -363,8 +397,9 @@ void main() {
       testWidgets('signInWithApple - success', (WidgetTester tester) async {
         // Arrange
         mockAuthRepository = MockAuthRepository();
-        when(() => mockAuthRepository.signInWithApple())
-            .thenAnswer((_) async => testUser);
+        when(
+          () => mockAuthRepository.signInWithApple(),
+        ).thenAnswer((_) async => testUser);
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
@@ -378,11 +413,14 @@ void main() {
           ),
         );
 
-        final container =
-            ProviderScope.containerOf(tester.element(find.byType(Scaffold)));
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(Scaffold)),
+        );
         final sub = container.listen<AsyncValue<void>>(
-            authViewModelProvider, (_, next) => states.add(next),
-            fireImmediately: true);
+          authViewModelProvider,
+          (_, next) => states.add(next),
+          fireImmediately: true,
+        );
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
@@ -405,8 +443,9 @@ void main() {
       testWidgets('signInWithApple - failure', (WidgetTester tester) async {
         // Arrange
         mockAuthRepository = MockAuthRepository();
-        when(() => mockAuthRepository.signInWithApple())
-            .thenThrow(testException);
+        when(
+          () => mockAuthRepository.signInWithApple(),
+        ).thenThrow(testException);
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
@@ -420,11 +459,14 @@ void main() {
           ),
         );
 
-        final container =
-            ProviderScope.containerOf(tester.element(find.byType(Scaffold)));
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(Scaffold)),
+        );
         final sub = container.listen<AsyncValue<void>>(
-            authViewModelProvider, (_, next) => states.add(next),
-            fireImmediately: true);
+          authViewModelProvider,
+          (_, next) => states.add(next),
+          fireImmediately: true,
+        );
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
@@ -438,8 +480,11 @@ void main() {
         expect(states, [
           const AsyncData<void>(null),
           const AsyncLoading<void>(),
-          isA<AsyncError<void>>()
-              .having((e) => e.error, 'error', testException),
+          isA<AsyncError<void>>().having(
+            (e) => e.error,
+            'error',
+            testException,
+          ),
         ]);
         verify(() => mockAuthRepository.signInWithApple()).called(1);
         verifyNoMoreInteractions(mockAuthRepository);
@@ -448,12 +493,14 @@ void main() {
 
     // --- sendPasswordResetEmail Tests ---
     group('sendPasswordResetEmail', () {
-      testWidgets('sendPasswordResetEmail - success',
-          (WidgetTester tester) async {
+      testWidgets('sendPasswordResetEmail - success', (
+        WidgetTester tester,
+      ) async {
         // Arrange
         mockAuthRepository = MockAuthRepository();
-        when(() => mockAuthRepository.sendPasswordResetEmail(any()))
-            .thenAnswer((_) async {});
+        when(
+          () => mockAuthRepository.sendPasswordResetEmail(any()),
+        ).thenAnswer((_) async {});
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
@@ -467,11 +514,14 @@ void main() {
           ),
         );
 
-        final container =
-            ProviderScope.containerOf(tester.element(find.byType(Scaffold)));
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(Scaffold)),
+        );
         final sub = container.listen<AsyncValue<void>>(
-            authViewModelProvider, (_, next) => states.add(next),
-            fireImmediately: true);
+          authViewModelProvider,
+          (_, next) => states.add(next),
+          fireImmediately: true,
+        );
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
@@ -490,17 +540,20 @@ void main() {
           const AsyncLoading<void>(),
           const AsyncData<void>(null), // ViewModel calls reset() on success
         ]);
-        verify(() => mockAuthRepository.sendPasswordResetEmail(testEmail))
-            .called(1);
+        verify(
+          () => mockAuthRepository.sendPasswordResetEmail(testEmail),
+        ).called(1);
         verifyNoMoreInteractions(mockAuthRepository);
       });
 
-      testWidgets('sendPasswordResetEmail - failure',
-          (WidgetTester tester) async {
+      testWidgets('sendPasswordResetEmail - failure', (
+        WidgetTester tester,
+      ) async {
         // Arrange
         mockAuthRepository = MockAuthRepository();
-        when(() => mockAuthRepository.sendPasswordResetEmail(any()))
-            .thenThrow(testException);
+        when(
+          () => mockAuthRepository.sendPasswordResetEmail(any()),
+        ).thenThrow(testException);
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
@@ -514,11 +567,14 @@ void main() {
           ),
         );
 
-        final container =
-            ProviderScope.containerOf(tester.element(find.byType(Scaffold)));
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(Scaffold)),
+        );
         final sub = container.listen<AsyncValue<void>>(
-            authViewModelProvider, (_, next) => states.add(next),
-            fireImmediately: true);
+          authViewModelProvider,
+          (_, next) => states.add(next),
+          fireImmediately: true,
+        );
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
@@ -535,11 +591,15 @@ void main() {
         expect(states, [
           const AsyncData<void>(null),
           const AsyncLoading<void>(),
-          isA<AsyncError<void>>()
-              .having((e) => e.error, 'error', testException),
+          isA<AsyncError<void>>().having(
+            (e) => e.error,
+            'error',
+            testException,
+          ),
         ]);
-        verify(() => mockAuthRepository.sendPasswordResetEmail(testEmail))
-            .called(1);
+        verify(
+          () => mockAuthRepository.sendPasswordResetEmail(testEmail),
+        ).called(1);
         verifyNoMoreInteractions(mockAuthRepository);
       });
     });
@@ -563,11 +623,14 @@ void main() {
           ),
         );
 
-        final container =
-            ProviderScope.containerOf(tester.element(find.byType(Scaffold)));
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(Scaffold)),
+        );
         final sub = container.listen<AsyncValue<void>>(
-            authViewModelProvider, (_, next) => states.add(next),
-            fireImmediately: true);
+          authViewModelProvider,
+          (_, next) => states.add(next),
+          fireImmediately: true,
+        );
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
@@ -604,11 +667,14 @@ void main() {
           ),
         );
 
-        final container =
-            ProviderScope.containerOf(tester.element(find.byType(Scaffold)));
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(Scaffold)),
+        );
         final sub = container.listen<AsyncValue<void>>(
-            authViewModelProvider, (_, next) => states.add(next),
-            fireImmediately: true);
+          authViewModelProvider,
+          (_, next) => states.add(next),
+          fireImmediately: true,
+        );
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
@@ -622,8 +688,11 @@ void main() {
         expect(states, [
           const AsyncData<void>(null),
           const AsyncLoading<void>(),
-          isA<AsyncError<void>>()
-              .having((e) => e.error, 'error', testException),
+          isA<AsyncError<void>>().having(
+            (e) => e.error,
+            'error',
+            testException,
+          ),
         ]);
         verify(() => mockAuthRepository.signOut()).called(1);
         verifyNoMoreInteractions(mockAuthRepository);

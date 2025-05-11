@@ -29,45 +29,50 @@ void main() {
     // --- Tests ---
 
     test(
-        'Default constructor creates instance with correct values and default isSelected',
-        () {
-      // Arrange & Act: testAnswer is already created
+      'Default constructor creates instance with correct values and default isSelected',
+      () {
+        // Arrange & Act: testAnswer is already created
 
-      // Assert
-      expect(testAnswer.id, testId);
-      expect(testAnswer.textEn, testTextEn);
-      expect(testAnswer.textDe, testTextDe);
-      expect(testAnswer.isCorrect, testIsCorrect);
-      expect(testAnswer.isSelected, false); // Verify default value
-    });
+        // Assert
+        expect(testAnswer.id, testId);
+        expect(testAnswer.textEn, testTextEn);
+        expect(testAnswer.textDe, testTextDe);
+        expect(testAnswer.isCorrect, testIsCorrect);
+        expect(testAnswer.isSelected, false); // Verify default value
+      },
+    );
 
-    test('Answer.create factory generates a valid UUID and sets properties',
-        () {
-      // Arrange
-      const createTextEn = 'Created Answer EN';
-      const createTextDe = 'Erstellte Antwort DE';
-      const createIsCorrect = false;
+    test(
+      'Answer.create factory generates a valid UUID and sets properties',
+      () {
+        // Arrange
+        const createTextEn = 'Created Answer EN';
+        const createTextDe = 'Erstellte Antwort DE';
+        const createIsCorrect = false;
 
-      // Act
-      final createdAnswer = Answer.create(
-        textEn: createTextEn,
-        textDe: createTextDe,
-        isCorrect: createIsCorrect,
-      );
+        // Act
+        final createdAnswer = Answer.create(
+          textEn: createTextEn,
+          textDe: createTextDe,
+          isCorrect: createIsCorrect,
+        );
 
-      // Assert
-      expect(createdAnswer.id, isNotEmpty);
-      // Basic check if it looks like a UUID v4
-      expect(
+        // Assert
+        expect(createdAnswer.id, isNotEmpty);
+        // Basic check if it looks like a UUID v4
+        expect(
           Uuid.isValidUUID(
-              fromString: createdAnswer.id,
-              validationMode: ValidationMode.strictRFC4122),
-          isTrue);
-      expect(createdAnswer.textEn, createTextEn);
-      expect(createdAnswer.textDe, createTextDe);
-      expect(createdAnswer.isCorrect, createIsCorrect);
-      expect(createdAnswer.isSelected, false); // Default value
-    });
+            fromString: createdAnswer.id,
+            validationMode: ValidationMode.strictRFC4122,
+          ),
+          isTrue,
+        );
+        expect(createdAnswer.textEn, createTextEn);
+        expect(createdAnswer.textDe, createTextDe);
+        expect(createdAnswer.isCorrect, createIsCorrect);
+        expect(createdAnswer.isSelected, false); // Default value
+      },
+    );
 
     test('fromJson correctly deserializes JSON map', () {
       // Arrange: testJson is defined above
@@ -80,8 +85,10 @@ void main() {
       expect(answerFromJson.textEn, testTextEn);
       expect(answerFromJson.textDe, testTextDe);
       expect(answerFromJson.isCorrect, testIsCorrect);
-      expect(answerFromJson.isSelected,
-          false); // Should not be in JSON, defaults to false
+      expect(
+        answerFromJson.isSelected,
+        false,
+      ); // Should not be in JSON, defaults to false
     });
 
     test('toJson correctly serializes object, excluding isSelected', () {
@@ -94,11 +101,13 @@ void main() {
 
       // Assert
       expect(
-          jsonOutput,
-          equals(
-              testJson)); // Should match the predefined JSON without isSelected
-      expect(jsonOutput.containsKey('isSelected'),
-          isFalse); // Explicitly check exclusion
+        jsonOutput,
+        equals(testJson),
+      ); // Should match the predefined JSON without isSelected
+      expect(
+        jsonOutput.containsKey('isSelected'),
+        isFalse,
+      ); // Explicitly check exclusion
     });
 
     test('Equality operator (==) works correctly for identical instances', () {
@@ -180,10 +189,14 @@ void main() {
       // and is marked with @JsonKey(includeFromJson: false, includeToJson: false),
       // it might be excluded from equality by default, but let's verify.
       // If this fails, it means isSelected *is* part of equality, which might be unexpected.
-      expect(answer1 == answer2,
-          isFalse); // Expect them to be different due to isSelected
-      expect(answer1.hashCode == answer2.hashCode,
-          isFalse); // Hash codes should also differ
+      expect(
+        answer1 == answer2,
+        isFalse,
+      ); // Expect them to be different due to isSelected
+      expect(
+        answer1.hashCode == answer2.hashCode,
+        isFalse,
+      ); // Hash codes should also differ
     });
 
     test('copyWith creates a new instance with updated values', () {

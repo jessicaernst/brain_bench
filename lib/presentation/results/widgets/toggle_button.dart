@@ -31,14 +31,16 @@ class ToggleButton extends StatelessWidget {
         width: isSelected ? 110 : 90,
         height: isSelected ? 110 : 90,
         decoration: BoxDecoration(
-          gradient: isActive
-              ? (isCorrect
-                  ? BrainBenchGradients.correctAnswerGlass
-                  : BrainBenchGradients.falseQuestionGlass)
-              : null,
-          color: isActive
-              ? null
-              : isDarkMode
+          gradient:
+              isActive
+                  ? (isCorrect
+                      ? BrainBenchGradients.correctAnswerGlass
+                      : BrainBenchGradients.falseQuestionGlass)
+                  : null,
+          color:
+              isActive
+                  ? null
+                  : isDarkMode
                   ? BrainBenchColors.inactiveGrayLight10
                   : BrainBenchColors.inactiveGray20,
           borderRadius: BorderRadius.circular(20),
@@ -48,12 +50,12 @@ class ToggleButton extends StatelessWidget {
             isCorrect
                 ? CupertinoIcons.hand_thumbsup_fill
                 : CupertinoIcons.hand_thumbsdown_fill,
-            color: isActive
-                ? TextTheme.of(context).bodySmall!.color
-                : TextTheme.of(context)
-                    .bodySmall!
-                    .color
-                    ?.withAlpha((0.2 * 255).toInt()),
+            color:
+                isActive
+                    ? TextTheme.of(context).bodySmall!.color
+                    : TextTheme.of(
+                      context,
+                    ).bodySmall!.color?.withAlpha((0.2 * 255).toInt()),
             size: isSelected ? 50 : 40,
           ),
         ),

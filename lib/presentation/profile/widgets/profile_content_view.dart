@@ -52,40 +52,39 @@ class ProfileContentView extends StatelessWidget {
               begin: Offset(enteringEditMode ? 1.0 : -1.0, 0.0),
               end: Offset.zero,
             ).animate(
-                CurvedAnimation(parent: animation, curve: Curves.easeInOut));
+              CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+            );
 
             return FadeTransition(
               opacity: animation,
-              child: SlideTransition(
-                position: offsetAnimation,
-                child: child,
-              ),
+              child: SlideTransition(position: offsetAnimation, child: child),
             );
           },
-          child: isEditing.value
-              ? ProfileEditView(
-                  key: const ValueKey('profile_edit_view'),
-                  displayNameController: displayNameController,
-                  emailController: emailController,
-                  localizations: localizations,
-                  textTheme: textTheme,
-                  theme: theme,
-                  userImageUrl: userImageUrl,
-                  // Pass isSaveEnabled to control the button state
-                  isActive: isSaveEnabled, // <-- Pass calculated state
-                  // Pass handleSaveChanges, button disables itself if !isActive
-                  onPressed: handleSaveChanges,
-                  onImageSelected: handleImageSelection,
-                  selectedImageFile: selectedImage.value,
-                )
-              : ProfileView(
-                  key: const ValueKey('profile_view'),
-                  userAsyncValue: userAsyncValue,
-                  localizations: localizations,
-                  textTheme: textTheme,
-                  theme: theme,
-                  userImageUrl: userImageUrl,
-                ),
+          child:
+              isEditing.value
+                  ? ProfileEditView(
+                    key: const ValueKey('profile_edit_view'),
+                    displayNameController: displayNameController,
+                    emailController: emailController,
+                    localizations: localizations,
+                    textTheme: textTheme,
+                    theme: theme,
+                    userImageUrl: userImageUrl,
+                    // Pass isSaveEnabled to control the button state
+                    isActive: isSaveEnabled, // <-- Pass calculated state
+                    // Pass handleSaveChanges, button disables itself if !isActive
+                    onPressed: handleSaveChanges,
+                    onImageSelected: handleImageSelection,
+                    selectedImageFile: selectedImage.value,
+                  )
+                  : ProfileView(
+                    key: const ValueKey('profile_view'),
+                    userAsyncValue: userAsyncValue,
+                    localizations: localizations,
+                    textTheme: textTheme,
+                    theme: theme,
+                    userImageUrl: userImageUrl,
+                  ),
         ),
       ),
     );

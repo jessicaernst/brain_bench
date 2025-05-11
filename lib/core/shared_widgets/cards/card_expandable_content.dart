@@ -37,14 +37,17 @@ class CardExpandableContent extends HookConsumerWidget {
     );
 
     // 📏 Define a height factor animation using a curved animation
-    final heightFactor = useAnimation(CurvedAnimation(
-      parent: controller, // Uses the AnimationController as its parent
-      curve: Curves.easeInOut, // Smooth in-out transition
-    ));
+    final heightFactor = useAnimation(
+      CurvedAnimation(
+        parent: controller, // Uses the AnimationController as its parent
+        curve: Curves.easeInOut, // Smooth in-out transition
+      ),
+    );
 
     // 🎭 Define a fade-in animation for opacity changes
-    final fadeAnimation =
-        useAnimation(Tween<double>(begin: 0, end: 1).animate(controller));
+    final fadeAnimation = useAnimation(
+      Tween<double>(begin: 0, end: 1).animate(controller),
+    );
 
     // 🔥 React to changes in `isExpanded` and trigger the animation accordingly
     useEffect(() {

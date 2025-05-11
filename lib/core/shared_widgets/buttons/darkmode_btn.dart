@@ -26,10 +26,7 @@ class DarkmodeBtn extends StatelessWidget {
       width: width,
       blurSigma: 15,
       padding: padding,
-      title: Text(
-        title,
-        style: TextTheme.of(context).labelLarge,
-      ),
+      title: Text(title, style: TextTheme.of(context).labelLarge),
       activeGradient: BrainBenchGradients.dashGradient,
       inactiveGradient: BrainBenchGradients.inactiveDashGradient,
       overlayGradient: BrainBenchGradients.btnOverlayGradientDark,

@@ -14,37 +14,50 @@ abstract class BrainBenchColors {
   // Correct Answer Glass
   static const Color correctAnswerGlass = Color.fromARGB(255, 9, 204, 232);
   static const Color correctAnswerGlassLight = Color.fromARGB(255, 9, 204, 232);
-  static final Color correctAnswerGlass40 =
-      correctAnswerGlass.withAlpha((0.4 * 255).toInt());
-  static final Color correctAnswerGlass10 =
-      correctAnswerGlassLight.withAlpha((0.1 * 255).toInt());
+  static final Color correctAnswerGlass40 = correctAnswerGlass.withAlpha(
+    (0.4 * 255).toInt(),
+  );
+  static final Color correctAnswerGlass10 = correctAnswerGlassLight.withAlpha(
+    (0.1 * 255).toInt(),
+  );
 
-// Dark Mode Glass
+  // Dark Mode Glass
   static const Color darkModeGlass = Color.fromARGB(255, 93, 200, 248);
   static const Color darkModeGlassLight = Color.fromARGB(255, 93, 200, 248);
-  static final Color darkModeGlass40 =
-      darkModeGlass.withAlpha((0.4 * 255).toInt());
-  static final Color darkModeGlass50 =
-      darkModeGlass.withAlpha((0.5 * 255).toInt());
-  static final Color darkModeGlass10 =
-      darkModeGlassLight.withAlpha((0.1 * 255).toInt());
+  static final Color darkModeGlass40 = darkModeGlass.withAlpha(
+    (0.4 * 255).toInt(),
+  );
+  static final Color darkModeGlass50 = darkModeGlass.withAlpha(
+    (0.5 * 255).toInt(),
+  );
+  static final Color darkModeGlass10 = darkModeGlassLight.withAlpha(
+    (0.1 * 255).toInt(),
+  );
 
-// Light Mode Glass
+  // Light Mode Glass
   static const Color lightModeGlass = Color.fromARGB(255, 101, 160, 212);
   static const Color lightModeGlassLight = Color.fromARGB(255, 101, 160, 212);
-  static final Color lightModeGlass40 =
-      lightModeGlass.withAlpha((0.4 * 255).toInt());
-  static final Color lightModeGlass10 =
-      lightModeGlassLight.withAlpha((0.1 * 255).toInt());
+  static final Color lightModeGlass40 = lightModeGlass.withAlpha(
+    (0.4 * 255).toInt(),
+  );
+  static final Color lightModeGlass10 = lightModeGlassLight.withAlpha(
+    (0.1 * 255).toInt(),
+  );
 
-// False Question Glass
+  // False Question Glass
   static const Color falseQuestionGlass = Color.fromARGB(255, 236, 87, 211);
-  static const Color falseQuestionGlassLight =
-      Color.fromARGB(255, 236, 87, 207);
-  static final Color falseQuestionGlass40 =
-      falseQuestionGlass.withAlpha((0.4 * 255).toInt());
-  static final Color falseQuestionGlass10 =
-      falseQuestionGlassLight.withAlpha((0.1 * 255).toInt());
+  static const Color falseQuestionGlassLight = Color.fromARGB(
+    255,
+    236,
+    87,
+    207,
+  );
+  static final Color falseQuestionGlass40 = falseQuestionGlass.withAlpha(
+    (0.4 * 255).toInt(),
+  );
+  static final Color falseQuestionGlass10 = falseQuestionGlassLight.withAlpha(
+    (0.1 * 255).toInt(),
+  );
 
   // Opacities for Deep Dive
   static final Color deepDive70 = deepDive.withAlpha((0.7 * 255).toInt());
@@ -52,10 +65,12 @@ abstract class BrainBenchColors {
   static final Color deepDive30 = deepDive.withAlpha((0.3 * 255).toInt());
 
   // Opacities for Blueprint Blue
-  static final Color blueprintBlue40 =
-      blueprintBlue.withAlpha((0.4 * 255).toInt());
-  static final Color blueprintBlue10 =
-      blueprintBlue.withAlpha((0.1 * 255).toInt());
+  static final Color blueprintBlue40 = blueprintBlue.withAlpha(
+    (0.4 * 255).toInt(),
+  );
+  static final Color blueprintBlue10 = blueprintBlue.withAlpha(
+    (0.1 * 255).toInt(),
+  );
 
   // Flutter Sky with varying opacities
   static final Color flutterSky40 = flutterSky.withAlpha((0.4 * 255).toInt());
@@ -72,12 +87,18 @@ abstract class BrainBenchColors {
   /// A lighter version of [inactiveGray] for a less intense inactive state.
   static const Color inactiveGrayLight = Color.fromARGB(255, 200, 200, 200);
 
-  static final Color inactiveGray20 =
-      inactiveGray.withAlpha((0.2 * 255).toInt());
+  static final Color inactiveGray20 = inactiveGray.withAlpha(
+    (0.2 * 255).toInt(),
+  );
 
-  static final Color inactiveGrayLight10 =
-      inactiveGrayLight.withAlpha((0.1 * 255).toInt());
+  static final Color inactiveGrayLight10 = inactiveGrayLight.withAlpha(
+    (0.1 * 255).toInt(),
+  );
 
-  static final Color progressIndicatorBackground =
-      const Color.fromARGB(255, 120, 120, 128).withAlpha((0.16 * 255).toInt());
+  static final Color progressIndicatorBackground = const Color.fromARGB(
+    255,
+    120,
+    120,
+    128,
+  ).withAlpha((0.16 * 255).toInt());
 }

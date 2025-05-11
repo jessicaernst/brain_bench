@@ -19,12 +19,14 @@ abstract class BrainBenchTextTheme {
       labelLarge: BrainBenchTextStyles.buttonLabel(),
       labelSmall: BrainBenchTextStyles.sourceCode(),
     ).apply(
-      bodyColor: brightness == Brightness.light
-          ? BrainBenchColors.deepDive
-          : BrainBenchColors.cloudCanvas,
-      displayColor: brightness == Brightness.light
-          ? BrainBenchColors.deepDive
-          : BrainBenchColors.cloudCanvas,
+      bodyColor:
+          brightness == Brightness.light
+              ? BrainBenchColors.deepDive
+              : BrainBenchColors.cloudCanvas,
+      displayColor:
+          brightness == Brightness.light
+              ? BrainBenchColors.deepDive
+              : BrainBenchColors.cloudCanvas,
     );
   }
 }

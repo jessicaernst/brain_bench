@@ -98,44 +98,52 @@ void main() {
     });
 
     test(
-        'selectCategory with the same categoryId deselects it (sets state to null)',
-        () {
-      // Arrange
-      const categoryId = 'test-cat-1';
-      notifier.selectCategory(categoryId); // Select it first
-      expect(container.read(selectedCategoryNotifierProvider),
-          categoryId); // Verify initial selection
+      'selectCategory with the same categoryId deselects it (sets state to null)',
+      () {
+        // Arrange
+        const categoryId = 'test-cat-1';
+        notifier.selectCategory(categoryId); // Select it first
+        expect(
+          container.read(selectedCategoryNotifierProvider),
+          categoryId,
+        ); // Verify initial selection
 
-      // Act
-      notifier.selectCategory(categoryId); // Select the same one again
+        // Act
+        notifier.selectCategory(categoryId); // Select the same one again
 
-      // Assert
-      expect(container.read(selectedCategoryNotifierProvider), isNull);
-    });
+        // Assert
+        expect(container.read(selectedCategoryNotifierProvider), isNull);
+      },
+    );
 
     test(
-        'selectCategory with a different categoryId updates the state to the new ID',
-        () {
-      // Arrange
-      const initialCategoryId = 'test-cat-1';
-      const newCategoryId = 'test-cat-2';
-      notifier.selectCategory(initialCategoryId); // Select the first one
-      expect(container.read(selectedCategoryNotifierProvider),
-          initialCategoryId); // Verify initial selection
+      'selectCategory with a different categoryId updates the state to the new ID',
+      () {
+        // Arrange
+        const initialCategoryId = 'test-cat-1';
+        const newCategoryId = 'test-cat-2';
+        notifier.selectCategory(initialCategoryId); // Select the first one
+        expect(
+          container.read(selectedCategoryNotifierProvider),
+          initialCategoryId,
+        ); // Verify initial selection
 
-      // Act
-      notifier.selectCategory(newCategoryId); // Select the new one
+        // Act
+        notifier.selectCategory(newCategoryId); // Select the new one
 
-      // Assert
-      expect(container.read(selectedCategoryNotifierProvider), newCategoryId);
-    });
+        // Assert
+        expect(container.read(selectedCategoryNotifierProvider), newCategoryId);
+      },
+    );
 
     test('selectCategory with null deselects the current category', () {
       // Arrange
       const categoryId = 'test-cat-1';
       notifier.selectCategory(categoryId); // Select it first
-      expect(container.read(selectedCategoryNotifierProvider),
-          categoryId); // Verify initial selection
+      expect(
+        container.read(selectedCategoryNotifierProvider),
+        categoryId,
+      ); // Verify initial selection
 
       // Act
       notifier.selectCategory(null); // Explicitly deselect
@@ -176,31 +184,34 @@ void main() {
     // Mock data
     final mockCategoriesEn = [
       Category(
-          id: 'cat1',
-          nameEn: 'Category One EN',
-          nameDe: 'Kategorie Eins DE',
-          subtitleEn: 'Subtitle One EN',
-          subtitleDe: 'Untertitel Eins DE',
-          descriptionEn: 'Description One EN',
-          descriptionDe: 'Beschreibung Eins DE'),
+        id: 'cat1',
+        nameEn: 'Category One EN',
+        nameDe: 'Kategorie Eins DE',
+        subtitleEn: 'Subtitle One EN',
+        subtitleDe: 'Untertitel Eins DE',
+        descriptionEn: 'Description One EN',
+        descriptionDe: 'Beschreibung Eins DE',
+      ),
       Category(
-          id: 'cat2',
-          nameEn: 'Category Two EN',
-          nameDe: 'Kategorie Zwei DE',
-          subtitleEn: 'Subtitle Two EN',
-          subtitleDe: 'Untertitel Zwei DE',
-          descriptionEn: 'Description Two EN',
-          descriptionDe: 'Beschreibung Zwei DE'),
+        id: 'cat2',
+        nameEn: 'Category Two EN',
+        nameDe: 'Kategorie Zwei DE',
+        subtitleEn: 'Subtitle Two EN',
+        subtitleDe: 'Untertitel Zwei DE',
+        descriptionEn: 'Description Two EN',
+        descriptionDe: 'Beschreibung Zwei DE',
+      ),
     ];
     final specificMockCategoriesDe = [
       Category(
-          id: 'cat1-de',
-          nameEn: 'Category One EN (for DE test)',
-          nameDe: 'Kategorie Eins DE (fuer DE test)',
-          subtitleEn: 'Subtitle One EN (for DE test)',
-          subtitleDe: 'Untertitel Eins DE (fuer DE test)',
-          descriptionEn: 'Description One EN (for DE test)',
-          descriptionDe: 'Beschreibung Eins DE (fuer DE test)'),
+        id: 'cat1-de',
+        nameEn: 'Category One EN (for DE test)',
+        nameDe: 'Kategorie Eins DE (fuer DE test)',
+        subtitleEn: 'Subtitle One EN (for DE test)',
+        subtitleDe: 'Untertitel Eins DE (fuer DE test)',
+        descriptionEn: 'Description One EN (for DE test)',
+        descriptionDe: 'Beschreibung Eins DE (fuer DE test)',
+      ),
     ];
     const testLangCodeEn = 'en';
     const testLangCodeDe = 'de';
@@ -227,8 +238,9 @@ void main() {
 
       // Act
       // Read the future from the provider we are testing
-      final category = await container
-          .read(categoryByIdProvider(targetCategoryId, testLangCodeEn).future);
+      final category = await container.read(
+        categoryByIdProvider(targetCategoryId, testLangCodeEn).future,
+      );
 
       // Assert
       expect(category, isNotNull);
@@ -260,41 +272,47 @@ void main() {
       // The error happens inside the future when firstWhere fails.
       expectLater(
         container.read(
-            categoryByIdProvider(nonExistentCategoryId, testLangCodeEn).future),
+          categoryByIdProvider(nonExistentCategoryId, testLangCodeEn).future,
+        ),
         // The actual error thrown by firstWhere when no element is found
         throwsA(isA<StateError>()),
       );
     });
 
-    test('uses the correct language code when fetching categories (using DE)',
-        () async {
-      // Arrange
-      final container = ProviderContainer(
-        overrides: [
-          // Override for 'de'
-          categoriesProvider(testLangCodeDe).overrideWith(
-            () => MockSuccessCategoriesNotifier(
-                specificMockCategoriesDe, testLangCodeDe),
-          ),
-        ],
-      );
-      addTearDown(container.dispose);
+    test(
+      'uses the correct language code when fetching categories (using DE)',
+      () async {
+        // Arrange
+        final container = ProviderContainer(
+          overrides: [
+            // Override for 'de'
+            categoriesProvider(testLangCodeDe).overrideWith(
+              () => MockSuccessCategoriesNotifier(
+                specificMockCategoriesDe,
+                testLangCodeDe,
+              ),
+            ),
+          ],
+        );
+        addTearDown(container.dispose);
 
-      // Optional: "Warm up" the 'de' dependency
-      await container.read(categoriesProvider(testLangCodeDe).future);
+        // Optional: "Warm up" the 'de' dependency
+        await container.read(categoriesProvider(testLangCodeDe).future);
 
-      const targetCategoryId = 'cat1-de';
+        const targetCategoryId = 'cat1-de';
 
-      // Act
-      final category = await container
-          .read(categoryByIdProvider(targetCategoryId, testLangCodeDe).future);
+        // Act
+        final category = await container.read(
+          categoryByIdProvider(targetCategoryId, testLangCodeDe).future,
+        );
 
-      // Assert
-      expect(category, isNotNull);
-      expect(category.id, targetCategoryId);
-      expect(category.nameDe, 'Kategorie Eins DE (fuer DE test)');
-      expect(category.nameEn, 'Category One EN (for DE test)');
-    });
+        // Assert
+        expect(category, isNotNull);
+        expect(category.id, targetCategoryId);
+        expect(category.nameDe, 'Kategorie Eins DE (fuer DE test)');
+        expect(category.nameEn, 'Category One EN (for DE test)');
+      },
+    );
 
     test('handles error state from dependency provider', () async {
       // Arrange
@@ -316,7 +334,8 @@ void main() {
       // in that same error being thrown when its future is awaited.
       expectLater(
         container.read(
-            categoryByIdProvider(targetCategoryId, testLangCodeEn).future),
+          categoryByIdProvider(targetCategoryId, testLangCodeEn).future,
+        ),
         throwsA(predicate((e) => e == testException)),
       );
     });

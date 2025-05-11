@@ -51,9 +51,10 @@ class CupertinoPickerContent extends StatelessWidget {
       child: Container(
         height: 250,
         padding: const EdgeInsets.only(top: 6.0),
-        color: isDarkMode
-            ? BrainBenchColors.deepDive
-            : BrainBenchColors.cloudCanvas,
+        color:
+            isDarkMode
+                ? BrainBenchColors.deepDive
+                : BrainBenchColors.cloudCanvas,
         child: Column(
           children: [
             Row(

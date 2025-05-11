@@ -57,7 +57,9 @@ Stream<UserModelState> currentUserModel(Ref ref) {
         } catch (error, stack) {
           _logger.severe('Error creating user ', error, stack);
           yield UserModelState.error(
-              uid: authUser.uid, message: error.toString());
+            uid: authUser.uid,
+            message: error.toString(),
+          );
           return;
         } finally {
           creationInProgress.finish(authUser.uid);
@@ -73,9 +75,10 @@ Stream<UserModelState> currentUserModel(Ref ref) {
       }
     } catch (e, st) {
       _logger.severe(
-          'Caught unexpected error in currentUserModel stream processing',
-          e,
-          st);
+        'Caught unexpected error in currentUserModel stream processing',
+        e,
+        st,
+      );
       yield UserModelState.error(uid: authUser.uid, message: e.toString());
     }
   });
@@ -105,5 +108,5 @@ class CreationInProgressNotifier extends StateNotifier<Set<String>> {
 /// Provider for the [CreationInProgressNotifier] that holds the set of UIDs in creation progress.
 final creationInProgressProvider =
     StateNotifierProvider<CreationInProgressNotifier, Set<String>>(
-  (ref) => CreationInProgressNotifier(),
-);
+      (ref) => CreationInProgressNotifier(),
+    );

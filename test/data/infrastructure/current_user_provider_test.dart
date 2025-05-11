@@ -24,37 +24,31 @@ void main() {
   late MockAuthRepository mockAuthRepo;
   late StreamController<AppUser?> authStateController;
 
-  const testUser = AppUser(
-    uid: '123',
-    id: '123',
-    email: 'test@example.com',
-  );
+  const testUser = AppUser(uid: '123', id: '123', email: 'test@example.com');
 
   setUpAll(() {
-    const MethodChannel channel =
-        MethodChannel('plugins.flutter.io/firebase_core');
+    const MethodChannel channel = MethodChannel(
+      'plugins.flutter.io/firebase_core',
+    );
 
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(
-      channel,
-      (MethodCall methodCall) async {
-        if (methodCall.method == 'Firebase#initializeCore') {
-          return [
-            {
-              'name': '[DEFAULT]',
-              'options': {
-                'apiKey': 'fakeApiKey',
-                'appId': '1:1234567890:android:abcdef',
-                'messagingSenderId': '1234567890',
-                'projectId': 'fake-project-id',
+        .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+          if (methodCall.method == 'Firebase#initializeCore') {
+            return [
+              {
+                'name': '[DEFAULT]',
+                'options': {
+                  'apiKey': 'fakeApiKey',
+                  'appId': '1:1234567890:android:abcdef',
+                  'messagingSenderId': '1234567890',
+                  'projectId': 'fake-project-id',
+                },
+                'pluginConstants': {},
               },
-              'pluginConstants': {},
-            },
-          ];
-        }
-        return null;
-      },
-    );
+            ];
+          }
+          return null;
+        });
   });
 
   setUp(() {
@@ -62,8 +56,9 @@ void main() {
     mockAuthRepo = MockAuthRepository();
     authStateController = StreamController<AppUser?>();
 
-    when(() => mockAuthRepo.authStateChanges())
-        .thenAnswer((_) => authStateController.stream);
+    when(
+      () => mockAuthRepo.authStateChanges(),
+    ).thenAnswer((_) => authStateController.stream);
   });
 
   tearDown(() {
@@ -73,31 +68,34 @@ void main() {
 
   group('currentUserModelProvider', () {
     test('returns user model from DB', () async {
-      when(() => mockRepo.getUser(testUser.uid))
-          .thenAnswer((_) async => testUser);
+      when(
+        () => mockRepo.getUser(testUser.uid),
+      ).thenAnswer((_) async => testUser);
 
-      container = ProviderContainer(overrides: [
-        authRepositoryProvider.overrideWithValue(mockAuthRepo),
-        quizMockDatabaseRepositoryProvider
-            .overrideWith((ref) async => mockRepo),
-      ]);
+      container = ProviderContainer(
+        overrides: [
+          authRepositoryProvider.overrideWithValue(mockAuthRepo),
+          quizMockDatabaseRepositoryProvider.overrideWith(
+            (ref) async => mockRepo,
+          ),
+        ],
+      );
 
       final emittedStates = <AsyncValue<UserModelState>>[];
       final dataCompleter = Completer<void>();
 
-      container.listen<AsyncValue<UserModelState>>(
-        currentUserModelProvider,
-        (_, next) {
-          emittedStates.add(next);
-          if (next is AsyncData<UserModelState> &&
-              next.value == UserModelState.data(testUser)) {
-            if (!dataCompleter.isCompleted) {
-              dataCompleter.complete();
-            }
+      container.listen<AsyncValue<UserModelState>>(currentUserModelProvider, (
+        _,
+        next,
+      ) {
+        emittedStates.add(next);
+        if (next is AsyncData<UserModelState> &&
+            next.value == UserModelState.data(testUser)) {
+          if (!dataCompleter.isCompleted) {
+            dataCompleter.complete();
           }
-        },
-        fireImmediately: true,
-      );
+        }
+      }, fireImmediately: true);
 
       authStateController.add(testUser);
 
@@ -112,34 +110,38 @@ void main() {
     });
 
     test('returns null if no user is signed in', () async {
-      container = ProviderContainer(overrides: [
-        authRepositoryProvider.overrideWithValue(mockAuthRepo),
-        quizMockDatabaseRepositoryProvider
-            .overrideWith((ref) async => mockRepo),
-      ]);
+      container = ProviderContainer(
+        overrides: [
+          authRepositoryProvider.overrideWithValue(mockAuthRepo),
+          quizMockDatabaseRepositoryProvider.overrideWith(
+            (ref) async => mockRepo,
+          ),
+        ],
+      );
 
       final emittedStates = <AsyncValue<UserModelState>>[];
       final unauthenticatedCompleter = Completer<void>();
 
-      container.listen<AsyncValue<UserModelState>>(
-        currentUserModelProvider,
-        (_, next) {
-          emittedStates.add(next);
-          if (next is AsyncData<UserModelState> &&
-              next.value == const UserModelState.unauthenticated()) {
-            if (!unauthenticatedCompleter.isCompleted) {
-              unauthenticatedCompleter.complete();
-            }
+      container.listen<AsyncValue<UserModelState>>(currentUserModelProvider, (
+        _,
+        next,
+      ) {
+        emittedStates.add(next);
+        if (next is AsyncData<UserModelState> &&
+            next.value == const UserModelState.unauthenticated()) {
+          if (!unauthenticatedCompleter.isCompleted) {
+            unauthenticatedCompleter.complete();
           }
-        },
-        fireImmediately: true,
-      );
+        }
+      }, fireImmediately: true);
 
       authStateController.add(null);
 
       await unauthenticatedCompleter.future;
-      expect(emittedStates.last,
-          const AsyncData(UserModelState.unauthenticated()));
+      expect(
+        emittedStates.last,
+        const AsyncData(UserModelState.unauthenticated()),
+      );
 
       verifyNever(() => mockRepo.getUser(any()));
     });

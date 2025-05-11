@@ -19,9 +19,12 @@ class GlassCardView extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
-              color: isDarkMode
-                  ? BrainBenchColors.deepDive
-                  : BrainBenchColors.cloudCanvas.withAlpha((0.7 * 255).toInt()),
+              color:
+                  isDarkMode
+                      ? BrainBenchColors.deepDive
+                      : BrainBenchColors.cloudCanvas.withAlpha(
+                        (0.7 * 255).toInt(),
+                      ),
               boxShadow: isDarkMode ? [] : _shadows,
             ),
           ),
@@ -34,9 +37,10 @@ class GlassCardView extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(24),
-                gradient: isDarkMode
-                    ? BrainBenchGradients.authCardGradientDark
-                    : BrainBenchGradients.authCardGradientLight,
+                gradient:
+                    isDarkMode
+                        ? BrainBenchGradients.authCardGradientDark
+                        : BrainBenchGradients.authCardGradientLight,
                 border: Border.all(
                   color: BrainBenchColors.btnStroke,
                   width: 0.7,
@@ -54,23 +58,28 @@ class GlassCardView extends StatelessWidget {
 
 final List<BoxShadow> _shadows = [
   BoxShadow(
-      color: BrainBenchColors.deepDive.withAlpha((0.10 * 255).toInt()),
-      blurRadius: 15,
-      offset: const Offset(0, 7)),
+    color: BrainBenchColors.deepDive.withAlpha((0.10 * 255).toInt()),
+    blurRadius: 15,
+    offset: const Offset(0, 7),
+  ),
   BoxShadow(
-      color: BrainBenchColors.deepDive.withAlpha((0.09 * 255).toInt()),
-      blurRadius: 27,
-      offset: const Offset(0, 27)),
+    color: BrainBenchColors.deepDive.withAlpha((0.09 * 255).toInt()),
+    blurRadius: 27,
+    offset: const Offset(0, 27),
+  ),
   BoxShadow(
-      color: BrainBenchColors.deepDive.withAlpha((0.05 * 255).toInt()),
-      blurRadius: 36,
-      offset: const Offset(0, 60)),
+    color: BrainBenchColors.deepDive.withAlpha((0.05 * 255).toInt()),
+    blurRadius: 36,
+    offset: const Offset(0, 60),
+  ),
   BoxShadow(
-      color: BrainBenchColors.deepDive.withAlpha((0.01 * 255).toInt()),
-      blurRadius: 43,
-      offset: const Offset(0, 107)),
+    color: BrainBenchColors.deepDive.withAlpha((0.01 * 255).toInt()),
+    blurRadius: 43,
+    offset: const Offset(0, 107),
+  ),
   BoxShadow(
-      color: BrainBenchColors.deepDive.withAlpha((0.00 * 255).toInt()),
-      blurRadius: 47,
-      offset: const Offset(0, 167)),
+    color: BrainBenchColors.deepDive.withAlpha((0.00 * 255).toInt()),
+    blurRadius: 47,
+    offset: const Offset(0, 167),
+  ),
 ];

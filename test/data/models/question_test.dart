@@ -71,38 +71,42 @@ void main() {
       expect(testQuestionWithoutExplanation.explanation, isNull);
     });
 
-    test('Question.create factory generates a valid UUID and sets properties',
-        () {
-      // Arrange
-      const createTopicId = 'new-topic';
-      const createQuestionText = 'Create question?';
-      const createType = QuestionType.multipleChoice;
-      final createAnswerIds = ['new-ans-1', 'new-ans-2'];
-      const createExplanation = 'Explanation for created question.';
+    test(
+      'Question.create factory generates a valid UUID and sets properties',
+      () {
+        // Arrange
+        const createTopicId = 'new-topic';
+        const createQuestionText = 'Create question?';
+        const createType = QuestionType.multipleChoice;
+        final createAnswerIds = ['new-ans-1', 'new-ans-2'];
+        const createExplanation = 'Explanation for created question.';
 
-      // Act
-      final createdQuestion = Question.create(
-        topicId: createTopicId,
-        question: createQuestionText,
-        type: createType,
-        answerIds: createAnswerIds,
-        explanation: createExplanation,
-      );
+        // Act
+        final createdQuestion = Question.create(
+          topicId: createTopicId,
+          question: createQuestionText,
+          type: createType,
+          answerIds: createAnswerIds,
+          explanation: createExplanation,
+        );
 
-      // Assert
-      expect(createdQuestion.id, isNotEmpty);
-      // Basic check if it looks like a UUID v4
-      expect(
+        // Assert
+        expect(createdQuestion.id, isNotEmpty);
+        // Basic check if it looks like a UUID v4
+        expect(
           Uuid.isValidUUID(
-              fromString: createdQuestion.id,
-              validationMode: ValidationMode.strictRFC4122),
-          isTrue);
-      expect(createdQuestion.topicId, createTopicId);
-      expect(createdQuestion.question, createQuestionText);
-      expect(createdQuestion.type, createType);
-      expect(createdQuestion.answerIds, createAnswerIds);
-      expect(createdQuestion.explanation, createExplanation);
-    });
+            fromString: createdQuestion.id,
+            validationMode: ValidationMode.strictRFC4122,
+          ),
+          isTrue,
+        );
+        expect(createdQuestion.topicId, createTopicId);
+        expect(createdQuestion.question, createQuestionText);
+        expect(createdQuestion.type, createType);
+        expect(createdQuestion.answerIds, createAnswerIds);
+        expect(createdQuestion.explanation, createExplanation);
+      },
+    );
 
     test('Question.create factory handles null explanation', () {
       // Arrange
@@ -141,19 +145,21 @@ void main() {
       expect(questionFromJson.explanation, testExplanation);
     });
 
-    test('fromJson correctly deserializes JSON map without explanation (null)',
-        () {
-      // Arrange: testJsonWithoutExplanation is defined above
+    test(
+      'fromJson correctly deserializes JSON map without explanation (null)',
+      () {
+        // Arrange: testJsonWithoutExplanation is defined above
 
-      // Act
-      final questionFromJson = Question.fromJson(testJsonWithoutExplanation);
+        // Act
+        final questionFromJson = Question.fromJson(testJsonWithoutExplanation);
 
-      // Assert
-      expect(questionFromJson.id, 'q-no-exp-789');
-      expect(questionFromJson.topicId, testTopicId);
-      expect(questionFromJson.type, QuestionType.multipleChoice);
-      expect(questionFromJson.explanation, isNull);
-    });
+        // Assert
+        expect(questionFromJson.id, 'q-no-exp-789');
+        expect(questionFromJson.topicId, testTopicId);
+        expect(questionFromJson.type, QuestionType.multipleChoice);
+        expect(questionFromJson.explanation, isNull);
+      },
+    );
 
     test('toJson correctly serializes object with explanation', () {
       // Arrange: testQuestion is defined above
@@ -273,15 +279,19 @@ void main() {
       // Act
       final copiedWithId = testQuestion.copyWith(id: 'new-q-id');
       final copiedWithTopicId = testQuestion.copyWith(topicId: 'new-topic-id');
-      final copiedWithQuestion =
-          testQuestion.copyWith(question: 'New Question?');
-      final copiedWithType =
-          testQuestion.copyWith(type: QuestionType.multipleChoice);
+      final copiedWithQuestion = testQuestion.copyWith(
+        question: 'New Question?',
+      );
+      final copiedWithType = testQuestion.copyWith(
+        type: QuestionType.multipleChoice,
+      );
       final copiedWithAnswerIds = testQuestion.copyWith(answerIds: ['new-ans']);
-      final copiedWithExplanation =
-          testQuestion.copyWith(explanation: 'New Explanation.');
-      final copiedWithNullExplanation =
-          testQuestion.copyWith(explanation: null);
+      final copiedWithExplanation = testQuestion.copyWith(
+        explanation: 'New Explanation.',
+      );
+      final copiedWithNullExplanation = testQuestion.copyWith(
+        explanation: null,
+      );
 
       // Assert
       // Check updated value and that others remain the same

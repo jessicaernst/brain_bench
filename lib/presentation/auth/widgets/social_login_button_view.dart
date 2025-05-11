@@ -29,9 +29,10 @@ class SocialLoginButtonView extends StatelessWidget {
         ),
         if (Platform.isIOS)
           SocialImageButton(
-            imagePath: isDarkMode
-                ? Assets.socialLogins.appleidButtonWhite.path
-                : Assets.socialLogins.appleidButtonBlack.path,
+            imagePath:
+                isDarkMode
+                    ? Assets.socialLogins.appleidButtonWhite.path
+                    : Assets.socialLogins.appleidButtonBlack.path,
             onPressed: onAppleLoginPressed,
           ),
       ],

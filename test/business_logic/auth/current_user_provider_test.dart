@@ -28,8 +28,9 @@ void main() {
     authStateController = StreamController<AppUser?>();
 
     // Mock the authStateChanges stream
-    when(() => mockAuthRepository.authStateChanges())
-        .thenAnswer((_) => authStateController.stream);
+    when(
+      () => mockAuthRepository.authStateChanges(),
+    ).thenAnswer((_) => authStateController.stream);
   });
 
   tearDown(() {
@@ -38,67 +39,73 @@ void main() {
 
   ProviderContainer createContainer() {
     final container = ProviderContainer(
-      overrides: [
-        authRepositoryProvider.overrideWithValue(mockAuthRepository),
-      ],
+      overrides: [authRepositoryProvider.overrideWithValue(mockAuthRepository)],
     );
     addTearDown(container.dispose);
     return container;
   }
 
-  test('currentUserProvider emits null when authStateChanges emits null',
-      () async {
-    // Arrange
-    final container = createContainer();
-    final listener = Listener<AsyncValue<AppUser?>>();
-    container.listen(
-      currentUserProvider,
-      listener.call,
-      fireImmediately: true,
-    );
+  test(
+    'currentUserProvider emits null when authStateChanges emits null',
+    () async {
+      // Arrange
+      final container = createContainer();
+      final listener = Listener<AsyncValue<AppUser?>>();
+      container.listen(
+        currentUserProvider,
+        listener.call,
+        fireImmediately: true,
+      );
 
-    // Act
-    authStateController.add(null); // Simulate user logging out
+      // Act
+      authStateController.add(null); // Simulate user logging out
 
-    // Allow stream to emit and listener to react
-    await Future.delayed(Duration.zero); // Give event loop a chance
+      // Allow stream to emit and listener to react
+      await Future.delayed(Duration.zero); // Give event loop a chance
 
-    // Assert
-    // Verify the listener received the loading state and then the data state with null
-    verifyInOrder([
-      () => listener(null, const AsyncLoading()), // Initial loading state
-      () => listener(const AsyncLoading(),
-          const AsyncData(null)), // State after null emission
-    ]);
-    verifyNoMoreInteractions(listener);
-  });
+      // Assert
+      // Verify the listener received the loading state and then the data state with null
+      verifyInOrder([
+        () => listener(null, const AsyncLoading()), // Initial loading state
+        () => listener(
+          const AsyncLoading(),
+          const AsyncData(null),
+        ), // State after null emission
+      ]);
+      verifyNoMoreInteractions(listener);
+    },
+  );
 
-  test('currentUserProvider emits AppUser when authStateChanges emits AppUser',
-      () async {
-    // Arrange
-    final container = createContainer();
-    final listener = Listener<AsyncValue<AppUser?>>();
-    container.listen(
-      currentUserProvider,
-      listener.call,
-      fireImmediately: true,
-    );
+  test(
+    'currentUserProvider emits AppUser when authStateChanges emits AppUser',
+    () async {
+      // Arrange
+      final container = createContainer();
+      final listener = Listener<AsyncValue<AppUser?>>();
+      container.listen(
+        currentUserProvider,
+        listener.call,
+        fireImmediately: true,
+      );
 
-    // Act
-    authStateController.add(testUser); // Simulate user logging in
+      // Act
+      authStateController.add(testUser); // Simulate user logging in
 
-    // Allow stream to emit and listener to react
-    await Future.delayed(Duration.zero); // Give event loop a chance
+      // Allow stream to emit and listener to react
+      await Future.delayed(Duration.zero); // Give event loop a chance
 
-    // Assert
-    // Verify the listener received the loading state and then the data state with the user
-    verifyInOrder([
-      () => listener(null, const AsyncLoading()), // Initial loading state
-      () => listener(const AsyncLoading(),
-          AsyncData(testUser)), // State after user emission
-    ]);
-    verifyNoMoreInteractions(listener);
-  });
+      // Assert
+      // Verify the listener received the loading state and then the data state with the user
+      verifyInOrder([
+        () => listener(null, const AsyncLoading()), // Initial loading state
+        () => listener(
+          const AsyncLoading(),
+          AsyncData(testUser),
+        ), // State after user emission
+      ]);
+      verifyNoMoreInteractions(listener);
+    },
+  );
 }
 
 // Helper class to mock listener calls

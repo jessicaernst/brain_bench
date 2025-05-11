@@ -20,8 +20,10 @@ class LightDarkModeSwitch extends StatelessWidget {
 
     return Row(
       children: [
-        Icon(isPlatformIos ? CupertinoIcons.sun_max_fill : Icons.sunny,
-            color: iconColor),
+        Icon(
+          isPlatformIos ? CupertinoIcons.sun_max_fill : Icons.sunny,
+          color: iconColor,
+        ),
         const SizedBox(width: 8),
         if (isPlatformIos)
           CupertinoSwitch(
@@ -35,8 +37,9 @@ class LightDarkModeSwitch extends StatelessWidget {
             value: value,
             onChanged: onChanged,
             activeColor: BrainBenchColors.flutterSky,
-            inactiveTrackColor:
-                BrainBenchColors.deepDive.withAlpha((0.3 * 255).toInt()),
+            inactiveTrackColor: BrainBenchColors.deepDive.withAlpha(
+              (0.3 * 255).toInt(),
+            ),
             thumbColor: WidgetStateProperty.all<Color>(
               BrainBenchColors.cloudCanvas,
             ),
@@ -45,8 +48,10 @@ class LightDarkModeSwitch extends StatelessWidget {
             ),
           ),
         const SizedBox(width: 8),
-        Icon(isPlatformIos ? CupertinoIcons.moon_stars_fill : Icons.dark_mode,
-            color: iconColor),
+        Icon(
+          isPlatformIos ? CupertinoIcons.moon_stars_fill : Icons.dark_mode,
+          color: iconColor,
+        ),
       ],
     );
   }

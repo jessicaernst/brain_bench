@@ -10,10 +10,7 @@ class AnswerExpandableContent extends StatelessWidget {
   /// Creates an [AnswerExpandableContent].
   ///
   /// Requires a [QuizAnswer] object containing the details of the answer to display.
-  const AnswerExpandableContent({
-    super.key,
-    required this.answer,
-  });
+  const AnswerExpandableContent({super.key, required this.answer});
 
   /// The [QuizAnswer] object containing the details about the question and its answers.
   final QuizAnswer answer;
@@ -37,10 +34,7 @@ class AnswerExpandableContent extends StatelessWidget {
           // Spacing between the header and the question text
           const SizedBox(height: 4),
           // The question text itself
-          Text(
-            answer.questionText,
-            style: TextTheme.of(context).bodyMedium,
-          ),
+          Text(answer.questionText, style: TextTheme.of(context).bodyMedium),
           // Spacing
           const SizedBox(height: 12),
 
@@ -48,67 +42,62 @@ class AnswerExpandableContent extends StatelessWidget {
           // Displays all answer options with their indicators
           Column(
             // Creates a list of widgets based on each answer option
-            children: answer.allAnswers.map((option) {
-              // Check if the current option was selected by the user
-              final bool isSelected = answer.givenAnswers.contains(option);
-              // Check if the current option is a correct answer
-              final bool isCorrect = answer.correctAnswers.contains(option);
-              // Check if the current option is a correct answer that the user missed
-              final bool isMissedCorrect = !isSelected && isCorrect;
+            children:
+                answer.allAnswers.map((option) {
+                  // Determine the state of the answer option
+                  final bool isSelected = answer.givenAnswers.contains(option);
+                  final bool isCorrect = answer.correctAnswers.contains(option);
+                  final bool isMissedCorrect = !isSelected && isCorrect;
+                  final bool isSelectedIncorrect = isSelected && !isCorrect;
 
-              return Padding(
-                // Vertical padding for each answer option
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Row(
-                  children: [
-                    // Icon indicating the status of the answer option
-                    Icon(
-                      isSelected
-                          ? (isCorrect
-                              ? Icons.check_circle
-                              : Icons
-                                  .cancel) // If selected, show check or cancel
-                          : (isMissedCorrect
-                              ? Icons.info // If missed correct, show info icon
-                              : Icons
-                                  .radio_button_unchecked), // Otherwise, show unchecked radio button
-                      color: isSelected
-                          ? (isCorrect
-                              ? BrainBenchColors.correctAnswerGlass
-                              : BrainBenchColors.falseQuestionGlass)
-                          : (isMissedCorrect ? Colors.orange : Colors.grey),
+                  // Determine icon and color based on the state
+                  IconData iconData;
+                  Color iconColor;
+                  TextStyle? textStyle = TextTheme.of(context).bodyMedium;
+
+                  if (isSelected && isCorrect) {
+                    iconData = Icons.check_circle;
+                    iconColor = BrainBenchColors.correctAnswerGlass;
+                    textStyle = TextTheme.of(
+                      context,
+                    ).bodyLarge?.copyWith(color: iconColor);
+                  } else if (isSelectedIncorrect) {
+                    iconData = Icons.cancel;
+                    iconColor = BrainBenchColors.falseQuestionGlass;
+                    textStyle = TextTheme.of(
+                      context,
+                    ).bodyLarge?.copyWith(color: iconColor);
+                  } else if (isMissedCorrect) {
+                    iconData = Icons.info_outline;
+                    iconColor = Colors.orange;
+                    textStyle = TextTheme.of(
+                      context,
+                    ).bodyLarge?.copyWith(color: iconColor);
+                  } else {
+                    iconData = Icons.radio_button_unchecked;
+                    iconColor = Colors.grey.shade600;
+                  }
+
+                  return Padding(
+                    // Vertical padding for each answer option
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Icon indicating the status of the answer option
+                        Icon(
+                          iconData,
+                          color: iconColor,
+                          size: 20,
+                        ), // Slightly smaller icon
+                        // Spacing between icon and text
+                        const SizedBox(width: 8),
+                        // The answer text itself
+                        Expanded(child: Text(option, style: textStyle)),
+                      ],
                     ),
-                    // Spacing between icon and text
-                    const SizedBox(width: 8),
-                    // The answer text itself
-                    Expanded(
-                      child: Text(
-                        option,
-                        style: isSelected || isMissedCorrect
-                            ? TextTheme.of(context).bodyLarge?.copyWith(
-                                  color: isSelected
-                                      ? (isCorrect
-                                          ? BrainBenchColors.correctAnswerGlass
-                                          : BrainBenchColors.falseQuestionGlass)
-                                      : (isMissedCorrect
-                                          ? Colors.orange
-                                          : Colors.grey.shade600),
-                                )
-                            : TextTheme.of(context).bodyMedium?.copyWith(
-                                  color: isSelected
-                                      ? (isCorrect
-                                          ? BrainBenchColors.correctAnswerGlass
-                                          : BrainBenchColors.falseQuestionGlass)
-                                      : (isMissedCorrect
-                                          ? Colors.orange
-                                          : Colors.grey.shade600),
-                                ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
+                  );
+                }).toList(),
           ),
           // Spacing
           const SizedBox(height: 12),
@@ -121,7 +110,6 @@ class AnswerExpandableContent extends StatelessWidget {
           ),
           // Spacing
           const SizedBox(height: 4),
-          // Explanation text, if available, or a default message
           AutoHyphenatingText(
             answer.explanation ?? localizations.answerExpandableNoExplanation,
             style: TextTheme.of(context).bodyMedium,

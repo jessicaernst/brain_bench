@@ -27,30 +27,38 @@ Answer createFakeAnswer({
 // Updated Sample lists of fake answers using the new model
 final List<Answer> fakeAnswers1 = [
   createFakeAnswer(
-      id: 'a1', textEn: 'Answer 1 EN', textDe: 'Antwort 1 DE', isCorrect: true),
+    id: 'a1',
+    textEn: 'Answer 1 EN',
+    textDe: 'Antwort 1 DE',
+    isCorrect: true,
+  ),
   createFakeAnswer(
-      id: 'a2',
-      textEn: 'Answer 2 EN',
-      textDe: 'Antwort 2 DE',
-      isCorrect: false),
+    id: 'a2',
+    textEn: 'Answer 2 EN',
+    textDe: 'Antwort 2 DE',
+    isCorrect: false,
+  ),
   createFakeAnswer(
-      id: 'a3',
-      textEn: 'Answer 3 EN',
-      textDe: 'Antwort 3 DE',
-      isCorrect: false),
+    id: 'a3',
+    textEn: 'Answer 3 EN',
+    textDe: 'Antwort 3 DE',
+    isCorrect: false,
+  ),
 ];
 
 final List<Answer> fakeAnswers2 = [
   createFakeAnswer(
-      id: 'b1',
-      textEn: 'Another Answer 1 EN',
-      textDe: 'Andere Antwort 1 DE',
-      isCorrect: false),
+    id: 'b1',
+    textEn: 'Another Answer 1 EN',
+    textDe: 'Andere Antwort 1 DE',
+    isCorrect: false,
+  ),
   createFakeAnswer(
-      id: 'b2',
-      textEn: 'Another Answer 2 EN',
-      textDe: 'Andere Antwort 2 DE',
-      isCorrect: true),
+    id: 'b2',
+    textEn: 'Another Answer 2 EN',
+    textDe: 'Andere Antwort 2 DE',
+    isCorrect: true,
+  ),
 ];
 
 void main() {
@@ -94,28 +102,30 @@ void main() {
         expect(listEquality.equals(currentState, fakeAnswers1), isTrue);
       });
 
-      test('does not re-initialize if the same answers (by ID) are provided',
-          () {
+      test('does not re-initialize if the same answers (by ID) are provided', () {
         // Arrange: Initialize once with fakeAnswers1
         notifier.initializeAnswers(fakeAnswers1);
         container.read(answersNotifierProvider);
         // Modify the list content slightly but keep IDs the same to test equality check
         final sameIdsDifferentContent = [
           createFakeAnswer(
-              id: 'a1',
-              textEn: 'Answer 1 EN Modified',
-              textDe: 'Antwort 1 DE Modifiziert',
-              isCorrect: true),
+            id: 'a1',
+            textEn: 'Answer 1 EN Modified',
+            textDe: 'Antwort 1 DE Modifiziert',
+            isCorrect: true,
+          ),
           createFakeAnswer(
-              id: 'a2',
-              textEn: 'Answer 2 EN',
-              textDe: 'Antwort 2 DE',
-              isCorrect: false),
+            id: 'a2',
+            textEn: 'Answer 2 EN',
+            textDe: 'Antwort 2 DE',
+            isCorrect: false,
+          ),
           createFakeAnswer(
-              id: 'a3',
-              textEn: 'Answer 3 EN',
-              textDe: 'Antwort 3 DE',
-              isCorrect: false),
+            id: 'a3',
+            textEn: 'Answer 3 EN',
+            textDe: 'Antwort 3 DE',
+            isCorrect: false,
+          ),
         ];
 
         // Act: Attempt to initialize again with a list having the same IDs
@@ -127,8 +137,10 @@ void main() {
         const listEquality = ListEquality();
         expect(listEquality.equals(currentState, fakeAnswers1), isTrue);
         // Also verify it's NOT the modified list
-        expect(listEquality.equals(currentState, sameIdsDifferentContent),
-            isFalse);
+        expect(
+          listEquality.equals(currentState, sameIdsDifferentContent),
+          isFalse,
+        );
       });
 
       test('re-initializes if different answers (by ID) are provided', () {
@@ -162,43 +174,57 @@ void main() {
         notifier.initializeAnswers(initialAnswers);
         // Verify initial state (all not selected)
         expect(
-            container.read(answersNotifierProvider).every((a) => !a.isSelected),
-            isTrue);
+          container.read(answersNotifierProvider).every((a) => !a.isSelected),
+          isTrue,
+        );
       });
 
-      test('toggles selection for a single answer (isMultipleChoice: true)',
-          () {
-        // Arrange: State is initialized with fakeAnswers1 (all not selected)
-        const answerIdToToggle = 'a2';
+      test(
+        'toggles selection for a single answer (isMultipleChoice: true)',
+        () {
+          // Arrange: State is initialized with fakeAnswers1 (all not selected)
+          const answerIdToToggle = 'a2';
 
-        // Act: Toggle answer 'a2' with multiple choice enabled
-        notifier.toggleAnswerSelection(answerIdToToggle, true);
+          // Act: Toggle answer 'a2' with multiple choice enabled
+          notifier.toggleAnswerSelection(answerIdToToggle, true);
 
-        // Assert: Only answer 'a2' should be selected
-        final currentState = container.read(answersNotifierProvider);
-        expect(
-            currentState.firstWhere((a) => a.id == 'a1').isSelected, isFalse);
-        expect(currentState.firstWhere((a) => a.id == 'a2').isSelected, isTrue);
-        expect(
-            currentState.firstWhere((a) => a.id == 'a3').isSelected, isFalse);
-      });
+          // Assert: Only answer 'a2' should be selected
+          final currentState = container.read(answersNotifierProvider);
+          expect(
+            currentState.firstWhere((a) => a.id == 'a1').isSelected,
+            isFalse,
+          );
+          expect(
+            currentState.firstWhere((a) => a.id == 'a2').isSelected,
+            isTrue,
+          );
+          expect(
+            currentState.firstWhere((a) => a.id == 'a3').isSelected,
+            isFalse,
+          );
+        },
+      );
 
       test('deselects other answers when isMultipleChoice is false', () {
         // Arrange: Select 'a1' first
         notifier.toggleAnswerSelection(
-            'a1', true); // Use true to just select 'a1'
+          'a1',
+          true,
+        ); // Use true to just select 'a1'
         expect(
-            container
-                .read(answersNotifierProvider)
-                .firstWhere((a) => a.id == 'a1')
-                .isSelected,
-            isTrue);
+          container
+              .read(answersNotifierProvider)
+              .firstWhere((a) => a.id == 'a1')
+              .isSelected,
+          isTrue,
+        );
         expect(
-            container
-                .read(answersNotifierProvider)
-                .firstWhere((a) => a.id == 'a2')
-                .isSelected,
-            isFalse);
+          container
+              .read(answersNotifierProvider)
+              .firstWhere((a) => a.id == 'a2')
+              .isSelected,
+          isFalse,
+        );
 
         // Act: Toggle answer 'a2' with multiple choice disabled
         notifier.toggleAnswerSelection('a2', false);
@@ -206,89 +232,118 @@ void main() {
         // Assert: 'a1' should be deselected, and 'a2' should be selected
         final currentState = container.read(answersNotifierProvider);
         expect(
-            currentState.firstWhere((a) => a.id == 'a1').isSelected, isFalse);
+          currentState.firstWhere((a) => a.id == 'a1').isSelected,
+          isFalse,
+        );
         expect(currentState.firstWhere((a) => a.id == 'a2').isSelected, isTrue);
         expect(
-            currentState.firstWhere((a) => a.id == 'a3').isSelected, isFalse);
+          currentState.firstWhere((a) => a.id == 'a3').isSelected,
+          isFalse,
+        );
       });
 
       test(
-          'deselects the answer if it is already selected (isMultipleChoice: true)',
-          () {
-        // Arrange: Select 'a2' first
-        notifier.toggleAnswerSelection('a2', true);
-        expect(
+        'deselects the answer if it is already selected (isMultipleChoice: true)',
+        () {
+          // Arrange: Select 'a2' first
+          notifier.toggleAnswerSelection('a2', true);
+          expect(
             container
                 .read(answersNotifierProvider)
                 .firstWhere((a) => a.id == 'a2')
                 .isSelected,
-            isTrue);
+            isTrue,
+          );
 
-        // Act: Toggle answer 'a2' again with multiple choice enabled
-        notifier.toggleAnswerSelection('a2', true);
+          // Act: Toggle answer 'a2' again with multiple choice enabled
+          notifier.toggleAnswerSelection('a2', true);
 
-        // Assert: Answer 'a2' should now be deselected
-        final currentState = container.read(answersNotifierProvider);
-        expect(
-            currentState.firstWhere((a) => a.id == 'a1').isSelected, isFalse);
-        expect(
-            currentState.firstWhere((a) => a.id == 'a2').isSelected, isFalse);
-        expect(
-            currentState.firstWhere((a) => a.id == 'a3').isSelected, isFalse);
-      });
+          // Assert: Answer 'a2' should now be deselected
+          final currentState = container.read(answersNotifierProvider);
+          expect(
+            currentState.firstWhere((a) => a.id == 'a1').isSelected,
+            isFalse,
+          );
+          expect(
+            currentState.firstWhere((a) => a.id == 'a2').isSelected,
+            isFalse,
+          );
+          expect(
+            currentState.firstWhere((a) => a.id == 'a3').isSelected,
+            isFalse,
+          );
+        },
+      );
 
       test(
-          'selects the answer if it is already selected (isMultipleChoice: false)',
-          () {
-        // Arrange: Select 'a2' first (using false to ensure others are deselected)
-        notifier.toggleAnswerSelection('a2', false);
-        expect(
+        'selects the answer if it is already selected (isMultipleChoice: false)',
+        () {
+          // Arrange: Select 'a2' first (using false to ensure others are deselected)
+          notifier.toggleAnswerSelection('a2', false);
+          expect(
             container
                 .read(answersNotifierProvider)
                 .firstWhere((a) => a.id == 'a2')
                 .isSelected,
-            isTrue);
-        expect(
+            isTrue,
+          );
+          expect(
             container
                 .read(answersNotifierProvider)
                 .where((a) => a.isSelected)
                 .length,
-            1);
+            1,
+          );
 
-        // Act: Toggle answer 'a2' again with multiple choice disabled
-        // This should effectively keep 'a2' selected and others deselected
-        notifier.toggleAnswerSelection('a2', false);
+          // Act: Toggle answer 'a2' again with multiple choice disabled
+          // This should effectively keep 'a2' selected and others deselected
+          notifier.toggleAnswerSelection('a2', false);
 
-        // Assert: Answer 'a2' should remain selected, others deselected
-        final currentState = container.read(answersNotifierProvider);
-        expect(
-            currentState.firstWhere((a) => a.id == 'a1').isSelected, isFalse);
-        expect(currentState.firstWhere((a) => a.id == 'a2').isSelected, isTrue);
-        expect(
-            currentState.firstWhere((a) => a.id == 'a3').isSelected, isFalse);
-        expect(currentState.where((a) => a.isSelected).length, 1);
-      });
+          // Assert: Answer 'a2' should remain selected, others deselected
+          final currentState = container.read(answersNotifierProvider);
+          expect(
+            currentState.firstWhere((a) => a.id == 'a1').isSelected,
+            isFalse,
+          );
+          expect(
+            currentState.firstWhere((a) => a.id == 'a2').isSelected,
+            isTrue,
+          );
+          expect(
+            currentState.firstWhere((a) => a.id == 'a3').isSelected,
+            isFalse,
+          );
+          expect(currentState.where((a) => a.isSelected).length, 1);
+        },
+      );
 
       test('does nothing if the answerId does not exist', () {
         // Arrange: State is initialized with fakeAnswers1 (all not selected)
         const nonExistentAnswerId = 'non-existent-id';
         // Make a copy of the initial state for comparison
-        final initialState =
-            List<Answer>.from(container.read(answersNotifierProvider));
+        final initialState = List<Answer>.from(
+          container.read(answersNotifierProvider),
+        );
 
         // Act: Attempt to toggle a non-existent answer
         notifier.toggleAnswerSelection(
-            nonExistentAnswerId, true); // Try with true
+          nonExistentAnswerId,
+          true,
+        ); // Try with true
         notifier.toggleAnswerSelection(
-            nonExistentAnswerId, false); // Try with false
+          nonExistentAnswerId,
+          false,
+        ); // Try with false
 
         // Assert: The state should remain unchanged
         final currentState = container.read(answersNotifierProvider);
         const listEquality = ListEquality();
         // Compare the current state list with the initial state list
         expect(listEquality.equals(currentState, initialState), isTrue);
-        expect(currentState.every((a) => !a.isSelected),
-            isTrue); // Still all not selected
+        expect(
+          currentState.every((a) => !a.isSelected),
+          isTrue,
+        ); // Still all not selected
       });
     });
 
@@ -300,11 +355,12 @@ void main() {
         notifier.toggleAnswerSelection('a3', true);
         // Verify some are selected
         expect(
-            container
-                .read(answersNotifierProvider)
-                .where((a) => a.isSelected)
-                .length,
-            2);
+          container
+              .read(answersNotifierProvider)
+              .where((a) => a.isSelected)
+              .length,
+          2,
+        );
 
         // Act: Reset all answers
         notifier.resetAnswers();
@@ -351,8 +407,10 @@ void main() {
         expect(selected.length, 2);
         expect(selected.any((a) => a.id == 'a1'), isTrue);
         expect(selected.any((a) => a.id == 'a3'), isTrue);
-        expect(selected.any((a) => a.id == 'a2'),
-            isFalse); // Ensure non-selected is not included
+        expect(
+          selected.any((a) => a.id == 'a2'),
+          isFalse,
+        ); // Ensure non-selected is not included
       });
 
       test('returns an empty list if the state is empty', () {
@@ -380,8 +438,9 @@ void main() {
         notifier.initializeAnswers(initialAnswers);
         // Verify initial state (all not selected)
         expect(
-            container.read(answersNotifierProvider).every((a) => !a.isSelected),
-            isTrue);
+          container.read(answersNotifierProvider).every((a) => !a.isSelected),
+          isTrue,
+        );
       });
 
       test('toggles selection for a single answer', () {
@@ -394,21 +453,26 @@ void main() {
         // Assert: Only answer 'a2' should be selected
         final currentState = container.read(answersNotifierProvider);
         expect(
-            currentState.firstWhere((a) => a.id == 'a1').isSelected, isFalse);
+          currentState.firstWhere((a) => a.id == 'a1').isSelected,
+          isFalse,
+        );
         expect(currentState.firstWhere((a) => a.id == 'a2').isSelected, isTrue);
         expect(
-            currentState.firstWhere((a) => a.id == 'a3').isSelected, isFalse);
+          currentState.firstWhere((a) => a.id == 'a3').isSelected,
+          isFalse,
+        );
       });
 
       test('deselects the answer if it is already selected', () {
         // Arrange: Select 'a2' first
         notifier.toggleAnswer('a2');
         expect(
-            container
-                .read(answersNotifierProvider)
-                .firstWhere((a) => a.id == 'a2')
-                .isSelected,
-            isTrue);
+          container
+              .read(answersNotifierProvider)
+              .firstWhere((a) => a.id == 'a2')
+              .isSelected,
+          isTrue,
+        );
 
         // Act: Toggle answer 'a2' again
         notifier.toggleAnswer('a2');
@@ -416,19 +480,26 @@ void main() {
         // Assert: Answer 'a2' should now be deselected
         final currentState = container.read(answersNotifierProvider);
         expect(
-            currentState.firstWhere((a) => a.id == 'a1').isSelected, isFalse);
+          currentState.firstWhere((a) => a.id == 'a1').isSelected,
+          isFalse,
+        );
         expect(
-            currentState.firstWhere((a) => a.id == 'a2').isSelected, isFalse);
+          currentState.firstWhere((a) => a.id == 'a2').isSelected,
+          isFalse,
+        );
         expect(
-            currentState.firstWhere((a) => a.id == 'a3').isSelected, isFalse);
+          currentState.firstWhere((a) => a.id == 'a3').isSelected,
+          isFalse,
+        );
       });
 
       test('does nothing if the answerId does not exist', () {
         // Arrange: State is initialized with fakeAnswers1 (all not selected)
         const nonExistentAnswerId = 'non-existent-id';
         // Make a copy of the initial state for comparison
-        final initialState =
-            List<Answer>.from(container.read(answersNotifierProvider));
+        final initialState = List<Answer>.from(
+          container.read(answersNotifierProvider),
+        );
 
         // Act: Attempt to toggle a non-existent answer
         notifier.toggleAnswer(nonExistentAnswerId);
@@ -437,8 +508,10 @@ void main() {
         final currentState = container.read(answersNotifierProvider);
         const listEquality = ListEquality();
         expect(listEquality.equals(currentState, initialState), isTrue);
-        expect(currentState.every((a) => !a.isSelected),
-            isTrue); // Still all not selected
+        expect(
+          currentState.every((a) => !a.isSelected),
+          isTrue,
+        ); // Still all not selected
       });
     });
   });

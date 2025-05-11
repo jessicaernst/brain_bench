@@ -14,18 +14,25 @@ void main() {
     mockRepo = MockQuizRepo();
   });
 
-  test('quizMockDatabaseRepositoryProvider returns overridden repository',
-      () async {
-    // Arrange: override the provider with a mock implementation
-    container = ProviderContainer(overrides: [
-      quizMockDatabaseRepositoryProvider.overrideWith((ref) async => mockRepo),
-    ]);
+  test(
+    'quizMockDatabaseRepositoryProvider returns overridden repository',
+    () async {
+      // Arrange: override the provider with a mock implementation
+      container = ProviderContainer(
+        overrides: [
+          quizMockDatabaseRepositoryProvider.overrideWith(
+            (ref) async => mockRepo,
+          ),
+        ],
+      );
 
-    // Act: read the provider
-    final result =
-        await container.read(quizMockDatabaseRepositoryProvider.future);
+      // Act: read the provider
+      final result = await container.read(
+        quizMockDatabaseRepositoryProvider.future,
+      );
 
-    // Assert: it should return the mocked instance
-    expect(result, mockRepo);
-  });
+      // Assert: it should return the mocked instance
+      expect(result, mockRepo);
+    },
+  );
 }

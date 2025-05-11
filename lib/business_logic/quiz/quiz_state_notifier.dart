@@ -23,34 +23,46 @@ class QuizStateNotifier extends _$QuizStateNotifier {
   /// This method assumes the caller has set isLoadingAnswers = true.
   /// It will set isLoadingAnswers = false upon completion or error.
   Future<void> _fetchAndSetAnswers(
-      List<String> answerIds, String languageCode, String questionId) async {
+    List<String> answerIds,
+    String languageCode,
+    String questionId,
+  ) async {
     // Caller should have set isLoadingAnswers = true
     final repositoryRead = ref.read(quizMockDatabaseRepositoryProvider.future);
     try {
       final repository = await repositoryRead;
       _logger.fine(
-          'Fetching answers for question ID: $questionId with IDs: $answerIds');
-      final List<Answer> answers =
-          await repository.getAnswers(answerIds, languageCode);
+        'Fetching answers for question ID: $questionId with IDs: $answerIds',
+      );
+      final List<Answer> answers = await repository.getAnswers(
+        answerIds,
+        languageCode,
+      );
 
       if (answers.isNotEmpty) {
         ref.read(answersNotifierProvider.notifier).initializeAnswers(answers);
         _logger.fine(
-            'Answers loaded for question ID $questionId (${answers.length}).');
+          'Answers loaded for question ID $questionId (${answers.length}).',
+        );
       } else {
         _logger.warning(
-            '⚠️ Failed to load any answers for question ID: $questionId with IDs: $answerIds');
+          '⚠️ Failed to load any answers for question ID: $questionId with IDs: $answerIds',
+        );
         ref.read(answersNotifierProvider.notifier).resetAnswers();
       }
     } catch (e, s) {
       _logger.severe(
-          '❌ Error fetching answers for question ID $questionId: $e', e, s);
+        '❌ Error fetching answers for question ID $questionId: $e',
+        e,
+        s,
+      );
       try {
         // Attempt to reset answers even on error
         ref.read(answersNotifierProvider.notifier).resetAnswers();
       } catch (disposeError) {
         _logger.warning(
-            'ViewModel potentially disposed before error handling could reset answers: $disposeError');
+          'ViewModel potentially disposed before error handling could reset answers: $disposeError',
+        );
       }
     } finally {
       // Set loading state to false
@@ -59,18 +71,22 @@ class QuizStateNotifier extends _$QuizStateNotifier {
         _logger.fine('Set isLoadingAnswers = false for question $questionId');
       } catch (e) {
         _logger.warning(
-            'Failed to set isLoadingAnswers to false, provider might be disposed: $e');
+          'Failed to set isLoadingAnswers to false, provider might be disposed: $e',
+        );
       }
     }
   }
 
   /// Initializes the quiz if not already initialized.
   Future<void> initializeQuizIfNeeded(
-      List<Question> questions, String languageCode) async {
+    List<Question> questions,
+    String languageCode,
+  ) async {
     if (state.questions.isNotEmpty || questions.isEmpty) {
       if (questions.isEmpty) {
         _logger.warning(
-            '⚠️ initializeQuizIfNeeded called with empty questions list.');
+          '⚠️ initializeQuizIfNeeded called with empty questions list.',
+        );
       } else {
         _logger.fine('Quiz already initialized, skipping initialization.');
       }
@@ -80,19 +96,24 @@ class QuizStateNotifier extends _$QuizStateNotifier {
     _logger.fine('Initializing quiz...');
     // Set initial state (index 0) and mark as loading answers
     state = state.copyWith(
-        questions: questions,
-        currentIndex: 0,
-        isLoadingAnswers: true); // Set loading TRUE before await
+      questions: questions,
+      currentIndex: 0,
+      isLoadingAnswers: true,
+    ); // Set loading TRUE before await
     _logger.fine('Set isLoadingAnswers = true for initialization');
 
     final firstQuestion = questions.first;
     // Fetch answers (this will set isLoadingAnswers to false in its finally block)
     await _fetchAndSetAnswers(
-        firstQuestion.answerIds, languageCode, firstQuestion.id);
+      firstQuestion.answerIds,
+      languageCode,
+      firstQuestion.id,
+    );
 
     // Log overall success *after* fetching attempt
     _logger.info(
-        '✅ Quiz initialization process complete for ${questions.length} questions.');
+      '✅ Quiz initialization process complete for ${questions.length} questions.',
+    );
   }
 
   /// Returns the quiz progress as a percentage (0.0 to 1.0)
@@ -112,15 +133,20 @@ class QuizStateNotifier extends _$QuizStateNotifier {
       final nextIndex = state.currentIndex + 1;
       // Set new index and mark as loading answers
       state = state.copyWith(
-          currentIndex: nextIndex,
-          isLoadingAnswers: true); // Set loading TRUE before await
+        currentIndex: nextIndex,
+        isLoadingAnswers: true,
+      ); // Set loading TRUE before await
       _logger.fine(
-          'Loading next question: Index $nextIndex, Set isLoadingAnswers = true');
+        'Loading next question: Index $nextIndex, Set isLoadingAnswers = true',
+      );
 
       final currentQuestion = state.questions[nextIndex];
       // Fetch answers (this will set isLoadingAnswers to false in its finally block)
       await _fetchAndSetAnswers(
-          currentQuestion.answerIds, languageCode, currentQuestion.id);
+        currentQuestion.answerIds,
+        languageCode,
+        currentQuestion.id,
+      );
     } else {
       _logger.fine('No next question available.');
     }
@@ -133,7 +159,8 @@ class QuizStateNotifier extends _$QuizStateNotifier {
 
     if (answers.isEmpty) {
       _logger.warning(
-          '⚠️ checkAnswers called but AnswersNotifier is empty. Cannot check.');
+        '⚠️ checkAnswers called but AnswersNotifier is empty. Cannot check.',
+      );
       // Ensure lists are empty if no answers are present
       state = state.copyWith(
         correctAnswers: [],
@@ -154,7 +181,8 @@ class QuizStateNotifier extends _$QuizStateNotifier {
     );
 
     _logger.fine(
-        'Check complete: Correct: ${state.correctAnswers.length}, Incorrect: ${state.incorrectAnswers.length}, Missed: ${state.missedCorrectAnswers.length}');
+      'Check complete: Correct: ${state.correctAnswers.length}, Incorrect: ${state.incorrectAnswers.length}, Missed: ${state.missedCorrectAnswers.length}',
+    );
   }
 
   /// Resets the quiz state and associated notifiers.
@@ -174,7 +202,8 @@ class QuizStateNotifier extends _$QuizStateNotifier {
 
     if (currentAnswers.isEmpty) {
       _logger.warning(
-          '⚠️ getAllCorrectAnswersForCurrentQuestion called but AnswersNotifier is empty.');
+        '⚠️ getAllCorrectAnswersForCurrentQuestion called but AnswersNotifier is empty.',
+      );
       return [];
     }
 
@@ -186,7 +215,8 @@ class QuizStateNotifier extends _$QuizStateNotifier {
       }
     }
     _logger.fine(
-        'Retrieved ${allCorrectAnswers.length} correct answer texts for the current question.');
+      'Retrieved ${allCorrectAnswers.length} correct answer texts for the current question.',
+    );
     return allCorrectAnswers;
   }
 }

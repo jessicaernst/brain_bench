@@ -69,14 +69,10 @@ class BrainBenchApp extends ConsumerWidget {
           routerConfig: router,
         );
       },
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
+      loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stackTrace) {
         _logger.severe('Error loading locale for app', error, stackTrace);
-        return const Center(
-          child: Icon(Icons.error_outline),
-        );
+        return const Center(child: Icon(Icons.error_outline));
       },
     );
   }

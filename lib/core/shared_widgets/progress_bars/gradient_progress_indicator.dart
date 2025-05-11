@@ -49,11 +49,14 @@ class _GradientProgressPainter extends CustomPainter {
     final Rect rect = Rect.fromLTWH(0, 0, size.width, size.height);
 
     // Paint for the progress arc with the gradient shader.
-    final Paint foregroundPaint = Paint()
-      ..shader = gradient.createShader(rect)
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round // Rounded edges for the progress arc.
-      ..strokeWidth = strokeWidth;
+    final Paint foregroundPaint =
+        Paint()
+          ..shader = gradient.createShader(rect)
+          ..style = PaintingStyle.stroke
+          ..strokeCap =
+              StrokeCap
+                  .round // Rounded edges for the progress arc.
+          ..strokeWidth = strokeWidth;
 
     // Calculate the center and radius for the progress arc.
     final Offset center = Offset(size.width / 2, size.height / 2);

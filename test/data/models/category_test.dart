@@ -37,55 +37,61 @@ void main() {
 
     // --- Tests ---
 
-    test('Default factory constructor creates instance with correct values',
-        () {
-      // Arrange & Act: testCategory is already created
+    test(
+      'Default factory constructor creates instance with correct values',
+      () {
+        // Arrange & Act: testCategory is already created
 
-      // Assert
-      expect(testCategory.id, testId);
-      expect(testCategory.nameEn, testNameEn);
-      expect(testCategory.nameDe, testNameDe);
-      expect(testCategory.subtitleEn, testSubtitleEn);
-      expect(testCategory.subtitleDe, testSubtitleDe);
-      expect(testCategory.descriptionEn, testDescriptionEn);
-      expect(testCategory.descriptionDe, testDescriptionDe);
-    });
+        // Assert
+        expect(testCategory.id, testId);
+        expect(testCategory.nameEn, testNameEn);
+        expect(testCategory.nameDe, testNameDe);
+        expect(testCategory.subtitleEn, testSubtitleEn);
+        expect(testCategory.subtitleDe, testSubtitleDe);
+        expect(testCategory.descriptionEn, testDescriptionEn);
+        expect(testCategory.descriptionDe, testDescriptionDe);
+      },
+    );
 
-    test('Category.create factory generates a valid UUID and sets properties',
-        () {
-      // Arrange
-      const createNameEn = 'History';
-      const createNameDe = 'Geschichte';
-      const createSubtitleEn = 'World events';
-      const createSubtitleDe = 'Weltereignisse';
-      const createDescriptionEn = 'From ancient times to modern day.';
-      const createDescriptionDe = 'Von der Antike bis zur Neuzeit.';
+    test(
+      'Category.create factory generates a valid UUID and sets properties',
+      () {
+        // Arrange
+        const createNameEn = 'History';
+        const createNameDe = 'Geschichte';
+        const createSubtitleEn = 'World events';
+        const createSubtitleDe = 'Weltereignisse';
+        const createDescriptionEn = 'From ancient times to modern day.';
+        const createDescriptionDe = 'Von der Antike bis zur Neuzeit.';
 
-      // Act
-      final createdCategory = Category.create(
-        nameEn: createNameEn,
-        nameDe: createNameDe,
-        subtitleEn: createSubtitleEn,
-        subtitleDe: createSubtitleDe,
-        descriptionEn: createDescriptionEn,
-        descriptionDe: createDescriptionDe,
-      );
+        // Act
+        final createdCategory = Category.create(
+          nameEn: createNameEn,
+          nameDe: createNameDe,
+          subtitleEn: createSubtitleEn,
+          subtitleDe: createSubtitleDe,
+          descriptionEn: createDescriptionEn,
+          descriptionDe: createDescriptionDe,
+        );
 
-      // Assert
-      expect(createdCategory.id, isNotEmpty);
-      // Basic check if it looks like a UUID v4
-      expect(
+        // Assert
+        expect(createdCategory.id, isNotEmpty);
+        // Basic check if it looks like a UUID v4
+        expect(
           Uuid.isValidUUID(
-              fromString: createdCategory.id,
-              validationMode: ValidationMode.strictRFC4122),
-          isTrue);
-      expect(createdCategory.nameEn, createNameEn);
-      expect(createdCategory.nameDe, createNameDe);
-      expect(createdCategory.subtitleEn, createSubtitleEn);
-      expect(createdCategory.subtitleDe, createSubtitleDe);
-      expect(createdCategory.descriptionEn, createDescriptionEn);
-      expect(createdCategory.descriptionDe, createDescriptionDe);
-    });
+            fromString: createdCategory.id,
+            validationMode: ValidationMode.strictRFC4122,
+          ),
+          isTrue,
+        );
+        expect(createdCategory.nameEn, createNameEn);
+        expect(createdCategory.nameDe, createNameDe);
+        expect(createdCategory.subtitleEn, createSubtitleEn);
+        expect(createdCategory.subtitleDe, createSubtitleDe);
+        expect(createdCategory.descriptionEn, createDescriptionEn);
+        expect(createdCategory.descriptionDe, createDescriptionDe);
+      },
+    );
 
     test('fromJson correctly deserializes JSON map', () {
       // Arrange: testJson is defined above
@@ -146,10 +152,12 @@ void main() {
       );
       final category2 = category1.copyWith(id: 'diff-id-2'); // Different ID
       final category3 = category1.copyWith(nameEn: 'Name2'); // Different nameEn
-      final category4 =
-          category1.copyWith(subtitleDe: 'SubDe2'); // Different subtitleDe
-      final category5 =
-          category1.copyWith(descriptionEn: 'Desc2'); // Different descriptionEn
+      final category4 = category1.copyWith(
+        subtitleDe: 'SubDe2',
+      ); // Different subtitleDe
+      final category5 = category1.copyWith(
+        descriptionEn: 'Desc2',
+      ); // Different descriptionEn
 
       // Act & Assert
       expect(category1 == category2, isFalse);
@@ -169,14 +177,18 @@ void main() {
       final copiedWithId = testCategory.copyWith(id: 'new-cat-id');
       final copiedWithNameEn = testCategory.copyWith(nameEn: 'Science');
       final copiedWithNameDe = testCategory.copyWith(nameDe: 'Wissenschaft');
-      final copiedWithSubtitleEn =
-          testCategory.copyWith(subtitleEn: 'Explore the world');
-      final copiedWithSubtitleDe =
-          testCategory.copyWith(subtitleDe: 'Erkunde die Welt');
-      final copiedWithDescriptionEn =
-          testCategory.copyWith(descriptionEn: 'New description.');
-      final copiedWithDescriptionDe =
-          testCategory.copyWith(descriptionDe: 'Neue Beschreibung.');
+      final copiedWithSubtitleEn = testCategory.copyWith(
+        subtitleEn: 'Explore the world',
+      );
+      final copiedWithSubtitleDe = testCategory.copyWith(
+        subtitleDe: 'Erkunde die Welt',
+      );
+      final copiedWithDescriptionEn = testCategory.copyWith(
+        descriptionEn: 'New description.',
+      );
+      final copiedWithDescriptionDe = testCategory.copyWith(
+        descriptionDe: 'Neue Beschreibung.',
+      );
 
       // Assert
       // Check updated value and that others remain the same

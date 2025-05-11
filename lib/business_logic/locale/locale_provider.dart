@@ -36,7 +36,8 @@ class LocaleNotifier extends _$LocaleNotifier {
       // It defines a fallback locale instead of rethrowing the error.
       const fallbackLocale = Locale('en');
       _logger.info(
-          'Failed to load initial Locale. Falling back to: $fallbackLocale');
+        'Failed to load initial Locale. Falling back to: $fallbackLocale',
+      );
       return fallbackLocale;
     }
   }
@@ -63,8 +64,9 @@ class LocaleNotifier extends _$LocaleNotifier {
       }
     } else if (!state.hasValue) {
       // Guard clause: Don't allow setting locale if initial load/refresh is in progress or failed without fallback.
-      _logger
-          .warning('Cannot set Locale while initial state is loading/error.');
+      _logger.warning(
+        'Cannot set Locale while initial state is loading/error.',
+      );
     } else if (!supportedLanguages.containsKey(newLocale)) {
       _logger.warning('Attempted to set unsupported locale: $newLocale');
     } else {

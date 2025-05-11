@@ -18,11 +18,10 @@ class ErrorIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _logger.severe(
-        'Error loading locale for selection view', error, stackTrace);
-    return Icon(
-      Icons.error_outline,
-      color: textColor,
-      size: 24,
+      'Error loading locale for selection view',
+      error,
+      stackTrace,
     );
+    return Icon(Icons.error_outline, color: textColor, size: 24);
   }
 }

@@ -120,9 +120,9 @@ class AuthViewModel extends _$AuthViewModel {
   void _showError(BuildContext context, Object error) {
     final message = error.toString();
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $message')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $message')));
     }
   }
 }

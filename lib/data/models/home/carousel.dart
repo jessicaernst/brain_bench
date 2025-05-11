@@ -19,14 +19,13 @@ class Carousel with _$Carousel {
     required String title,
     required String description,
     required String imageUrl,
-  }) =>
-      Carousel(
-        id: const Uuid().v4(),
-        categoryId: categoryId,
-        title: title,
-        description: description,
-        imageUrl: imageUrl,
-      );
+  }) => Carousel(
+    id: const Uuid().v4(),
+    categoryId: categoryId,
+    title: title,
+    description: description,
+    imageUrl: imageUrl,
+  );
 
   factory Carousel.fromJson(Map<String, dynamic> json) =>
       _$CarouselFromJson(json);

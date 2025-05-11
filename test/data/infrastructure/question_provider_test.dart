@@ -33,16 +33,19 @@ void main() {
   group('questionsProvider', () {
     setUp(() {
       mockRepo = MockQuizRepo();
-      container = ProviderContainer(overrides: [
-        quizMockDatabaseRepositoryProvider.overrideWith(
-          (ref) => Future.value(mockRepo),
-        ),
-      ]);
+      container = ProviderContainer(
+        overrides: [
+          quizMockDatabaseRepositoryProvider.overrideWith(
+            (ref) => Future.value(mockRepo),
+          ),
+        ],
+      );
     });
 
     test('returns expected questions', () async {
-      when(() => mockRepo.getQuestions(topicId, languageCode))
-          .thenAnswer((_) async => fakeQuestions);
+      when(
+        () => mockRepo.getQuestions(topicId, languageCode),
+      ).thenAnswer((_) async => fakeQuestions);
 
       final result = await container.read(
         questionsProvider(topicId, languageCode).future,
@@ -53,8 +56,9 @@ void main() {
     });
 
     test('handles empty list', () async {
-      when(() => mockRepo.getQuestions(topicId, languageCode))
-          .thenAnswer((_) async => []);
+      when(
+        () => mockRepo.getQuestions(topicId, languageCode),
+      ).thenAnswer((_) async => []);
 
       final result = await container.read(
         questionsProvider(topicId, languageCode).future,
@@ -64,13 +68,12 @@ void main() {
     });
 
     test('throws exception when repository fails', () async {
-      when(() => mockRepo.getQuestions(topicId, languageCode))
-          .thenThrow(Exception('DB Error'));
+      when(
+        () => mockRepo.getQuestions(topicId, languageCode),
+      ).thenThrow(Exception('DB Error'));
 
       expect(
-        () => container.read(
-          questionsProvider(topicId, languageCode).future,
-        ),
+        () => container.read(questionsProvider(topicId, languageCode).future),
         throwsException,
       );
     });

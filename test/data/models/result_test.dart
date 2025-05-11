@@ -4,8 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:uuid/uuid.dart';
 
 // Helper to create mock QuizAnswer objects
-QuizAnswer _createMockQuizAnswer(String id,
-    {int points = 1, int possible = 1}) {
+QuizAnswer _createMockQuizAnswer(
+  String id, {
+  int points = 1,
+  int possible = 1,
+}) {
   return QuizAnswer(
     id: id,
     topicId: 't1',
@@ -63,84 +66,93 @@ void main() {
       'total': testTotal,
       'score': testScore,
       'isPassed': testIsPassed,
-      'timestamp': testTimestamp
-          .toIso8601String(), // Timestamps are serialized as ISO strings
-      'quizAnswers': testQuizAnswers
-          .map((qa) => qa.toJson())
-          .toList(), // List of JSON objects
+      'timestamp':
+          testTimestamp
+              .toIso8601String(), // Timestamps are serialized as ISO strings
+      'quizAnswers':
+          testQuizAnswers
+              .map((qa) => qa.toJson())
+              .toList(), // List of JSON objects
     };
 
     // --- Tests ---
 
-    test('Default factory constructor creates instance with correct values',
-        () {
-      // Arrange & Act: testResult is already created
+    test(
+      'Default factory constructor creates instance with correct values',
+      () {
+        // Arrange & Act: testResult is already created
 
-      // Assert
-      expect(testResult.id, testId);
-      expect(testResult.userId, testUserId);
-      expect(testResult.topicId, testTopicId);
-      expect(testResult.categoryId, testCategoryId);
-      expect(testResult.correct, testCorrect);
-      expect(testResult.total, testTotal);
-      expect(testResult.score, testScore);
-      expect(testResult.isPassed, testIsPassed);
-      expect(testResult.timestamp, testTimestamp);
-      expect(testResult.quizAnswers, testQuizAnswers);
-    });
+        // Assert
+        expect(testResult.id, testId);
+        expect(testResult.userId, testUserId);
+        expect(testResult.topicId, testTopicId);
+        expect(testResult.categoryId, testCategoryId);
+        expect(testResult.correct, testCorrect);
+        expect(testResult.total, testTotal);
+        expect(testResult.score, testScore);
+        expect(testResult.isPassed, testIsPassed);
+        expect(testResult.timestamp, testTimestamp);
+        expect(testResult.quizAnswers, testQuizAnswers);
+      },
+    );
 
     test(
-        'Result.create factory generates UUID, sets current timestamp, and assigns properties',
-        () {
-      // Arrange
-      const createUserId = 'user-create';
-      const createTopicId = 'topic-create';
-      const createCategoryId = 'cat-create';
-      const createCorrect = 5;
-      const createTotal = 8;
-      const createScore = 62.5;
-      const createIsPassed = false;
-      final createQuizAnswers = [_createMockQuizAnswer('qa-create')];
-      final timeBefore = DateTime.now();
+      'Result.create factory generates UUID, sets current timestamp, and assigns properties',
+      () {
+        // Arrange
+        const createUserId = 'user-create';
+        const createTopicId = 'topic-create';
+        const createCategoryId = 'cat-create';
+        const createCorrect = 5;
+        const createTotal = 8;
+        const createScore = 62.5;
+        const createIsPassed = false;
+        final createQuizAnswers = [_createMockQuizAnswer('qa-create')];
+        final timeBefore = DateTime.now();
 
-      // Act
-      final createdResult = Result.create(
-        userId: createUserId,
-        topicId: createTopicId,
-        categoryId: createCategoryId,
-        correct: createCorrect,
-        total: createTotal,
-        score: createScore,
-        isPassed: createIsPassed,
-        quizAnswers: createQuizAnswers,
-      );
-      final timeAfter = DateTime.now();
+        // Act
+        final createdResult = Result.create(
+          userId: createUserId,
+          topicId: createTopicId,
+          categoryId: createCategoryId,
+          correct: createCorrect,
+          total: createTotal,
+          score: createScore,
+          isPassed: createIsPassed,
+          quizAnswers: createQuizAnswers,
+        );
+        final timeAfter = DateTime.now();
 
-      // Assert
-      expect(createdResult.id, isNotEmpty);
-      expect(
+        // Assert
+        expect(createdResult.id, isNotEmpty);
+        expect(
           Uuid.isValidUUID(
-              fromString: createdResult.id,
-              validationMode: ValidationMode.strictRFC4122),
-          isTrue);
-      expect(createdResult.userId, createUserId);
-      expect(createdResult.topicId, createTopicId);
-      expect(createdResult.categoryId, createCategoryId);
-      expect(createdResult.correct, createCorrect);
-      expect(createdResult.total, createTotal);
-      expect(createdResult.score, createScore);
-      expect(createdResult.isPassed, createIsPassed);
-      expect(createdResult.quizAnswers, createQuizAnswers);
-      // Check timestamp is within the creation window
-      expect(
+            fromString: createdResult.id,
+            validationMode: ValidationMode.strictRFC4122,
+          ),
+          isTrue,
+        );
+        expect(createdResult.userId, createUserId);
+        expect(createdResult.topicId, createTopicId);
+        expect(createdResult.categoryId, createCategoryId);
+        expect(createdResult.correct, createCorrect);
+        expect(createdResult.total, createTotal);
+        expect(createdResult.score, createScore);
+        expect(createdResult.isPassed, createIsPassed);
+        expect(createdResult.quizAnswers, createQuizAnswers);
+        // Check timestamp is within the creation window
+        expect(
           createdResult.timestamp.isAfter(timeBefore) ||
               createdResult.timestamp.isAtSameMomentAs(timeBefore),
-          isTrue);
-      expect(
+          isTrue,
+        );
+        expect(
           createdResult.timestamp.isBefore(timeAfter) ||
               createdResult.timestamp.isAtSameMomentAs(timeAfter),
-          isTrue);
-    });
+          isTrue,
+        );
+      },
+    );
 
     test('fromJson correctly deserializes JSON map', () {
       // Arrange: testJson is defined above
@@ -228,10 +240,12 @@ void main() {
       final result3 = result1.copyWith(userId: 'u2'); // Different userId
       final result4 = result1.copyWith(score: 60.0); // Different score
       final result5 = result1.copyWith(isPassed: true); // Different isPassed
-      final result6 =
-          result1.copyWith(timestamp: DateTime.now()); // Different timestamp
+      final result6 = result1.copyWith(
+        timestamp: DateTime.now(),
+      ); // Different timestamp
       final result7 = result1.copyWith(
-          quizAnswers: [_createMockQuizAnswer('qa-diff')]); // Different answers
+        quizAnswers: [_createMockQuizAnswer('qa-diff')],
+      ); // Different answers
 
       // Act & Assert
       expect(result1 == result2, isFalse);
@@ -255,8 +269,9 @@ void main() {
       final copiedWithId = testResult.copyWith(id: 'new-res-id');
       final copiedWithScore = testResult.copyWith(score: 90.0, correct: 9);
       final copiedWithIsPassed = testResult.copyWith(isPassed: false);
-      final copiedWithAnswers =
-          testResult.copyWith(quizAnswers: [_createMockQuizAnswer('qa-new')]);
+      final copiedWithAnswers = testResult.copyWith(
+        quizAnswers: [_createMockQuizAnswer('qa-new')],
+      );
 
       // Assert
       // Check updated value and that others remain the same

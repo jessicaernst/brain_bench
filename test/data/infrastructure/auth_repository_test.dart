@@ -15,24 +15,22 @@ void main() {
   });
 
   test('authRepositoryProvider returns mocked AuthRepository', () async {
-    when(() => mockAuthRepository.signInWithEmail(any(), any()))
-        .thenAnswer((_) async => const AppUser(
-              uid: '123',
-              id: '123',
-              email: 'test@example.com',
-            ));
+    when(() => mockAuthRepository.signInWithEmail(any(), any())).thenAnswer(
+      (_) async =>
+          const AppUser(uid: '123', id: '123', email: 'test@example.com'),
+    );
 
     final container = ProviderContainer(
-      overrides: [
-        authRepositoryProvider.overrideWithValue(mockAuthRepository),
-      ],
+      overrides: [authRepositoryProvider.overrideWithValue(mockAuthRepository)],
     );
 
     final repository = container.read(authRepositoryProvider);
 
     await repository.signInWithEmail('test@example.com', 'password123');
 
-    verify(() => mockAuthRepository.signInWithEmail(
-        'test@example.com', 'password123')).called(1);
+    verify(
+      () =>
+          mockAuthRepository.signInWithEmail('test@example.com', 'password123'),
+    ).called(1);
   });
 }
