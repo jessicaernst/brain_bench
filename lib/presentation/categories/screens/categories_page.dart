@@ -23,10 +23,15 @@ class CategoriesPage extends ConsumerWidget {
     // Build UI based on the state of categoriesAsync
     return categoriesAsync.when(
       data: (categories) {
-        _logger.info('Categories data received. Total: ${categories.length}');
+        // Filter out the 'welcome' category
+        final filteredCategories =
+            categories.where((category) => category.id != 'welcome').toList();
+        _logger.info(
+          'Categories data received. Total: ${categories.length}, Filtered: ${filteredCategories.length}',
+        );
         // Pass data to the loaded view widget
         return CategoriesLoadedView(
-          categories: categories,
+          categories: filteredCategories,
           localizations: localizations,
           languageCode: languageCode,
         );
