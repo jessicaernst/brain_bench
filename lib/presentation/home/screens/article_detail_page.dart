@@ -53,6 +53,14 @@ class ArticleDetailPage extends ConsumerWidget {
                       Html(
                         data: article.htmlContent,
                         style: {
+                          'h1': Style(
+                            fontSize: FontSize(32),
+                            fontFamily: 'Urbanist',
+                            color:
+                                Theme.of(
+                                  context,
+                                ).textTheme.headlineLarge?.color,
+                          ),
                           'body': Style(
                             fontSize: FontSize(16),
                             fontFamily: 'Urbanist',
