@@ -9,7 +9,9 @@ part of 'home_providers.dart';
 String _$selectedHomeCategoryHash() =>
     r'e6336392e8ef8c1b05b790dddae05564ab7d2bc0';
 
-/// See also [SelectedHomeCategory].
+/// Provider class for managing the selected home category.
+///
+/// Copied from [SelectedHomeCategory].
 @ProviderFor(SelectedHomeCategory)
 final selectedHomeCategoryProvider =
     AutoDisposeNotifierProvider<SelectedHomeCategory, String?>.internal(

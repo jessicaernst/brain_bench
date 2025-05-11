@@ -1,5 +1,5 @@
 # Declare targets that are not actual files, ensuring they always run.
-.PHONY: test test-watch test-once clean-coverage show-coverage open-coverage coverage-report filter-lcov deep-clean dev-clean
+.PHONY: test test-watch test-once clean-coverage show-coverage open-coverage coverage-report filter-lcov deep-clean dev-clean build watch
 
 # Filters generated Dart files (.g.dart, .freezed.dart, .gen.dart) from the lcov.info coverage report.
 # Ensures the 'remove_from_coverage' tool is globally activated first.
