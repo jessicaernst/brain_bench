@@ -1,9 +1,9 @@
 import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
 import 'package:brain_bench/business_logic/categories/categories_provider.dart';
-import 'package:brain_bench/core/shared_widgets/appbars/back_nav_app_bar.dart';
-import 'package:brain_bench/core/shared_widgets/progress_bars/dash_evolution_progress_dircle_view.dart';
-import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/shared_widgets/appbars/back_nav_app_bar.dart';
+import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.dart';
+import 'package:brain_bench/core/shared_widgets/progress_bars/dash_evolution_progress_dircle_view.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/navigation/routes/app_routes.dart';
@@ -37,6 +37,9 @@ class CategoryDetailsPage extends ConsumerWidget {
           orElse: () => localizations.categoryDetailsTitle,
         ),
         onBack: () {
+          ref
+              .read(selectedCategoryNotifierProvider.notifier)
+              .selectCategory(null);
           if (context.canPop()) {
             context.pop();
           } else {
