@@ -471,5 +471,21 @@
     "articleLoadingError": "Fehler beim Laden des Artikels.",
     "@articleLoadingError": {
         "description": "Error message shown when loading an article fails"
+    },
+    "articleDetailTitle": "Artikeldetails",
+    "@articleDetailTitle": {
+        "description": "The title of the article details page"
+    },
+    "loading": "Lädt...",
+    "@loading": {
+        "description": "Generic loading message shown in a SnackBar."
+    },
+    "articleNotFound": "Artikel nicht gefunden",
+    "@articleNotFound": {
+        "description": "Error message shown when the article is not found"
+    },
+    "tapForMore": "Tippe für mehr",
+    "@tapForMore": {
+        "description": "Label for a button that expands or collapses additional content."
     }
 }

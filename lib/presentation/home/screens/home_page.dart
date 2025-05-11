@@ -12,15 +12,52 @@ import 'package:brain_bench/presentation/home/widgets/inactive_news_carousel_car
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
+import 'package:logging/logging.dart';
+
+final Logger _logger = Logger('HomePage');
 
 /// The home page widget that displays a carousel of articles.
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  ProviderSubscription? _categoryListenerSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    // It's good practice to store the subscription to close it in dispose.
+    _categoryListenerSubscription = ref.listenManual<
+      String?
+    >(selectedHomeCategoryProvider, (previous, next) {
+      // Only reset if there was a previous category AND it's different from the new one.
+      // This prevents resetting when the category is initialized or re-established
+      // upon returning to the page.
+      if (previous != null && previous != next) {
+        _logger.fine(
+          'Category actively changed from "$previous" to "$next". Resetting active carousel index to 0.',
+        );
+        ref.read(activeCarouselIndexProvider.notifier).update(0);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // Close the subscription when the widget is disposed to prevent memory leaks.
+    _categoryListenerSubscription?.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
     final String? selectedCategoryId = ref.watch(selectedHomeCategoryProvider);
+    final int activeIndexFromProvider = ref.watch(activeCarouselIndexProvider);
 
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
@@ -63,13 +100,28 @@ class HomePage extends ConsumerWidget {
                 .toList();
 
     if (baseArticlesForSelection.isNotEmpty) {
-      itemsForArticle = List.from(baseArticlesForSelection)..shuffle();
+      itemsForArticle = List.from(baseArticlesForSelection);
     } else {
       itemsForArticle = List.from(
         articleItems.where((item) => item.categoryId == 'welcome'),
-      )..shuffle();
+      );
     }
 
+    // Ensure the activeIndexFromProvider is valid for the current itemsForArticle list
+    final bool isValidInitialItem =
+        itemsForArticle.isNotEmpty &&
+        activeIndexFromProvider >= 0 &&
+        activeIndexFromProvider < itemsForArticle.length;
+    if (!isValidInitialItem) {
+      assert(() {
+        _logger.warning(
+          'Warning: activeIndexFromProvider ($activeIndexFromProvider) is out of bounds for itemsForArticle (length: ${itemsForArticle.length}). Falling back to 0.',
+        );
+        return true;
+      }());
+    }
+    final int actualInitialItem =
+        isValidInitialItem ? activeIndexFromProvider : 0;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -115,7 +167,21 @@ class HomePage extends ConsumerWidget {
               ),
               Expanded(
                 child: InfiniteCarousel(
-                  key: ValueKey(selectedCategoryId ?? 'all'),
+                  key: ValueKey(selectedCategoryId ?? 'all_articles'),
+
+                  initialItem: actualInitialItem,
+                  onActiveItemChanged: (index) {
+                    // Bounds checking before updating the provider
+                    if (index >= 0 && index < itemsForArticle.length) {
+                      ref
+                          .read(activeCarouselIndexProvider.notifier)
+                          .update(index);
+                    } else {
+                      _logger.warning(
+                        'InfiniteCarousel reported out-of-bounds index: $index. Max items: ${itemsForArticle.length}',
+                      );
+                    }
+                  },
                   items:
                       itemsForArticle.map((item) {
                         return InfiniteCarouselItem(

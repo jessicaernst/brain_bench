@@ -471,5 +471,21 @@
     "articleLoadingError": "Error loading article.",
     "@articleLoadingError": {
         "description": "Error message shown when loading an article fails"
+    },
+    "articleDetailTitle": "Article Details",
+    "@articleDetailTitle": {
+        "description": "The title of the article details page"
+    },
+    "loading": "Loading...",
+    "@loading": {
+        "description": "Generic loading message shown in a SnackBar."
+    },
+    "articleNotFound": "Article not found.",
+    "@articleNotFound": {
+        "description": "Message displayed when the article is not found"
+    },
+    "tapForMore": "Tap for more",
+    "@tapForMore": {
+        "description": "Label for a button or link that allows the user to tap for more information."
     }
 }

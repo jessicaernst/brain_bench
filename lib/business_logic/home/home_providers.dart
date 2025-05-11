@@ -15,3 +15,18 @@ class SelectedHomeCategory extends _$SelectedHomeCategory {
     state = categoryId;
   }
 }
+
+/// Provider class for managing the active index in the home page articles carousel.
+/// This helps in persisting the active card when navigating back.
+@riverpod
+class ActiveCarouselIndex extends _$ActiveCarouselIndex {
+  @override
+  int build() {
+    return 0;
+  }
+
+  /// Updates the active carousel index.
+  void update(int newIndex) {
+    state = newIndex;
+  }
+}

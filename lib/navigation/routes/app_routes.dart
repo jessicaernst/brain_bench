@@ -6,6 +6,7 @@ import 'package:brain_bench/navigation/transitions/app_transitions.dart';
 import 'package:brain_bench/presentation/auth/screens/login_sign_up_page.dart';
 import 'package:brain_bench/presentation/categories/screens/categories_page.dart';
 import 'package:brain_bench/presentation/categories/screens/category_details_page.dart';
+import 'package:brain_bench/presentation/home/screens/article_detail_page.dart'; // Import für die neue Seite
 import 'package:brain_bench/presentation/home/screens/home_page.dart';
 import 'package:brain_bench/presentation/profile/screens/profile_page.dart';
 import 'package:brain_bench/presentation/quiz/screens/quiz_page.dart';
@@ -31,6 +32,7 @@ class AppRouteNames {
   static const topics = 'topics';
   static const results = 'results';
   static const quiz = 'quiz';
+  static const articleDetail = 'articleDetail';
   static const quizResult = 'quizResult';
 }
 
@@ -157,6 +159,28 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             ),
       ),
 
+      // Article Detail Page Route (Cupertino Slide) - Als Top-Level-Route
+      GoRoute(
+        name: AppRouteNames.articleDetail,
+        path: '/article/:articleId', // Eigener Pfad, nicht mehr unter /home
+        pageBuilder: (context, state) {
+          final articleId = state.pathParameters['articleId'];
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child:
+                articleId != null
+                    ? ArticleDetailPage(articleId: articleId)
+                    : NotFoundPage(
+                      // Fallback, falls articleId fehlt
+                      onBack: () => context.goNamed(AppRouteNames.home),
+                    ),
+            transitionsBuilder: buildCupertinoSlideTransition,
+            transitionDuration: transitionDuration,
+            reverseTransitionDuration: reverseTransitionDuration,
+          );
+        },
+      ),
+
       // StatefulShellRoute with persistent bottom navigation bar
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
@@ -178,6 +202,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                       transitionDuration: transitionDuration,
                       reverseTransitionDuration: reverseTransitionDuration,
                     ),
+                // Die ArticleDetail-Route wurde nach oben verschoben
               ),
             ],
           ),

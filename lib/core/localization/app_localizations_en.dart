@@ -361,4 +361,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get articleLoadingError => 'Error loading article.';
+
+  @override
+  String get articleDetailTitle => 'Article Details';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get articleNotFound => 'Article not found.';
+
+  @override
+  String get tapForMore => 'Tap for more';
 }

@@ -802,6 +802,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error loading article.'**
   String get articleLoadingError;
+
+  /// The title of the article details page
+  ///
+  /// In en, this message translates to:
+  /// **'Article Details'**
+  String get articleDetailTitle;
+
+  /// Generic loading message shown in a SnackBar.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// Message displayed when the article is not found
+  ///
+  /// In en, this message translates to:
+  /// **'Article not found.'**
+  String get articleNotFound;
+
+  /// Label for a button or link that allows the user to tap for more information.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap for more'**
+  String get tapForMore;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

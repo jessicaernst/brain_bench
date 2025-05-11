@@ -76,8 +76,9 @@ dependencies:
   infinite_carousel:
     git:
       url: git@github.com:jessicaernst/infinite_carousel.git
-      ref: v1.1.4
+      ref: v1.1.5
   stream_transform: ^2.1.1
+  flutter_html: ^3.0.0
 
 dev_dependencies:
   flutter_test:

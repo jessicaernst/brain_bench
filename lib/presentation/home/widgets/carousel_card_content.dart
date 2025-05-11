@@ -1,7 +1,10 @@
 import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
 import 'package:brain_bench/core/extensions/responsive_context.dart';
+import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/models/home/article.dart';
+import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 /// A widget that represents the content of a carousel card.
 class CarouselCardContent extends StatelessWidget {
@@ -16,6 +19,7 @@ class CarouselCardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(context)!;
     final bool isSmallScreenValue = context.isSmallScreen;
     final int descriptionMaxLines = isSmallScreenValue ? 2 : 4;
 
@@ -54,9 +58,12 @@ class CarouselCardContent extends StatelessWidget {
               alignment: Alignment.bottomRight,
               child: TextButton(
                 onPressed: () {
-                  debugPrint('Button tapped: ${item.title}');
+                  context.pushNamed(
+                    AppRouteNames.articleDetail,
+                    pathParameters: {'articleId': item.id},
+                  );
                 },
-                child: const Text('tap for more'),
+                child: Text(localizations.tapForMore),
               ),
             ),
           ),
