@@ -66,8 +66,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authPasswordResetEmailPrompt => 'Please enter your email first.';
 
   @override
-  String get authPasswordShortError =>
-      'Password must be at least 6 characters long.';
+  String get authPasswordShortError => 'Password must be at least 6 characters long.';
 
   @override
   String get authPwdForgottenBtnLbl => 'Reset here';
@@ -100,8 +99,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bottomNavigationResults => 'Results';
 
   @override
-  String get homeActualCategoryDescriptionPrompt =>
-      'Select a category to see details.';
+  String get homeActualCategoryDescriptionPrompt => 'Select a category to see details.';
 
   @override
   String get homeActualCategoryErrorLoading => 'Error loading categories:';
@@ -116,8 +114,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pickerOptionAutomatic => 'Welcome';
 
   @override
-  String get pickerOptionAutomaticDescription =>
-      'The app automatically selects a new category for you after each completed quiz.';
+  String get pickerOptionAutomaticDescription => 'The app automatically selects a new category for you after each completed quiz.';
 
   @override
   String get categoryDetailsErrorLoading => 'Error loading category details:';
@@ -171,8 +168,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizCompletedMsg => '🎉 Quiz Completed';
 
   @override
-  String get quizNoQuestionsAvailable =>
-      'No questions available for this topic yet.';
+  String get quizNoQuestionsAvailable => 'No questions available for this topic yet.';
 
   @override
   String get startQuizBtnLbl => 'Start Quiz';
@@ -202,24 +198,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizResultsRetryButton => 'Retry';
 
   @override
-  String get quizResultsSaveLastCategoryError =>
-      'Could not save the last played category.';
+  String get quizResultsSaveLastCategoryError => 'Could not save the last played category.';
 
   @override
-  String get quizResultsSaveLastCategoryRetryFailed =>
-      'Saving the last category failed. Please try again later.';
+  String get quizResultsSaveLastCategoryRetryFailed => 'Saving the last category failed. Please try again later.';
 
   @override
-  String get quizResultsSaveLastCategorySuccess =>
-      'Last category saved successfully.';
+  String get quizResultsSaveLastCategorySuccess => 'Last category saved successfully.';
 
   @override
-  String get quizResultsUserNotAvailable =>
-      'User data not available. Please try again later.';
+  String get quizResultsUserNotAvailable => 'User data not available. Please try again later.';
 
   @override
-  String get quizToggleExplanation =>
-      'Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!';
+  String get quizToggleExplanation => 'Here you can view the correct and incorrect answers along with explanations. Tap on the thumbs to do so!';
 
   @override
   String get profileAppBarTitle => 'Profile';
@@ -345,19 +336,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quizErrorNoQuestions => 'No questions found for this topic.';
 
   @override
-  String get genericErrorMessage =>
-      'Something went wrong. Please try again later.';
+  String get genericErrorMessage => 'Something went wrong. Please try again later.';
 
   @override
   String get permissionRequiredTitle => 'Permission Required';
 
   @override
-  String get permissionPhotosPermanentlyDenied =>
-      'To select photos, please enable Photos access for Brain Bench in your device settings.';
+  String get permissionPhotosPermanentlyDenied => 'To select photos, please enable Photos access for Brain Bench in your device settings.';
 
   @override
-  String get permissionCameraPermanentlyDenied =>
-      'To take photos, please enable Camera access for Brain Bench in your device settings.';
+  String get permissionCameraPermanentlyDenied => 'To take photos, please enable Camera access for Brain Bench in your device settings.';
 
   @override
   String get permissionPhotosDenied => 'Photo access denied.';
