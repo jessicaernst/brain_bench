@@ -4,11 +4,9 @@ import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/core/styles/gradient_colors.dart';
 import 'package:flutter/material.dart';
 
+/// A card widget used in the inactive news carousel.
 class InactiveNewsCarouselCard extends StatelessWidget {
-  const InactiveNewsCarouselCard({
-    super.key,
-    required this.content,
-  });
+  const InactiveNewsCarouselCard({super.key, required this.content});
 
   final Widget content;
 
@@ -23,9 +21,12 @@ class InactiveNewsCarouselCard extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
-              color: isDarkMode
-                  ? BrainBenchColors.deepDive
-                  : BrainBenchColors.cloudCanvas.withAlpha((0.5 * 255).toInt()),
+              color:
+                  isDarkMode
+                      ? BrainBenchColors.deepDive
+                      : BrainBenchColors.cloudCanvas.withAlpha(
+                        (0.5 * 255).toInt(),
+                      ),
               boxShadow: isDarkMode ? [] : _shadows,
             ),
           ),
@@ -37,9 +38,10 @@ class InactiveNewsCarouselCard extends StatelessWidget {
               imageFilter: ImageFilter.blur(sigmaX: 1.84, sigmaY: 1.84),
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  gradient: isDarkMode
-                      ? BrainBenchGradients.authCardGradientDark
-                      : BrainBenchGradients.authCardGradientLight,
+                  gradient:
+                      isDarkMode
+                          ? BrainBenchGradients.authCardGradientDark
+                          : BrainBenchGradients.authCardGradientLight,
                   border: Border.all(
                     color: BrainBenchColors.btnStroke,
                     width: 0.7,

@@ -49,7 +49,7 @@ class ActualCategoryView extends HookConsumerWidget {
     // Update the selected category
     void updateSelectedCategory(Category category) async {
       localSelectedCategory.value = category;
-      // Update den globalen Provider nur, wenn sich die Kategorie-ID geändert hat
+      // Update the selected category in the provider
       final currentCategoryId = ref.read(selectedHomeCategoryProvider);
       if (currentCategoryId != category.id) {
         ref.read(selectedHomeCategoryProvider.notifier).update(category.id);
