@@ -1,8 +1,8 @@
 import 'package:brain_bench/business_logic/categories/categories_provider.dart';
+import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/shared_widgets/appbars/back_nav_app_bar.dart';
 import 'package:brain_bench/core/shared_widgets/error_views/no_data_available_view.dart';
 import 'package:brain_bench/core/shared_widgets/progress_bars/progress_indicator_bar_view.dart';
-import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/data/infrastructure/quiz/topic_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
@@ -70,11 +70,10 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
       appBar: BackNavAppBar(
         title: localizations.topicsTitle,
         onBack: () {
-          if (context.canPop()) {
-            context.pop();
-          } else {
-            context.goNamed(AppRouteNames.categories);
-          }
+          ref
+              .read(selectedCategoryNotifierProvider.notifier)
+              .selectCategory(null);
+          context.goNamed(AppRouteNames.categories);
         },
       ),
       body: Column(
