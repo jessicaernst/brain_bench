@@ -796,6 +796,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Done'**
   String get pickerDoneButton;
+
+  /// Error message shown when loading an article fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading article.'**
+  String get articleLoadingError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

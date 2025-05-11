@@ -1,6 +1,6 @@
 import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
 import 'package:brain_bench/core/extensions/responsive_context.dart';
-import 'package:brain_bench/data/models/home/carousel.dart';
+import 'package:brain_bench/data/models/home/article.dart';
 import 'package:flutter/material.dart';
 
 /// A widget that represents the content of a carousel card.
@@ -12,7 +12,7 @@ class CarouselCardContent extends StatelessWidget {
   });
 
   final bool isActive;
-  final Carousel item;
+  final Article item;
 
   @override
   Widget build(BuildContext context) {

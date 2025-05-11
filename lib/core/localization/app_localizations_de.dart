@@ -358,4 +358,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get pickerDoneButton => 'Fertig';
+
+  @override
+  String get articleLoadingError => 'Fehler beim Laden des Artikels.';
 }

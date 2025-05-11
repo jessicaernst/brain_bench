@@ -467,5 +467,9 @@
     "pickerDoneButton": "Done",
     "@pickerDoneButton": {
         "description": "Label for the 'Done' button in pickers"
+    },
+    "articleLoadingError": "Error loading article.",
+    "@articleLoadingError": {
+        "description": "Error message shown when loading an article fails"
     }
 }
