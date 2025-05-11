@@ -1,6 +1,7 @@
 import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
 import 'package:brain_bench/core/extensions/responsive_context.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/models/home/article.dart';
 import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class CarouselCardContent extends StatelessWidget {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
     final bool isSmallScreenValue = context.isSmallScreen;
     final int descriptionMaxLines = isSmallScreenValue ? 2 : 4;
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Padding(
       padding: EdgeInsets.all(isActive ? 14.5 : 11.33),
@@ -63,7 +65,16 @@ class CarouselCardContent extends StatelessWidget {
                     pathParameters: {'articleId': item.id},
                   );
                 },
-                child: Text(localizations.tapForMore),
+                child: Text(
+                  localizations.tapForMore,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color:
+                        isDarkMode
+                            ? BrainBenchColors.flutterSky
+                            : BrainBenchColors.blueprintBlue,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ),
