@@ -32,6 +32,7 @@ class BackNavAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(title),
+      centerTitle: true,
       leading: IconButton(
         icon: Icon(
           defaultTargetPlatform == TargetPlatform.iOS
@@ -42,7 +43,7 @@ class BackNavAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       backgroundColor: backgroundColor,
       elevation: elevation,
-      actions: const [ProfileButtonView()],
+      actions: const [ProfileButtonView(), SizedBox(width: 8)],
     );
   }
 }
