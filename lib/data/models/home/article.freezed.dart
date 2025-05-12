@@ -23,10 +23,13 @@ Article _$ArticleFromJson(Map<String, dynamic> json) {
 mixin _$Article {
   String get id => throw _privateConstructorUsedError;
   String get categoryId => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
+  String get titleEn => throw _privateConstructorUsedError;
+  String? get titleDe => throw _privateConstructorUsedError;
+  String get descriptionEn => throw _privateConstructorUsedError;
+  String? get descriptionDe => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
-  String get htmlContent => throw _privateConstructorUsedError;
+  String get htmlContentEn => throw _privateConstructorUsedError;
+  String? get htmlContentDe => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
 
   /// Serializes this Article to a JSON map.
@@ -46,10 +49,13 @@ abstract class $ArticleCopyWith<$Res> {
   $Res call({
     String id,
     String categoryId,
-    String title,
-    String description,
+    String titleEn,
+    String? titleDe,
+    String descriptionEn,
+    String? descriptionDe,
     String imageUrl,
-    String htmlContent,
+    String htmlContentEn,
+    String? htmlContentDe,
     DateTime createdAt,
   });
 }
@@ -71,10 +77,13 @@ class _$ArticleCopyWithImpl<$Res, $Val extends Article>
   $Res call({
     Object? id = null,
     Object? categoryId = null,
-    Object? title = null,
-    Object? description = null,
+    Object? titleEn = null,
+    Object? titleDe = freezed,
+    Object? descriptionEn = null,
+    Object? descriptionDe = freezed,
     Object? imageUrl = null,
-    Object? htmlContent = null,
+    Object? htmlContentEn = null,
+    Object? htmlContentDe = freezed,
     Object? createdAt = null,
   }) {
     return _then(
@@ -89,26 +98,41 @@ class _$ArticleCopyWithImpl<$Res, $Val extends Article>
                     ? _value.categoryId
                     : categoryId // ignore: cast_nullable_to_non_nullable
                         as String,
-            title:
-                null == title
-                    ? _value.title
-                    : title // ignore: cast_nullable_to_non_nullable
+            titleEn:
+                null == titleEn
+                    ? _value.titleEn
+                    : titleEn // ignore: cast_nullable_to_non_nullable
                         as String,
-            description:
-                null == description
-                    ? _value.description
-                    : description // ignore: cast_nullable_to_non_nullable
+            titleDe:
+                freezed == titleDe
+                    ? _value.titleDe
+                    : titleDe // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            descriptionEn:
+                null == descriptionEn
+                    ? _value.descriptionEn
+                    : descriptionEn // ignore: cast_nullable_to_non_nullable
                         as String,
+            descriptionDe:
+                freezed == descriptionDe
+                    ? _value.descriptionDe
+                    : descriptionDe // ignore: cast_nullable_to_non_nullable
+                        as String?,
             imageUrl:
                 null == imageUrl
                     ? _value.imageUrl
                     : imageUrl // ignore: cast_nullable_to_non_nullable
                         as String,
-            htmlContent:
-                null == htmlContent
-                    ? _value.htmlContent
-                    : htmlContent // ignore: cast_nullable_to_non_nullable
+            htmlContentEn:
+                null == htmlContentEn
+                    ? _value.htmlContentEn
+                    : htmlContentEn // ignore: cast_nullable_to_non_nullable
                         as String,
+            htmlContentDe:
+                freezed == htmlContentDe
+                    ? _value.htmlContentDe
+                    : htmlContentDe // ignore: cast_nullable_to_non_nullable
+                        as String?,
             createdAt:
                 null == createdAt
                     ? _value.createdAt
@@ -131,10 +155,13 @@ abstract class _$$ArticleImplCopyWith<$Res> implements $ArticleCopyWith<$Res> {
   $Res call({
     String id,
     String categoryId,
-    String title,
-    String description,
+    String titleEn,
+    String? titleDe,
+    String descriptionEn,
+    String? descriptionDe,
     String imageUrl,
-    String htmlContent,
+    String htmlContentEn,
+    String? htmlContentDe,
     DateTime createdAt,
   });
 }
@@ -155,10 +182,13 @@ class __$$ArticleImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? categoryId = null,
-    Object? title = null,
-    Object? description = null,
+    Object? titleEn = null,
+    Object? titleDe = freezed,
+    Object? descriptionEn = null,
+    Object? descriptionDe = freezed,
     Object? imageUrl = null,
-    Object? htmlContent = null,
+    Object? htmlContentEn = null,
+    Object? htmlContentDe = freezed,
     Object? createdAt = null,
   }) {
     return _then(
@@ -173,26 +203,41 @@ class __$$ArticleImplCopyWithImpl<$Res>
                 ? _value.categoryId
                 : categoryId // ignore: cast_nullable_to_non_nullable
                     as String,
-        title:
-            null == title
-                ? _value.title
-                : title // ignore: cast_nullable_to_non_nullable
+        titleEn:
+            null == titleEn
+                ? _value.titleEn
+                : titleEn // ignore: cast_nullable_to_non_nullable
                     as String,
-        description:
-            null == description
-                ? _value.description
-                : description // ignore: cast_nullable_to_non_nullable
+        titleDe:
+            freezed == titleDe
+                ? _value.titleDe
+                : titleDe // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        descriptionEn:
+            null == descriptionEn
+                ? _value.descriptionEn
+                : descriptionEn // ignore: cast_nullable_to_non_nullable
                     as String,
+        descriptionDe:
+            freezed == descriptionDe
+                ? _value.descriptionDe
+                : descriptionDe // ignore: cast_nullable_to_non_nullable
+                    as String?,
         imageUrl:
             null == imageUrl
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
                     as String,
-        htmlContent:
-            null == htmlContent
-                ? _value.htmlContent
-                : htmlContent // ignore: cast_nullable_to_non_nullable
+        htmlContentEn:
+            null == htmlContentEn
+                ? _value.htmlContentEn
+                : htmlContentEn // ignore: cast_nullable_to_non_nullable
                     as String,
+        htmlContentDe:
+            freezed == htmlContentDe
+                ? _value.htmlContentDe
+                : htmlContentDe // ignore: cast_nullable_to_non_nullable
+                    as String?,
         createdAt:
             null == createdAt
                 ? _value.createdAt
@@ -209,10 +254,13 @@ class _$ArticleImpl implements _Article {
   const _$ArticleImpl({
     required this.id,
     required this.categoryId,
-    required this.title,
-    required this.description,
+    required this.titleEn,
+    this.titleDe,
+    required this.descriptionEn,
+    this.descriptionDe,
     required this.imageUrl,
-    required this.htmlContent,
+    required this.htmlContentEn,
+    this.htmlContentDe,
     required this.createdAt,
   });
 
@@ -224,19 +272,25 @@ class _$ArticleImpl implements _Article {
   @override
   final String categoryId;
   @override
-  final String title;
+  final String titleEn;
   @override
-  final String description;
+  final String? titleDe;
+  @override
+  final String descriptionEn;
+  @override
+  final String? descriptionDe;
   @override
   final String imageUrl;
   @override
-  final String htmlContent;
+  final String htmlContentEn;
+  @override
+  final String? htmlContentDe;
   @override
   final DateTime createdAt;
 
   @override
   String toString() {
-    return 'Article(id: $id, categoryId: $categoryId, title: $title, description: $description, imageUrl: $imageUrl, htmlContent: $htmlContent, createdAt: $createdAt)';
+    return 'Article(id: $id, categoryId: $categoryId, titleEn: $titleEn, titleDe: $titleDe, descriptionEn: $descriptionEn, descriptionDe: $descriptionDe, imageUrl: $imageUrl, htmlContentEn: $htmlContentEn, htmlContentDe: $htmlContentDe, createdAt: $createdAt)';
   }
 
   @override
@@ -247,13 +301,18 @@ class _$ArticleImpl implements _Article {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.categoryId, categoryId) ||
                 other.categoryId == categoryId) &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
+            (identical(other.titleEn, titleEn) || other.titleEn == titleEn) &&
+            (identical(other.titleDe, titleDe) || other.titleDe == titleDe) &&
+            (identical(other.descriptionEn, descriptionEn) ||
+                other.descriptionEn == descriptionEn) &&
+            (identical(other.descriptionDe, descriptionDe) ||
+                other.descriptionDe == descriptionDe) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
-            (identical(other.htmlContent, htmlContent) ||
-                other.htmlContent == htmlContent) &&
+            (identical(other.htmlContentEn, htmlContentEn) ||
+                other.htmlContentEn == htmlContentEn) &&
+            (identical(other.htmlContentDe, htmlContentDe) ||
+                other.htmlContentDe == htmlContentDe) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
@@ -264,10 +323,13 @@ class _$ArticleImpl implements _Article {
     runtimeType,
     id,
     categoryId,
-    title,
-    description,
+    titleEn,
+    titleDe,
+    descriptionEn,
+    descriptionDe,
     imageUrl,
-    htmlContent,
+    htmlContentEn,
+    htmlContentDe,
     createdAt,
   );
 
@@ -289,10 +351,13 @@ abstract class _Article implements Article {
   const factory _Article({
     required final String id,
     required final String categoryId,
-    required final String title,
-    required final String description,
+    required final String titleEn,
+    final String? titleDe,
+    required final String descriptionEn,
+    final String? descriptionDe,
     required final String imageUrl,
-    required final String htmlContent,
+    required final String htmlContentEn,
+    final String? htmlContentDe,
     required final DateTime createdAt,
   }) = _$ArticleImpl;
 
@@ -303,13 +368,19 @@ abstract class _Article implements Article {
   @override
   String get categoryId;
   @override
-  String get title;
+  String get titleEn;
   @override
-  String get description;
+  String? get titleDe;
+  @override
+  String get descriptionEn;
+  @override
+  String? get descriptionDe;
   @override
   String get imageUrl;
   @override
-  String get htmlContent;
+  String get htmlContentEn;
+  @override
+  String? get htmlContentDe;
   @override
   DateTime get createdAt;
 

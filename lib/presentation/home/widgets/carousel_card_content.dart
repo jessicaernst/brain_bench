@@ -3,6 +3,7 @@ import 'package:brain_bench/core/extensions/responsive_context.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/models/home/article.dart';
+import 'package:brain_bench/data/models/home/article_extensions.dart';
 import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -21,6 +22,7 @@ class CarouselCardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
+    final String languageCode = Localizations.localeOf(context).languageCode;
     final bool isSmallScreenValue = context.isSmallScreen;
     final int descriptionMaxLines = isSmallScreenValue ? 2 : 4;
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -41,7 +43,7 @@ class CarouselCardContent extends StatelessWidget {
           ),
           SizedBox(height: isActive ? 14.5 : 11.33),
           AutoHyphenatingText(
-            item.title,
+            item.localizedTitle(languageCode),
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
             style: Theme.of(
@@ -50,7 +52,7 @@ class CarouselCardContent extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           AutoHyphenatingText(
-            item.description,
+            item.localizedDescription(languageCode),
             overflow: TextOverflow.ellipsis,
             maxLines: descriptionMaxLines,
             style: Theme.of(context).textTheme.bodyMedium,

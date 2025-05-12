@@ -2,6 +2,7 @@ import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/shared_widgets/appbars/back_nav_app_bar.dart';
 import 'package:brain_bench/core/shared_widgets/backgrounds/app_page_background.dart';
 import 'package:brain_bench/data/infrastructure/articles/article_providers.dart';
+import 'package:brain_bench/data/models/home/article_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,13 +18,17 @@ class ArticleDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final articleAsync = ref.watch(articleByIdProvider(articleId));
+    final String languageCode = Localizations.localeOf(context).languageCode;
     final AppLocalizations localizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: BackNavAppBar(
         title: articleAsync.when(
-          data: (article) => article?.title ?? localizations.articleDetailTitle,
+          data: (article) {
+            if (article == null) return localizations.articleDetailTitle;
+            return article.localizedTitle(languageCode);
+          },
           loading: () => localizations.loading,
           error: (e, _) => localizations.articleDetailTitle,
         ),
@@ -51,10 +56,10 @@ class ArticleDetailPage extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Html(
-                        data: article.htmlContent,
+                        data: article.localizedHtmlContent(languageCode),
                         style: {
                           'h1': Style(
-                            fontSize: FontSize(32),
+                            fontSize: FontSize(26),
                             fontFamily: 'Urbanist',
                             color:
                                 Theme.of(

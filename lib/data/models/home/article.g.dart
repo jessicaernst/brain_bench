@@ -10,10 +10,13 @@ _$ArticleImpl _$$ArticleImplFromJson(Map<String, dynamic> json) =>
     _$ArticleImpl(
       id: json['id'] as String,
       categoryId: json['categoryId'] as String,
-      title: json['title'] as String,
-      description: json['description'] as String,
+      titleEn: json['titleEn'] as String,
+      titleDe: json['titleDe'] as String?,
+      descriptionEn: json['descriptionEn'] as String,
+      descriptionDe: json['descriptionDe'] as String?,
       imageUrl: json['imageUrl'] as String,
-      htmlContent: json['htmlContent'] as String,
+      htmlContentEn: json['htmlContentEn'] as String,
+      htmlContentDe: json['htmlContentDe'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
@@ -21,9 +24,12 @@ Map<String, dynamic> _$$ArticleImplToJson(_$ArticleImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'categoryId': instance.categoryId,
-      'title': instance.title,
-      'description': instance.description,
+      'titleEn': instance.titleEn,
+      'titleDe': instance.titleDe,
+      'descriptionEn': instance.descriptionEn,
+      'descriptionDe': instance.descriptionDe,
       'imageUrl': instance.imageUrl,
-      'htmlContent': instance.htmlContent,
+      'htmlContentEn': instance.htmlContentEn,
+      'htmlContentDe': instance.htmlContentDe,
       'createdAt': instance.createdAt.toIso8601String(),
     };
