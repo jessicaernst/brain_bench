@@ -3,6 +3,7 @@ import 'package:brain_bench/business_logic/quiz/quiz_answer_evaluator.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_state.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
+import 'package:brain_bench/data/models/quiz/answer_extensions.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -24,7 +25,6 @@ class QuizStateNotifier extends _$QuizStateNotifier {
   /// It will set isLoadingAnswers = false upon completion or error.
   Future<void> _fetchAndSetAnswers(
     List<String> answerIds,
-    String languageCode,
     String questionId,
   ) async {
     // Caller should have set isLoadingAnswers = true
@@ -34,10 +34,7 @@ class QuizStateNotifier extends _$QuizStateNotifier {
       _logger.fine(
         'Fetching answers for question ID: $questionId with IDs: $answerIds',
       );
-      final List<Answer> answers = await repository.getAnswers(
-        answerIds,
-        languageCode,
-      );
+      final List<Answer> answers = await repository.getAnswers(answerIds);
 
       if (answers.isNotEmpty) {
         ref.read(answersNotifierProvider.notifier).initializeAnswers(answers);
@@ -78,10 +75,7 @@ class QuizStateNotifier extends _$QuizStateNotifier {
   }
 
   /// Initializes the quiz if not already initialized.
-  Future<void> initializeQuizIfNeeded(
-    List<Question> questions,
-    String languageCode,
-  ) async {
+  Future<void> initializeQuizIfNeeded(List<Question> questions) async {
     if (state.questions.isNotEmpty || questions.isEmpty) {
       if (questions.isEmpty) {
         _logger.warning(
@@ -104,11 +98,7 @@ class QuizStateNotifier extends _$QuizStateNotifier {
 
     final firstQuestion = questions.first;
     // Fetch answers (this will set isLoadingAnswers to false in its finally block)
-    await _fetchAndSetAnswers(
-      firstQuestion.answerIds,
-      languageCode,
-      firstQuestion.id,
-    );
+    await _fetchAndSetAnswers(firstQuestion.answerIds, firstQuestion.id);
 
     // Log overall success *after* fetching attempt
     _logger.info(
@@ -128,7 +118,7 @@ class QuizStateNotifier extends _$QuizStateNotifier {
       state.currentIndex + 1 < state.questions.length;
 
   /// Moves to the next question (if available) and fetches its answers.
-  Future<void> loadNextQuestion(String languageCode) async {
+  Future<void> loadNextQuestion() async {
     if (hasNextQuestion()) {
       final nextIndex = state.currentIndex + 1;
       // Set new index and mark as loading answers
@@ -142,11 +132,7 @@ class QuizStateNotifier extends _$QuizStateNotifier {
 
       final currentQuestion = state.questions[nextIndex];
       // Fetch answers (this will set isLoadingAnswers to false in its finally block)
-      await _fetchAndSetAnswers(
-        currentQuestion.answerIds,
-        languageCode,
-        currentQuestion.id,
-      );
+      await _fetchAndSetAnswers(currentQuestion.answerIds, currentQuestion.id);
     } else {
       _logger.fine('No next question available.');
     }
@@ -210,8 +196,7 @@ class QuizStateNotifier extends _$QuizStateNotifier {
     final allCorrectAnswers = <String>[];
     for (final answer in currentAnswers) {
       if (answer.isCorrect) {
-        final text = languageCode == 'de' ? answer.textDe : answer.textEn;
-        allCorrectAnswers.add(text);
+        allCorrectAnswers.add(answer.localizedText(languageCode));
       }
     }
     _logger.fine(

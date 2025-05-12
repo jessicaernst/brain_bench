@@ -1,5 +1,6 @@
 import 'package:brain_bench/core/mixins/ensure_visible_mixin.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
+import 'package:brain_bench/data/models/topic/topic_extensions.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_expandable_content.dart';
 import 'package:brain_bench/presentation/topics/widgets/topic_main_card.dart';
 import 'package:flutter/material.dart';
@@ -67,16 +68,19 @@ class _TopicCardState extends State<TopicCard> with EnsureVisibleMixin {
       children: [
         // The main card area that displays the topic title and handles expansion.
         TopicMainCard(
-          title:
-              languageCode == 'de' ? widget.topic.nameDe : widget.topic.nameEn,
+          title: widget.topic.localizedName(languageCode),
           isExpanded: widget.isExpanded,
           onTap: () {
-            logger.fine('tapped topic: ${widget.topic.nameEn}');
+            logger.fine(
+              'tapped topic: ${widget.topic.localizedName(languageCode)}',
+            );
             widget
                 .onToggle(); // Notify the parent widget that the card was tapped to expand/collapse.
             // If the card is not expanded (meaning it was just tapped to expand), ensure it's visible.
             if (!widget.isExpanded) {
-              ensureCardIsVisible(cardName: widget.topic.nameEn);
+              ensureCardIsVisible(
+                cardName: widget.topic.localizedName(languageCode),
+              );
             }
           },
           isDarkMode: isDarkMode,
@@ -85,16 +89,10 @@ class _TopicCardState extends State<TopicCard> with EnsureVisibleMixin {
         Padding(
           padding: const EdgeInsets.only(left: 16, right: 16),
           child: TopicCardExpandable(
-            description:
-                languageCode == 'de'
-                    ? widget.topic.descriptionDe
-                    : widget.topic.descriptionEn,
+            description: widget.topic.localizedDescription(languageCode),
             onPressed: widget.onPressed,
             isExpanded: widget.isExpanded,
-            title:
-                languageCode == 'de'
-                    ? widget.topic.nameDe
-                    : widget.topic.nameEn,
+            title: widget.topic.localizedName(languageCode),
           ),
         ),
       ],

@@ -4,6 +4,7 @@ import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.da
 import 'package:brain_bench/core/shared_widgets/progress_bars/progress_indicator_bar_view.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
+import 'package:brain_bench/data/models/quiz/question_extensions.dart';
 import 'package:brain_bench/presentation/quiz/widgets/answer_list_view.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,7 @@ class QuizQuestionDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String languageCode = Localizations.localeOf(context).languageCode;
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -37,7 +39,7 @@ class QuizQuestionDisplay extends StatelessWidget {
           ProgressIndicatorBarView(progress: progress),
           const SizedBox(height: 24),
           Text(
-            currentQuestion.question,
+            currentQuestion.localizedQuestion(languageCode),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium,
           ),

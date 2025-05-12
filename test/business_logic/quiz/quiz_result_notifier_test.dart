@@ -253,7 +253,7 @@ void main() {
         (ref) => Future.value(currentDbRepo),
       ),
       if (topics != null)
-        topicsProvider('c1', 'en').overrideWith((ref) => Future.value(topics)),
+        topicsProvider('c1').overrideWith((ref) => Future.value(topics)),
       ...additionalOverrides,
     ];
     return ProviderContainer(overrides: overrides);
@@ -845,7 +845,6 @@ void main() {
           additionalOverrides: [
             topicsProvider(
               testCategoryId,
-              'en',
             ).overrideWith((ref) => Future.error(testError)),
           ],
         );

@@ -11,26 +11,32 @@ class Question with _$Question {
   factory Question({
     required String id,
     required String topicId,
-    required String question,
+    required String questionEn,
+    String? questionDe,
     required QuestionType type,
     required List<String> answerIds,
-    String? explanation,
+    String? explanationEn,
+    String? explanationDe,
   }) = _Question;
 
   factory Question.create({
     required String topicId,
-    required String question,
+    required String questionEn,
+    String? questionDe,
     required QuestionType type,
     required List<String> answerIds,
-    String? explanation,
+    String? explanationEn,
+    String? explanationDe,
   }) {
     return Question(
       id: const Uuid().v4(),
       topicId: topicId,
-      question: question,
+      questionEn: questionEn,
+      questionDe: questionDe,
       type: type,
       answerIds: answerIds,
-      explanation: explanation,
+      explanationEn: explanationEn,
+      explanationDe: explanationDe,
     );
   }
 

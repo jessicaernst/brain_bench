@@ -23,10 +23,12 @@ Question _$QuestionFromJson(Map<String, dynamic> json) {
 mixin _$Question {
   String get id => throw _privateConstructorUsedError;
   String get topicId => throw _privateConstructorUsedError;
-  String get question => throw _privateConstructorUsedError;
+  String get questionEn => throw _privateConstructorUsedError;
+  String? get questionDe => throw _privateConstructorUsedError;
   QuestionType get type => throw _privateConstructorUsedError;
   List<String> get answerIds => throw _privateConstructorUsedError;
-  String? get explanation => throw _privateConstructorUsedError;
+  String? get explanationEn => throw _privateConstructorUsedError;
+  String? get explanationDe => throw _privateConstructorUsedError;
 
   /// Serializes this Question to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -46,10 +48,12 @@ abstract class $QuestionCopyWith<$Res> {
   $Res call({
     String id,
     String topicId,
-    String question,
+    String questionEn,
+    String? questionDe,
     QuestionType type,
     List<String> answerIds,
-    String? explanation,
+    String? explanationEn,
+    String? explanationDe,
   });
 }
 
@@ -70,10 +74,12 @@ class _$QuestionCopyWithImpl<$Res, $Val extends Question>
   $Res call({
     Object? id = null,
     Object? topicId = null,
-    Object? question = null,
+    Object? questionEn = null,
+    Object? questionDe = freezed,
     Object? type = null,
     Object? answerIds = null,
-    Object? explanation = freezed,
+    Object? explanationEn = freezed,
+    Object? explanationDe = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -87,11 +93,16 @@ class _$QuestionCopyWithImpl<$Res, $Val extends Question>
                     ? _value.topicId
                     : topicId // ignore: cast_nullable_to_non_nullable
                         as String,
-            question:
-                null == question
-                    ? _value.question
-                    : question // ignore: cast_nullable_to_non_nullable
+            questionEn:
+                null == questionEn
+                    ? _value.questionEn
+                    : questionEn // ignore: cast_nullable_to_non_nullable
                         as String,
+            questionDe:
+                freezed == questionDe
+                    ? _value.questionDe
+                    : questionDe // ignore: cast_nullable_to_non_nullable
+                        as String?,
             type:
                 null == type
                     ? _value.type
@@ -102,10 +113,15 @@ class _$QuestionCopyWithImpl<$Res, $Val extends Question>
                     ? _value.answerIds
                     : answerIds // ignore: cast_nullable_to_non_nullable
                         as List<String>,
-            explanation:
-                freezed == explanation
-                    ? _value.explanation
-                    : explanation // ignore: cast_nullable_to_non_nullable
+            explanationEn:
+                freezed == explanationEn
+                    ? _value.explanationEn
+                    : explanationEn // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            explanationDe:
+                freezed == explanationDe
+                    ? _value.explanationDe
+                    : explanationDe // ignore: cast_nullable_to_non_nullable
                         as String?,
           )
           as $Val,
@@ -125,10 +141,12 @@ abstract class _$$QuestionImplCopyWith<$Res>
   $Res call({
     String id,
     String topicId,
-    String question,
+    String questionEn,
+    String? questionDe,
     QuestionType type,
     List<String> answerIds,
-    String? explanation,
+    String? explanationEn,
+    String? explanationDe,
   });
 }
 
@@ -148,10 +166,12 @@ class __$$QuestionImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? topicId = null,
-    Object? question = null,
+    Object? questionEn = null,
+    Object? questionDe = freezed,
     Object? type = null,
     Object? answerIds = null,
-    Object? explanation = freezed,
+    Object? explanationEn = freezed,
+    Object? explanationDe = freezed,
   }) {
     return _then(
       _$QuestionImpl(
@@ -165,11 +185,16 @@ class __$$QuestionImplCopyWithImpl<$Res>
                 ? _value.topicId
                 : topicId // ignore: cast_nullable_to_non_nullable
                     as String,
-        question:
-            null == question
-                ? _value.question
-                : question // ignore: cast_nullable_to_non_nullable
+        questionEn:
+            null == questionEn
+                ? _value.questionEn
+                : questionEn // ignore: cast_nullable_to_non_nullable
                     as String,
+        questionDe:
+            freezed == questionDe
+                ? _value.questionDe
+                : questionDe // ignore: cast_nullable_to_non_nullable
+                    as String?,
         type:
             null == type
                 ? _value.type
@@ -180,10 +205,15 @@ class __$$QuestionImplCopyWithImpl<$Res>
                 ? _value._answerIds
                 : answerIds // ignore: cast_nullable_to_non_nullable
                     as List<String>,
-        explanation:
-            freezed == explanation
-                ? _value.explanation
-                : explanation // ignore: cast_nullable_to_non_nullable
+        explanationEn:
+            freezed == explanationEn
+                ? _value.explanationEn
+                : explanationEn // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        explanationDe:
+            freezed == explanationDe
+                ? _value.explanationDe
+                : explanationDe // ignore: cast_nullable_to_non_nullable
                     as String?,
       ),
     );
@@ -196,10 +226,12 @@ class _$QuestionImpl implements _Question {
   _$QuestionImpl({
     required this.id,
     required this.topicId,
-    required this.question,
+    required this.questionEn,
+    this.questionDe,
     required this.type,
     required final List<String> answerIds,
-    this.explanation,
+    this.explanationEn,
+    this.explanationDe,
   }) : _answerIds = answerIds;
 
   factory _$QuestionImpl.fromJson(Map<String, dynamic> json) =>
@@ -210,7 +242,9 @@ class _$QuestionImpl implements _Question {
   @override
   final String topicId;
   @override
-  final String question;
+  final String questionEn;
+  @override
+  final String? questionDe;
   @override
   final QuestionType type;
   final List<String> _answerIds;
@@ -222,11 +256,13 @@ class _$QuestionImpl implements _Question {
   }
 
   @override
-  final String? explanation;
+  final String? explanationEn;
+  @override
+  final String? explanationDe;
 
   @override
   String toString() {
-    return 'Question(id: $id, topicId: $topicId, question: $question, type: $type, answerIds: $answerIds, explanation: $explanation)';
+    return 'Question(id: $id, topicId: $topicId, questionEn: $questionEn, questionDe: $questionDe, type: $type, answerIds: $answerIds, explanationEn: $explanationEn, explanationDe: $explanationDe)';
   }
 
   @override
@@ -236,15 +272,19 @@ class _$QuestionImpl implements _Question {
             other is _$QuestionImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.topicId, topicId) || other.topicId == topicId) &&
-            (identical(other.question, question) ||
-                other.question == question) &&
+            (identical(other.questionEn, questionEn) ||
+                other.questionEn == questionEn) &&
+            (identical(other.questionDe, questionDe) ||
+                other.questionDe == questionDe) &&
             (identical(other.type, type) || other.type == type) &&
             const DeepCollectionEquality().equals(
               other._answerIds,
               _answerIds,
             ) &&
-            (identical(other.explanation, explanation) ||
-                other.explanation == explanation));
+            (identical(other.explanationEn, explanationEn) ||
+                other.explanationEn == explanationEn) &&
+            (identical(other.explanationDe, explanationDe) ||
+                other.explanationDe == explanationDe));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -253,10 +293,12 @@ class _$QuestionImpl implements _Question {
     runtimeType,
     id,
     topicId,
-    question,
+    questionEn,
+    questionDe,
     type,
     const DeepCollectionEquality().hash(_answerIds),
-    explanation,
+    explanationEn,
+    explanationDe,
   );
 
   /// Create a copy of Question
@@ -277,10 +319,12 @@ abstract class _Question implements Question {
   factory _Question({
     required final String id,
     required final String topicId,
-    required final String question,
+    required final String questionEn,
+    final String? questionDe,
     required final QuestionType type,
     required final List<String> answerIds,
-    final String? explanation,
+    final String? explanationEn,
+    final String? explanationDe,
   }) = _$QuestionImpl;
 
   factory _Question.fromJson(Map<String, dynamic> json) =
@@ -291,13 +335,17 @@ abstract class _Question implements Question {
   @override
   String get topicId;
   @override
-  String get question;
+  String get questionEn;
+  @override
+  String? get questionDe;
   @override
   QuestionType get type;
   @override
   List<String> get answerIds;
   @override
-  String? get explanation;
+  String? get explanationEn;
+  @override
+  String? get explanationDe;
 
   /// Create a copy of Question
   /// with the given fields replaced by the non-null parameter values.

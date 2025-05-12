@@ -13,7 +13,6 @@ void main() {
   late ProviderContainer container;
 
   const categoryId = 'cat1';
-  const languageCode = 'en';
 
   final topic = Topic(
     id: 't1',
@@ -40,36 +39,30 @@ void main() {
 
     test('returns expected topics', () async {
       when(
-        () => mockRepo.getTopics(categoryId, languageCode),
+        () => mockRepo.getTopics(categoryId),
       ).thenAnswer((_) async => fakeTopics);
 
-      final result = await container.read(
-        topicsProvider(categoryId, languageCode).future,
-      );
+      final result = await container.read(topicsProvider(categoryId).future);
 
       expect(result, fakeTopics);
-      verify(() => mockRepo.getTopics(categoryId, languageCode)).called(1);
+      verify(() => mockRepo.getTopics(categoryId)).called(1);
     });
 
     test('handles empty list', () async {
-      when(
-        () => mockRepo.getTopics(categoryId, languageCode),
-      ).thenAnswer((_) async => []);
+      when(() => mockRepo.getTopics(categoryId)).thenAnswer((_) async => []);
 
-      final result = await container.read(
-        topicsProvider(categoryId, languageCode).future,
-      );
+      final result = await container.read(topicsProvider(categoryId).future);
 
       expect(result, isEmpty);
     });
 
     test('throws exception when repository fails', () async {
       when(
-        () => mockRepo.getTopics(categoryId, languageCode),
+        () => mockRepo.getTopics(categoryId),
       ).thenThrow(Exception('DB Error'));
 
       expect(
-        () => container.read(topicsProvider(categoryId, languageCode).future),
+        () => container.read(topicsProvider(categoryId).future),
         throwsException,
       );
     });

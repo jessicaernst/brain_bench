@@ -23,9 +23,9 @@ Topic _$TopicFromJson(Map<String, dynamic> json) {
 mixin _$Topic {
   String get id => throw _privateConstructorUsedError;
   String get nameEn => throw _privateConstructorUsedError;
-  String get nameDe => throw _privateConstructorUsedError;
+  String? get nameDe => throw _privateConstructorUsedError;
   String get descriptionEn => throw _privateConstructorUsedError;
-  String get descriptionDe => throw _privateConstructorUsedError;
+  String? get descriptionDe => throw _privateConstructorUsedError;
   String get categoryId => throw _privateConstructorUsedError;
   double get progress => throw _privateConstructorUsedError;
 
@@ -46,9 +46,9 @@ abstract class $TopicCopyWith<$Res> {
   $Res call({
     String id,
     String nameEn,
-    String nameDe,
+    String? nameDe,
     String descriptionEn,
-    String descriptionDe,
+    String? descriptionDe,
     String categoryId,
     double progress,
   });
@@ -71,9 +71,9 @@ class _$TopicCopyWithImpl<$Res, $Val extends Topic>
   $Res call({
     Object? id = null,
     Object? nameEn = null,
-    Object? nameDe = null,
+    Object? nameDe = freezed,
     Object? descriptionEn = null,
-    Object? descriptionDe = null,
+    Object? descriptionDe = freezed,
     Object? categoryId = null,
     Object? progress = null,
   }) {
@@ -90,20 +90,20 @@ class _$TopicCopyWithImpl<$Res, $Val extends Topic>
                     : nameEn // ignore: cast_nullable_to_non_nullable
                         as String,
             nameDe:
-                null == nameDe
+                freezed == nameDe
                     ? _value.nameDe
                     : nameDe // ignore: cast_nullable_to_non_nullable
-                        as String,
+                        as String?,
             descriptionEn:
                 null == descriptionEn
                     ? _value.descriptionEn
                     : descriptionEn // ignore: cast_nullable_to_non_nullable
                         as String,
             descriptionDe:
-                null == descriptionDe
+                freezed == descriptionDe
                     ? _value.descriptionDe
                     : descriptionDe // ignore: cast_nullable_to_non_nullable
-                        as String,
+                        as String?,
             categoryId:
                 null == categoryId
                     ? _value.categoryId
@@ -131,9 +131,9 @@ abstract class _$$TopicImplCopyWith<$Res> implements $TopicCopyWith<$Res> {
   $Res call({
     String id,
     String nameEn,
-    String nameDe,
+    String? nameDe,
     String descriptionEn,
-    String descriptionDe,
+    String? descriptionDe,
     String categoryId,
     double progress,
   });
@@ -155,9 +155,9 @@ class __$$TopicImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? nameEn = null,
-    Object? nameDe = null,
+    Object? nameDe = freezed,
     Object? descriptionEn = null,
-    Object? descriptionDe = null,
+    Object? descriptionDe = freezed,
     Object? categoryId = null,
     Object? progress = null,
   }) {
@@ -174,20 +174,20 @@ class __$$TopicImplCopyWithImpl<$Res>
                 : nameEn // ignore: cast_nullable_to_non_nullable
                     as String,
         nameDe:
-            null == nameDe
+            freezed == nameDe
                 ? _value.nameDe
                 : nameDe // ignore: cast_nullable_to_non_nullable
-                    as String,
+                    as String?,
         descriptionEn:
             null == descriptionEn
                 ? _value.descriptionEn
                 : descriptionEn // ignore: cast_nullable_to_non_nullable
                     as String,
         descriptionDe:
-            null == descriptionDe
+            freezed == descriptionDe
                 ? _value.descriptionDe
                 : descriptionDe // ignore: cast_nullable_to_non_nullable
-                    as String,
+                    as String?,
         categoryId:
             null == categoryId
                 ? _value.categoryId
@@ -209,9 +209,9 @@ class _$TopicImpl implements _Topic {
   _$TopicImpl({
     required this.id,
     required this.nameEn,
-    required this.nameDe,
+    this.nameDe,
     required this.descriptionEn,
-    required this.descriptionDe,
+    this.descriptionDe,
     required this.categoryId,
     this.progress = 0.0,
   });
@@ -224,11 +224,11 @@ class _$TopicImpl implements _Topic {
   @override
   final String nameEn;
   @override
-  final String nameDe;
+  final String? nameDe;
   @override
   final String descriptionEn;
   @override
-  final String descriptionDe;
+  final String? descriptionDe;
   @override
   final String categoryId;
   @override
@@ -289,9 +289,9 @@ abstract class _Topic implements Topic {
   factory _Topic({
     required final String id,
     required final String nameEn,
-    required final String nameDe,
+    final String? nameDe,
     required final String descriptionEn,
-    required final String descriptionDe,
+    final String? descriptionDe,
     required final String categoryId,
     final double progress,
   }) = _$TopicImpl;
@@ -303,11 +303,11 @@ abstract class _Topic implements Topic {
   @override
   String get nameEn;
   @override
-  String get nameDe;
+  String? get nameDe;
   @override
   String get descriptionEn;
   @override
-  String get descriptionDe;
+  String? get descriptionDe;
   @override
   String get categoryId;
   @override

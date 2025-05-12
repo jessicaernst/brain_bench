@@ -5,6 +5,7 @@ import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.da
 import 'package:brain_bench/core/shared_widgets/progress_bars/progress_indicator_bar_view.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
+import 'package:brain_bench/data/models/quiz/question_extensions.dart';
 import 'package:brain_bench/presentation/quiz/widgets/answer_list_view.dart';
 import 'package:flutter/material.dart';
 
@@ -30,13 +31,14 @@ class SingleMultipleQuestionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String languageCode = Localizations.localeOf(context).languageCode;
     return Column(
       children: [
         const SizedBox(height: 8),
         ProgressIndicatorBarView(progress: progress),
         const SizedBox(height: 24),
         AutoHyphenatingText(
-          currentQuestion.question,
+          currentQuestion.localizedQuestion(languageCode),
           textAlign: TextAlign.center,
           style: TextTheme.of(context).bodyMedium,
         ),

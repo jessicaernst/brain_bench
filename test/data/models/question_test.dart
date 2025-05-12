@@ -7,45 +7,55 @@ void main() {
     // --- Test Data ---
     const testId = 'q-test-id-456';
     const testTopicId = 'topic-abc';
-    const testQuestionText = 'What is Flutter?';
+    const testQuestionEnText = 'What is Flutter?';
+    const testQuestionDeText = 'Was ist Flutter?';
     const testType = QuestionType.singleChoice;
     final testAnswerIds = ['ans-1', 'ans-2', 'ans-3'];
-    const testExplanation = 'Flutter is a UI toolkit.';
+    const testExplanationEnText = 'Flutter is a UI toolkit.';
+    const testExplanationDeText = 'Flutter ist ein UI-Toolkit.';
 
     final testQuestion = Question(
       id: testId,
       topicId: testTopicId,
-      question: testQuestionText,
+      questionEn: testQuestionEnText,
+      questionDe: testQuestionDeText,
       type: testType,
       answerIds: testAnswerIds,
-      explanation: testExplanation,
+      explanationEn: testExplanationEnText,
+      explanationDe: testExplanationDeText,
     );
 
     final testQuestionWithoutExplanation = Question(
       id: 'q-no-exp-789',
       topicId: testTopicId,
-      question: 'Another question?',
+      questionEn: 'Another question EN?',
+      questionDe: 'Eine andere Frage DE?',
       type: QuestionType.multipleChoice,
       answerIds: ['ans-4', 'ans-5'],
-      explanation: null, // Explicitly null
+      explanationEn: null, // Explicitly null
+      explanationDe: null,
     );
 
     final testJson = {
       'id': testId,
       'topicId': testTopicId,
-      'question': testQuestionText,
+      'questionEn': testQuestionEnText,
+      'questionDe': testQuestionDeText,
       'type': 'singleChoice', // Enum serialized as string
       'answerIds': testAnswerIds,
-      'explanation': testExplanation,
+      'explanationEn': testExplanationEnText,
+      'explanationDe': testExplanationDeText,
     };
 
     final testJsonWithoutExplanation = {
       'id': 'q-no-exp-789',
       'topicId': testTopicId,
-      'question': 'Another question?',
+      'questionEn': 'Another question EN?',
+      'questionDe': 'Eine andere Frage DE?',
       'type': 'multipleChoice',
       'answerIds': ['ans-4', 'ans-5'],
-      'explanation': null,
+      'explanationEn': null,
+      'explanationDe': null,
     };
 
     // --- Tests ---
@@ -56,10 +66,12 @@ void main() {
       // Assert
       expect(testQuestion.id, testId);
       expect(testQuestion.topicId, testTopicId);
-      expect(testQuestion.question, testQuestionText);
+      expect(testQuestion.questionEn, testQuestionEnText);
+      expect(testQuestion.questionDe, testQuestionDeText);
       expect(testQuestion.type, testType);
       expect(testQuestion.answerIds, testAnswerIds);
-      expect(testQuestion.explanation, testExplanation);
+      expect(testQuestion.explanationEn, testExplanationEnText);
+      expect(testQuestion.explanationDe, testExplanationDeText);
     });
 
     test('Default constructor handles null explanation correctly', () {
@@ -68,7 +80,8 @@ void main() {
       // Assert
       expect(testQuestionWithoutExplanation.id, 'q-no-exp-789');
       expect(testQuestionWithoutExplanation.topicId, testTopicId);
-      expect(testQuestionWithoutExplanation.explanation, isNull);
+      expect(testQuestionWithoutExplanation.explanationEn, isNull);
+      expect(testQuestionWithoutExplanation.explanationDe, isNull);
     });
 
     test(
@@ -76,18 +89,22 @@ void main() {
       () {
         // Arrange
         const createTopicId = 'new-topic';
-        const createQuestionText = 'Create question?';
+        const createQuestionEnText = 'Create question EN?';
+        const createQuestionDeText = 'Erstelle Frage DE?';
         const createType = QuestionType.multipleChoice;
         final createAnswerIds = ['new-ans-1', 'new-ans-2'];
-        const createExplanation = 'Explanation for created question.';
+        const createExplanationEnText = 'Explanation for created question EN.';
+        const createExplanationDeText = 'Erklärung für erstellte Frage DE.';
 
         // Act
         final createdQuestion = Question.create(
           topicId: createTopicId,
-          question: createQuestionText,
+          questionEn: createQuestionEnText,
+          questionDe: createQuestionDeText,
           type: createType,
           answerIds: createAnswerIds,
-          explanation: createExplanation,
+          explanationEn: createExplanationEnText,
+          explanationDe: createExplanationDeText,
         );
 
         // Assert
@@ -101,33 +118,40 @@ void main() {
           isTrue,
         );
         expect(createdQuestion.topicId, createTopicId);
-        expect(createdQuestion.question, createQuestionText);
+        expect(createdQuestion.questionEn, createQuestionEnText);
+        expect(createdQuestion.questionDe, createQuestionDeText);
         expect(createdQuestion.type, createType);
         expect(createdQuestion.answerIds, createAnswerIds);
-        expect(createdQuestion.explanation, createExplanation);
+        expect(createdQuestion.explanationEn, createExplanationEnText);
+        expect(createdQuestion.explanationDe, createExplanationDeText);
       },
     );
 
     test('Question.create factory handles null explanation', () {
       // Arrange
       const createTopicId = 'new-topic-no-exp';
-      const createQuestionText = 'Create question no exp?';
+      const createQuestionEnText = 'Create question no exp EN?';
+      const createQuestionDeText = 'Erstelle Frage ohne Erkl. DE?';
       const createType = QuestionType.singleChoice;
       final createAnswerIds = ['new-ans-3'];
 
       // Act
       final createdQuestion = Question.create(
         topicId: createTopicId,
-        question: createQuestionText,
+        questionEn: createQuestionEnText,
+        questionDe: createQuestionDeText,
         type: createType,
         answerIds: createAnswerIds,
         // explanation is omitted, should default to null
+        explanationEn: null,
+        explanationDe: null,
       );
 
       // Assert
       expect(createdQuestion.id, isNotEmpty);
       expect(createdQuestion.topicId, createTopicId);
-      expect(createdQuestion.explanation, isNull);
+      expect(createdQuestion.explanationEn, isNull);
+      expect(createdQuestion.explanationDe, isNull);
     });
 
     test('fromJson correctly deserializes JSON map with explanation', () {
@@ -139,10 +163,12 @@ void main() {
       // Assert
       expect(questionFromJson.id, testId);
       expect(questionFromJson.topicId, testTopicId);
-      expect(questionFromJson.question, testQuestionText);
+      expect(questionFromJson.questionEn, testQuestionEnText);
+      expect(questionFromJson.questionDe, testQuestionDeText);
       expect(questionFromJson.type, testType);
       expect(questionFromJson.answerIds, testAnswerIds);
-      expect(questionFromJson.explanation, testExplanation);
+      expect(questionFromJson.explanationEn, testExplanationEnText);
+      expect(questionFromJson.explanationDe, testExplanationDeText);
     });
 
     test(
@@ -157,7 +183,8 @@ void main() {
         expect(questionFromJson.id, 'q-no-exp-789');
         expect(questionFromJson.topicId, testTopicId);
         expect(questionFromJson.type, QuestionType.multipleChoice);
-        expect(questionFromJson.explanation, isNull);
+        expect(questionFromJson.explanationEn, isNull);
+        expect(questionFromJson.explanationDe, isNull);
       },
     );
 
@@ -186,18 +213,22 @@ void main() {
       final question1 = Question(
         id: 'eq-id',
         topicId: 'eq-topic',
-        question: 'Equal Q',
+        questionEn: 'Equal Q EN',
+        questionDe: 'Gleiche F DE',
         type: QuestionType.singleChoice,
         answerIds: ['a', 'b'],
-        explanation: 'exp',
+        explanationEn: 'exp EN',
+        explanationDe: 'erkl DE',
       );
       final question2 = Question(
         id: 'eq-id',
         topicId: 'eq-topic',
-        question: 'Equal Q',
+        questionEn: 'Equal Q EN',
+        questionDe: 'Gleiche F DE',
         type: QuestionType.singleChoice,
         answerIds: ['a', 'b'],
-        explanation: 'exp',
+        explanationEn: 'exp EN',
+        explanationDe: 'erkl DE',
       );
 
       // Act & Assert
@@ -210,52 +241,67 @@ void main() {
       final question1 = Question(
         id: 'diff-id-1',
         topicId: 'diff-topic',
-        question: 'Different Q1',
+        questionEn: 'Different Q1 EN',
+        questionDe: 'Unterschiedliche F1 DE',
         type: QuestionType.singleChoice,
         answerIds: ['a', 'b'],
       );
       final question2 = Question(
         id: 'diff-id-2', // Different ID
         topicId: 'diff-topic',
-        question: 'Different Q1',
+        questionEn: 'Different Q1 EN',
+        questionDe: 'Unterschiedliche F1 DE',
         type: QuestionType.singleChoice,
         answerIds: ['a', 'b'],
       );
       final question3 = Question(
         id: 'diff-id-1',
         topicId: 'diff-topic-other', // Different topicId
-        question: 'Different Q1',
+        questionEn: 'Different Q1 EN',
+        questionDe: 'Unterschiedliche F1 DE',
         type: QuestionType.singleChoice,
         answerIds: ['a', 'b'],
       );
       final question4 = Question(
         id: 'diff-id-1',
         topicId: 'diff-topic',
-        question: 'Different Q2', // Different question text
+        questionEn: 'Different Q2 EN', // Different question text
+        questionDe: 'Unterschiedliche F1 DE',
         type: QuestionType.singleChoice,
         answerIds: ['a', 'b'],
       );
       final question5 = Question(
         id: 'diff-id-1',
         topicId: 'diff-topic',
-        question: 'Different Q1',
+        questionEn: 'Different Q1 EN',
+        questionDe: 'Unterschiedliche F1 DE',
         type: QuestionType.multipleChoice, // Different type
         answerIds: ['a', 'b'],
       );
       final question6 = Question(
         id: 'diff-id-1',
         topicId: 'diff-topic',
-        question: 'Different Q1',
+        questionEn: 'Different Q1 EN',
+        questionDe: 'Unterschiedliche F1 DE',
         type: QuestionType.singleChoice,
         answerIds: ['a', 'c'], // Different answerIds
       );
       final question7 = Question(
         id: 'diff-id-1',
         topicId: 'diff-topic',
-        question: 'Different Q1',
+        questionEn: 'Different Q1 EN',
+        questionDe: 'Unterschiedliche F1 DE',
         type: QuestionType.singleChoice,
         answerIds: ['a', 'b'],
-        explanation: 'Added explanation', // Different explanation
+        explanationEn: 'Added explanation EN', // Different explanation
+      );
+      final question8 = Question(
+        id: 'diff-id-1',
+        topicId: 'diff-topic',
+        questionEn: 'Different Q1 EN',
+        questionDe: 'Unterschiedliche F2 DE', // Different German question
+        type: QuestionType.singleChoice,
+        answerIds: ['a', 'b'],
       );
 
       // Act & Assert
@@ -271,6 +317,8 @@ void main() {
       // Note: Hashcode might collide for list changes, but equality should be false
       expect(question1 == question7, isFalse);
       expect(question1.hashCode == question7.hashCode, isFalse);
+      expect(question1 == question8, isFalse);
+      expect(question1.hashCode == question8.hashCode, isFalse);
     });
 
     test('copyWith creates a new instance with updated values', () {
@@ -279,31 +327,43 @@ void main() {
       // Act
       final copiedWithId = testQuestion.copyWith(id: 'new-q-id');
       final copiedWithTopicId = testQuestion.copyWith(topicId: 'new-topic-id');
-      final copiedWithQuestion = testQuestion.copyWith(
-        question: 'New Question?',
+      final copiedWithQuestionEn = testQuestion.copyWith(
+        questionEn: 'New Question EN?',
+      );
+      final copiedWithQuestionDe = testQuestion.copyWith(
+        questionDe: 'Neue Frage DE?',
       );
       final copiedWithType = testQuestion.copyWith(
         type: QuestionType.multipleChoice,
       );
       final copiedWithAnswerIds = testQuestion.copyWith(answerIds: ['new-ans']);
-      final copiedWithExplanation = testQuestion.copyWith(
-        explanation: 'New Explanation.',
+      final copiedWithExplanationEn = testQuestion.copyWith(
+        explanationEn: 'New Explanation EN.',
       );
-      final copiedWithNullExplanation = testQuestion.copyWith(
-        explanation: null,
+      final copiedWithExplanationDe = testQuestion.copyWith(
+        explanationDe: 'Neue Erklärung DE.',
+      );
+      final copiedWithNullExplanationEn = testQuestion.copyWith(
+        explanationEn: null,
+      );
+      final copiedWithNullExplanationDe = testQuestion.copyWith(
+        explanationDe: null,
       );
 
       // Assert
       // Check updated value and that others remain the same
       expect(copiedWithId.id, 'new-q-id');
       expect(copiedWithId.topicId, testQuestion.topicId);
-      expect(copiedWithId.explanation, testQuestion.explanation);
+      expect(copiedWithId.explanationEn, testQuestion.explanationEn);
 
       expect(copiedWithTopicId.topicId, 'new-topic-id');
       expect(copiedWithTopicId.id, testQuestion.id);
 
-      expect(copiedWithQuestion.question, 'New Question?');
-      expect(copiedWithQuestion.id, testQuestion.id);
+      expect(copiedWithQuestionEn.questionEn, 'New Question EN?');
+      expect(copiedWithQuestionEn.id, testQuestion.id);
+
+      expect(copiedWithQuestionDe.questionDe, 'Neue Frage DE?');
+      expect(copiedWithQuestionDe.id, testQuestion.id);
 
       expect(copiedWithType.type, QuestionType.multipleChoice);
       expect(copiedWithType.id, testQuestion.id);
@@ -311,15 +371,21 @@ void main() {
       expect(copiedWithAnswerIds.answerIds, ['new-ans']);
       expect(copiedWithAnswerIds.id, testQuestion.id);
 
-      expect(copiedWithExplanation.explanation, 'New Explanation.');
-      expect(copiedWithExplanation.id, testQuestion.id);
+      expect(copiedWithExplanationEn.explanationEn, 'New Explanation EN.');
+      expect(copiedWithExplanationEn.id, testQuestion.id);
 
-      expect(copiedWithNullExplanation.explanation, isNull);
-      expect(copiedWithNullExplanation.id, testQuestion.id);
+      expect(copiedWithExplanationDe.explanationDe, 'Neue Erklärung DE.');
+      expect(copiedWithExplanationDe.id, testQuestion.id);
+
+      expect(copiedWithNullExplanationEn.explanationEn, isNull);
+      expect(copiedWithNullExplanationEn.id, testQuestion.id);
+
+      expect(copiedWithNullExplanationDe.explanationDe, isNull);
+      expect(copiedWithNullExplanationDe.id, testQuestion.id);
 
       // Ensure original object is unchanged
       expect(testQuestion.id, testId);
-      expect(testQuestion.explanation, testExplanation);
+      expect(testQuestion.explanationEn, testExplanationEnText);
     });
   });
 }

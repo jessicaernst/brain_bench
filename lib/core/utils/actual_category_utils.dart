@@ -6,6 +6,7 @@ import 'package:brain_bench/core/shared_widgets/pickers/material_list_picker.dar
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
 import 'package:brain_bench/data/models/category/category.dart';
+import 'package:brain_bench/data/models/category/category_extensions.dart';
 import 'package:brain_bench/data/models/home/displayed_category_info.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,10 +23,12 @@ final _logger = Logger('ActualCategoryUtils');
 Category _createMinimalWelcomeCategory(AppLocalizations localizations) {
   return Category(
     id: 'welcome',
-    nameEn: localizations.pickerOptionAutomatic,
-    nameDe: localizations.pickerOptionAutomatic,
-    descriptionEn: localizations.pickerOptionAutomaticDescription,
-    descriptionDe: localizations.pickerOptionAutomaticDescription,
+    nameEn: localizations.pickerOptionAutomatic, // English name
+    nameDe: localizations.pickerOptionAutomatic, // German name
+    descriptionEn:
+        localizations.pickerOptionAutomaticDescription, // English description
+    descriptionDe:
+        localizations.pickerOptionAutomaticDescription, // German description
     subtitleEn: 'Your starting point & quiz guide',
     subtitleDe: 'Dein Startpunkt & Quiz-Leitfaden',
   );
@@ -80,7 +83,7 @@ Future<Category?> determineInitialCategory({
         (cat) => cat.id == lastSelectedId,
       );
       _logger.info(
-        'Category to set from SharedPreferences (via Repo): ${categoryToSet.id} - ${languageCode == 'de' ? categoryToSet.nameDe : categoryToSet.nameEn}',
+        'Category to set from SharedPreferences (via Repo): ${categoryToSet.id} - ${categoryToSet.localizedName(languageCode)}',
       );
     } catch (e) {
       final settingsRepo = ref.read(settingsRepositoryProvider);
@@ -99,7 +102,7 @@ Future<Category?> determineInitialCategory({
           (cat) => cat.id == lastPlayedIdFromUser,
         );
         _logger.info(
-          'Category to set from last played (user data): ${categoryToSet.id} - ${languageCode == 'de' ? categoryToSet.nameDe : categoryToSet.nameEn}',
+          'Category to set from last played (user data): ${categoryToSet.id} - ${categoryToSet.localizedName(languageCode)}',
         );
       } catch (e) {
         _logger.warning(
@@ -110,7 +113,7 @@ Future<Category?> determineInitialCategory({
     // Default to the effective welcome category
     categoryToSet ??= effectiveWelcomeCategory;
     _logger.info(
-      'Category to set (after fallbacks): ${categoryToSet.id} - ${languageCode == 'de' ? categoryToSet.nameDe : categoryToSet.nameEn}',
+      'Category to set (after fallbacks): ${categoryToSet.id} - ${categoryToSet.localizedName(languageCode)}',
     );
   }
   return categoryToSet;
@@ -180,11 +183,10 @@ void showActualCategoryPicker({
             items: pickerItems,
             initialSelectedItem: currentSelectedCategory,
             itemDisplayNameBuilder:
-                (Category cat) =>
-                    languageCode == 'de' ? cat.nameDe : cat.nameEn,
+                (Category cat) => cat.localizedName(languageCode),
             onConfirmed: (Category cat) {
               _logger.info(
-                'Category selected via iOS picker: ${cat.id} - ${languageCode == 'de' ? cat.nameDe : cat.nameEn}',
+                'Category selected via iOS picker: ${cat.id} - ${cat.localizedName(languageCode)}',
               );
               onCategorySelected(cat);
               Navigator.pop(popupContext);
@@ -203,10 +205,10 @@ void showActualCategoryPicker({
           items: pickerItems,
           selectedItem: currentSelectedCategory,
           itemDisplayNameBuilder:
-              (Category cat) => languageCode == 'de' ? cat.nameDe : cat.nameEn,
+              (Category cat) => cat.localizedName(languageCode),
           onItemSelected: (Category cat) {
             _logger.info(
-              'Category selected via Android picker: ${cat.id} - ${languageCode == 'de' ? cat.nameDe : cat.nameEn}',
+              'Category selected via Android picker: ${cat.id} - ${cat.localizedName(languageCode)}',
             );
             onCategorySelected(cat);
             Navigator.pop(sheetContext);
@@ -262,25 +264,12 @@ DisplayedCategoryInfo getDisplayedCategoryInfo({
     progress = 0.0;
   } else if (selectedCategoryValue.id == 'welcome' &&
       effectiveWelcomeCategory.id == 'welcome') {
-    // Check against effective one
-    name =
-        languageCode == 'de'
-            ? effectiveWelcomeCategory.nameDe
-            : effectiveWelcomeCategory.nameEn;
-    description =
-        languageCode == 'de'
-            ? effectiveWelcomeCategory.descriptionDe
-            : effectiveWelcomeCategory.descriptionEn;
+    name = effectiveWelcomeCategory.localizedName(languageCode);
+    description = effectiveWelcomeCategory.localizedDescription(languageCode);
     progress = 0.0;
   } else {
-    name =
-        languageCode == 'de'
-            ? selectedCategoryValue.nameDe
-            : selectedCategoryValue.nameEn;
-    description =
-        languageCode == 'de'
-            ? selectedCategoryValue.descriptionDe
-            : selectedCategoryValue.descriptionEn;
+    name = selectedCategoryValue.localizedName(languageCode);
+    description = selectedCategoryValue.localizedDescription(languageCode);
     progress =
         (currentUser != null)
             ? (currentUser.categoryProgress[selectedCategoryValue.id] ?? 0.0)

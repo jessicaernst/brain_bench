@@ -9,7 +9,7 @@ part of 'answer.dart';
 _$AnswerImpl _$$AnswerImplFromJson(Map<String, dynamic> json) => _$AnswerImpl(
   id: json['id'] as String,
   textEn: json['textEn'] as String,
-  textDe: json['textDe'] as String,
+  textDe: json['textDe'] as String?,
   isCorrect: json['isCorrect'] as bool,
 );
 

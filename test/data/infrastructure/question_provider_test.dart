@@ -13,15 +13,15 @@ void main() {
   late ProviderContainer container;
 
   const topicId = 't1';
-  const languageCode = 'en';
 
   final question = Question(
     id: 'q1',
     topicId: topicId,
-    question: 'What is Flutter?',
+    questionEn: 'What is Flutter?', // Assuming your model now uses questionEn
+    questionDe: 'Was ist Flutter?', // And has an optional questionDe
     type: QuestionType.singleChoice,
     answerIds: ['a1', 'a2', 'a3'],
-    explanation: 'Flutter is a UI SDK.',
+    explanationEn: 'Flutter is a UI SDK.', // Same for explanation
   );
 
   final fakeQuestions = [question];
@@ -44,36 +44,30 @@ void main() {
 
     test('returns expected questions', () async {
       when(
-        () => mockRepo.getQuestions(topicId, languageCode),
+        () => mockRepo.getQuestions(topicId),
       ).thenAnswer((_) async => fakeQuestions);
 
-      final result = await container.read(
-        questionsProvider(topicId, languageCode).future,
-      );
+      final result = await container.read(questionsProvider(topicId).future);
 
       expect(result, fakeQuestions);
-      verify(() => mockRepo.getQuestions(topicId, languageCode)).called(1);
+      verify(() => mockRepo.getQuestions(topicId)).called(1);
     });
 
     test('handles empty list', () async {
-      when(
-        () => mockRepo.getQuestions(topicId, languageCode),
-      ).thenAnswer((_) async => []);
+      when(() => mockRepo.getQuestions(topicId)).thenAnswer((_) async => []);
 
-      final result = await container.read(
-        questionsProvider(topicId, languageCode).future,
-      );
+      final result = await container.read(questionsProvider(topicId).future);
 
       expect(result, isEmpty);
     });
 
     test('throws exception when repository fails', () async {
       when(
-        () => mockRepo.getQuestions(topicId, languageCode),
+        () => mockRepo.getQuestions(topicId),
       ).thenThrow(Exception('DB Error'));
 
       expect(
-        () => container.read(questionsProvider(topicId, languageCode).future),
+        () => container.read(questionsProvider(topicId).future),
         throwsException,
       );
     });

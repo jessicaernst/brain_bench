@@ -1,4 +1,5 @@
 import 'package:brain_bench/data/models/quiz/answer.dart';
+import 'package:brain_bench/data/models/quiz/answer_extensions.dart';
 import 'package:brain_bench/presentation/quiz/widgets/round_check_mark_view.dart';
 import 'package:flutter/material.dart';
 
@@ -18,8 +19,7 @@ class AnswerRowView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String displayText =
-        languageCode == 'de' ? answer.textDe : answer.textEn;
+    final String displayText = answer.localizedText(languageCode);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

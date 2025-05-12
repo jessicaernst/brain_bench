@@ -29,7 +29,6 @@ void main() {
 
   // Sample data
   final answerIds = ['id1', 'id2', 'id-correct'];
-  const languageCode = 'en';
   final mockAnswers = [
     _createAnswer('id1'),
     _createAnswer('id2'),
@@ -59,22 +58,18 @@ void main() {
         // Arrange
         // Stub the getAnswers method to return the mock list when called with specific args
         when(
-          () => mockRepository.getAnswers(answerIds, languageCode),
+          () => mockRepository.getAnswers(answerIds),
         ).thenAnswer((_) async => mockAnswers);
 
         // Act
         // Read the provider's future and await its result
-        final result = await container.read(
-          answersProvider(answerIds, languageCode).future,
-        );
+        final result = await container.read(answersProvider(answerIds).future);
 
         // Assert
         // Verify the result matches the mock data
         expect(result, equals(mockAnswers));
         // Verify that the repository method was called exactly once with the correct arguments
-        verify(
-          () => mockRepository.getAnswers(answerIds, languageCode),
-        ).called(1);
+        verify(() => mockRepository.getAnswers(answerIds)).called(1);
       },
     );
 
@@ -84,19 +79,15 @@ void main() {
         // Arrange
         // Stub the getAnswers method to return an empty list
         when(
-          () => mockRepository.getAnswers(answerIds, languageCode),
+          () => mockRepository.getAnswers(answerIds),
         ).thenAnswer((_) async => []);
 
         // Act
-        final result = await container.read(
-          answersProvider(answerIds, languageCode).future,
-        );
+        final result = await container.read(answersProvider(answerIds).future);
 
         // Assert
         expect(result, isEmpty);
-        verify(
-          () => mockRepository.getAnswers(answerIds, languageCode),
-        ).called(1);
+        verify(() => mockRepository.getAnswers(answerIds)).called(1);
       },
     );
 
@@ -104,44 +95,35 @@ void main() {
       // Arrange
       final testException = Exception('Database error');
       // Stub the getAnswers method to throw an exception
-      when(
-        () => mockRepository.getAnswers(answerIds, languageCode),
-      ).thenThrow(testException);
+      when(() => mockRepository.getAnswers(answerIds)).thenThrow(testException);
 
       // Act & Assert
       // Expect that awaiting the future from the provider throws the same exception
       // that the repository threw. The provider itself doesn't catch it.
       await expectLater(
-        container.read(answersProvider(answerIds, languageCode).future),
+        container.read(answersProvider(answerIds).future),
         throwsA(testException),
       );
       // Verify the repository method was still called
-      verify(
-        () => mockRepository.getAnswers(answerIds, languageCode),
-      ).called(1);
+      verify(() => mockRepository.getAnswers(answerIds)).called(1);
     });
 
     test('should call repository with different arguments', () async {
       // Arrange
       final differentIds = ['diff1', 'diff2'];
-      const differentLang = 'de';
       final differentMockAnswers = [_createAnswer('diff1')];
       when(
-        () => mockRepository.getAnswers(differentIds, differentLang),
+        () => mockRepository.getAnswers(differentIds),
       ).thenAnswer((_) async => differentMockAnswers);
 
       // Act
-      final result = await container.read(
-        answersProvider(differentIds, differentLang).future,
-      );
+      final result = await container.read(answersProvider(differentIds).future);
 
       // Assert
       expect(result, equals(differentMockAnswers));
-      verify(
-        () => mockRepository.getAnswers(differentIds, differentLang),
-      ).called(1);
+      verify(() => mockRepository.getAnswers(differentIds)).called(1);
       // Verify the original arguments were NOT used in this specific call
-      verifyNever(() => mockRepository.getAnswers(answerIds, languageCode));
+      verifyNever(() => mockRepository.getAnswers(answerIds));
     });
   });
 }

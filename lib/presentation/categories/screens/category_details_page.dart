@@ -5,6 +5,7 @@ import 'package:brain_bench/core/shared_widgets/appbars/back_nav_app_bar.dart';
 import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/shared_widgets/progress_bars/dash_evolution_progress_dircle_view.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
+import 'package:brain_bench/data/models/category/category_extensions.dart';
 import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -31,9 +32,7 @@ class CategoryDetailsPage extends ConsumerWidget {
     return Scaffold(
       appBar: BackNavAppBar(
         title: categoryAsync.maybeWhen(
-          data:
-              (category) =>
-                  languageCode == 'de' ? category.nameDe : category.nameEn,
+          data: (category) => category.localizedName(languageCode),
           orElse: () => localizations.categoryDetailsTitle,
         ),
         onBack: () {
@@ -62,12 +61,10 @@ class CategoryDetailsPage extends ConsumerWidget {
             error: (_, __) => 0.0,
           );
 
-          final String description =
-              languageCode == 'de'
-                  ? category.descriptionDe
-                  : category.descriptionEn;
-          final String subtitle =
-              languageCode == 'de' ? category.subtitleDe : category.subtitleEn;
+          final String description = category.localizedDescription(
+            languageCode,
+          );
+          final String subtitle = category.localizedSubtitle(languageCode);
 
           return Stack(
             children: [

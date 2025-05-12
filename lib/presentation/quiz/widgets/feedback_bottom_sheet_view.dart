@@ -4,7 +4,7 @@ import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/core/utils/quiz_filtering.dart';
-import 'package:brain_bench/data/models/quiz/answer.dart';
+import 'package:brain_bench/data/models/quiz/answer_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -20,11 +20,6 @@ class FeedbackBottomSheetView extends ConsumerWidget {
 
   final VoidCallback onBtnPressed;
   final String languageCode;
-
-  /// Helper function to get the localized text for an answer.
-  String _getLocalizedAnswerText(Answer answer) {
-    return languageCode == 'de' ? answer.textDe : answer.textEn;
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,7 +71,7 @@ class FeedbackBottomSheetView extends ConsumerWidget {
                 (a) => Padding(
                   padding: const EdgeInsets.only(left: 24.0),
                   child: Text(
-                    '- ${_getLocalizedAnswerText(a)}',
+                    '- ${a.localizedText(languageCode)}',
                     style: textTheme.bodyMedium?.copyWith(
                       color: BrainBenchColors.correctAnswerGlass,
                     ),
@@ -105,7 +100,7 @@ class FeedbackBottomSheetView extends ConsumerWidget {
                 (a) => Padding(
                   padding: const EdgeInsets.only(left: 24.0),
                   child: Text(
-                    '- ${_getLocalizedAnswerText(a)}',
+                    '- ${a.localizedText(languageCode)}',
                     style: textTheme.bodyMedium?.copyWith(
                       color: BrainBenchColors.falseQuestionGlass,
                     ),
@@ -131,7 +126,7 @@ class FeedbackBottomSheetView extends ConsumerWidget {
                 (a) => Padding(
                   padding: const EdgeInsets.only(left: 24.0),
                   child: Text(
-                    '- ${_getLocalizedAnswerText(a)}',
+                    '- ${a.localizedText(languageCode)}',
                     style: textTheme.bodyMedium?.copyWith(color: Colors.orange),
                   ),
                 ),

@@ -9,9 +9,9 @@ part of 'topic.dart';
 _$TopicImpl _$$TopicImplFromJson(Map<String, dynamic> json) => _$TopicImpl(
   id: json['id'] as String,
   nameEn: json['nameEn'] as String,
-  nameDe: json['nameDe'] as String,
+  nameDe: json['nameDe'] as String?,
   descriptionEn: json['descriptionEn'] as String,
-  descriptionDe: json['descriptionDe'] as String,
+  descriptionDe: json['descriptionDe'] as String?,
   categoryId: json['categoryId'] as String,
   progress: (json['progress'] as num?)?.toDouble() ?? 0.0,
 );

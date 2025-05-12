@@ -114,18 +114,22 @@ class FakeAnswersNotifier extends Notifier<List<Answer>>
 // --- Test Data ---
 final mockQuestion1 = Question(
   id: 'q1',
-  question: 'Question 1',
+  questionEn: 'Question 1 EN',
+  questionDe: 'Frage 1 DE',
   answerIds: ['a1', 'a2'],
-  explanation: 'Expl 1',
+  explanationEn: 'Expl 1 EN',
+  explanationDe: 'Erkl 1 DE',
   type: QuestionType.singleChoice,
   topicId: 't1',
 );
 
 final mockQuestion2 = Question(
   id: 'q2',
-  question: 'Question 2',
+  questionEn: 'Question 2 EN',
+  questionDe: 'Frage 2 DE',
   answerIds: ['a3', 'a4'],
-  explanation: 'Expl 2',
+  explanationEn: 'Expl 2 EN',
+  explanationDe: 'Erkl 2 DE',
   type: QuestionType.multipleChoice,
   topicId: 't1',
 );
@@ -204,14 +208,12 @@ void main() {
     ProviderContainer container,
     List<Question> questions,
   ) async {
-    const lang = 'en';
-    // Stub the repository call needed during initialization
     when(
-      () => mockRepository.getAnswers(questions.first.answerIds, lang),
+      () => mockRepository.getAnswers(questions.first.answerIds),
     ).thenAnswer((_) async => mockAnswersQ1); // Use appropriate mock answers
 
     final viewModel = container.read(quizStateNotifierProvider.notifier);
-    await viewModel.initializeQuizIfNeeded(questions, lang);
+    await viewModel.initializeQuizIfNeeded(questions);
     await container.pump(); // Allow futures to complete
   }
 
@@ -234,16 +236,15 @@ void main() {
       test('Initializes correctly with questions', () async {
         final container = createContainer(); // Use default overrides
         final questions = [mockQuestion1, mockQuestion2];
-        const lang = 'en';
 
         // Arrange: Stub repository
         when(
-          () => mockRepository.getAnswers(mockQuestion1.answerIds, lang),
+          () => mockRepository.getAnswers(mockQuestion1.answerIds),
         ).thenAnswer((_) async => mockAnswersQ1);
 
         // Act
         final viewModel = container.read(quizStateNotifierProvider.notifier);
-        await viewModel.initializeQuizIfNeeded(questions, lang);
+        await viewModel.initializeQuizIfNeeded(questions);
         await container.pump(); // Settle futures
 
         // Assert State
@@ -257,7 +258,7 @@ void main() {
 
         // Assert Interactions
         verify(
-          () => mockRepository.getAnswers(mockQuestion1.answerIds, lang),
+          () => mockRepository.getAnswers(mockQuestion1.answerIds),
         ).called(1);
         // Check the state of the overridden notifier
         final answersState = container.read(answersNotifierProvider);
@@ -267,19 +268,18 @@ void main() {
       test('Does not initialize if already initialized', () async {
         final container = createContainer(); // Use default overrides
         final questions = [mockQuestion1];
-        const lang = 'en';
 
         // Arrange: Initialize first using the helper
         await initViewModel(container, questions);
 
         // Arrange: Stub repository for potential unexpected second call
         when(
-          () => mockRepository.getAnswers(mockQuestion1.answerIds, lang),
+          () => mockRepository.getAnswers(mockQuestion1.answerIds),
         ).thenAnswer((_) async => mockAnswersQ1);
 
         // Act: Try to initialize again
         final viewModel = container.read(quizStateNotifierProvider.notifier);
-        await viewModel.initializeQuizIfNeeded(questions, lang);
+        await viewModel.initializeQuizIfNeeded(questions);
         await container.pump();
 
         // Assert State
@@ -289,18 +289,17 @@ void main() {
         // Assert Interactions (should not call repo again)
         // Verify checks total calls since mock creation
         verify(
-          () => mockRepository.getAnswers(mockQuestion1.answerIds, lang),
+          () => mockRepository.getAnswers(mockQuestion1.answerIds),
         ).called(1);
       });
 
       test('Does not initialize if questions list is empty', () async {
         final container = createContainer(); // Use default overrides
         final List<Question> questions = [];
-        const lang = 'en';
 
         // Act
         final viewModel = container.read(quizStateNotifierProvider.notifier);
-        await viewModel.initializeQuizIfNeeded(questions, lang);
+        await viewModel.initializeQuizIfNeeded(questions);
         await container.pump();
 
         // Assert State
@@ -308,23 +307,22 @@ void main() {
         expect(state, QuizState.initial()); // Should remain initial
 
         // Assert Interactions
-        verifyNever(() => mockRepository.getAnswers(any(), any()));
+        verifyNever(() => mockRepository.getAnswers(any()));
       });
 
       test('Handles error during answer fetching', () async {
         final container = createContainer(); // Use default overrides
         final questions = [mockQuestion1];
-        const lang = 'en';
         final testError = Exception('Failed to fetch');
 
         // Arrange: Stub repository to throw
         when(
-          () => mockRepository.getAnswers(mockQuestion1.answerIds, lang),
+          () => mockRepository.getAnswers(mockQuestion1.answerIds),
         ).thenThrow(testError);
 
         // Act
         final viewModel = container.read(quizStateNotifierProvider.notifier);
-        await viewModel.initializeQuizIfNeeded(questions, lang);
+        await viewModel.initializeQuizIfNeeded(questions);
         await container.pump();
 
         // Assert State
@@ -335,7 +333,7 @@ void main() {
 
         // Assert Interactions
         verify(
-          () => mockRepository.getAnswers(mockQuestion1.answerIds, lang),
+          () => mockRepository.getAnswers(mockQuestion1.answerIds),
         ).called(1);
         // Check the state of the overridden notifier (should be reset)
         final answersState = container.read(answersNotifierProvider);
@@ -357,11 +355,11 @@ void main() {
 
         // Arrange for next question
         when(
-          () => mockRepository.getAnswers(mockQuestion2.answerIds, 'en'),
+          () => mockRepository.getAnswers(mockQuestion2.answerIds),
         ).thenAnswer((_) async => mockAnswersQ2);
 
         // Act: Move to next question
-        await viewModel.loadNextQuestion('en');
+        await viewModel.loadNextQuestion();
         await container.pump();
 
         // Assert
@@ -393,12 +391,12 @@ void main() {
 
         // Arrange for next question
         when(
-          () => mockRepository.getAnswers(mockQuestion2.answerIds, 'en'),
+          () => mockRepository.getAnswers(mockQuestion2.answerIds),
         ).thenAnswer((_) async => mockAnswersQ2);
 
         // Act: Move to next (last) question
         final viewModel = container.read(quizStateNotifierProvider.notifier);
-        await viewModel.loadNextQuestion('en');
+        await viewModel.loadNextQuestion();
         await container.pump(); // Settle loadNextQuestion
 
         // Assert
@@ -426,16 +424,15 @@ void main() {
         final container = createContainer(); // Use default overrides
         final questions = [mockQuestion1, mockQuestion2];
         await initViewModel(container, questions); // Initialize, index 0
-        const lang = 'en';
 
         // Arrange: Stub calls for the *second* question
         when(
-          () => mockRepository.getAnswers(mockQuestion2.answerIds, lang),
+          () => mockRepository.getAnswers(mockQuestion2.answerIds),
         ).thenAnswer((_) async => mockAnswersQ2);
 
         // Act
         final viewModel = container.read(quizStateNotifierProvider.notifier);
-        await viewModel.loadNextQuestion(lang);
+        await viewModel.loadNextQuestion();
         await container.pump();
 
         // Assert State
@@ -448,7 +445,7 @@ void main() {
 
         // Assert Interactions
         verify(
-          () => mockRepository.getAnswers(mockQuestion2.answerIds, lang),
+          () => mockRepository.getAnswers(mockQuestion2.answerIds),
         ).called(1);
         // Check the state of the overridden notifier
         final answersState = container.read(answersNotifierProvider);
@@ -459,20 +456,18 @@ void main() {
         final container = createContainer(); // Use default overrides
         final questions = [mockQuestion1]; // Only one question
         await initViewModel(container, questions); // Initialize, index 0
-        const lang = 'en';
 
         final initialState = container.read(quizStateNotifierProvider);
 
         // Arrange: Stub for potential unexpected call
         when(
-          () => mockRepository.getAnswers(any(), any()),
+          () => mockRepository.getAnswers(any()),
         ).thenAnswer((_) async => []);
 
         // Act
         final viewModel = container.read(quizStateNotifierProvider.notifier);
-        await viewModel.loadNextQuestion(lang);
+        await viewModel.loadNextQuestion();
         await container.pump();
-
         // Assert State (should not change)
         final finalState = container.read(quizStateNotifierProvider);
         expect(finalState.currentIndex, initialState.currentIndex);
@@ -480,38 +475,34 @@ void main() {
 
         // Assert Interactions (should not fetch again)
         verify(
-          () => mockRepository.getAnswers(mockQuestion1.answerIds, lang),
+          () => mockRepository.getAnswers(mockQuestion1.answerIds),
         ).called(1); // Only the one from initViewModel
-        verifyNever(
-          () => mockRepository.getAnswers(mockQuestion2.answerIds, lang),
-        );
+        verifyNever(() => mockRepository.getAnswers(mockQuestion2.answerIds));
       });
 
       test('loadNextQuestion handles error fetching next answers', () async {
         final container = createContainer(); // Use default overrides
         final questions = [mockQuestion1, mockQuestion2];
         await initViewModel(container, questions); // Initialize, index 0
-        const lang = 'en';
         final testError = Exception('Failed to fetch next');
 
         // Arrange: Stub repo to throw for *second* question
         when(
-          () => mockRepository.getAnswers(mockQuestion2.answerIds, lang),
+          () => mockRepository.getAnswers(mockQuestion2.answerIds),
         ).thenThrow(testError);
 
         // Act
         final viewModel = container.read(quizStateNotifierProvider.notifier);
-        await viewModel.loadNextQuestion(lang);
+        await viewModel.loadNextQuestion();
         await container.pump();
 
         // Assert State
         final state = container.read(quizStateNotifierProvider);
         expect(state.currentIndex, 1); // Index should update
         expect(state.isLoadingAnswers, false); // Should be false after error
-
         // Assert Interactions
         verify(
-          () => mockRepository.getAnswers(mockQuestion2.answerIds, lang),
+          () => mockRepository.getAnswers(mockQuestion2.answerIds),
         ).called(1);
         // Check the state of the overridden notifier (should be reset)
         final answersState = container.read(answersNotifierProvider);

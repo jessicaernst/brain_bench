@@ -18,7 +18,7 @@ class Categories extends _$Categories {
     // Use the notifier's 'ref' to watch dependencies
     final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
     _logger.finer('Fetching categories for language: $languageCode');
-    final categories = await repo.getCategories(languageCode);
+    final categories = await repo.getCategories();
     _logger.finer('Fetched ${categories.length} categories.');
     return categories;
   }
@@ -47,10 +47,7 @@ class Categories extends _$Categories {
 
     try {
       // Fetch necessary data using the repository
-      final List<Topic> allTopics = await repo.getTopics(
-        categoryId,
-        languageCode,
-      );
+      final List<Topic> allTopics = await repo.getTopics(categoryId);
       final AppUser? user = await repo.getUser(
         appUser.uid,
       ); // Fetch user data from DB

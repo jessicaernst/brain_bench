@@ -1,15 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:brain_bench/data/models/category/category.dart';
+import 'package:brain_bench/data/models/quiz/answer.dart';
+import 'package:brain_bench/data/models/quiz/question.dart';
+import 'package:brain_bench/data/models/result/result.dart';
+import 'package:brain_bench/data/models/topic/topic.dart';
+import 'package:brain_bench/data/models/user/app_user.dart' as model;
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:flutter/services.dart';
-import 'package:brain_bench/data/models/category/category.dart';
-import 'package:brain_bench/data/models/topic/topic.dart';
-import 'package:brain_bench/data/models/quiz/question.dart';
-import 'package:brain_bench/data/models/quiz/answer.dart';
-import 'package:brain_bench/data/models/result/result.dart';
 import 'package:logging/logging.dart';
+
 import 'database_repository.dart';
-import 'package:brain_bench/data/models/user/app_user.dart' as model;
 
 final Logger _logger = Logger('QuizMockDatabaseRepository');
 
@@ -102,7 +104,7 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   ///   A [Future] that completes with a list of [Category] objects.
   ///   Returns an empty list if an error occurs.
   @override
-  Future<List<Category>> getCategories(String languageCode) async {
+  Future<List<Category>> getCategories() async {
     try {
       final file = File(categoriesPath); // ✅ Use File here
       final String jsonString =
@@ -149,7 +151,7 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   ///   A [Future] that completes with a list of [Topic] objects.
   ///   Returns an empty list if an error occurs.
   @override
-  Future<List<Topic>> getTopics(String categoryId, String languageCode) async {
+  Future<List<Topic>> getTopics(String categoryId) async {
     try {
       final file = File(topicsPath);
       final String jsonString = await file.readAsString();
@@ -160,9 +162,9 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
         return Topic(
           id: e['id'],
           nameEn: e['nameEn'],
-          nameDe: e['nameDe'],
+          nameDe: e['nameDe'] as String?,
           descriptionEn: e['descriptionEn'],
-          descriptionDe: e['descriptionDe'],
+          descriptionDe: e['descriptionDe'] as String?,
           categoryId: e['categoryId'],
           progress: (e['progress'] as num?)?.toDouble() ?? 0.0,
         );
@@ -194,10 +196,7 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   ///   A [Future] that completes with a list of [Question] objects.
   ///   Returns an empty list if an error occurs.
   @override
-  Future<List<Question>> getQuestions(
-    String topicId,
-    String languageCode,
-  ) async {
+  Future<List<Question>> getQuestions(String topicId) async {
     try {
       final fileQuestion = File(questionsPath);
       final String questionJsonString = await fileQuestion.readAsString();
@@ -214,7 +213,8 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
         return Question(
           id: e['id'],
           topicId: e['topicId'],
-          question: languageCode == 'de' ? e['questionDe'] : e['questionEn'],
+          questionEn: e['questionEn'],
+          questionDe: e['questionDe'] as String?,
           type: QuestionType.values.firstWhere(
             (type) => type.toString().split('.').last == e['type'],
           ),
@@ -222,8 +222,8 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
               (e['answerIds'] as List<dynamic>)
                   .map((id) => id.toString())
                   .toList(),
-          explanation:
-              languageCode == 'de' ? e['explanationDe'] : e['explanationEn'],
+          explanationEn: e['explanationEn'] as String?,
+          explanationDe: e['explanationDe'] as String?,
         );
       }).toList();
     } on FileSystemException catch (e) {
@@ -252,10 +252,7 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   ///   A [Future] that completes with a list of [Answer] objects.
   ///   Returns an empty list if an error occurs.
   @override
-  Future<List<Answer>> getAnswers(
-    List<String> answerIds,
-    String languageCode,
-  ) async {
+  Future<List<Answer>> getAnswers(List<String> answerIds) async {
     try {
       _logger.info('getAnswers() aufgerufen für: $answerIds');
 

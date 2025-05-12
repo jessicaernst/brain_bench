@@ -11,22 +11,22 @@ class Category with _$Category {
   factory Category({
     required String id,
     required String nameEn,
-    required String nameDe,
+    String? nameDe,
     required String subtitleEn,
-    required String subtitleDe,
+    String? subtitleDe,
     required String descriptionEn,
-    required String descriptionDe,
+    String? descriptionDe,
   }) = _Category;
 
   // A custom factory constructor named `create`, designed to generate a `Category` object
   // with an automatically generated unique ID (UUID).
   factory Category.create({
-    required String nameEn, // The name of the category to be passed in.
-    required String nameDe,
+    required String nameEn,
+    String? nameDe,
     required String subtitleEn,
-    required String subtitleDe,
+    String? subtitleDe,
     required String descriptionEn,
-    required String descriptionDe,
+    String? descriptionDe,
   }) {
     // Here we generate a new UUID for the category's ID.
     return Category(

@@ -6,7 +6,7 @@ part of 'answer_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$answersHash() => r'f58c6d6d14624357bb24a4cc66d85275bdeba2a3';
+String _$answersHash() => r'a68443c23c8d6c1543550e360b053f8935d629b3';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -39,13 +39,13 @@ class AnswersFamily extends Family<AsyncValue<List<Answer>>> {
   const AnswersFamily();
 
   /// See also [answers].
-  AnswersProvider call(List<String> answerIds, String languageCode) {
-    return AnswersProvider(answerIds, languageCode);
+  AnswersProvider call(List<String> answerIds) {
+    return AnswersProvider(answerIds);
   }
 
   @override
   AnswersProvider getProviderOverride(covariant AnswersProvider provider) {
-    return call(provider.answerIds, provider.languageCode);
+    return call(provider.answerIds);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -66,9 +66,9 @@ class AnswersFamily extends Family<AsyncValue<List<Answer>>> {
 /// See also [answers].
 class AnswersProvider extends AutoDisposeFutureProvider<List<Answer>> {
   /// See also [answers].
-  AnswersProvider(List<String> answerIds, String languageCode)
+  AnswersProvider(List<String> answerIds)
     : this._internal(
-        (ref) => answers(ref as AnswersRef, answerIds, languageCode),
+        (ref) => answers(ref as AnswersRef, answerIds),
         from: answersProvider,
         name: r'answersProvider',
         debugGetCreateSourceHash:
@@ -78,7 +78,6 @@ class AnswersProvider extends AutoDisposeFutureProvider<List<Answer>> {
         dependencies: AnswersFamily._dependencies,
         allTransitiveDependencies: AnswersFamily._allTransitiveDependencies,
         answerIds: answerIds,
-        languageCode: languageCode,
       );
 
   AnswersProvider._internal(
@@ -89,11 +88,9 @@ class AnswersProvider extends AutoDisposeFutureProvider<List<Answer>> {
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.answerIds,
-    required this.languageCode,
   }) : super.internal();
 
   final List<String> answerIds;
-  final String languageCode;
 
   @override
   Override overrideWith(
@@ -109,7 +106,6 @@ class AnswersProvider extends AutoDisposeFutureProvider<List<Answer>> {
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         answerIds: answerIds,
-        languageCode: languageCode,
       ),
     );
   }
@@ -121,16 +117,13 @@ class AnswersProvider extends AutoDisposeFutureProvider<List<Answer>> {
 
   @override
   bool operator ==(Object other) {
-    return other is AnswersProvider &&
-        other.answerIds == answerIds &&
-        other.languageCode == languageCode;
+    return other is AnswersProvider && other.answerIds == answerIds;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, answerIds.hashCode);
-    hash = _SystemHash.combine(hash, languageCode.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -141,9 +134,6 @@ class AnswersProvider extends AutoDisposeFutureProvider<List<Answer>> {
 mixin AnswersRef on AutoDisposeFutureProviderRef<List<Answer>> {
   /// The parameter `answerIds` of this provider.
   List<String> get answerIds;
-
-  /// The parameter `languageCode` of this provider.
-  String get languageCode;
 }
 
 class _AnswersProviderElement
@@ -153,8 +143,6 @@ class _AnswersProviderElement
 
   @override
   List<String> get answerIds => (origin as AnswersProvider).answerIds;
-  @override
-  String get languageCode => (origin as AnswersProvider).languageCode;
 }
 
 // ignore_for_file: type=lint

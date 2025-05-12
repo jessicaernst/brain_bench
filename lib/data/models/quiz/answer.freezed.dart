@@ -23,7 +23,7 @@ Answer _$AnswerFromJson(Map<String, dynamic> json) {
 mixin _$Answer {
   String get id => throw _privateConstructorUsedError;
   String get textEn => throw _privateConstructorUsedError;
-  String get textDe => throw _privateConstructorUsedError;
+  String? get textDe => throw _privateConstructorUsedError;
   bool get isCorrect => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool get isSelected => throw _privateConstructorUsedError;
@@ -45,7 +45,7 @@ abstract class $AnswerCopyWith<$Res> {
   $Res call({
     String id,
     String textEn,
-    String textDe,
+    String? textDe,
     bool isCorrect,
     @JsonKey(includeFromJson: false, includeToJson: false) bool isSelected,
   });
@@ -68,7 +68,7 @@ class _$AnswerCopyWithImpl<$Res, $Val extends Answer>
   $Res call({
     Object? id = null,
     Object? textEn = null,
-    Object? textDe = null,
+    Object? textDe = freezed,
     Object? isCorrect = null,
     Object? isSelected = null,
   }) {
@@ -85,10 +85,10 @@ class _$AnswerCopyWithImpl<$Res, $Val extends Answer>
                     : textEn // ignore: cast_nullable_to_non_nullable
                         as String,
             textDe:
-                null == textDe
+                freezed == textDe
                     ? _value.textDe
                     : textDe // ignore: cast_nullable_to_non_nullable
-                        as String,
+                        as String?,
             isCorrect:
                 null == isCorrect
                     ? _value.isCorrect
@@ -116,7 +116,7 @@ abstract class _$$AnswerImplCopyWith<$Res> implements $AnswerCopyWith<$Res> {
   $Res call({
     String id,
     String textEn,
-    String textDe,
+    String? textDe,
     bool isCorrect,
     @JsonKey(includeFromJson: false, includeToJson: false) bool isSelected,
   });
@@ -138,7 +138,7 @@ class __$$AnswerImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? textEn = null,
-    Object? textDe = null,
+    Object? textDe = freezed,
     Object? isCorrect = null,
     Object? isSelected = null,
   }) {
@@ -155,10 +155,10 @@ class __$$AnswerImplCopyWithImpl<$Res>
                 : textEn // ignore: cast_nullable_to_non_nullable
                     as String,
         textDe:
-            null == textDe
+            freezed == textDe
                 ? _value.textDe
                 : textDe // ignore: cast_nullable_to_non_nullable
-                    as String,
+                    as String?,
         isCorrect:
             null == isCorrect
                 ? _value.isCorrect
@@ -180,7 +180,7 @@ class _$AnswerImpl implements _Answer {
   const _$AnswerImpl({
     required this.id,
     required this.textEn,
-    required this.textDe,
+    this.textDe,
     required this.isCorrect,
     @JsonKey(includeFromJson: false, includeToJson: false)
     this.isSelected = false,
@@ -194,7 +194,7 @@ class _$AnswerImpl implements _Answer {
   @override
   final String textEn;
   @override
-  final String textDe;
+  final String? textDe;
   @override
   final bool isCorrect;
   @override
@@ -243,7 +243,7 @@ abstract class _Answer implements Answer {
   const factory _Answer({
     required final String id,
     required final String textEn,
-    required final String textDe,
+    final String? textDe,
     required final bool isCorrect,
     @JsonKey(includeFromJson: false, includeToJson: false)
     final bool isSelected,
@@ -256,7 +256,7 @@ abstract class _Answer implements Answer {
   @override
   String get textEn;
   @override
-  String get textDe;
+  String? get textDe;
   @override
   bool get isCorrect;
   @override

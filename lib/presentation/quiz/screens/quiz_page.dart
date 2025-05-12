@@ -37,7 +37,7 @@ class QuizPage extends HookConsumerWidget {
     );
 
     final quizViewModel = ref.read(quizStateNotifierProvider.notifier);
-    final questionsAsync = ref.watch(questionsProvider(topicId, languageCode));
+    final questionsAsync = ref.watch(questionsProvider(topicId));
 
     useEffect(() {
       _logger.fine(
@@ -45,7 +45,7 @@ class QuizPage extends HookConsumerWidget {
       );
 
       final subscription = ref.listenManual<AsyncValue<List<Question>>>(
-        questionsProvider(topicId, languageCode),
+        questionsProvider(topicId),
         (previous, next) {
           if (next is AsyncData<List<Question>>) {
             final questions = next.value;
@@ -53,7 +53,7 @@ class QuizPage extends HookConsumerWidget {
                 ref.read(quizStateNotifierProvider).questions.isEmpty) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 if (ref.read(quizStateNotifierProvider).questions.isEmpty) {
-                  quizViewModel.initializeQuizIfNeeded(questions, languageCode);
+                  quizViewModel.initializeQuizIfNeeded(questions);
                 }
               });
             }

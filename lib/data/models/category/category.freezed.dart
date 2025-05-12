@@ -23,11 +23,11 @@ Category _$CategoryFromJson(Map<String, dynamic> json) {
 mixin _$Category {
   String get id => throw _privateConstructorUsedError;
   String get nameEn => throw _privateConstructorUsedError;
-  String get nameDe => throw _privateConstructorUsedError;
+  String? get nameDe => throw _privateConstructorUsedError;
   String get subtitleEn => throw _privateConstructorUsedError;
-  String get subtitleDe => throw _privateConstructorUsedError;
+  String? get subtitleDe => throw _privateConstructorUsedError;
   String get descriptionEn => throw _privateConstructorUsedError;
-  String get descriptionDe => throw _privateConstructorUsedError;
+  String? get descriptionDe => throw _privateConstructorUsedError;
 
   /// Serializes this Category to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,11 +47,11 @@ abstract class $CategoryCopyWith<$Res> {
   $Res call({
     String id,
     String nameEn,
-    String nameDe,
+    String? nameDe,
     String subtitleEn,
-    String subtitleDe,
+    String? subtitleDe,
     String descriptionEn,
-    String descriptionDe,
+    String? descriptionDe,
   });
 }
 
@@ -72,11 +72,11 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
   $Res call({
     Object? id = null,
     Object? nameEn = null,
-    Object? nameDe = null,
+    Object? nameDe = freezed,
     Object? subtitleEn = null,
-    Object? subtitleDe = null,
+    Object? subtitleDe = freezed,
     Object? descriptionEn = null,
-    Object? descriptionDe = null,
+    Object? descriptionDe = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -91,30 +91,30 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
                     : nameEn // ignore: cast_nullable_to_non_nullable
                         as String,
             nameDe:
-                null == nameDe
+                freezed == nameDe
                     ? _value.nameDe
                     : nameDe // ignore: cast_nullable_to_non_nullable
-                        as String,
+                        as String?,
             subtitleEn:
                 null == subtitleEn
                     ? _value.subtitleEn
                     : subtitleEn // ignore: cast_nullable_to_non_nullable
                         as String,
             subtitleDe:
-                null == subtitleDe
+                freezed == subtitleDe
                     ? _value.subtitleDe
                     : subtitleDe // ignore: cast_nullable_to_non_nullable
-                        as String,
+                        as String?,
             descriptionEn:
                 null == descriptionEn
                     ? _value.descriptionEn
                     : descriptionEn // ignore: cast_nullable_to_non_nullable
                         as String,
             descriptionDe:
-                null == descriptionDe
+                freezed == descriptionDe
                     ? _value.descriptionDe
                     : descriptionDe // ignore: cast_nullable_to_non_nullable
-                        as String,
+                        as String?,
           )
           as $Val,
     );
@@ -133,11 +133,11 @@ abstract class _$$CategoryImplCopyWith<$Res>
   $Res call({
     String id,
     String nameEn,
-    String nameDe,
+    String? nameDe,
     String subtitleEn,
-    String subtitleDe,
+    String? subtitleDe,
     String descriptionEn,
-    String descriptionDe,
+    String? descriptionDe,
   });
 }
 
@@ -157,11 +157,11 @@ class __$$CategoryImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? nameEn = null,
-    Object? nameDe = null,
+    Object? nameDe = freezed,
     Object? subtitleEn = null,
-    Object? subtitleDe = null,
+    Object? subtitleDe = freezed,
     Object? descriptionEn = null,
-    Object? descriptionDe = null,
+    Object? descriptionDe = freezed,
   }) {
     return _then(
       _$CategoryImpl(
@@ -176,30 +176,30 @@ class __$$CategoryImplCopyWithImpl<$Res>
                 : nameEn // ignore: cast_nullable_to_non_nullable
                     as String,
         nameDe:
-            null == nameDe
+            freezed == nameDe
                 ? _value.nameDe
                 : nameDe // ignore: cast_nullable_to_non_nullable
-                    as String,
+                    as String?,
         subtitleEn:
             null == subtitleEn
                 ? _value.subtitleEn
                 : subtitleEn // ignore: cast_nullable_to_non_nullable
                     as String,
         subtitleDe:
-            null == subtitleDe
+            freezed == subtitleDe
                 ? _value.subtitleDe
                 : subtitleDe // ignore: cast_nullable_to_non_nullable
-                    as String,
+                    as String?,
         descriptionEn:
             null == descriptionEn
                 ? _value.descriptionEn
                 : descriptionEn // ignore: cast_nullable_to_non_nullable
                     as String,
         descriptionDe:
-            null == descriptionDe
+            freezed == descriptionDe
                 ? _value.descriptionDe
                 : descriptionDe // ignore: cast_nullable_to_non_nullable
-                    as String,
+                    as String?,
       ),
     );
   }
@@ -211,11 +211,11 @@ class _$CategoryImpl implements _Category {
   _$CategoryImpl({
     required this.id,
     required this.nameEn,
-    required this.nameDe,
+    this.nameDe,
     required this.subtitleEn,
-    required this.subtitleDe,
+    this.subtitleDe,
     required this.descriptionEn,
-    required this.descriptionDe,
+    this.descriptionDe,
   });
 
   factory _$CategoryImpl.fromJson(Map<String, dynamic> json) =>
@@ -226,15 +226,15 @@ class _$CategoryImpl implements _Category {
   @override
   final String nameEn;
   @override
-  final String nameDe;
+  final String? nameDe;
   @override
   final String subtitleEn;
   @override
-  final String subtitleDe;
+  final String? subtitleDe;
   @override
   final String descriptionEn;
   @override
-  final String descriptionDe;
+  final String? descriptionDe;
 
   @override
   String toString() {
@@ -290,11 +290,11 @@ abstract class _Category implements Category {
   factory _Category({
     required final String id,
     required final String nameEn,
-    required final String nameDe,
+    final String? nameDe,
     required final String subtitleEn,
-    required final String subtitleDe,
+    final String? subtitleDe,
     required final String descriptionEn,
-    required final String descriptionDe,
+    final String? descriptionDe,
   }) = _$CategoryImpl;
 
   factory _Category.fromJson(Map<String, dynamic> json) =
@@ -305,15 +305,15 @@ abstract class _Category implements Category {
   @override
   String get nameEn;
   @override
-  String get nameDe;
+  String? get nameDe;
   @override
   String get subtitleEn;
   @override
-  String get subtitleDe;
+  String? get subtitleDe;
   @override
   String get descriptionEn;
   @override
-  String get descriptionDe;
+  String? get descriptionDe;
 
   /// Create a copy of Category
   /// with the given fields replaced by the non-null parameter values.

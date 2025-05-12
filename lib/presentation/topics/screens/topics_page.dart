@@ -52,9 +52,7 @@ class _TopicsPageState extends ConsumerState<TopicsPage> {
     final languageCode = Localizations.localeOf(context).languageCode;
     final localizations = AppLocalizations.of(context)!;
 
-    final topicsAsync = ref.watch(
-      topicsProvider(widget.categoryId, languageCode),
-    );
+    final topicsAsync = ref.watch(topicsProvider(widget.categoryId));
 
     final categoryAsync = ref.watch(
       categoryByIdProvider(widget.categoryId, languageCode),

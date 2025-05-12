@@ -2,6 +2,8 @@ import 'package:brain_bench/business_logic/quiz/answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_answers_notifier.dart';
 import 'package:brain_bench/business_logic/quiz/quiz_state_notifier.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/data/models/quiz/answer_extensions.dart';
+import 'package:brain_bench/data/models/quiz/question_extensions.dart';
 import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:brain_bench/presentation/quiz/widgets/feedback_bottom_sheet_view.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +42,7 @@ class QuizPageController extends _$QuizPageController {
     if (quizStateNotifier.hasNextQuestion()) {
       _logger.fine('Attempting to load next question...');
       try {
-        await quizStateNotifier.loadNextQuestion(languageCode);
+        await quizStateNotifier.loadNextQuestion();
         _logger.fine('Successfully loaded next question data.');
       } catch (e, s) {
         _logger.severe('Failed to load next question: $e', e, s);
@@ -111,28 +113,25 @@ class QuizPageController extends _$QuizPageController {
     final selectedAnswers =
         currentLoadedAnswers
             .where((answer) => answer.isSelected)
-            .map(
-              (answer) => languageCode == 'de' ? answer.textDe : answer.textEn,
-            )
+            .map((answer) => answer.localizedText(languageCode))
             .toList();
     final allAnswers =
         currentLoadedAnswers
-            .map(
-              (answer) => languageCode == 'de' ? answer.textDe : answer.textEn,
-            )
+            .map((answer) => answer.localizedText(languageCode))
             .toList();
     final correctAnswers =
         currentLoadedAnswers
             .where((answer) => answer.isCorrect)
-            .map(
-              (answer) => languageCode == 'de' ? answer.textDe : answer.textEn,
-            )
+            .map((answer) => answer.localizedText(languageCode))
             .toList();
-    final explanation = currentQuestion.explanation;
+    final explanation =
+        currentQuestion.localizedExplanation(languageCode) ?? '';
     final allCorrectAnswersText = ref
         .read(quizStateNotifierProvider.notifier)
         .getAllCorrectAnswersForCurrentQuestion(languageCode);
-    final localizedQuestionText = currentQuestion.question;
+    final localizedQuestionText = currentQuestion.localizedQuestion(
+      languageCode,
+    );
 
     try {
       quizAnswerNotifier.addAnswer(

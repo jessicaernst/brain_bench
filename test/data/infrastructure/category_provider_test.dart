@@ -57,9 +57,7 @@ void main() {
       },
     );
 
-    when(
-      () => mockRepo.getTopics(categoryId, languageCode),
-    ).thenAnswer((_) async => topics);
+    when(() => mockRepo.getTopics(categoryId)).thenAnswer((_) async => topics);
     when(
       () => mockRepo.getUser(fakeUser.uid),
     ).thenAnswer((_) async => userWithProgress);

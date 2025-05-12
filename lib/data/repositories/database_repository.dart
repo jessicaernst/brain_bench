@@ -1,8 +1,8 @@
 import 'package:brain_bench/data/models/category/category.dart';
-import 'package:brain_bench/data/models/topic/topic.dart';
-import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
+import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:brain_bench/data/models/result/result.dart';
+import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 
 /// An abstract class defining the contract for a quiz database repository.
@@ -14,42 +14,39 @@ import 'package:brain_bench/data/models/user/app_user.dart';
 abstract class DatabaseRepository {
   /// Retrieves a list of [Category] objects.
   ///
-  /// Parameters:
-  ///   - [languageCode]: The language code to determine which language to use for the category names and descriptions.
+  /// Returns:
+  ///   A [Future] that completes with a list of [Category] objects.
   ///
   /// Returns:
   ///   A [Future] that completes with a list of [Category] objects.
-  Future<List<Category>> getCategories(String languageCode);
+  Future<List<Category>> getCategories();
 
   /// Retrieves a list of [Topic] objects for a given category.
   ///
   /// Parameters:
   ///   - [categoryId]: The ID of the category to retrieve topics for.
-  ///   - [languageCode]: The language code to determine which language to use for the topic names and descriptions.
   ///
   /// Returns:
   ///   A [Future] that completes with a list of [Topic] objects.
-  Future<List<Topic>> getTopics(String categoryId, String languageCode);
+  Future<List<Topic>> getTopics(String categoryId);
 
   /// Retrieves a list of [Question] objects for a given topic.
   ///
   /// Parameters:
   ///   - [topicId]: The ID of the topic to retrieve questions for.
-  ///   - [languageCode]: The language code to determine which language to use for the question text and explanations.
   ///
   /// Returns:
   ///   A [Future] that completes with a list of [Question] objects.
-  Future<List<Question>> getQuestions(String topicId, String languageCode);
+  Future<List<Question>> getQuestions(String topicId);
 
   /// Retrieves a list of [Answer] objects for given answer IDs.
   ///
   /// Parameters:
   ///   - [answerIds]: A list of answer IDs to retrieve.
-  ///   - [languageCode]: The language code to determine which language to use for the answer text.
   ///
   /// Returns:
   ///   A [Future] that completes with a list of [Answer] objects.
-  Future<List<Answer>> getAnswers(List<String> answerIds, String languageCode);
+  Future<List<Answer>> getAnswers(List<String> answerIds);
 
   /// Retrieves a list of [Result] objects for a given user.
   ///

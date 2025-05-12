@@ -9,7 +9,7 @@ class Answer with _$Answer {
   const factory Answer({
     required String id,
     required String textEn,
-    required String textDe,
+    String? textDe,
     required bool isCorrect,
     @JsonKey(includeFromJson: false, includeToJson: false)
     @Default(false)
@@ -19,7 +19,7 @@ class Answer with _$Answer {
   /// Factory for creating a new Answer with a random UUID (for client-side creation).
   factory Answer.create({
     required String textEn,
-    required String textDe,
+    String? textDe,
     required bool isCorrect,
   }) {
     return Answer(

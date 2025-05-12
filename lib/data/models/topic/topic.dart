@@ -22,9 +22,9 @@ class Topic with _$Topic {
   factory Topic({
     required String id,
     required String nameEn,
-    required String nameDe,
+    String? nameDe,
     required String descriptionEn,
-    required String descriptionDe,
+    String? descriptionDe,
     required String categoryId,
     @Default(0.0) double progress,
   }) = _Topic;
@@ -40,9 +40,9 @@ class Topic with _$Topic {
   ///   - [categoryId]: The ID of the category the topic belongs to.
   factory Topic.create({
     required String nameEn,
-    required String nameDe,
+    String? nameDe,
     required String descriptionEn,
-    required String descriptionDe,
+    String? descriptionDe,
     required String categoryId,
   }) {
     return Topic(

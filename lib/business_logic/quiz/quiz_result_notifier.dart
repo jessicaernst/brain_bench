@@ -276,7 +276,7 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   }
 
   Future<List<Topic>> _fetchCategoryTopics(String categoryId) async {
-    final topics = await ref.read(topicsProvider(categoryId, 'en').future);
+    final topics = await ref.read(topicsProvider(categoryId).future);
     _logger.fine('Fetched ${topics.length} topics for category $categoryId.');
     return topics;
   }

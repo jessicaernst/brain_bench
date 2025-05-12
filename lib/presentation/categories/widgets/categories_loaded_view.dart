@@ -4,6 +4,7 @@ import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.da
 import 'package:brain_bench/core/shared_widgets/buttons/profile_button_view.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/category/category.dart';
+import 'package:brain_bench/data/models/category/category_extensions.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/navigation/routes/app_routes.dart';
@@ -29,8 +30,7 @@ class CategoriesLoadedView extends ConsumerWidget {
 
   // Helper to build a single category row widget
   Widget _buildCategoryRow(Category category, AppUser? user) {
-    final categoryName =
-        languageCode == 'de' ? category.nameDe : category.nameEn;
+    final categoryName = category.localizedName(languageCode);
     final progress = user?.categoryProgress[category.id] ?? 0.0;
 
     return Padding(
