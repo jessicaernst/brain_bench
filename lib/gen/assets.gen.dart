@@ -57,44 +57,6 @@ class $AssetsBackgroundsGen {
   List<AssetGenImage> get values => [lightMode, signUp, bgLoginSignUpDarkmode];
 }
 
-class $AssetsCarouselTestGen {
-  const $AssetsCarouselTestGen();
-
-  /// File path: assets/carousel_test/image 12.png
-  AssetGenImage get image12 =>
-      const AssetGenImage('assets/carousel_test/image 12.png');
-
-  /// File path: assets/carousel_test/image 13.png
-  AssetGenImage get image13 =>
-      const AssetGenImage('assets/carousel_test/image 13.png');
-
-  /// File path: assets/carousel_test/image 14.png
-  AssetGenImage get image14 =>
-      const AssetGenImage('assets/carousel_test/image 14.png');
-
-  /// File path: assets/carousel_test/image 15.png
-  AssetGenImage get image15 =>
-      const AssetGenImage('assets/carousel_test/image 15.png');
-
-  /// File path: assets/carousel_test/image 16.png
-  AssetGenImage get image16 =>
-      const AssetGenImage('assets/carousel_test/image 16.png');
-
-  /// File path: assets/carousel_test/image.png
-  AssetGenImage get image =>
-      const AssetGenImage('assets/carousel_test/image.png');
-
-  /// List of all assets
-  List<AssetGenImage> get values => [
-    image12,
-    image13,
-    image14,
-    image15,
-    image16,
-    image,
-  ];
-}
-
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
@@ -261,7 +223,6 @@ class Assets {
 
   static const $AssetsAppIconsGen appIcons = $AssetsAppIconsGen();
   static const $AssetsBackgroundsGen backgrounds = $AssetsBackgroundsGen();
-  static const $AssetsCarouselTestGen carouselTest = $AssetsCarouselTestGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsRiveGen rive = $AssetsRiveGen();

@@ -206,5 +206,27 @@ class _ArticleByIdProviderElement
   String get id => (origin as ArticleByIdProvider).id;
 }
 
+String _$shuffledArticlesHash() => r'572727d6162b886d1761fe38b27f28e7bf832a68';
+
+/// Provides a shuffled list of articles.
+///
+/// This provider depends on [articlesProvider] and shuffles the list *once*.
+///
+/// Copied from [shuffledArticles].
+@ProviderFor(shuffledArticles)
+final shuffledArticlesProvider = FutureProvider<List<Article>>.internal(
+  shuffledArticles,
+  name: r'shuffledArticlesProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$shuffledArticlesHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef ShuffledArticlesRef = FutureProviderRef<List<Article>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

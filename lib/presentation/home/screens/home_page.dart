@@ -78,7 +78,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     final double appBarTitleSize =
         isSmallScreenValue ? 28 : (baseTitleStyle?.fontSize ?? 36);
 
-    final articlesAsync = ref.watch(articlesProvider);
+    final articlesAsync = ref.watch(shuffledArticlesProvider);
 
     List<Article> itemsForArticle;
 

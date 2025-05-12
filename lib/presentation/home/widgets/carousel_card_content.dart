@@ -5,6 +5,7 @@ import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/models/home/article.dart';
 import 'package:brain_bench/data/models/home/article_extensions.dart';
 import 'package:brain_bench/navigation/routes/app_routes.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -34,11 +35,24 @@ class CarouselCardContent extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16.0),
-            child: Image.asset(
-              item.imageUrl,
+            child: CachedNetworkImage(
+              imageUrl: item.imageUrl,
               height: isActive ? 153 : 117,
               width: isActive ? 228 : 151,
               fit: BoxFit.cover,
+              placeholder:
+                  (context, url) => Container(
+                    height: isActive ? 153 : 117,
+                    width: isActive ? 228 : 151,
+                    color: isDarkMode ? Colors.grey[800] : Colors.grey[300],
+                    child: const Center(child: CircularProgressIndicator()),
+                  ),
+              errorWidget:
+                  (context, url, error) => Icon(
+                    Icons.error,
+                    color: Theme.of(context).colorScheme.error,
+                    size: isActive ? 50 : 40,
+                  ),
             ),
           ),
           SizedBox(height: isActive ? 14.5 : 11.33),

@@ -43,3 +43,13 @@ Future<Article?> articleById(Ref ref, String id) async {
   final repo = await ref.watch(articleRepositoryProvider.future);
   return repo.getArticleById(id);
 }
+
+/// Provides a shuffled list of articles.
+///
+/// This provider depends on [articlesProvider] and shuffles the list *once*.
+@Riverpod(keepAlive: true)
+Future<List<Article>> shuffledArticles(Ref ref) async {
+  final articles = await ref.watch(articlesProvider.future);
+  final shuffledList = List<Article>.from(articles)..shuffle();
+  return shuffledList;
+}

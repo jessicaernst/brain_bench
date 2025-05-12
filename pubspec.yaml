@@ -79,6 +79,7 @@ dependencies:
       ref: v1.1.5
   stream_transform: ^2.1.1
   flutter_html: ^3.0.0
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:
