@@ -97,9 +97,6 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   /// decodes it, and returns a list of [Category] objects. It also simulates
   /// a network delay of 1 second.
   ///
-  /// Parameters:
-  ///   - [languageCode]: The language code to determine which language to use for the category names and descriptions.
-  ///
   /// Returns:
   ///   A [Future] that completes with a list of [Category] objects.
   ///   Returns an empty list if an error occurs.
@@ -117,11 +114,11 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
             (e) => Category(
               id: e['id'],
               nameEn: e['nameEn'],
-              nameDe: e['nameDe'],
+              nameDe: e['nameDe'] as String?,
               subtitleEn: e['subtitleEn'],
-              subtitleDe: e['subtitleDe'],
+              subtitleDe: e['subtitleDe'] as String?,
               descriptionEn: e['descriptionEn'],
-              descriptionDe: e['descriptionDe'],
+              descriptionDe: e['descriptionDe'] as String?,
             ),
           )
           .toList();
@@ -145,7 +142,6 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   ///
   /// Parameters:
   ///   - [categoryId]: The ID of the category to retrieve topics for.
-  ///   - [languageCode]: The language code to determine which language to use for the topic names and descriptions.
   ///
   /// Returns:
   ///   A [Future] that completes with a list of [Topic] objects.
@@ -190,7 +186,6 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   ///
   /// Parameters:
   ///   - [topicId]: The ID of the topic to retrieve questions for.
-  ///   - [languageCode]: The language code to determine which language to use for the question text and explanations.
   ///
   /// Returns:
   ///   A [Future] that completes with a list of [Question] objects.
@@ -246,7 +241,6 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   ///
   /// Parameters:
   ///   - [answerIds]: A list of answer IDs to retrieve.
-  ///   - [languageCode]: The language code to determine which language to use for the answer text.
   ///
   /// Returns:
   ///   A [Future] that completes with a list of [Answer] objects.
