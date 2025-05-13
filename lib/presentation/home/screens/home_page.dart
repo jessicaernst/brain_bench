@@ -214,6 +214,7 @@ class HomePage extends HookConsumerWidget {
                           child: Text(localizations.noArticlesAvailable),
                         ),
               ),
+              const SizedBox(height: 32),
             ],
           ),
         ),

@@ -11,7 +11,7 @@ class AppPageBackground extends StatelessWidget {
     final theme = Theme.of(context);
     final bool isDarkMode = theme.brightness == Brightness.dark;
 
-    return Positioned.fill(
+    return SizedBox.expand(
       child:
           isDarkMode
               ? Assets.backgrounds.bgLoginSignUpDarkmode.image(
