@@ -826,6 +826,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap for more'**
   String get tapForMore;
+
+  /// Message displayed when there are no articles available
+  ///
+  /// In en, this message translates to:
+  /// **'No articles available.'**
+  String get noArticlesAvailable;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

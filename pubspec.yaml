@@ -118,7 +118,6 @@ flutter:
     - assets/icons/
     - assets/social_logins/
     - assets/rive/
-    - assets/carousel_test/
     - lib/data/data_source/
 
   # An image asset can refer to one or more resolution-specific "variants", see

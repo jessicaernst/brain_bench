@@ -487,5 +487,9 @@
     "tapForMore": "Tippe für mehr",
     "@tapForMore": {
         "description": "Label for a button that expands or collapses additional content."
+    },
+    "noArticlesAvailable": "Keine Artikel verfügbar.",
+    "@noArticlesAvailable": {
+        "description": "Message displayed when there are no articles available to show."
     }
 }

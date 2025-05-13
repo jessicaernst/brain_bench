@@ -10,51 +10,18 @@ import 'package:brain_bench/presentation/home/widgets/actual_category_view.dart'
 import 'package:brain_bench/presentation/home/widgets/carousel_card_content.dart';
 import 'package:brain_bench/presentation/home/widgets/inactive_news_carousel_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
 import 'package:logging/logging.dart';
 
 final Logger _logger = Logger('HomePage');
 
 /// The home page widget that displays a carousel of articles.
-class HomePage extends ConsumerStatefulWidget {
+class HomePage extends HookConsumerWidget {
   HomePage({super.key});
-
   @override
-  ConsumerState<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends ConsumerState<HomePage> {
-  ProviderSubscription? _categoryListenerSubscription;
-
-  @override
-  void initState() {
-    super.initState();
-    // It's good practice to store the subscription to close it in dispose.
-    _categoryListenerSubscription = ref.listenManual<
-      String?
-    >(selectedHomeCategoryProvider, (previous, next) {
-      // Only reset if there was a previous category AND it's different from the new one.
-      // This prevents resetting when the category is initialized or re-established
-      // upon returning to the page.
-      if (previous != null && previous != next) {
-        _logger.fine(
-          'Category actively changed from "$previous" to "$next". Resetting active carousel index to 0.',
-        );
-        ref.read(activeCarouselIndexProvider.notifier).update(0);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    // Close the subscription when the widget is disposed to prevent memory leaks.
-    _categoryListenerSubscription?.close();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
     final String? selectedCategoryId = ref.watch(selectedHomeCategoryProvider);
     final int activeIndexFromProvider = ref.watch(activeCarouselIndexProvider);
@@ -80,6 +47,23 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     final articlesAsync = ref.watch(shuffledArticlesProvider);
 
+    // Effect to listen for changes in the selected category. Runs once on mount.
+    useEffect(() {
+      final subscription = ref.listenManual<
+        String?
+      >(selectedHomeCategoryProvider, (previous, next) {
+        if (previous != null && previous != next) {
+          _logger.fine(
+            'Category actively changed from "$previous" to "$next". Resetting active carousel index to 0.',
+          );
+          ref.read(activeCarouselIndexProvider.notifier).update(0);
+        }
+      });
+      // Cleanup the listener
+      return subscription.close;
+    }, const []);
+
+    // Effect to listen for changes in the selected category from SharedPreferences
     List<Article> itemsForArticle;
 
     if (articlesAsync is AsyncLoading) {
@@ -112,16 +96,18 @@ class _HomePageState extends ConsumerState<HomePage> {
         itemsForArticle.isNotEmpty &&
         activeIndexFromProvider >= 0 &&
         activeIndexFromProvider < itemsForArticle.length;
-    if (!isValidInitialItem) {
-      assert(() {
+
+    int actualInitialItem;
+    if (isValidInitialItem) {
+      actualInitialItem = activeIndexFromProvider;
+    } else {
+      if (itemsForArticle.isNotEmpty) {
         _logger.warning(
           'Warning: activeIndexFromProvider ($activeIndexFromProvider) is out of bounds for itemsForArticle (length: ${itemsForArticle.length}). Falling back to 0.',
         );
-        return true;
-      }());
+      }
+      actualInitialItem = 0; // Fallback to 0
     }
-    final int actualInitialItem =
-        isValidInitialItem ? activeIndexFromProvider : 0;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -166,40 +152,67 @@ class _HomePageState extends ConsumerState<HomePage> {
                 ),
               ),
               Expanded(
-                child: InfiniteCarousel(
-                  key: ValueKey(selectedCategoryId ?? 'all_articles'),
-
-                  initialItem: actualInitialItem,
-                  onActiveItemChanged: (index) {
-                    // Bounds checking before updating the provider
-                    if (index >= 0 && index < itemsForArticle.length) {
-                      ref
-                          .read(activeCarouselIndexProvider.notifier)
-                          .update(index);
-                    } else {
-                      _logger.warning(
-                        'InfiniteCarousel reported out-of-bounds index: $index. Max items: ${itemsForArticle.length}',
-                      );
-                    }
-                  },
-                  items:
-                      itemsForArticle.map((item) {
-                        return InfiniteCarouselItem(
-                          content: CarouselCardContent(
-                            item: item,
-                            isActive: false,
+                child:
+                    itemsForArticle.isNotEmpty
+                        ? InfiniteCarousel(
+                          key: ValueKey(
+                            selectedCategoryId ?? 'all_articles_carousel',
                           ),
-                        );
-                      }).toList(),
-                  cardWidth: carouselCardWidth,
-                  cardHeight: carouselCardHeight,
-                  activeCardBuilder:
-                      (child) => ActiveNewsCarouselCard(content: child),
-                  inactiveCardBuilder:
-                      (child) => InactiveNewsCarouselCard(content: child),
-                  animationDuration: const Duration(milliseconds: 200),
-                  animationCurve: Curves.easeOut,
-                ),
+                          items:
+                              itemsForArticle.map((item) {
+                                return InfiniteCarouselItem(
+                                  content: CarouselCardContent(
+                                    item: item,
+                                    isActive:
+                                        false, // isActive is handled by active/inactive builders
+                                  ),
+                                );
+                              }).toList(),
+                          initialItem: actualInitialItem,
+                          onActiveItemChanged: (index) {
+                            final String? categoryIdWhenCarouselWasBuilt =
+                                selectedCategoryId;
+                            // Check if the widget is still mounted before trying to read/update providers
+                            // For HookConsumerWidget, we don't have a direct 'mounted' property like in State.
+                            // However, the callback itself will only be active as long as the widget is in the tree.
+                            // The Future.microtask helps deferring the provider update slightly.
+                            if (index >= 0 && index < itemsForArticle.length) {
+                              Future.microtask(() {
+                                // Check if the category context for this callback is still the active one
+                                final String? currentActiveCategoryInApp = ref
+                                    .read(selectedHomeCategoryProvider);
+                                if (categoryIdWhenCarouselWasBuilt ==
+                                    currentActiveCategoryInApp) {
+                                  ref
+                                      .read(
+                                        activeCarouselIndexProvider.notifier,
+                                      )
+                                      .update(index);
+                                } else {
+                                  _logger.fine(
+                                    'Carousel callback for stale category ($categoryIdWhenCarouselWasBuilt) ignored. Current is ($currentActiveCategoryInApp). Index: $index',
+                                  );
+                                }
+                              });
+                            } else {
+                              _logger.warning(
+                                'InfiniteCarousel reported out-of-bounds index: $index for category $categoryIdWhenCarouselWasBuilt. Max items: ${itemsForArticle.length}',
+                              );
+                            }
+                          },
+                          cardWidth: carouselCardWidth,
+                          cardHeight: carouselCardHeight,
+                          activeCardBuilder:
+                              (child) => ActiveNewsCarouselCard(content: child),
+                          inactiveCardBuilder:
+                              (child) =>
+                                  InactiveNewsCarouselCard(content: child),
+                          animationDuration: const Duration(milliseconds: 250),
+                          animationCurve: Curves.easeOut,
+                        )
+                        : Center(
+                          child: Text(localizations.noArticlesAvailable),
+                        ),
               ),
             ],
           ),

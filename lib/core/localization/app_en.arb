@@ -487,5 +487,9 @@
     "tapForMore": "Tap for more",
     "@tapForMore": {
         "description": "Label for a button or link that allows the user to tap for more information."
+    },
+    "noArticlesAvailable": "No articles available.",
+    "@noArticlesAvailable": {
+        "description": "Message displayed when there are no articles available"
     }
 }

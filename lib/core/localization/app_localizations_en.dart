@@ -373,4 +373,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tapForMore => 'Tap for more';
+
+  @override
+  String get noArticlesAvailable => 'No articles available.';
 }
