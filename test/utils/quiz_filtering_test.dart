@@ -1,5 +1,5 @@
 import 'package:brain_bench/business_logic/quiz/quiz_state.dart';
-import 'package:brain_bench/core/utils/quiz_filtering.dart';
+import 'package:brain_bench/core/utils/quiz/quiz_filtering.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:flutter_test/flutter_test.dart';

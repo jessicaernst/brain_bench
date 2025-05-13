@@ -133,8 +133,10 @@ abstract class DatabaseRepository {
   ///                 depending on the specific implementation.
   ///
   /// Returns:
-  ///   A [Future] that completes when the profile data has been updated.
-  Future<void> updateUserProfile({
+  ///   A [Future] that completes with the user's photo URL *before* the update,
+  ///   or null if no photo URL was previously set. This value is obtained
+  ///   atomically during the update transaction.
+  Future<String?> updateUserProfile({
     required String userId,
     required String displayName,
     String? photoUrl, // Optional für später

@@ -2,7 +2,7 @@ import 'package:brain_bench/business_logic/home/home_providers.dart';
 import 'package:brain_bench/core/extensions/responsive_context.dart';
 import 'package:brain_bench/core/hooks/actual_category_hooks.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
-import 'package:brain_bench/core/utils/actual_category_utils.dart';
+import 'package:brain_bench/core/utils/home/actual_category_utils.dart';
 import 'package:brain_bench/data/infrastructure/quiz/category_providers.dart';
 import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';

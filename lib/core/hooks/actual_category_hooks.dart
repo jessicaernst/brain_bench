@@ -1,6 +1,6 @@
 import 'package:brain_bench/business_logic/home/home_providers.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
-import 'package:brain_bench/core/utils/actual_category_utils.dart';
+import 'package:brain_bench/core/utils/home/actual_category_utils.dart';
 import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

@@ -48,4 +48,7 @@ class FirebaseStorageRepositoryImpl implements StorageRepository {
       rethrow;
     }
   }
+
+  @override
+  firebase_storage.FirebaseStorage get storageInstance => _storage;
 }

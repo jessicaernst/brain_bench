@@ -588,7 +588,7 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Future<void> updateUserProfile({
+  Future<String?> updateUserProfile({
     required String userId,
     required String displayName,
     String? photoUrl,
@@ -598,7 +598,7 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       if (!await file.exists()) {
         // Use await
         _logger.warning('User file not found at $userPath for profile update.');
-        return;
+        return null;
       }
 
       final jsonString = await file.readAsString();
@@ -607,7 +607,7 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
         _logger.warning(
           'User file is empty, cannot update profile for user $userId.',
         );
-        return;
+        return null;
       }
       final jsonMap = json.decode(jsonString);
       final List<dynamic> users =
@@ -619,13 +619,16 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
 
       if (index == -1) {
         _logger.warning('User $userId not found for profile update.');
-        return;
+        return null;
       }
 
       // Get the existing user data as a Map
       final Map<String, dynamic> existingUserMap = Map<String, dynamic>.from(
         users[index],
       );
+
+      // Capture the photoUrl before any update
+      final String? oldPhotoUrl = existingUserMap['photoUrl'] as String?;
 
       // Create the updated user data
       // Keep all old fields and only overwrite the new ones
@@ -654,24 +657,28 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       _logger.info(
         '✅ Profile updated for user $userId. New name: $displayName',
       );
+      return oldPhotoUrl; // Return the photoUrl from before the update
     } on FileSystemException catch (e, stack) {
       _logger.severe(
         'FileSystemException in updateUserProfile for $userId: $e',
         e,
         stack,
       );
+      return null;
     } on FormatException catch (e, stack) {
       _logger.severe(
         'FormatException in updateUserProfile for $userId: $e',
         e,
         stack,
       );
+      return null;
     } catch (e, stack) {
       _logger.severe(
         'Unexpected error updating profile for $userId: $e',
         e,
         stack,
       );
+      return null;
     }
   }
 }

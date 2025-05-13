@@ -53,17 +53,21 @@ class ProfilePage extends HookConsumerWidget {
         error: (error, stackTrace) {
           String displayMessage;
           // Check if the error message indicates an image upload failure specifically
-          if (error.toString().toLowerCase().contains('image upload failed')) {
+          // Wir prüfen hier auf den spezifischen Text, den wir im ProfileNotifier setzen.
+          if (error.toString().toLowerCase().contains('image upload failed') ||
+              error.toString().toLowerCase().contains(
+                'image compression failed',
+              )) {
             displayMessage = localizations.profileUpdateSuccessButImageFailed;
             _logger.warning(
-              'Profile updated, but image upload failed.',
+              'Profile data likely updated, but image processing/upload failed.',
               error,
               stackTrace,
             );
           } else {
             displayMessage =
                 '${localizations.profileUpdateError}: ${error.toString()}';
-            _logger.severe(
+            _logger.warning(
               'Profile update failed completely.',
               error,
               stackTrace,
@@ -75,6 +79,7 @@ class ProfilePage extends HookConsumerWidget {
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
+          selectedImage.value = null;
         },
         data: (_) {
           if (previous is AsyncLoading) {

@@ -1,4 +1,4 @@
-import 'package:brain_bench/core/utils/ensure_user_exists.dart';
+import 'package:brain_bench/core/utils/auth/ensure_user_exists.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';

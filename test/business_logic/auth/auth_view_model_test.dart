@@ -1,7 +1,7 @@
 // REMOVED duplicate import: import 'package:brain_bench/data/repositories/auth_repository.dart';
 // Ensure ONLY ONE import for AuthRepository is active and correct
 import 'package:brain_bench/business_logic/auth/auth_view_model.dart';
-import 'package:brain_bench/core/utils/ensure_user_exists.dart'
+import 'package:brain_bench/core/utils/auth/ensure_user_exists.dart'
     as ensure_user_exists;
 import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';

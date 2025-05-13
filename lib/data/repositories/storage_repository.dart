@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 /// Abstract class defining the contract for storage operations.
 ///
 /// This repository handles interactions with a file storage service,
@@ -14,4 +16,8 @@ abstract class StorageRepository {
   /// of the uploaded image.
   /// Throws an exception if the upload fails.
   Future<String> uploadProfileImage(String userId, File imageFile);
+
+  /// Provides access to the underlying Firebase Storage instance.
+  /// This might be needed for more advanced operations not covered by the repository methods.
+  firebase_storage.FirebaseStorage get storageInstance;
 }

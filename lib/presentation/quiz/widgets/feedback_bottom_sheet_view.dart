@@ -3,7 +3,7 @@ import 'package:brain_bench/business_logic/quiz/quiz_state_notifier.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.dart';
 import 'package:brain_bench/core/styles/colors.dart';
-import 'package:brain_bench/core/utils/quiz_filtering.dart';
+import 'package:brain_bench/core/utils/quiz/quiz_filtering.dart';
 import 'package:brain_bench/data/models/quiz/answer_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

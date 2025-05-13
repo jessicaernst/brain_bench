@@ -6,7 +6,7 @@ part of 'profile_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$profileNotifierHash() => r'42ddb9dbaa397fa06b5cbcdf0f5a91e7c0a89bd1';
+String _$profileNotifierHash() => r'4b5e343403094dd4805364155e395d1a619a01e6';
 
 /// See also [ProfileNotifier].
 @ProviderFor(ProfileNotifier)
