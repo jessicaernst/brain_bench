@@ -6,9 +6,18 @@ part of 'profile_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$profileNotifierHash() => r'4b5e343403094dd4805364155e395d1a619a01e6';
+String _$profileNotifierHash() => r'6e1bc3790e48fb36d5bb209a3bbb08e1a48f38b4';
 
-/// See also [ProfileNotifier].
+/// This class represents the notifier for the profile state in the application.
+/// It extends the generated `_$ProfileNotifier` class.
+/// The `ProfileNotifier` class is responsible for updating the user's profile,
+/// including the display name and profile image.
+/// It handles the logic for image compression, validation, and uploading,
+/// as well as updating the database with the new profile information.
+/// It also manages the state of the profile update operation,
+/// indicating whether it is loading, successful, or has encountered an error.
+///
+/// Copied from [ProfileNotifier].
 @ProviderFor(ProfileNotifier)
 final profileNotifierProvider =
     AutoDisposeAsyncNotifierProvider<ProfileNotifier, void>.internal(

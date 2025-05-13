@@ -30,6 +30,271 @@ class ProfileNotifier extends _$ProfileNotifier {
     return null;
   }
 
+  /// Fetches and validates the current user's ID.
+  /// Sets the state to error and returns null if the user ID is not available.
+  String? _getUserIdAndSetErrorStateIfAbsent() {
+    final AsyncValue<AppUser?> authUserAsyncValue = ref.read(
+      currentUserProvider,
+    );
+    final String? userId = authUserAsyncValue.valueOrNull?.uid;
+
+    if (userId == null || userId.isEmpty) {
+      final error = Exception(
+        'User not authenticated or user ID not available',
+      );
+      _logger.warning('Profile update failed: ${error.toString()}');
+      state = AsyncError(error, StackTrace.current);
+      return null;
+    }
+    _logger.fine('User ID obtained: $userId');
+    return userId;
+  }
+
+  /// Validates the image file extension.
+  String? _validateImageExtension(File profileImageFile) {
+    const List<String> validExtensions = [
+      'jpg',
+      'jpeg',
+      'png',
+      'gif',
+      'webp',
+      'bmp',
+    ];
+    String fileExtension = '';
+    final int dotIndex = profileImageFile.path.lastIndexOf('.');
+
+    if (dotIndex != -1 && dotIndex < profileImageFile.path.length - 1) {
+      fileExtension =
+          profileImageFile.path.substring(dotIndex + 1).toLowerCase();
+    }
+
+    if (!validExtensions.contains(fileExtension)) {
+      final errorMsg =
+          'Invalid image format. Please select a JPG, PNG, GIF, WEBP, or BMP.';
+      _logger.warning(
+        'Invalid image file type for upload: "$fileExtension". Error: $errorMsg',
+      );
+      return errorMsg;
+    }
+    return null;
+  }
+
+  /// Attempts to compress the image file.
+  /// Returns the file to upload (either compressed or original) and any temporary compressed file.
+  Future<({File imageForUpload, File? tempCompressedFile})> _tryCompressImage(
+    File profileImageFile,
+  ) async {
+    File imageForUpload = profileImageFile;
+    File? tempCompressedFile;
+    try {
+      final targetPath =
+          '${profileImageFile.parent.path}/compressed_${DateTime.now().millisecondsSinceEpoch}_${profileImageFile.path.split('/').last}';
+      _logger.fine('Attempting to compress image to: $targetPath');
+      final XFile? compressedXFile =
+          await FlutterImageCompress.compressAndGetFile(
+            profileImageFile.absolute.path,
+            targetPath,
+            quality: 80,
+            minWidth: 800,
+            minHeight: 800,
+          );
+      if (compressedXFile != null) {
+        imageForUpload = File(compressedXFile.path);
+        tempCompressedFile = imageForUpload;
+        _logger.info(
+          'Image compressed successfully. New path: ${imageForUpload.path}, Size: ${await imageForUpload.length()} bytes',
+        );
+      } else {
+        _logger.warning(
+          'Image compression returned null. Using original file for upload.',
+        );
+      }
+    } catch (e, stack) {
+      _logger.severe('Error during image compression', e, stack);
+      // Non-fatal for upload, proceed with original if compression fails, but log it.
+    }
+    return (
+      imageForUpload: imageForUpload,
+      tempCompressedFile: tempCompressedFile,
+    );
+  }
+
+  /// Validates the file size of the image to be uploaded.
+  Future<String?> _validateImageFileSize(
+    File imageToCheck,
+    File originalImageFile,
+  ) async {
+    final int currentFileSize = await imageToCheck.length();
+    const int maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+    if (currentFileSize > maxSizeInBytes) {
+      final errorMsg =
+          'Image is too large even after compression. Maximum size is 5MB.';
+      _logger.warning(
+        'Image (after potential compression) is too large for upload: ${currentFileSize / (1024 * 1024)}MB. Original size was: ${await originalImageFile.length() / (1024 * 1024)}MB. Error: $errorMsg',
+      );
+      return errorMsg;
+    }
+    return null;
+  }
+
+  /// Uploads the image to storage and returns the URL.
+  Future<String?> _uploadImageToStorageAndGetUrl(
+    String userId,
+    File imageToUpload,
+    StorageRepository storageRepository,
+  ) async {
+    try {
+      final String uploadedUrl = await storageRepository.uploadProfileImage(
+        userId,
+        imageToUpload,
+      );
+      _logger.info('Profile image uploaded successfully. URL: $uploadedUrl');
+      return uploadedUrl;
+    } catch (e, stack) {
+      _logger.severe(
+        'Failed to upload profile image for user $userId. Error: ${e.toString()}',
+        e,
+        stack,
+      );
+      return null; // Indicates upload failure
+    }
+  }
+
+  /// Cleans up (deletes) a temporary image file if it exists and is different from the original.
+  Future<void> _cleanupTemporaryImageFile(
+    File? tempFile,
+    File originalFile,
+  ) async {
+    if (tempFile != null && tempFile.path != originalFile.path) {
+      try {
+        await tempFile.delete();
+        _logger.info('Deleted compressed temporary file: ${tempFile.path}');
+      } catch (e) {
+        _logger.warning('Could not delete compressed temporary file: $e');
+      }
+    }
+  }
+
+  /// Handles image validation, compression, upload, and temporary file cleanup.
+  /// Returns the URL of the uploaded image and any error message.
+  Future<({String? uploadedPhotoUrl, String? error})>
+  _handleImageProcessingAndUpload({
+    required File profileImageFile,
+    required String userId,
+    required StorageRepository storageRepository,
+  }) async {
+    _logger.info(
+      'New profile image provided. Original path: ${profileImageFile.path}',
+    );
+
+    String? error = _validateImageExtension(profileImageFile);
+    if (error != null) return (uploadedPhotoUrl: null, error: error);
+
+    final compressionResult = await _tryCompressImage(profileImageFile);
+    final File imageToUpload = compressionResult.imageForUpload;
+    final File? tempCompressedFile = compressionResult.tempCompressedFile;
+
+    error = await _validateImageFileSize(imageToUpload, profileImageFile);
+    if (error != null) {
+      await _cleanupTemporaryImageFile(tempCompressedFile, profileImageFile);
+      return (uploadedPhotoUrl: null, error: error);
+    }
+
+    final String? uploadedUrl = await _uploadImageToStorageAndGetUrl(
+      userId,
+      imageToUpload,
+      storageRepository,
+    );
+    await _cleanupTemporaryImageFile(tempCompressedFile, profileImageFile);
+
+    if (uploadedUrl == null) {
+      return (uploadedPhotoUrl: null, error: 'Image upload failed.');
+    }
+    return (uploadedPhotoUrl: uploadedUrl, error: null);
+  }
+
+  /// Updates the user's profile in the database.
+  /// Returns the photo URL that was in the database before this update.
+  Future<String?> _performDatabaseUpdate({
+    required String userId,
+    required String displayName,
+    required String? photoUrlToStoreInDb,
+    required DatabaseRepository dbRepository,
+  }) async {
+    _logger.info(
+      'Calling updateUserProfile for user $userId with name: $displayName and photoUrl: ${photoUrlToStoreInDb ?? "(no change)"}',
+    );
+    final String? photoUrlFromDbBeforeUpdate = await dbRepository
+        .updateUserProfile(
+          userId: userId,
+          displayName: displayName,
+          photoUrl: photoUrlToStoreInDb,
+        );
+    _logger.info(
+      'Profile update successful in repository for user $userId. Old photo URL was: $photoUrlFromDbBeforeUpdate',
+    );
+    return photoUrlFromDbBeforeUpdate;
+  }
+
+  /// Attempts to delete the old profile image from storage.
+  Future<void> _attemptOldImageDeletion({
+    required String? newUploadedPhotoUrl,
+    required String? photoUrlFromDbBeforeUpdate,
+    required String userId,
+    required StorageRepository storageRepository,
+    required DatabaseRepository dbRepository,
+  }) async {
+    if (photoUrlFromDbBeforeUpdate != null &&
+        photoUrlFromDbBeforeUpdate.isNotEmpty &&
+        photoUrlFromDbBeforeUpdate != newUploadedPhotoUrl) {
+      AppUser? latestUserDataAfterUpdate;
+      String? currentLivePhotoUrlInDb;
+      bool canProceedWithDeletionLogic = true;
+
+      try {
+        latestUserDataAfterUpdate = await dbRepository.getUser(userId);
+        currentLivePhotoUrlInDb = latestUserDataAfterUpdate?.photoUrl;
+        _logger.fine(
+          'Pre-deletion check: Current live photoUrl in DB for user $userId is $currentLivePhotoUrlInDb',
+        );
+      } catch (e, stack) {
+        _logger.warning(
+          'Failed to re-fetch user data for pre-deletion check for user $userId. Skipping deletion of $photoUrlFromDbBeforeUpdate to be safe.',
+          e,
+          stack,
+        );
+        canProceedWithDeletionLogic = false;
+      }
+
+      if (canProceedWithDeletionLogic) {
+        if (photoUrlFromDbBeforeUpdate == currentLivePhotoUrlInDb) {
+          _logger.warning(
+            'Skipping deletion of $photoUrlFromDbBeforeUpdate for user $userId because it is currently the live photoUrl. This might indicate a rapid revert or concurrent update.',
+          );
+        } else {
+          try {
+            _logger.info(
+              'Attempting to delete old profile image (obtained from DB pre-update, and confirmed not current live): $photoUrlFromDbBeforeUpdate',
+            );
+            final oldImageRef = storageRepository.storageInstance.refFromURL(
+              photoUrlFromDbBeforeUpdate,
+            );
+            await oldImageRef.delete();
+            _logger.info(
+              'Old profile image (obtained from DB pre-update) deleted successfully: $photoUrlFromDbBeforeUpdate',
+            );
+          } catch (e, stack) {
+            _logger.warning(
+              'Failed to delete old profile image: $photoUrlFromDbBeforeUpdate',
+              e,
+              stack,
+            );
+          }
+        }
+      }
+    }
+  }
+
   Future<void> updateProfile({
     required String displayName,
     File? profileImageFile,
@@ -38,260 +303,65 @@ class ProfileNotifier extends _$ProfileNotifier {
     _logger.fine('Attempting to update profile...');
 
     try {
-      // 1. Get the Database Repository (asynchronously)
       final DatabaseRepository dbRepository = await ref.read(
         quizMockDatabaseRepositoryProvider.future,
       );
-      // Get the Storage Repository
       final StorageRepository storageRepository = ref.read(
         storageRepositoryProvider,
       );
 
-      // 2. Get the current authentication state's AppUser? value
-      //    Reading the latest value emitted by the currentUserProvider stream.
-      //    This assumes the stream has emitted a value for the logged-in user.
-      final AsyncValue<AppUser?> authUserAsyncValue = ref.read(
-        currentUserProvider,
-      );
-
-      // 3. Extract the userId from the auth state AppUser
-      //    valueOrNull safely gets the data if available, otherwise null.
-      final String? userId = authUserAsyncValue.valueOrNull?.uid;
-
-      // 4. Check if userId could be obtained (user is logged in and stream has emitted)
-      if (userId == null || userId.isEmpty) {
-        // This could happen if the user is not logged in, or the stream hasn't emitted yet.
-        final error = Exception(
-          'User not authenticated or user ID not available',
-        );
-        _logger.warning('Profile update failed: ${error.toString()}');
-        state = AsyncError(error, StackTrace.current);
+      final String? userId = _getUserIdAndSetErrorStateIfAbsent();
+      if (userId == null) {
         return;
       }
 
-      // photoUrlToStoreInDb will be the URL passed to updateUserProfile.
-      // It's null initially, meaning "no change" to photo URL unless a new image is successfully uploaded.
-      String? photoUrlToStoreInDb;
-      String? uploadedPhotoUrl;
+      String? finalPhotoUrlToStoreInDb;
+      String? newUploadedPhotoUrl;
+      String? imageProcessingError;
 
-      String? imageUploadError;
       if (profileImageFile != null) {
-        _logger.info(
-          'New profile image provided. Original path: ${profileImageFile.path}',
+        final imageResult = await _handleImageProcessingAndUpload(
+          profileImageFile: profileImageFile,
+          userId: userId,
+          storageRepository: storageRepository,
         );
+        newUploadedPhotoUrl = imageResult.uploadedPhotoUrl;
+        imageProcessingError = imageResult.error;
 
-        const List<String> validExtensions = [
-          'jpg',
-          'jpeg',
-          'png',
-          'gif',
-          'webp',
-          'bmp',
-        ];
-        String fileExtension = '';
-        final int dotIndex = profileImageFile.path.lastIndexOf('.');
-
-        if (dotIndex != -1 && dotIndex < profileImageFile.path.length - 1) {
-          fileExtension =
-              profileImageFile.path.substring(dotIndex + 1).toLowerCase();
-        }
-
-        if (!validExtensions.contains(fileExtension)) {
-          _logger.warning(
-            'Invalid image file type for upload: "$fileExtension"',
+        if (imageProcessingError != null) {
+          state = AsyncError(
+            Exception(imageProcessingError),
+            StackTrace.current,
           );
-          imageUploadError =
-              'Invalid image format. Please select a JPG, PNG, GIF, WEBP, or BMP.';
-          state = AsyncError(Exception(imageUploadError), StackTrace.current);
           return;
         }
-
-        File imageToUpload = profileImageFile; // Start with the original file
-        File? tempCompressedFile; // To keep track of the temp file for deletion
-
-        // Attempt to compress the image
-        try {
-          final targetPath =
-              '${profileImageFile.parent.path}/compressed_${DateTime.now().millisecondsSinceEpoch}_${profileImageFile.path.split('/').last}';
-          _logger.fine('Attempting to compress image to: $targetPath');
-
-          final XFile? compressedXFile =
-              await FlutterImageCompress.compressAndGetFile(
-                profileImageFile.absolute.path,
-                targetPath,
-                quality: 80,
-                minWidth: 800,
-                minHeight: 800,
-              );
-
-          if (compressedXFile != null) {
-            imageToUpload = File(compressedXFile.path);
-            tempCompressedFile = imageToUpload;
-            _logger.info(
-              'Image compressed successfully. New path: ${imageToUpload.path}, Size: ${await imageToUpload.length()} bytes',
-            );
-          } else {
-            _logger.warning(
-              'Image compression returned null. Using original file for upload.',
-            );
-          }
-        } catch (e, stack) {
-          _logger.severe('Error during image compression', e, stack);
-        }
-
-        final int fileSizeAfterCompression = await imageToUpload.length();
-        const int maxSizeInBytes = 5 * 1024 * 1024;
-        if (fileSizeAfterCompression > maxSizeInBytes) {
-          _logger.warning(
-            'Image (after potential compression) is too large for upload: ${fileSizeAfterCompression / (1024 * 1024)}MB. Original size was: ${await profileImageFile.length() / (1024 * 1024)}MB',
-          );
-          imageUploadError =
-              'Image is too large even after compression. Maximum size is 5MB.';
-          state = AsyncError(Exception(imageUploadError), StackTrace.current);
-          if (tempCompressedFile != null &&
-              tempCompressedFile.path != profileImageFile.path) {
-            await tempCompressedFile.delete();
-          }
-          return;
-        }
-
-        // Attempt to upload the (potentially compressed) image
-        // Proceed only if no prior error (like compression error we want to signal)
-        try {
-          uploadedPhotoUrl = await storageRepository.uploadProfileImage(
-            userId,
-            imageToUpload,
-          );
-          _logger.info(
-            'Profile image uploaded successfully. URL: $uploadedPhotoUrl',
-          );
-          // If upload was successful, this is the URL we want to store in the database.
-          photoUrlToStoreInDb = uploadedPhotoUrl;
-        } catch (e, stack) {
-          _logger.severe(
-            'Failed to upload profile image for user $userId',
-            e,
-            stack,
-          );
-          imageUploadError = 'Image upload failed: ${e.toString()}';
-        } finally {
-          // Ensure temporary compressed file is deleted, regardless of upload success/failure
-          if (tempCompressedFile != null &&
-              tempCompressedFile.path != profileImageFile.path) {
-            try {
-              await tempCompressedFile.delete();
-              _logger.info(
-                'Deleted compressed temporary file: ${tempCompressedFile.path}',
-              );
-            } catch (e) {
-              _logger.warning('Could not delete compressed temporary file: $e');
-            }
-          }
-        }
+        finalPhotoUrlToStoreInDb = newUploadedPhotoUrl;
       }
 
-      // 5. Call the database repository method
-      // This method is now expected to atomically update the profile
-      // and return the photo URL that was in the database *before* this update.
-      // - If photoUrlToStoreInDb is null (no new image/upload failed), the repository's
-      //   updateUserProfile method should NOT change the 'photoUrl' field in the database.
-      // - If photoUrlToStoreInDb is a non-null string, the repository's updateUserProfile
-      //   method SHOULD update the 'photoUrl' field.
-      // In both cases, it returns the 'photoUrl' that was present before the transaction began.
-      String? photoUrlFromDbBeforeUpdate;
-
-      _logger.info(
-        'Calling updateUserProfile for user $userId with name: $displayName and photoUrl: ${photoUrlToStoreInDb ?? "(no change)"}',
-      );
-      photoUrlFromDbBeforeUpdate = await dbRepository.updateUserProfile(
-        userId: userId, // Use the extracted userId
+      final String? photoUrlFromDbBeforeUpdate = await _performDatabaseUpdate(
+        userId: userId,
         displayName: displayName,
-        photoUrl:
-            photoUrlToStoreInDb, // Pass new URL if uploaded, else null (assumed no-change by repo)
-      );
-      _logger.info(
-        'Profile update successful in repository for user $userId. Old photo URL was: $photoUrlFromDbBeforeUpdate',
+        photoUrlToStoreInDb: finalPhotoUrlToStoreInDb,
+        dbRepository: dbRepository,
       );
 
-      // 6. Invalidate the provider that loads the *full* user model from the DB
-      //    This ensures that UIs watching currentUserModelProvider get the updated data.
-      ref.invalidate(
-        currentUserModelProvider,
-      ); // Revert to currentUserModelProvider
+      ref.invalidate(currentUserModelProvider);
       _logger.fine('Invalidated currentUserModelProvider.');
 
-      // 6.5. Delete old image from storage if a new one was successfully uploaded and stored in DB.
-      // This happens *after* the database has been successfully updated with the new URL.
-      if (uploadedPhotoUrl != null && imageUploadError == null) {
-        // A new image was successfully uploaded
-        if (photoUrlFromDbBeforeUpdate != null &&
-            photoUrlFromDbBeforeUpdate.isNotEmpty &&
-            photoUrlFromDbBeforeUpdate != uploadedPhotoUrl) {
-          // And there was an old one (returned by the transactional update), different from the new one
-
-          // CRITICAL CHECK: Re-fetch the LATEST user data to see what the CURRENT photoUrl is NOW.
-          // This helps prevent deleting an image if another rapid update set it back.
-          AppUser? latestUserDataAfterUpdate;
-          String? currentLivePhotoUrlInDb;
-          bool canProceedWithDeletionLogic = true;
-
-          try {
-            latestUserDataAfterUpdate = await dbRepository.getUser(userId);
-            currentLivePhotoUrlInDb = latestUserDataAfterUpdate?.photoUrl;
-            _logger.fine(
-              'Pre-deletion check: Current live photoUrl in DB for user $userId is $currentLivePhotoUrlInDb',
-            );
-          } catch (e, stack) {
-            _logger.warning(
-              'Failed to re-fetch user data for pre-deletion check for user $userId. Skipping deletion of $photoUrlFromDbBeforeUpdate to be safe.',
-              e,
-              stack,
-            );
-            canProceedWithDeletionLogic = false;
-          }
-
-          if (canProceedWithDeletionLogic) {
-            if (photoUrlFromDbBeforeUpdate == currentLivePhotoUrlInDb) {
-              _logger.warning(
-                'Skipping deletion of $photoUrlFromDbBeforeUpdate for user $userId because it is currently the live photoUrl. This might indicate a rapid revert or concurrent update.',
-              );
-            } else {
-              // Proceed with deletion as photoUrlFromDbBeforeUpdate is confirmed not to be the current live one.
-              try {
-                _logger.info(
-                  'Attempting to delete old profile image (obtained from DB pre-update, and confirmed not current live): $photoUrlFromDbBeforeUpdate',
-                );
-                final oldImageRef = storageRepository.storageInstance
-                    .refFromURL(photoUrlFromDbBeforeUpdate);
-                await oldImageRef.delete();
-                _logger.info(
-                  'Old profile image (obtained from DB pre-update) deleted successfully: $photoUrlFromDbBeforeUpdate',
-                );
-              } catch (e, stack) {
-                // Log error but don't let it fail the whole profile update operation
-                _logger.warning(
-                  'Failed to delete old profile image: $photoUrlFromDbBeforeUpdate',
-                  e,
-                  stack,
-                );
-              }
-            }
-          }
-        }
+      // Delete old image only if a new one was successfully processed and uploaded
+      if (newUploadedPhotoUrl != null && imageProcessingError == null) {
+        await _attemptOldImageDeletion(
+          newUploadedPhotoUrl: newUploadedPhotoUrl,
+          photoUrlFromDbBeforeUpdate: photoUrlFromDbBeforeUpdate,
+          userId: userId,
+          storageRepository: storageRepository,
+          dbRepository: dbRepository,
+        );
       }
 
-      // 7. Set state to success
-      // If an imageUploadError occurred, the overall state reflects this error,
-      // even if other parts (like display name update) succeeded.
-      if (imageUploadError != null) {
-        state = AsyncError(Exception(imageUploadError), StackTrace.current);
-      } else {
-        state = const AsyncData(null);
-      }
-      _logger.info('Profile update state set to success.');
+      state = const AsyncData(null);
+      _logger.info('Profile update process completed successfully.');
     } catch (e, stack) {
-      // 8. Set state to error
-      // Try to get userId again for logging, might still be null
       final userIdForLog =
           ref.read(currentUserProvider).valueOrNull?.uid ?? 'unknown';
       _logger.severe(
