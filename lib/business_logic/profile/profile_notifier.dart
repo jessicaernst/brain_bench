@@ -15,6 +15,14 @@ part 'profile_notifier.g.dart';
 
 final _logger = Logger('ProfileNotifier');
 
+/// This class represents the notifier for the profile state in the application.
+/// It extends the generated `_$ProfileNotifier` class.
+/// The `ProfileNotifier` class is responsible for updating the user's profile,
+/// including the display name and profile image.
+/// It handles the logic for image compression, validation, and uploading,
+/// as well as updating the database with the new profile information.
+/// It also manages the state of the profile update operation,
+/// indicating whether it is loading, successful, or has encountered an error.
 @riverpod
 class ProfileNotifier extends _$ProfileNotifier {
   @override
