@@ -832,6 +832,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No articles available.'**
   String get noArticlesAvailable;
+
+  /// Error message shown when the selected image format is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid image format. Please select a valid image.'**
+  String get profileInvalidImageFormat;
+
+  /// Message shown when the profile is updated successfully, but the image upload fails
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated successfully, but the image upload failed.'**
+  String get profileUpdateSuccessButImageFailed;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

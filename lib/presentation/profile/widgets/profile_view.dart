@@ -1,7 +1,10 @@
-import 'package:brain_bench/core/shared_widgets/cards/glass_card_view.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/shared_widgets/cards/glass_card_view.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -54,14 +57,34 @@ class ProfileView extends StatelessWidget {
                   ),
                   child: CircleAvatar(
                     radius: 80,
-                    backgroundColor: Colors.transparent,
-                    backgroundImage:
-                        userImageUrl != null
-                            ? NetworkImage(userImageUrl!) as ImageProvider
-                            : Assets.images.evolution4.provider(),
-                    onBackgroundImageError: (exception, stackTrace) {
-                      _logger.warning('Error loading user image: $exception');
-                    },
+                    backgroundColor: theme.colorScheme.surface.withAlpha(100),
+                    backgroundImage: Assets.images.evolution4.provider(),
+                    child:
+                        userImageUrl != null && userImageUrl!.isNotEmpty
+                            ? ClipOval(
+                              child: CachedNetworkImage(
+                                imageUrl: userImageUrl!,
+                                fit: BoxFit.cover,
+                                width: 160,
+                                height: 160,
+                                placeholder:
+                                    (context, url) =>
+                                        defaultTargetPlatform ==
+                                                TargetPlatform.iOS
+                                            ? const CupertinoActivityIndicator(
+                                              radius: 15,
+                                            )
+                                            : const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) {
+                                  _logger.warning(
+                                    'Error loading user image via CachedNetworkImage: $error',
+                                  );
+                                  // Fallback to asset image in case of an error
+                                  return const SizedBox.shrink();
+                                },
+                              ),
+                            )
+                            : null, // If no userImageUrl, the backgroundImage (fallback asset) is used
                   ),
                 ),
               ),

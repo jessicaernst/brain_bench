@@ -376,4 +376,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noArticlesAvailable => 'No articles available.';
+
+  @override
+  String get profileInvalidImageFormat => 'Invalid image format. Please select a valid image.';
+
+  @override
+  String get profileUpdateSuccessButImageFailed => 'Profile updated successfully, but the image upload failed.';
 }

@@ -4,7 +4,9 @@ import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -42,14 +44,37 @@ final class ProfileButtonView extends ConsumerWidget {
         ),
         child: CircleAvatar(
           radius: 18,
-          backgroundColor: Colors.transparent,
+          backgroundColor: theme.colorScheme.surface.withAlpha(
+            100,
+          ), // Background for placeholder/error
           backgroundImage:
-              userImageUrl != null
-                  ? NetworkImage(userImageUrl) as ImageProvider
-                  : Assets.images.evolution4.provider(),
-          onBackgroundImageError: (exception, stackTrace) {
-            _logger.warning('Error loading user image: $exception');
-          },
+              Assets.images.evolution4.provider(), // Default fallback
+          child:
+              userImageUrl != null && userImageUrl.isNotEmpty
+                  ? ClipOval(
+                    // Ensure the CachedNetworkImage is clipped to a circle
+                    child: CachedNetworkImage(
+                      imageUrl: userImageUrl,
+                      fit: BoxFit.cover, // Make the image fill the circle
+                      width: 36, // 2 * radius
+                      height: 36, // 2 * radius
+                      placeholder:
+                          (context, url) =>
+                              defaultTargetPlatform == TargetPlatform.iOS
+                                  ? const CupertinoActivityIndicator(radius: 8)
+                                  : const CircularProgressIndicator(
+                                    strokeWidth: 2.0,
+                                  ),
+                      errorWidget: (context, url, error) {
+                        _logger.warning(
+                          'Error loading profile button image: $error',
+                        );
+                        // backgroundImage (fallback asset) will be shown
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                  )
+                  : null, // If no userImageUrl, the backgroundImage (fallback asset) is used
         ),
       ),
       onSelected: (String value) {

@@ -80,6 +80,8 @@ dependencies:
   stream_transform: ^2.1.1
   flutter_html: ^3.0.0
   cached_network_image: ^3.4.1
+  firebase_storage: ^12.4.5
+  flutter_image_compress: ^2.4.0
 
 dev_dependencies:
   flutter_test:

@@ -491,5 +491,13 @@
     "noArticlesAvailable": "No articles available.",
     "@noArticlesAvailable": {
         "description": "Message displayed when there are no articles available"
+    },
+    "profileInvalidImageFormat": "Invalid image format. Please select a valid image.",
+    "@profileInvalidImageFormat": {
+        "description": "Error message shown when the selected image format is invalid"
+    },
+    "profileUpdateSuccessButImageFailed": "Profile updated successfully, but the image upload failed.",
+    "@profileUpdateSuccessButImageFailed": {
+        "description": "Message shown when the profile is updated successfully, but the image upload fails"
     }
 }
