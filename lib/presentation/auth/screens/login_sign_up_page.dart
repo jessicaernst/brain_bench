@@ -47,7 +47,6 @@ class LoginSignUpPage extends HookConsumerWidget {
       authNotifier.signIn(
         email: emailController.text.trim(),
         password: passwordController.text,
-        context: context,
       );
     }
 
@@ -56,7 +55,6 @@ class LoginSignUpPage extends HookConsumerWidget {
       authNotifier.signUp(
         email: emailSignUpController.text.trim(),
         password: passwordSignUpController.text,
-        context: context,
       );
     }
 
@@ -75,10 +73,7 @@ class LoginSignUpPage extends HookConsumerWidget {
 
     void handlePasswordReset() {
       if (emailController.text.trim().isNotEmpty) {
-        authNotifier.sendPasswordResetEmail(
-          email: emailController.text.trim(),
-          context: context,
-        );
+        authNotifier.sendPasswordResetEmail(email: emailController.text.trim());
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(localizations.authPasswordResetEmailPrompt)),
@@ -86,8 +81,8 @@ class LoginSignUpPage extends HookConsumerWidget {
       }
     }
 
-    void handleGoogleLogin() => authNotifier.signInWithGoogle(context);
-    void handleAppleLogin() => authNotifier.signInWithApple(context);
+    void handleGoogleLogin() => authNotifier.signInWithGoogle();
+    void handleAppleLogin() => authNotifier.signInWithApple();
 
     return Scaffold(
       resizeToAvoidBottomInset: true,

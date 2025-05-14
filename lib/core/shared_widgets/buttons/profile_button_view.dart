@@ -119,7 +119,7 @@ final class ProfileButtonView extends ConsumerWidget {
             context.push('/settings');
             break;
           case 'logout':
-            ref.read(authViewModelProvider.notifier).signOut(context);
+            ref.read(authViewModelProvider.notifier).signOut();
             break;
         }
       },

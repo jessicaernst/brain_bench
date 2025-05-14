@@ -1,8 +1,5 @@
-// REMOVED duplicate import: import 'package:brain_bench/data/repositories/auth_repository.dart';
-// Ensure ONLY ONE import for AuthRepository is active and correct
 import 'package:brain_bench/business_logic/auth/auth_view_model.dart';
-import 'package:brain_bench/core/utils/auth/ensure_user_exists.dart'
-    as ensure_user_exists;
+import 'package:brain_bench/business_logic/auth/ensure_user_exists_provider.dart';
 import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/repositories/auth_repository.dart';
@@ -17,26 +14,8 @@ class MockAuthRepository extends Mock implements AuthRepository {}
 
 void main() {
   late MockAuthRepository mockAuthRepository;
-
-  late Future<bool> Function(
-    ensure_user_exists.Reader,
-    AppUser?,
-  ) // <-- Update type here
-  originalEnsureUserExists;
-
-  setUpAll(() {
-    originalEnsureUserExists = ensure_user_exists.ensureUserExistsIfNeeded;
-  });
-
-  setUp(() {
-    ensure_user_exists.ensureUserExistsIfNeeded = (ref, _) async {
-      return false;
-    };
-  });
-
-  tearDown(() {
-    ensure_user_exists.ensureUserExistsIfNeeded = originalEnsureUserExists;
-  });
+  // Mock function for ensureUserExistsIfNeeded
+  late EnsureUserExistsFn mockEnsureUserExistsFn;
 
   // Test data
   final testUser = AppUser(
@@ -53,10 +32,15 @@ void main() {
   group('AuthViewModel Tests', () {
     // --- Initial State Test ---
     test('initial state is AsyncData(null)', () {
+      // Setup mock for ensureUserExistsIfNeeded for this specific test or group if needed
+      mockEnsureUserExistsFn =
+          (read, appUser) async => true; // Default mock behavior
+
       mockAuthRepository = MockAuthRepository();
       final container = ProviderContainer(
         overrides: [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          ensureUserExistsProvider.overrideWithValue(mockEnsureUserExistsFn),
         ],
       );
       addTearDown(container.dispose);
@@ -69,6 +53,9 @@ void main() {
     // --- signIn Tests (Already implemented) ---
     group('signIn', () {
       testWidgets('signIn - success', (WidgetTester tester) async {
+        // Setup mock for ensureUserExistsIfNeeded
+        mockEnsureUserExistsFn = (read, appUser) async => true;
+
         // Arrange
         mockAuthRepository = MockAuthRepository();
         when(
@@ -77,6 +64,7 @@ void main() {
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          ensureUserExistsProvider.overrideWithValue(mockEnsureUserExistsFn),
         ];
 
         final states = <AsyncValue<void>>[];
@@ -99,14 +87,9 @@ void main() {
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
-        final BuildContext realContext = tester.element(find.byType(Scaffold));
 
         // Act
-        await notifier.signIn(
-          email: testEmail,
-          password: testPassword,
-          context: realContext,
-        );
+        await notifier.signIn(email: testEmail, password: testPassword);
         await tester.pumpAndSettle();
 
         // Assert
@@ -123,6 +106,9 @@ void main() {
 
       testWidgets('signIn - failure', (WidgetTester tester) async {
         // Arrange
+        // No need to mock ensureUserExistsFn here as it won't be called on auth failure
+        // mockEnsureUserExistsFn = (read, appUser) async => true; // Or keep a default
+
         mockAuthRepository = MockAuthRepository();
         when(
           () => mockAuthRepository.signInWithEmail(any(), any()),
@@ -152,14 +138,9 @@ void main() {
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
-        final BuildContext realContext = tester.element(find.byType(Scaffold));
 
         // Act
-        await notifier.signIn(
-          email: testEmail,
-          password: testPassword,
-          context: realContext,
-        );
+        await notifier.signIn(email: testEmail, password: testPassword);
         await tester.pumpAndSettle();
 
         // Assert
@@ -182,6 +163,9 @@ void main() {
     // --- signUp Tests ---
     group('signUp', () {
       testWidgets('signUp - success', (WidgetTester tester) async {
+        // Setup mock for ensureUserExistsIfNeeded
+        mockEnsureUserExistsFn = (read, appUser) async => true;
+
         // Arrange
         mockAuthRepository = MockAuthRepository();
         when(
@@ -190,6 +174,7 @@ void main() {
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          ensureUserExistsProvider.overrideWithValue(mockEnsureUserExistsFn),
         ];
         final states = <AsyncValue<void>>[];
 
@@ -211,14 +196,9 @@ void main() {
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
-        final BuildContext realContext = tester.element(find.byType(Scaffold));
 
         // Act
-        await notifier.signUp(
-          email: testEmail,
-          password: testPassword,
-          context: realContext,
-        );
+        await notifier.signUp(email: testEmail, password: testPassword);
         await tester.pumpAndSettle();
 
         // Assert
@@ -263,14 +243,9 @@ void main() {
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
-        final BuildContext realContext = tester.element(find.byType(Scaffold));
 
         // Act
-        await notifier.signUp(
-          email: testEmail,
-          password: testPassword,
-          context: realContext,
-        );
+        await notifier.signUp(email: testEmail, password: testPassword);
         await tester.pumpAndSettle();
 
         // Assert
@@ -293,6 +268,9 @@ void main() {
     // --- signInWithGoogle Tests ---
     group('signInWithGoogle', () {
       testWidgets('signInWithGoogle - success', (WidgetTester tester) async {
+        // Setup mock for ensureUserExistsIfNeeded
+        mockEnsureUserExistsFn = (read, appUser) async => true;
+
         // Arrange
         mockAuthRepository = MockAuthRepository();
         // ViewModel now resets state on success, so we expect the final AsyncData
@@ -302,6 +280,7 @@ void main() {
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          ensureUserExistsProvider.overrideWithValue(mockEnsureUserExistsFn),
         ];
         final states = <AsyncValue<void>>[];
 
@@ -323,10 +302,9 @@ void main() {
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
-        final BuildContext realContext = tester.element(find.byType(Scaffold));
 
         // Act
-        await notifier.signInWithGoogle(realContext);
+        await notifier.signInWithGoogle();
         await tester.pumpAndSettle();
 
         // Assert
@@ -340,7 +318,6 @@ void main() {
         verifyNoMoreInteractions(mockAuthRepository);
       });
 
-      // The failure test remains the same
       testWidgets('signInWithGoogle - failure', (WidgetTester tester) async {
         // Arrange
         mockAuthRepository = MockAuthRepository();
@@ -371,10 +348,9 @@ void main() {
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
-        final BuildContext realContext = tester.element(find.byType(Scaffold));
 
         // Act
-        await notifier.signInWithGoogle(realContext);
+        await notifier.signInWithGoogle();
         await tester.pumpAndSettle();
 
         // Assert
@@ -395,6 +371,9 @@ void main() {
     // --- signInWithApple Tests ---
     group('signInWithApple', () {
       testWidgets('signInWithApple - success', (WidgetTester tester) async {
+        // Setup mock for ensureUserExistsIfNeeded
+        mockEnsureUserExistsFn = (read, appUser) async => true;
+
         // Arrange
         mockAuthRepository = MockAuthRepository();
         when(
@@ -403,6 +382,7 @@ void main() {
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          ensureUserExistsProvider.overrideWithValue(mockEnsureUserExistsFn),
         ];
         final states = <AsyncValue<void>>[];
 
@@ -424,10 +404,9 @@ void main() {
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
-        final BuildContext realContext = tester.element(find.byType(Scaffold));
 
         // Act
-        await notifier.signInWithApple(realContext);
+        await notifier.signInWithApple();
         await tester.pumpAndSettle();
 
         // Assert
@@ -470,10 +449,9 @@ void main() {
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
-        final BuildContext realContext = tester.element(find.byType(Scaffold));
 
         // Act
-        await notifier.signInWithApple(realContext);
+        await notifier.signInWithApple();
         await tester.pumpAndSettle();
 
         // Assert
@@ -525,13 +503,9 @@ void main() {
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
-        final BuildContext realContext = tester.element(find.byType(Scaffold));
 
         // Act
-        await notifier.sendPasswordResetEmail(
-          email: testEmail,
-          context: realContext,
-        );
+        await notifier.sendPasswordResetEmail(email: testEmail);
         await tester.pumpAndSettle();
 
         // Assert
@@ -578,13 +552,9 @@ void main() {
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
-        final BuildContext realContext = tester.element(find.byType(Scaffold));
 
         // Act
-        await notifier.sendPasswordResetEmail(
-          email: testEmail,
-          context: realContext,
-        );
+        await notifier.sendPasswordResetEmail(email: testEmail);
         await tester.pumpAndSettle();
 
         // Assert
@@ -634,10 +604,9 @@ void main() {
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
-        final BuildContext realContext = tester.element(find.byType(Scaffold));
 
         // Act
-        await notifier.signOut(realContext);
+        await notifier.signOut();
         await tester.pumpAndSettle();
 
         // Assert
@@ -678,10 +647,9 @@ void main() {
         addTearDown(sub.close);
 
         final notifier = container.read(authViewModelProvider.notifier);
-        final BuildContext realContext = tester.element(find.byType(Scaffold));
 
         // Act
-        await notifier.signOut(realContext);
+        await notifier.signOut();
         await tester.pumpAndSettle();
 
         // Assert
@@ -702,9 +670,13 @@ void main() {
     // --- reset Test (remains standard 'test') ---
     test('reset sets state to AsyncData(null)', () {
       mockAuthRepository = MockAuthRepository();
+      // Setup mock for ensureUserExistsIfNeeded if any operation before reset might call it
+      mockEnsureUserExistsFn = (read, appUser) async => true;
+
       final container = ProviderContainer(
         overrides: [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          ensureUserExistsProvider.overrideWithValue(mockEnsureUserExistsFn),
         ],
       );
       addTearDown(container.dispose);

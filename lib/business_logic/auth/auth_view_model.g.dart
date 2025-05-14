@@ -6,7 +6,7 @@ part of 'auth_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authViewModelHash() => r'e5b1c18a5b2fc3beb7155bc2ce8cb7995f67f04d';
+String _$authViewModelHash() => r'2936874c4595ad659e55c114d9ae033a52fdbb3c';
 
 /// ViewModel class for handling authentication logic.
 /// This class extends the generated `_$AuthViewModel` class from the Riverpod package.

@@ -1,5 +1,7 @@
+import 'package:brain_bench/business_logic/auth/ensure_user_exists_provider.dart';
+import 'package:brain_bench/business_logic/profile/profile_ui_state_providers.dart'; // For provisionalProfileImageProvider
 import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
-import 'package:flutter/material.dart';
+import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -17,112 +19,100 @@ class AuthViewModel extends _$AuthViewModel {
   @override
   AsyncValue<void> build() => const AsyncData(null);
 
-  Future<void> signIn({
-    required String email,
-    required String password,
-    required BuildContext context,
-  }) async {
-    state = const AsyncLoading();
+  Future<void> _handleAuthOperation(
+    Future<AppUser?> Function() authOperation,
+  ) async {
     try {
-      final repo = ref.read(authRepositoryProvider);
-      await repo.signInWithEmail(email, password);
-      _logger.info('Email Sign-In attempt successful via repository.');
-
-      state = const AsyncData(null);
-    } catch (e, st) {
-      state = AsyncError(e, st);
-      if (context.mounted) _showError(context, e);
+      final AppUser? appUser = await authOperation();
+      if (appUser != null) {
+        // Use the provider to get the function
+        final ensureUserFunc = ref.read(ensureUserExistsProvider);
+        await ensureUserFunc(ref.read, appUser); // Pass ref.read as the Reader
+        _logger.info('Auth operation successful for user: ${appUser.uid}');
+        state = const AsyncData(null); // Reset state on success
+      } else {
+        // This case should ideally not happen if authOperation is expected to return a user on success
+        throw Exception('Auth operation completed but returned no user.');
+      }
+    } catch (e, stack) {
+      state = AsyncError(e, stack);
+      _logger.severe('Auth operation failed', e, stack);
     }
   }
 
-  Future<void> signUp({
-    required String email,
-    required String password,
-    required BuildContext context,
-  }) async {
+  Future<void> signIn({required String email, required String password}) async {
     state = const AsyncLoading();
     try {
-      final repo = ref.read(authRepositoryProvider);
-      await repo.signUpWithEmail(email, password);
-      _logger.info('Email Sign-Up attempt successful via repository.');
-
-      state = const AsyncData(null);
-    } catch (e, st) {
-      state = AsyncError(e, st);
-      if (context.mounted) _showError(context, e);
+      await _handleAuthOperation(
+        () => ref.read(authRepositoryProvider).signInWithEmail(email, password),
+      );
+    } catch (e) {
+      /* Error is handled by _handleAuthOperation */
     }
   }
 
-  Future<void> signInWithGoogle(BuildContext context) async {
+  Future<void> signUp({required String email, required String password}) async {
     state = const AsyncLoading();
     try {
-      final repo = ref.read(authRepositoryProvider);
-      await repo.signInWithGoogle();
-      _logger.info('Google Sign-In attempt successful via repository.');
-
-      state = const AsyncData(null);
-    } catch (e, st) {
-      state = AsyncError(e, st);
-      if (context.mounted) _showError(context, e);
+      await _handleAuthOperation(
+        () => ref.read(authRepositoryProvider).signUpWithEmail(email, password),
+      );
+    } catch (e) {
+      /* Error is handled by _handleAuthOperation */
     }
   }
 
-  Future<void> signInWithApple(BuildContext context) async {
+  Future<void> signInWithGoogle() async {
     state = const AsyncLoading();
     try {
       final repo = ref.read(authRepositoryProvider);
-      await repo.signInWithApple();
-      _logger.info('Apple Sign-In attempt successful via repository.');
-
-      state = const AsyncData(null);
-    } catch (e, st) {
-      state = AsyncError(e, st);
-      if (context.mounted) _showError(context, e);
+      await _handleAuthOperation(repo.signInWithGoogle);
+    } catch (e) {
+      /* Error is handled by _handleAuthOperation */
     }
   }
 
-  Future<void> sendPasswordResetEmail({
-    required String email,
-    required BuildContext context,
-  }) async {
+  Future<void> signInWithApple() async {
+    state = const AsyncLoading();
+    try {
+      final repo = ref.read(authRepositoryProvider);
+      await _handleAuthOperation(repo.signInWithApple);
+    } catch (e) {
+      /* Error is handled by _handleAuthOperation */
+    }
+  }
+
+  Future<void> sendPasswordResetEmail({required String email}) async {
     state = const AsyncLoading();
     try {
       final repo = ref.read(authRepositoryProvider);
       await repo.sendPasswordResetEmail(email);
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Password reset email sent.')),
-        );
-        reset();
-      }
+      // UI should listen to state changes to show success message
+      state = const AsyncData(null); // Indicate success
     } catch (e, st) {
       state = AsyncError(e, st);
-      if (context.mounted) _showError(context, e);
+      _logger.severe('Password reset email sending failed for $email', e, st);
     }
   }
 
-  Future<void> signOut(BuildContext context) async {
+  Future<void> signOut() async {
     state = const AsyncLoading();
     try {
       final repo = ref.read(authRepositoryProvider);
       await repo.signOut();
+      // Clear the provisional profile image on logout
+      ref.read(provisionalProfileImageProvider.notifier).clearImage();
+      _logger.info(
+        'User signed out successfully and provisional image cleared.',
+      );
       state = const AsyncData(null);
     } catch (e, st) {
       state = AsyncError(e, st);
-      if (context.mounted) _showError(context, e);
+      _logger.severe('Sign out failed', e, st);
     }
   }
 
   void reset() {
     state = const AsyncData(null);
-  }
-
-  void _showError(BuildContext context, Object error) {
-    final message = error.toString();
-    if (context.mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Error: $message')));
-    }
   }
 }
