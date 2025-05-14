@@ -64,22 +64,16 @@ class AuthViewModel extends _$AuthViewModel {
 
   Future<void> signInWithGoogle() async {
     state = const AsyncLoading();
-    try {
-      final repo = ref.read(authRepositoryProvider);
-      await _handleAuthOperation(repo.signInWithGoogle);
-    } catch (e) {
-      /* Error is handled by _handleAuthOperation */
-    }
+    await _handleAuthOperation(
+      () => ref.read(authRepositoryProvider).signInWithGoogle(),
+    );
   }
 
   Future<void> signInWithApple() async {
     state = const AsyncLoading();
-    try {
-      final repo = ref.read(authRepositoryProvider);
-      await _handleAuthOperation(repo.signInWithApple);
-    } catch (e) {
-      /* Error is handled by _handleAuthOperation */
-    }
+    await _handleAuthOperation(
+      () => ref.read(authRepositoryProvider).signInWithApple(),
+    );
   }
 
   Future<void> sendPasswordResetEmail({required String email}) async {

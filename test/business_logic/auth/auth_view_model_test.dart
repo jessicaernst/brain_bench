@@ -7,12 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // --- Mocks ---
 
 class MockAuthRepository extends Mock implements AuthRepository {}
 
 void main() {
+  // Initialize the Flutter binding for unit tests that use platform channels or services
+  TestWidgetsFlutterBinding.ensureInitialized();
+  // Mock SharedPreferences for testing
+  SharedPreferences.setMockInitialValues({});
+
   late MockAuthRepository mockAuthRepository;
   // Mock function for ensureUserExistsIfNeeded
   late EnsureUserExistsFn mockEnsureUserExistsFn;

@@ -244,7 +244,8 @@ Future<bool> ensureUserExistsIfNeeded(
   // This helps ensure .getBool never returns null without a default when checked later.
   final prefs = await SharedPreferences.getInstance();
   final snackbarShownKey = 'contactImageSnackbarShown_${appUser?.uid}';
-  if (prefs.getBool(snackbarShownKey) == null)
+  if (prefs.getBool(snackbarShownKey) == null) {
     await prefs.setBool(snackbarShownKey, false);
+  }
   return _ensureUserExistsIfNeededImpl(read, appUser);
 }
