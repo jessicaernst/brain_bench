@@ -36,12 +36,12 @@ Stream<UserModelState> currentUserModel(Ref ref) {
       return;
     }
 
-    final db = await ref.watch(quizMockDatabaseRepositoryProvider.future);
+    final userRepo = await ref.watch(userRepositoryProvider.future);
 
     try {
       yield const UserModelState.loading();
 
-      model.AppUser? userModel = await db.getUser(authUser.uid);
+      model.AppUser? userModel = await userRepo.getUser(authUser.uid);
 
       if (userModel == null) {
         if (creationInProgress.contains(authUser.uid)) {
@@ -53,7 +53,7 @@ Stream<UserModelState> currentUserModel(Ref ref) {
 
         try {
           await ensureUserExistsIfNeeded(ref.read, authUser);
-          userModel = await db.getUser(authUser.uid);
+          userModel = await userRepo.getUser(authUser.uid);
         } catch (error, stack) {
           _logger.severe('Error creating user ', error, stack);
           yield UserModelState.error(

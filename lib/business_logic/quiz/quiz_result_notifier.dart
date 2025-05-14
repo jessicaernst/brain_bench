@@ -7,7 +7,6 @@ import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
 import 'package:brain_bench/data/models/result/result.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
-import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -192,21 +191,18 @@ class QuizResultNotifier extends _$QuizResultNotifier {
     _logger.info(
       'Attempting to mark topic $topicId as done in category $categoryId for user ${user.id}',
     );
-    List<Topic>? topics;
-    QuizMockDatabaseRepository? repo;
-    try {
-      repo = await _fetchRepository();
-      topics = await _fetchCategoryTopics(categoryId);
-    } catch (e, s) {
-      _logger.severe(
-        '❌ Error fetching repository or topics for markTopicAsDone: $e',
-        e,
-        s,
-      );
-      rethrow;
-    }
 
     try {
+      final quizRepo = await ref.read(
+        quizMockDatabaseRepositoryProvider.future,
+      );
+      final userRepo = await ref.read(userRepositoryProvider.future);
+      final List<Topic> topics = await _fetchCategoryTopics(categoryId);
+
+      // Step 1: Mark topic as done in the quiz repository (if it updates topic state directly)
+      await quizRepo.markTopicAsDone(topicId, categoryId, user.uid);
+
+      // Step 2: Update user's progress
       final updatedTopicDoneMap = _updateTopicCompletionStatus(
         user,
         categoryId,
@@ -224,7 +220,7 @@ class QuizResultNotifier extends _$QuizResultNotifier {
         isTopicDone: updatedTopicDoneMap,
         categoryProgress: {...user.categoryProgress, categoryId: progress},
       );
-      await repo.updateUser(userWithProgress);
+      await userRepo.updateUser(userWithProgress); // Use UserRepository
       ref.invalidate(currentUserModelProvider);
 
       _logger.info('✅ Topic $topicId marked as done for category $categoryId.');
@@ -232,7 +228,11 @@ class QuizResultNotifier extends _$QuizResultNotifier {
         '✅ Progress for $categoryId: ${(progress * 100).toStringAsFixed(1)}%',
       );
     } catch (e, s) {
-      _logger.severe('❌ Error updating user data in markTopicAsDone: $e', e, s);
+      _logger.severe(
+        '❌ Error in markTopicAsDone for topic $topicId, category $categoryId: $e',
+        e,
+        s,
+      );
       rethrow;
     }
   }
@@ -246,10 +246,9 @@ class QuizResultNotifier extends _$QuizResultNotifier {
       'Attempting to update lastPlayedCategoryId to "$categoryId" for user "${user.id}".',
     );
     try {
-      final QuizMockDatabaseRepository repo = await _fetchRepository();
-      await repo.updateUser(
-        // The update is performed on the userToModify object, using its ID.
-        // Use the passed user object directly.
+      final userRepo = await ref.read(userRepositoryProvider.future);
+      await userRepo.updateUser(
+        // Use UserRepository
         user.copyWith(lastPlayedCategoryId: categoryId),
       );
       ref.invalidate(currentUserModelProvider);
@@ -268,12 +267,6 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   }
 
   // --- Private Helper Functions ---
-
-  Future<QuizMockDatabaseRepository> _fetchRepository() async {
-    final repo = await ref.read(quizMockDatabaseRepositoryProvider.future);
-    _logger.fine('Fetched database repository instance.');
-    return repo;
-  }
 
   Future<List<Topic>> _fetchCategoryTopics(String categoryId) async {
     final topics = await ref.read(topicsProvider(categoryId).future);

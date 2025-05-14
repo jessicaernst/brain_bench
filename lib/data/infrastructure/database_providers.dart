@@ -1,7 +1,9 @@
 import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
+import 'package:brain_bench/data/repositories/user_mock_repository_impl.dart';
+import 'package:brain_bench/data/repositories/user_repository.dart'; // Importiere das UserRepository Interface
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'database_providers.g.dart';
 
@@ -13,7 +15,6 @@ Future<QuizMockDatabaseRepository> quizMockDatabaseRepository(Ref ref) async {
   final topicsPath = '${directory.path}/topics.json';
   final questionsPath = '${directory.path}/questions.json';
   final answersPath = '${directory.path}/answers.json';
-  final userPath = '${directory.path}/user.json';
 
   final repo = QuizMockDatabaseRepository(
     resultsPath: resultsPath,
@@ -21,8 +22,16 @@ Future<QuizMockDatabaseRepository> quizMockDatabaseRepository(Ref ref) async {
     topicsPath: topicsPath,
     questionsPath: questionsPath,
     answersPath: answersPath,
-    userPath: userPath,
   );
   await repo.copyAssetsToDocuments();
   return repo;
+}
+
+@riverpod
+Future<UserRepository> userRepository(Ref ref) async {
+  // Gebe das Interface UserRepository zurück
+  final directory = await getApplicationDocumentsDirectory();
+  final userPath = '${directory.path}/user.json';
+
+  return UserMockRepositoryImpl(userPath: userPath);
 }

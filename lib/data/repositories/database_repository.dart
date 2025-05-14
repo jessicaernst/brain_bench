@@ -3,7 +3,6 @@ import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:brain_bench/data/models/result/result.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
-import 'package:brain_bench/data/models/user/app_user.dart';
 
 /// An abstract class defining the contract for a quiz database repository.
 ///
@@ -73,7 +72,11 @@ abstract class DatabaseRepository {
   ///
   /// Returns:
   ///   A [Future] that completes when the topic has been marked as done.
-  Future<void> markTopicAsDone(String topicId, String categoryId, AppUser user);
+  Future<void> markTopicAsDone(
+    String topicId,
+    String categoryId,
+    String userId,
+  ); // Changed AppUser to String userId
 
   /// Updates a [Category] object.
   ///
@@ -83,62 +86,4 @@ abstract class DatabaseRepository {
   /// Returns:
   ///   A [Future] that completes when the category has been updated.
   Future<void> updateCategory(Category category);
-
-  /// Retrieves a [UserModel] object for a given user.
-  ///
-  /// Parameters:
-  ///   - [userId]: The ID of the user to retrieve.
-  ///
-  /// Returns:
-  ///   A [Future] that completes with a [UserModel] object.
-  Future<AppUser?> getUser(String userId);
-
-  /// Updates a [UserModel] object.
-  ///
-  /// Parameters:
-  ///   - [user]: The [UserModel] object to update.
-  ///
-  /// Returns:
-  ///   A [Future] that completes when the user has been updated.
-  Future<void> updateUser(AppUser user);
-
-  /// Deletes a [UserModel] object.
-  ///
-  /// Parameters:
-  ///   - [userId]: The ID of the user to delete.
-  ///
-  /// Returns:
-  ///   A [Future] that completes when the user has been deleted.
-  Future<void> deleteUser(String userId);
-
-  /// Saves a [UserModel] object.
-  ///
-  /// Parameters:
-  ///   - [user]: The [UserModel] object to save.
-  ///
-  /// Returns:
-  ///   A [Future] that completes when the user has been saved.
-  Future<void> saveUser(AppUser user);
-
-  /// Updates specific profile details for a user.
-  ///
-  /// Typically used for fields editable by the user on their profile screen.
-  /// Implementations should aim to update only the provided fields.
-  ///
-  /// Parameters:
-  ///   - [userId]: The ID of the user to update.
-  ///   - [displayName]: The new display name for the user.
-  ///   - [photoUrl]: The new photo URL for the user (optional).
-  ///                 Passing null might be ignored or might clear the field,
-  ///                 depending on the specific implementation.
-  ///
-  /// Returns:
-  ///   A [Future] that completes with the user's photo URL *before* the update,
-  ///   or null if no photo URL was previously set. This value is obtained
-  ///   atomically during the update transaction.
-  Future<String?> updateUserProfile({
-    required String userId,
-    required String displayName,
-    String? photoUrl, // Optional für später
-  });
 }

@@ -14,12 +14,14 @@ class BrainBenchTheme {
       buttonColor: BrainBenchColors.blueprintBlue,
       textTheme: ButtonTextTheme.primary,
     ),
+
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         foregroundColor: BrainBenchColors.cloudCanvas,
         backgroundColor: BrainBenchColors.blueprintBlue,
       ),
     ),
+
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: BrainBenchColors.deepDive,
@@ -29,15 +31,23 @@ class BrainBenchTheme {
             ).labelLarge,
       ),
     ),
+
+    snackBarTheme: SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    ),
+
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: BrainBenchColors.blueprintBlue,
       circularTrackColor: BrainBenchColors.cloudCanvas,
     ),
+
     colorScheme: const ColorScheme.light(
       surface: BrainBenchColors.cloudCanvas,
       secondary: BrainBenchColors.blueprintBlue,
       error: BrainBenchColors.falseQuestionGlass,
     ).copyWith(surface: BrainBenchColors.cloudCanvas),
+
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: BrainBenchColors.cloudCanvas,
       selectedItemColor: BrainBenchColors.blueprintBlue,
@@ -50,6 +60,7 @@ class BrainBenchTheme {
         color: BrainBenchColors.blueprintBlue.withAlpha(150),
       ),
     ),
+
     appBarTheme: AppBarTheme(
       backgroundColor: BrainBenchColors.cloudCanvas,
       scrolledUnderElevation: 0.0,
@@ -61,6 +72,7 @@ class BrainBenchTheme {
           ).headlineSmall,
       iconTheme: const IconThemeData(color: BrainBenchColors.blueprintBlue),
     ),
+
     expansionTileTheme: const ExpansionTileThemeData(
       collapsedIconColor: BrainBenchColors.deepDive,
       iconColor: BrainBenchColors.deepDive,
@@ -71,6 +83,7 @@ class BrainBenchTheme {
       collapsedShape: Border(),
       shape: Border(),
     ),
+
     inputDecorationTheme: InputDecorationTheme(
       hintStyle: BrainBenchTextStyles.bodyRegular().copyWith(
         color: BrainBenchColors.deepDive.withAlpha((0.5 * 255).toInt()),
@@ -98,6 +111,7 @@ class BrainBenchTheme {
         borderSide: BorderSide.none,
       ),
     ),
+
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: BrainBenchColors.blueprintBlue,
       selectionColor: BrainBenchColors.blueprintBlue.withAlpha(
@@ -105,6 +119,7 @@ class BrainBenchTheme {
       ),
       selectionHandleColor: BrainBenchColors.blueprintBlue,
     ),
+
     highlightColor: BrainBenchColors.blueprintBlue.withAlpha(
       (0.1 * 255).toInt(),
     ),
@@ -116,16 +131,19 @@ class BrainBenchTheme {
     primaryColor: BrainBenchColors.flutterSky,
     scaffoldBackgroundColor: BrainBenchColors.deepDive,
     textTheme: BrainBenchTextTheme.textTheme(brightness: Brightness.dark),
+
     buttonTheme: const ButtonThemeData(
       buttonColor: BrainBenchColors.flutterSky,
       textTheme: ButtonTextTheme.primary,
     ),
+
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         foregroundColor: BrainBenchColors.deepDive,
         backgroundColor: BrainBenchColors.flutterSky,
       ),
     ),
+
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: BrainBenchColors.cloudCanvas,
@@ -135,6 +153,12 @@ class BrainBenchTheme {
             ).labelLarge,
       ),
     ),
+
+    snackBarTheme: SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    ),
+
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: BrainBenchColors.flutterSky,
       circularTrackColor: BrainBenchColors.deepDive,
@@ -156,6 +180,7 @@ class BrainBenchTheme {
         color: BrainBenchColors.flutterSky.withAlpha(150),
       ),
     ),
+
     appBarTheme: AppBarTheme(
       backgroundColor: BrainBenchColors.deepDive,
       scrolledUnderElevation: 0.0,
@@ -167,6 +192,7 @@ class BrainBenchTheme {
           ).headlineSmall,
       iconTheme: const IconThemeData(color: BrainBenchColors.flutterSky),
     ),
+
     expansionTileTheme: const ExpansionTileThemeData(
       collapsedIconColor: BrainBenchColors.cloudCanvas,
       iconColor: BrainBenchColors.cloudCanvas,
@@ -177,6 +203,7 @@ class BrainBenchTheme {
       collapsedShape: Border(),
       shape: Border(),
     ),
+
     inputDecorationTheme: InputDecorationTheme(
       hintStyle: BrainBenchTextStyles.bodyRegular().copyWith(
         color: BrainBenchColors.deepDive.withAlpha((0.6 * 255).toInt()),
@@ -204,6 +231,7 @@ class BrainBenchTheme {
         borderSide: BorderSide.none,
       ),
     ),
+
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: BrainBenchColors.flutterSky,
       selectionColor: BrainBenchColors.flutterSky.withAlpha(
@@ -211,6 +239,7 @@ class BrainBenchTheme {
       ),
       selectionHandleColor: BrainBenchColors.flutterSky,
     ),
+
     highlightColor: BrainBenchColors.flutterSky.withAlpha((0.1 * 255).toInt()),
     hoverColor: BrainBenchColors.flutterSky.withAlpha((0.1 * 255).toInt()),
   );

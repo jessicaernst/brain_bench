@@ -39,7 +39,8 @@ class SaveResultNotifier extends _$SaveResultNotifier {
     required String topicId,
     required String categoryId,
   }) async {
-    final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
+    final quizRepo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
+    final userRepo = await ref.watch(userRepositoryProvider.future);
     final state = await ref.watch(currentUserModelProvider.future);
 
     final user = switch (state) {
@@ -47,8 +48,44 @@ class SaveResultNotifier extends _$SaveResultNotifier {
       _ => throw Exception('❌ Kein eingeloggter User in markTopicAsDone'),
     };
 
-    await repo.markTopicAsDone(topicId, categoryId, user);
+    // Step 1: Mark topic as done in the quiz repository
+    await quizRepo.markTopicAsDone(topicId, categoryId, user.uid);
 
+    // Step 2: Update user's progress (isTopicDone and categoryProgress)
+    // This logic was previously in QuizMockDatabaseRepositoryImpl.markTopicAsDone
+
+    // Update user.isTopicDone
+    final updatedIsTopicDone = {
+      ...user.isTopicDone,
+      categoryId: {...(user.isTopicDone[categoryId] ?? {}), topicId: true},
+    };
+
+    // Calculate new progress for the category
+    // This requires fetching topics for the category from quizRepo
+    final topicsForCategory = await quizRepo.getTopics(categoryId);
+    final passedCount =
+        topicsForCategory
+            .where((topic) => updatedIsTopicDone[categoryId]?[topic.id] == true)
+            .length;
+    final progress =
+        topicsForCategory.isEmpty
+            ? 0.0
+            : passedCount / topicsForCategory.length;
+
+    final updatedCategoryProgress = {
+      ...user.categoryProgress,
+      categoryId: progress,
+    };
+
+    // Update the user in the user repository
+    await userRepo.updateUser(
+      user.copyWith(
+        isTopicDone: updatedIsTopicDone,
+        categoryProgress: updatedCategoryProgress,
+      ),
+    );
+
+    // Invalidate currentUserModelProvider to reflect changes
     ref.invalidate(currentUserModelProvider);
   }
 }

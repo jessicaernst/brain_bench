@@ -5,10 +5,9 @@ import 'package:brain_bench/business_logic/profile/profile_notifier.dart';
 import 'package:brain_bench/core/utils/auth/ensure_user_exists.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/infrastructure/storage/storage_providers.dart';
-import 'package:brain_bench/data/models/user/app_user.dart' as model;
 import 'package:brain_bench/data/models/user/app_user.dart';
-import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
 import 'package:brain_bench/data/repositories/storage_repository.dart';
+import 'package:brain_bench/data/repositories/user_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -29,8 +28,8 @@ class FakeProfileNotifier extends ProfileNotifier {
   }
 }
 
-class MockDatabaseRepository extends Mock
-    implements QuizMockDatabaseRepository {}
+// Mock the interface, not the implementation
+class MockUserRepository extends Mock implements UserRepository {}
 
 class MockStorageRepository extends Mock implements StorageRepository {}
 
@@ -38,9 +37,9 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.setMockInitialValues({});
 
-  late MockDatabaseRepository mockDb;
   late MockStorageRepository mockStorageRepository;
   late AppUser testUser;
+  late MockUserRepository mockUserRepository;
 
   setUpAll(() {
     registerFallbackValue(
@@ -56,7 +55,7 @@ void main() {
   });
 
   setUp(() {
-    mockDb = MockDatabaseRepository();
+    mockUserRepository = MockUserRepository();
     mockStorageRepository = MockStorageRepository();
     testUser = AppUser(
       uid: 'test-id',
@@ -72,10 +71,15 @@ void main() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channelPathProvider, (methodCall) async {
           if (methodCall.method == 'getTemporaryDirectory') {
-            final tempDir = await Directory.systemTemp.createTemp(
-              'flutter_test_',
-            );
-            return tempDir.path;
+            // Mock getTemporaryDirectory
+            return Directory.systemTemp
+                .createTempSync('flutter_test_temp_')
+                .path; // Return a mock path
+          } else if (methodCall.method == 'getApplicationDocumentsDirectory') {
+            // <-- Mock getApplicationDocumentsDirectory
+            return Directory.systemTemp
+                .createTempSync('flutter_test_docs_')
+                .path; // Return a mock path
           }
           return null;
         });
@@ -103,9 +107,9 @@ void main() {
     test('creates user if not found in DB', () async {
       final container = ProviderContainer(
         overrides: [
-          quizMockDatabaseRepositoryProvider.overrideWith(
-            (ref) async => mockDb,
-          ),
+          userRepositoryProvider.overrideWith(
+            (ref) async => mockUserRepository,
+          ), // Override with the interface mock
           storageRepositoryProvider.overrideWith(
             (ref) => mockStorageRepository,
           ),
@@ -114,19 +118,22 @@ void main() {
       );
       addTearDown(container.dispose);
 
-      when(() => mockDb.getUser(testUser.uid)).thenAnswer((_) async => null);
-      when(() => mockDb.saveUser(any())).thenAnswer((_) async {});
+      when(
+        () => mockUserRepository.getUser(testUser.uid),
+      ).thenAnswer((_) async => null);
+      when(() => mockUserRepository.saveUser(any())).thenAnswer((_) async {});
 
       await ensureUserExistsIfNeeded(container.read, testUser);
 
-      verify(() => mockDb.saveUser(any())).called(1);
+      verify(() => mockUserRepository.saveUser(any())).called(1);
     });
 
     test('does nothing if user already exists and is up to date', () async {
       final container = ProviderContainer(
         overrides: [
-          quizMockDatabaseRepositoryProvider.overrideWith(
-            (ref) async => mockDb,
+          // Assuming QuizMockDatabaseRepository is not directly used by ensureUserExistsIfNeeded for user ops
+          userRepositoryProvider.overrideWith(
+            (ref) async => mockUserRepository,
           ),
           storageRepositoryProvider.overrideWith(
             (ref) => mockStorageRepository,
@@ -137,19 +144,22 @@ void main() {
       addTearDown(container.dispose);
 
       when(
-        () => mockDb.getUser(testUser.uid),
+        () => mockUserRepository.getUser(testUser.uid),
       ).thenAnswer((_) async => testUser);
 
       await ensureUserExistsIfNeeded(container.read, testUser);
 
-      verifyNever(() => mockDb.saveUser(any()));
+      verify(() => mockUserRepository.getUser(testUser.uid)).called(1);
+      verifyNever(() => mockUserRepository.saveUser(any()));
+      verifyNever(() => mockUserRepository.updateUserFields(any(), any()));
     });
 
     test('updates user if displayName changed', () async {
       final container = ProviderContainer(
         overrides: [
-          quizMockDatabaseRepositoryProvider.overrideWith(
-            (ref) async => mockDb,
+          // Override userRepositoryProvider with an async function returning the mock
+          userRepositoryProvider.overrideWith(
+            (ref) async => mockUserRepository,
           ),
           storageRepositoryProvider.overrideWith(
             (ref) => mockStorageRepository,
@@ -162,16 +172,29 @@ void main() {
       final dbUser = testUser.copyWith(displayName: 'Old Name');
       final authUser = testUser.copyWith(displayName: 'New Name From Auth');
 
-      when(() => mockDb.getUser(authUser.uid)).thenAnswer((_) async => dbUser);
-      when(() => mockDb.saveUser(any())).thenAnswer((_) async {});
+      when(
+        () => mockUserRepository.getUser(authUser.uid),
+      ).thenAnswer((_) async => dbUser);
+      // Mock updateUserFields as this is the method called when a user is updated
+      when(
+        () => mockUserRepository.updateUserFields(
+          authUser.uid,
+          any<Map<String, dynamic>>(),
+        ), // Use any<Map<String, dynamic>>() for positional argument
+      ).thenAnswer(
+        (_) async {},
+      ); // Expect updateUserFields with the correct UID and data map
 
       await ensureUserExistsIfNeeded(container.read, authUser);
 
       verify(
-        () => mockDb.saveUser(
-          any(
-            that: isA<model.AppUser>().having(
-              (u) => u.displayName,
+        // Verify updateUserFields was called with the correct UID and data
+        () => mockUserRepository.updateUserFields(
+          authUser.uid,
+          any<Map<String, dynamic>>(
+            // Use any<Map<String, dynamic>>() for positional argument
+            that: isA<Map<String, dynamic>>().having(
+              (map) => map['displayName'],
               'displayName',
               'New Name From Auth',
             ),
@@ -183,8 +206,8 @@ void main() {
     test('skips if passed user is null', () async {
       final container = ProviderContainer(
         overrides: [
-          quizMockDatabaseRepositoryProvider.overrideWith(
-            (ref) async => mockDb,
+          userRepositoryProvider.overrideWith(
+            (ref) async => mockUserRepository,
           ),
           storageRepositoryProvider.overrideWith(
             (ref) => mockStorageRepository,
@@ -196,7 +219,7 @@ void main() {
 
       await ensureUserExistsIfNeeded(container.read, null);
 
-      verifyNever(() => mockDb.getUser(any()));
+      verifyNever(() => mockUserRepository.getUser(any()));
     });
   });
 }

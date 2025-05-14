@@ -3,7 +3,6 @@ import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
-import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -15,7 +14,6 @@ final Logger _logger = Logger('Categories');
 class Categories extends _$Categories {
   @override
   Future<List<Category>> build(String languageCode) async {
-    // Use the notifier's 'ref' to watch dependencies
     final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
     _logger.finer('Fetching categories for language: $languageCode');
     final categories = await repo.getCategories();
@@ -26,35 +24,32 @@ class Categories extends _$Categories {
   Future<void> updateCategoryProgress(
     String categoryId,
     String languageCode,
-    // WidgetRef ref, // <-- PARAMETER REMOVED
   ) async {
-    // Use the notifier's 'ref' to read dependencies
-    final QuizMockDatabaseRepository repo = await ref.read(
-      quizMockDatabaseRepositoryProvider.future,
-    );
-    final AppUser? appUser = await ref.read(
+    final quizRepo = await ref.read(quizMockDatabaseRepositoryProvider.future);
+    final userRepo = await ref.read(userRepositoryProvider.future);
+    final AppUser? currentUserFromAuth = await ref.read(
       currentUserProvider.future,
     ); // Read current user state
 
-    if (appUser == null) {
+    if (currentUserFromAuth == null) {
       _logger.warning('Cannot update category progress: currentUser is null.');
       return; // Exit if no authenticated user
     }
 
     _logger.finer(
-      'Updating progress for category $categoryId, user ${appUser.uid}',
+      'Updating progress for category $categoryId, user ${currentUserFromAuth.uid}',
     );
 
     try {
       // Fetch necessary data using the repository
-      final List<Topic> allTopics = await repo.getTopics(categoryId);
-      final AppUser? user = await repo.getUser(
-        appUser.uid,
+      final List<Topic> allTopics = await quizRepo.getTopics(categoryId);
+      final AppUser? userFromDb = await userRepo.getUser(
+        currentUserFromAuth.uid,
       ); // Fetch user data from DB
 
-      if (user == null) {
+      if (userFromDb == null) {
         _logger.warning(
-          'Cannot update category progress: User ${appUser.uid} not found in DB.',
+          'Cannot update category progress: User ${currentUserFromAuth.uid} not found in DB.',
         );
         return; // Exit if user data not found in DB
       }
@@ -62,21 +57,20 @@ class Categories extends _$Categories {
       // Calculate progress using the helper method
       final double progress = _calculateCategoryProgress(
         allTopics,
-        user,
+        userFromDb,
         categoryId,
       );
 
       // Create the updated user object
-      final updatedUser = user.copyWith(
+      final updatedUser = userFromDb.copyWith(
         categoryProgress: {
-          ...user
-              .categoryProgress, // Preserve existing progress for other categories
-          categoryId: progress, // Update progress for the current category
+          ...userFromDb.categoryProgress,
+          categoryId: progress,
         },
       );
 
       // Save the updated user data
-      await repo.updateUser(updatedUser);
+      await userRepo.updateUser(updatedUser); // Use the user repository
       _logger.info(
         '✅ Category progress updated for $categoryId: $progress',
       ); // Log in English

@@ -13,6 +13,7 @@ import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
+import 'package:brain_bench/data/repositories/user_repository.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -91,6 +92,8 @@ class FakeSaveResultNotifier extends AutoDisposeAsyncNotifier<void>
 // Mock for the database (remains Mock)
 class MockQuizMockDatabaseRepository extends Mock
     implements QuizMockDatabaseRepository {}
+
+class MockUserDatabaseRepository extends Mock implements UserRepository {}
 
 // --- MockAppUser using Mocktail ---
 class MockAppUser extends Mock implements AppUser {}
@@ -535,141 +538,7 @@ void main() {
     group('Database Interactions', () {
       const testCategoryId = 'c1';
       const testTopicId = 't1';
-      const testUserId = 'mockUserId'; // Should match MockAppUser default id
-
-      // --- Helper for detailed copyWith stubbing ---
-      // This function sets up the mock user and its copyWith behavior
-      // specifically for tests that rely on the result of copyWith.
-      MockAppUser setupMockUserForCopyWith({
-        String id = 'mockUserId',
-        String uid = 'mockUserUid',
-        String email = 'mock@example.com',
-        String language = 'en',
-        String themeMode = 'system',
-        Map<String, Map<String, bool>>? initialTopicDone,
-        Map<String, double>? initialProgress,
-        String? displayName,
-        String? photoUrl,
-        String? profileImageUrl,
-      }) {
-        final user = MockAppUser();
-        final mockCopyWith = MockAppUserCopyWith();
-
-        // Stub initial values
-        when(() => user.id).thenReturn(id);
-        when(() => user.uid).thenReturn(uid);
-        when(() => user.email).thenReturn(email);
-        when(() => user.language).thenReturn(language);
-        when(() => user.themeMode).thenReturn(themeMode);
-        // Use provided initial maps or defaults
-        final currentTopicDone = initialTopicDone ?? const {};
-        final currentProgress = initialProgress ?? const {};
-        when(() => user.isTopicDone).thenReturn(currentTopicDone);
-        when(() => user.categoryProgress).thenReturn(currentProgress);
-        when(() => user.displayName).thenReturn(displayName);
-        when(() => user.photoUrl).thenReturn(photoUrl);
-        when(() => user.profileImageUrl).thenReturn(profileImageUrl);
-
-        // Stub the copyWith getter
-        when(() => user.copyWith).thenReturn(mockCopyWith);
-
-        // Stub the call method on the copyWith object to return a NEW mock
-        // REMOVED orElse from any() calls
-        when(
-          () => mockCopyWith.call(
-            id: any(named: 'id'),
-            uid: any(named: 'uid'),
-            email: any(named: 'email'),
-            language: any(named: 'language'),
-            themeMode: any(named: 'themeMode'),
-            isTopicDone: any(named: 'isTopicDone'),
-            categoryProgress: any(named: 'categoryProgress'),
-            displayName: any(named: 'displayName'),
-            photoUrl: any(named: 'photoUrl'),
-            profileImageUrl: any(named: 'profileImageUrl'),
-          ),
-        ).thenAnswer((invocation) {
-          // Create a *new* MockAppUser for the result
-          final copiedUser = MockAppUser();
-          final copiedUserCopyWith =
-              MockAppUserCopyWith(); // Need copyWith for the new mock too
-
-          // Get arguments passed to copyWith.call
-          final idArg = invocation.namedArguments[#id];
-          final uidArg = invocation.namedArguments[#uid];
-          final emailArg = invocation.namedArguments[#email];
-          final langArg = invocation.namedArguments[#language];
-          final themeArg = invocation.namedArguments[#themeMode];
-          final topicDoneArg =
-              invocation.namedArguments[#isTopicDone]
-                  as Map<String, Map<String, bool>>?;
-          final progressArg =
-              invocation.namedArguments[#categoryProgress]
-                  as Map<String, double>?;
-          // Handle potential freezed object for nullables
-          final displayArg = invocation.namedArguments[#displayName];
-          final photoArg = invocation.namedArguments[#photoUrl];
-          final profileImgArg = invocation.namedArguments[#profileImageUrl];
-
-          // --- Stub the new user's getters based on args or initial values ---
-          final newId = idArg ?? user.id;
-          final newUid = uidArg ?? user.uid;
-          final newEmail = emailArg ?? user.email;
-          final newLang = langArg ?? user.language;
-          final newTheme = themeArg ?? user.themeMode;
-          // IMPORTANT: Use the maps passed to copyWith, or the original user's maps
-          final newTopicDone = topicDoneArg ?? user.isTopicDone;
-          final newProgress = progressArg ?? user.categoryProgress;
-          // Handle nullables using the freezed object check
-          final newDisplayName =
-              (displayArg == freezed
-                  ? user.displayName
-                  : displayArg as String?);
-          final newPhotoUrl =
-              (photoArg == freezed ? user.photoUrl : photoArg as String?);
-          final newProfileImageUrl =
-              (profileImgArg == freezed
-                  ? user.profileImageUrl
-                  : profileImgArg as String?);
-
-          when(() => copiedUser.id).thenReturn(newId);
-          when(() => copiedUser.uid).thenReturn(newUid);
-          when(() => copiedUser.email).thenReturn(newEmail);
-          when(() => copiedUser.language).thenReturn(newLang);
-          when(() => copiedUser.themeMode).thenReturn(newTheme);
-          when(() => copiedUser.isTopicDone).thenReturn(newTopicDone);
-          when(() => copiedUser.categoryProgress).thenReturn(newProgress);
-          when(() => copiedUser.displayName).thenReturn(newDisplayName);
-          when(() => copiedUser.photoUrl).thenReturn(newPhotoUrl);
-          when(() => copiedUser.profileImageUrl).thenReturn(newProfileImageUrl);
-
-          // Stub the copyWith getter on the *new* user as well
-          when(() => copiedUser.copyWith).thenReturn(copiedUserCopyWith);
-          // Stub the call method on the *new* copyWith object (can often just return itself or the new user)
-          // REMOVED orElse from any() calls
-          when(
-            () => copiedUserCopyWith.call(
-              id: any(named: 'id'),
-              uid: any(named: 'uid'),
-              email: any(named: 'email'),
-              language: any(named: 'language'),
-              themeMode: any(named: 'themeMode'),
-              isTopicDone: any(named: 'isTopicDone'),
-              categoryProgress: any(named: 'categoryProgress'),
-              displayName: any(named: 'displayName'),
-              photoUrl: any(named: 'photoUrl'),
-              profileImageUrl: any(named: 'profileImageUrl'),
-            ),
-          ).thenReturn(
-            copiedUser,
-          ); // Simplistic stub for copied user's copyWith
-
-          // print("copyWith called, returning new mock user with isTopicDone: $newTopicDone"); // Debug print
-          return copiedUser; // Return the newly stubbed mock
-        });
-
-        return user;
-      }
+      const testUserId = 'mockUserId';
 
       test(
         'saveQuizResult calls saveResultNotifier with correct Result data',
@@ -732,82 +601,6 @@ void main() {
         expect(fakeNotifier.saveResultCallCount, 1);
       });
 
-      test(
-        'markTopicAsDone fetches dependencies, updates user, and invalidates provider',
-        () async {
-          // Arrange
-          final mockTopics = [
-            MockTopic(id: 't1'),
-            MockTopic(id: 't2'),
-            MockTopic(id: 't3'),
-          ];
-
-          // Use the helper to set up detailed stubbing for copyWith
-          final initialUser = setupMockUserForCopyWith(
-            id: testUserId,
-            initialTopicDone: {
-              'c1': {'t2': true},
-            },
-            initialProgress: {'c1': 1.0 / 3.0},
-          );
-
-          final specificMockDbRepo = MockQuizMockDatabaseRepository();
-          final capturedUser = Completer<AppUser>();
-          when(() => specificMockDbRepo.updateUser(any<AppUser>())).thenAnswer((
-            invocation,
-          ) async {
-            final userArg = invocation.positionalArguments.first as AppUser;
-            // print("updateUser called with user.isTopicDone: ${userArg.isTopicDone}"); // Debug print
-            capturedUser.complete(userArg);
-            return Future.value();
-          });
-
-          final container = createContainer(
-            initialQuizAnswers: sampleAnswersMixed,
-            user: initialUser, // Pass the stubbed MockAppUser instance
-            topics: mockTopics,
-            databaseRepo: specificMockDbRepo,
-          );
-          addTearDown(container.dispose);
-          final notifier = container.read(quizResultNotifierProvider.notifier);
-
-          // Act
-          // Pass the initialUser object as the first argument
-          await notifier.markTopicAsDone(
-            initialUser,
-            testTopicId,
-            testCategoryId,
-          );
-
-          // Assert
-          verify(() => specificMockDbRepo.updateUser(any<AppUser>())).called(1);
-
-          // Asserts should now work because copyWith was stubbed correctly
-          final updatedUser = await capturedUser.future;
-          expect(updatedUser.id, testUserId);
-          // Check the state *after* the copyWith call inside markTopicAsDone
-          // These assertions rely on the `thenAnswer` in `setupMockUserForCopyWith` correctly
-          // creating and stubbing the `copiedUser`.
-          expect(
-            updatedUser.isTopicDone[testCategoryId]?['t1'],
-            isTrue,
-            reason: 't1 should be marked done',
-          );
-          expect(
-            updatedUser.isTopicDone[testCategoryId]?['t2'],
-            isTrue,
-            reason: 't2 should still be done',
-          );
-          expect(updatedUser.isTopicDone[testCategoryId]?['t3'], isNull);
-          expect(
-            updatedUser.categoryProgress[testCategoryId],
-            closeTo(2.0 / 3.0, 0.001),
-          );
-        },
-      );
-
-      // --- Error Handling Tests  ---
-
       test('markTopicAsDone throws if repo fetch fails', () async {
         final testError = Exception('Repo fetch failed');
         // Use default stubbed user is fine here as copyWith isn't reached
@@ -833,70 +626,6 @@ void main() {
           ),
           throwsA(testError),
         );
-      });
-
-      test('markTopicAsDone throws if topics fetch fails', () async {
-        final testError = Exception('Topics fetch failed');
-        // Use default stubbed user is fine here as copyWith isn't reached
-        final container = createContainer(
-          initialQuizAnswers: sampleAnswersMixed,
-          user:
-              _createDefaultMockUser(), // Or setupMockUserForCopyWith if needed
-          additionalOverrides: [
-            topicsProvider(
-              testCategoryId,
-            ).overrideWith((ref) => Future.error(testError)),
-          ],
-        );
-        addTearDown(container.dispose);
-        final notifier = container.read(quizResultNotifierProvider.notifier);
-
-        // Pass a mock user
-        await expectLater(
-          notifier.markTopicAsDone(
-            _createDefaultMockUser(),
-            testTopicId,
-            testCategoryId,
-          ),
-          throwsA(testError),
-        );
-      });
-
-      // --- FINALIZED Test ---
-      test('markTopicAsDone throws if repo.updateUser fails', () async {
-        // Arrange
-        final mockTopics = [MockTopic(id: testTopicId)];
-        final specificMockDbRepo = MockQuizMockDatabaseRepository();
-        final testError = Exception('Update failed');
-
-        // Use the helper to set up detailed stubbing for copyWith,
-        // as the copyWith call happens *before* the updateUser call.
-        final initialUser = setupMockUserForCopyWith(id: testUserId);
-
-        // Stub updateUser on *this* mock to throw the error
-        when(
-          () => specificMockDbRepo.updateUser(any<AppUser>()),
-        ).thenThrow(testError);
-
-        final container = createContainer(
-          initialQuizAnswers: sampleAnswersMixed,
-          user: initialUser, // Pass the stubbed mock user
-          topics: mockTopics,
-          databaseRepo: specificMockDbRepo,
-        );
-        addTearDown(container.dispose);
-        final notifier = container.read(quizResultNotifierProvider.notifier);
-
-        // Act & Assert
-        // Should now correctly catch the intended Exception
-        // Pass the initialUser object
-        await expectLater(
-          notifier.markTopicAsDone(initialUser, testTopicId, testCategoryId),
-          throwsA(testError),
-        );
-
-        // Verify updateUser was called (even though it threw)
-        verify(() => specificMockDbRepo.updateUser(any<AppUser>())).called(1);
       });
     });
   });

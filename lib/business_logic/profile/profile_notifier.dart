@@ -5,8 +5,8 @@ import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/infrastructure/storage/storage_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
-import 'package:brain_bench/data/repositories/database_repository.dart';
 import 'package:brain_bench/data/repositories/storage_repository.dart';
+import 'package:brain_bench/data/repositories/user_repository.dart'; // Import UserRepository
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
@@ -282,23 +282,23 @@ class ProfileNotifier extends _$ProfileNotifier {
   /// Returns the photo URL that was in the database before this update.
   Future<String?> _performDatabaseUpdate({
     required String userId,
-    required String displayName,
+    required String? displayName, // Allow null for displayName
     required String? photoUrlToStoreInDb,
-    required DatabaseRepository dbRepository,
+    required UserRepository userRepository, // Changed to UserRepository
   }) async {
     _logger.info(
       'Calling updateUserProfile for user $userId with name: $displayName and photoUrl: ${photoUrlToStoreInDb ?? "(no change)"}',
     );
-    final String? photoUrlFromDbBeforeUpdate = await dbRepository
-        .updateUserProfile(
-          userId: userId,
-          displayName: displayName,
-          photoUrl: photoUrlToStoreInDb,
-        );
-    _logger.info(
-      'Profile update successful in repository for user $userId. Old photo URL was: $photoUrlFromDbBeforeUpdate',
+    // Call updateUserProfile on the UserRepository
+    await userRepository.updateUserProfile(
+      userId: userId,
+      displayName: displayName,
+      photoUrl: photoUrlToStoreInDb,
     );
-    return photoUrlFromDbBeforeUpdate;
+    _logger.info('Profile update successful in repository for user $userId.');
+    // updateUserProfile in UserRepository does not return the old photoUrl.
+    // If needed, it should be fetched before this call. For now, we return null or adapt.
+    return null; // This method no longer returns the old photoUrl
   }
 
   /// Attempts to delete the old profile image from storage.
@@ -307,7 +307,7 @@ class ProfileNotifier extends _$ProfileNotifier {
     required String? photoUrlFromDbBeforeUpdate,
     required String userId,
     required StorageRepository storageRepository,
-    required DatabaseRepository dbRepository,
+    required UserRepository userRepository, // Changed to UserRepository
   }) async {
     if (photoUrlFromDbBeforeUpdate != null &&
         photoUrlFromDbBeforeUpdate.isNotEmpty &&
@@ -317,7 +317,9 @@ class ProfileNotifier extends _$ProfileNotifier {
       bool canProceedWithDeletionLogic = true;
 
       try {
-        latestUserDataAfterUpdate = await dbRepository.getUser(userId);
+        latestUserDataAfterUpdate = await userRepository.getUser(
+          userId,
+        ); // Use UserRepository
         currentLivePhotoUrlInDb = latestUserDataAfterUpdate?.photoUrl;
         _logger.fine(
           'Pre-deletion check: Current live photoUrl in DB for user $userId is $currentLivePhotoUrlInDb',
@@ -368,8 +370,8 @@ class ProfileNotifier extends _$ProfileNotifier {
     _logger.fine('Attempting to update profile...');
 
     try {
-      final DatabaseRepository dbRepository = await ref.read(
-        quizMockDatabaseRepositoryProvider.future,
+      final UserRepository userRepository = await ref.read(
+        userRepositoryProvider.future, // Use the new user repository provider
       );
       final StorageRepository storageRepository = ref.read(
         storageRepositoryProvider,
@@ -380,17 +382,25 @@ class ProfileNotifier extends _$ProfileNotifier {
         return;
       }
 
+      // Fetch current user data to get photoUrl before update for deletion logic
+      final AppUser? userBeforeUpdate = await userRepository.getUser(userId);
+      final String? photoUrlFromDbBeforeUpdate = userBeforeUpdate?.photoUrl;
+
       String? finalPhotoUrlToStoreInDb;
       String? newUploadedPhotoUrl;
       String? imageProcessingError;
 
       if (profileImageFile != null) {
+        _logger.fine('Processing new profile image file for user $userId.');
         final imageResult = await _handleImageProcessingAndUpload(
           profileImageFile: profileImageFile,
           userId: userId,
           storageRepository: storageRepository,
         );
         newUploadedPhotoUrl = imageResult.uploadedPhotoUrl;
+        _logger.fine(
+          'Image processing result for user $userId: newUploadedPhotoUrl=$newUploadedPhotoUrl, error=${imageResult.error}',
+        );
         imageProcessingError = imageResult.error;
 
         if (imageProcessingError != null) {
@@ -403,11 +413,11 @@ class ProfileNotifier extends _$ProfileNotifier {
         finalPhotoUrlToStoreInDb = newUploadedPhotoUrl;
       }
 
-      final String? photoUrlFromDbBeforeUpdate = await _performDatabaseUpdate(
+      await _performDatabaseUpdate(
         userId: userId,
         displayName: displayName,
         photoUrlToStoreInDb: finalPhotoUrlToStoreInDb,
-        dbRepository: dbRepository,
+        userRepository: userRepository, // Pass the UserRepository
       );
 
       ref.invalidate(currentUserModelProvider);
@@ -420,7 +430,7 @@ class ProfileNotifier extends _$ProfileNotifier {
           photoUrlFromDbBeforeUpdate: photoUrlFromDbBeforeUpdate,
           userId: userId,
           storageRepository: storageRepository,
-          dbRepository: dbRepository,
+          userRepository: userRepository, // Pass the UserRepository
         );
       }
 
@@ -469,9 +479,11 @@ class ProfileNotifier extends _$ProfileNotifier {
       // Only update photoUrl in the database
       await _performDatabaseUpdate(
         userId: userId,
-        displayName: '',
+        displayName: null, // Pass null if display name should not be changed
         photoUrlToStoreInDb: newImageUrl,
-        dbRepository: await ref.read(quizMockDatabaseRepositoryProvider.future),
+        userRepository: await ref.read(
+          userRepositoryProvider.future,
+        ), // Use UserRepository
       );
 
       await _cleanupTemporaryImageFile(tempCompressedFile, imageFileToProcess);

@@ -6,8 +6,6 @@ import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
 import 'package:brain_bench/data/models/result/result.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
-import 'package:brain_bench/data/models/user/app_user.dart' as model;
-import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 
@@ -16,18 +14,17 @@ import 'database_repository.dart';
 final Logger _logger = Logger('QuizMockDatabaseRepository');
 
 /// A mock user ID used for all results in this mock database.
-///
-/// Since the User model does not exist in this application, this constant is
-/// used to simulate a user ID for all results.
+/// This constant is used to simulate a user ID for results in this mock
+/// quiz database, as user data is handled by a separate repository.
 const String _mockUserId = 'mock-user-1234';
 
 /// A mock implementation of the [DatabaseRepository] interface.
 ///
 /// This class simulates a database by reading and writing data to JSON files.
-/// It provides methods to retrieve categories, topics, questions, answers, and
-/// results, as well as to save results and mark topics as done. It is intended
-/// for development and testing purposes and should not be used in a production
-/// environment.
+/// It provides methods to retrieve quiz-related data such as categories, topics,
+/// questions, answers, and results. It also allows saving results and marking
+/// topics as done. This implementation is intended for development and testing
+/// purposes and should not be used in a production environment.
 class QuizMockDatabaseRepository implements DatabaseRepository {
   QuizMockDatabaseRepository({
     required this.resultsPath,
@@ -35,7 +32,6 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
     required this.topicsPath,
     required this.questionsPath,
     required this.answersPath,
-    required this.userPath,
   });
 
   /// The file path for the results data.
@@ -52,8 +48,6 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
 
   /// The file path for the answers data.
   final String answersPath;
-
-  final String userPath;
 
   /// Copies the JSON asset files from the app bundle to the documents directory.
   Future<void> copyAssetsToDocuments() async {
@@ -74,7 +68,6 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       'lib/data/data_source/answers.json',
       answersPath,
     );
-    await _copyAssetToDocument('lib/data/data_source/user.json', userPath);
   }
 
   /// Copies a single asset file to the documents directory.
@@ -91,13 +84,11 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
     }
   }
 
-  /// Retrieves a list of [Category] objects from the mock database.
+  /// Retrieves a list of [Category] objects.
   ///
   /// This method reads the categories data from the `categories.json` file,
   /// decodes it, and returns a list of [Category] objects. It also simulates
   /// a network delay of 1 second.
-  ///
-  /// Returns:
   ///   A [Future] that completes with a list of [Category] objects.
   ///   Returns an empty list if an error occurs.
   @override
@@ -134,13 +125,11 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
     }
   }
 
-  /// Retrieves a list of [Topic] objects for a given category from the mock database.
+  /// Retrieves a list of [Topic] objects for a given category.
   ///
   /// This method reads the topics data from the `topics.json` file, decodes it,
   /// filters the topics by the given [categoryId], and returns a list of
   /// [Topic] objects. It also simulates a network delay of 1 second.
-  ///
-  /// Parameters:
   ///   - [categoryId]: The ID of the category to retrieve topics for.
   ///
   /// Returns:
@@ -177,14 +166,12 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
     }
   }
 
-  /// Retrieves a list of [Question] objects for a given topic from the mock database.
+  /// Retrieves a list of [Question] objects for a given topic.
   ///
   /// This method reads the questions data from the `questions.json` file and
   /// the answers data from the `answers.json` file, decodes them, filters the
   /// questions by the given [topicId], and returns a list of [Question]
   /// objects. It also simulates a network delay of 1 second.
-  ///
-  /// Parameters:
   ///   - [topicId]: The ID of the topic to retrieve questions for.
   ///
   /// Returns:
@@ -233,13 +220,11 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
     }
   }
 
-  /// Retrieves a list of [Answer] objects for given answer IDs from the mock database.
+  /// Retrieves a list of [Answer] objects for given answer IDs.
   ///
   /// This method reads the answers data from the `answers.json` file, decodes
   /// it, filters the answers by the given [answerIds], and returns a list of
   /// [Answer] objects. It also simulates a network delay of 1 second.
-  ///
-  /// Parameters:
   ///   - [answerIds]: A list of answer IDs to retrieve.
   ///
   /// Returns:
@@ -248,16 +233,12 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   @override
   Future<List<Answer>> getAnswers(List<String> answerIds) async {
     try {
-      _logger.info('getAnswers() aufgerufen für: $answerIds');
-
       final file = File(answersPath);
       final String jsonString = await file.readAsString();
       final Map<String, dynamic> jsonMap = json.decode(jsonString);
       final List<dynamic> jsonData = jsonMap['answers'];
 
-      _logger.info(
-        'Geladene Antwortdaten: ${jsonData.length} Antworten gefunden.',
-      );
+      _logger.fine('Loaded answer data: ${jsonData.length} answers found.');
 
       final List<Answer> answers =
           jsonData
@@ -272,8 +253,8 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
               )
               .toList();
 
-      _logger.info(
-        'Gefilterte Antworten: ${answers.length} von ${answerIds.length} IDs gefunden.',
+      _logger.fine(
+        'Filtered answers: ${answers.length} of ${answerIds.length} IDs found.',
       );
 
       return answers;
@@ -289,13 +270,11 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
     }
   }
 
-  /// Retrieves a list of [Result] objects for a given user from the mock database.
+  /// Retrieves a list of [Result] objects for a given user.
   ///
   /// This method reads the results data from the `results.json` file, decodes
   /// it, filters the results by the given [userId], and returns a list of
   /// [Result] objects.
-  ///
-  /// Parameters:
   ///   - [userId]: The ID of the user to retrieve results for.
   ///
   /// Returns:
@@ -335,13 +314,11 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
     }
   }
 
-  /// Saves a [Result] object to the mock database.
+  /// Saves a [Result] object.
   ///
   /// This method writes the given [result] to the `results.json` file.
   /// It always assigns the [_mockUserId] to the result, overwriting any
   /// existing user ID.
-  ///
-  /// Parameters:
   ///   - [result]: The [Result] object to save.
   ///
   /// Returns:
@@ -377,13 +354,12 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
     }
   }
 
-  /// Marks a topic as done in the mock database.
+  /// Marks a topic as done.
   ///
   /// This method updates the `isDone` property of a topic in the `topics.json` file.
-  ///
-  /// Parameters:
+  /// Note: User-specific progress (like `isTopicDone` in the user model) is handled
+  /// by the `UserRepository`. This method only concerns the topic's state in quiz data.
   ///   - [topicId]: The ID of the topic to mark as done.
-  ///
   /// Returns:
   ///   A [Future] that completes when the topic has been marked as done.
   ///   Logs an error if an exception occurs.
@@ -391,10 +367,10 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
   Future<void> markTopicAsDone(
     String topicId,
     String categoryId,
-    AppUser user,
+    String userId,
   ) async {
     try {
-      // ✅ Step 1: Update local topics.json (wie gehabt)
+      // Step 1: Update local topics.json
       final file = File(topicsPath);
       final String jsonString = await file.readAsString();
       final Map<String, dynamic> jsonMap = json.decode(jsonString);
@@ -406,49 +382,15 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
         await file.writeAsString(jsonEncode(jsonMap), flush: true);
         _logger.info('✅ Topic $topicId marked as done in topics.json');
       }
-
-      // ✅ Step 2: Update user.isTopicDone
-      final updatedMap = {
-        ...user.isTopicDone,
-        categoryId: {...(user.isTopicDone[categoryId] ?? {}), topicId: true},
-      };
-
-      // ✅ Step 3: Berechne neuen Fortschritt
-      final fileTopics =
-          jsonData.where((topic) => topic['categoryId'] == categoryId).toList();
-
-      final passedCount =
-          fileTopics
-              .where((topic) => updatedMap[categoryId]?[topic['id']] == true)
-              .length;
-
-      final progress =
-          fileTopics.isEmpty ? 0.0 : passedCount / fileTopics.length;
-
-      // ✅ Step 4: Update user model
-      final updatedUser = user.copyWith(
-        isTopicDone: updatedMap,
-        categoryProgress: {...user.categoryProgress, categoryId: progress},
-      );
-
-      _logger.info(
-        '🔁 Fortschritt berechnet: ${(progress * 100).toStringAsFixed(1)}%',
-      );
-
-      // ✅ Step 5: Speichern
-      await updateUser(updatedUser);
     } catch (e) {
       _logger.severe('Error in markTopicAsDone: $e');
     }
   }
 
-  /// Updates a [Category] object in the mock database.
+  /// Updates a [Category] object.
   ///
   /// This method updates the `progress` property of a category in the `categories.json` file.
-  ///
-  /// Parameters:
   ///   - [category]: The [Category] object to update.
-  ///
   /// Returns:
   ///   A [Future] that completes when the category has been updated.
   ///   Logs an error if an exception occurs.
@@ -494,191 +436,6 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       _logger.severe('FormatException in updateCategory: $e');
     } catch (e) {
       _logger.severe('Error updating category ${category.id}: $e');
-    }
-  }
-
-  @override
-  Future<void> deleteUser(String userId) async {
-    try {
-      final file = File(userPath);
-      if (!file.existsSync()) return;
-
-      final jsonString = await file.readAsString();
-      final jsonMap = json.decode(jsonString);
-      final users =
-          (jsonMap['users'] as List<dynamic>)
-              .where((e) => e['uid'] != userId)
-              .toList();
-
-      jsonMap['users'] = users;
-      await file.writeAsString(jsonEncode(jsonMap), flush: true);
-      _logger.info('🗑️ User gelöscht: $userId');
-    } catch (e) {
-      _logger.severe('Fehler in deleteUser: $e');
-    }
-  }
-
-  @override
-  Future<model.AppUser?> getUser(String userId) async {
-    try {
-      final file = File(userPath);
-      if (!await file.exists()) return null;
-
-      final jsonString = await file.readAsString();
-      final jsonMap = json.decode(jsonString);
-      final List users = jsonMap['users'] ?? [];
-
-      final userList =
-          users
-              .map((e) => model.AppUser.fromJson(e))
-              .where((u) => u.uid == userId)
-              .toList();
-
-      return userList.isNotEmpty ? userList.first : null;
-    } catch (e) {
-      _logger.severe('Fehler in getUser (async): $e');
-      return null;
-    }
-  }
-
-  @override
-  Future<void> updateUser(model.AppUser user) async {
-    try {
-      final file = File(userPath);
-      if (!file.existsSync()) return;
-
-      final jsonString = await file.readAsString();
-      final jsonMap = json.decode(jsonString);
-      final List<dynamic> users = jsonMap['users'];
-
-      final index = users.indexWhere((e) => e['uid'] == user.uid);
-      if (index == -1) {
-        _logger.warning('User nicht gefunden: ${user.uid}');
-        return;
-      }
-
-      users[index] = user.toJson();
-      await file.writeAsString(jsonEncode(jsonMap), flush: true);
-      _logger.info('✅ User aktualisiert: ${user.uid}');
-    } catch (e) {
-      _logger.severe('Fehler in updateUser: $e');
-    }
-  }
-
-  @override
-  Future<void> saveUser(model.AppUser user) async {
-    try {
-      final file = File(userPath);
-      Map<String, dynamic> jsonMap = {'users': []};
-
-      if (file.existsSync()) {
-        final content = await file.readAsString();
-        jsonMap = json.decode(content);
-
-        jsonMap['users'] ??= [];
-      }
-
-      (jsonMap['users'] as List).add(user.toJson());
-
-      await file.writeAsString(jsonEncode(jsonMap), flush: true);
-      _logger.info('🆕 User gespeichert: ${user.uid}');
-    } catch (e) {
-      _logger.severe('Fehler in saveUser: $e');
-    }
-  }
-
-  @override
-  Future<String?> updateUserProfile({
-    required String userId,
-    required String displayName,
-    String? photoUrl,
-  }) async {
-    try {
-      final file = File(userPath);
-      if (!await file.exists()) {
-        // Use await
-        _logger.warning('User file not found at $userPath for profile update.');
-        return null;
-      }
-
-      final jsonString = await file.readAsString();
-      // Handle empty file content
-      if (jsonString.isEmpty) {
-        _logger.warning(
-          'User file is empty, cannot update profile for user $userId.',
-        );
-        return null;
-      }
-      final jsonMap = json.decode(jsonString);
-      final List<dynamic> users =
-          jsonMap['users'] ?? []; // Ensure 'users' list exists
-
-      final index = users.indexWhere(
-        (e) => e is Map && e['uid'] == userId,
-      ); // Ensure element is a Map
-
-      if (index == -1) {
-        _logger.warning('User $userId not found for profile update.');
-        return null;
-      }
-
-      // Get the existing user data as a Map
-      final Map<String, dynamic> existingUserMap = Map<String, dynamic>.from(
-        users[index],
-      );
-
-      // Capture the photoUrl before any update
-      final String? oldPhotoUrl = existingUserMap['photoUrl'] as String?;
-
-      // Create the updated user data
-      // Keep all old fields and only overwrite the new ones
-      final Map<String, dynamic> updatedUserMap = {
-        ...existingUserMap,
-        'displayName': displayName, // Overwrite the display name
-      };
-
-      // Update photoUrl only if a new value was provided (not null)
-      // If photoUrl is null, the old value is kept.
-      if (photoUrl != null) {
-        updatedUserMap['photoUrl'] = photoUrl;
-        _logger.fine('Updating photoUrl for user $userId.');
-      } else {
-        _logger.fine(
-          'No new photoUrl provided for user $userId, keeping existing one.',
-        );
-      }
-
-      // Replace the old entry in the list with the new one
-      users[index] = updatedUserMap;
-
-      // Write the entire updated structure back
-      jsonMap['users'] = users;
-      await file.writeAsString(jsonEncode(jsonMap), flush: true);
-      _logger.info(
-        '✅ Profile updated for user $userId. New name: $displayName',
-      );
-      return oldPhotoUrl; // Return the photoUrl from before the update
-    } on FileSystemException catch (e, stack) {
-      _logger.severe(
-        'FileSystemException in updateUserProfile for $userId: $e',
-        e,
-        stack,
-      );
-      return null;
-    } on FormatException catch (e, stack) {
-      _logger.severe(
-        'FormatException in updateUserProfile for $userId: $e',
-        e,
-        stack,
-      );
-      return null;
-    } catch (e, stack) {
-      _logger.severe(
-        'Unexpected error updating profile for $userId: $e',
-        e,
-        stack,
-      );
-      return null;
     }
   }
 }

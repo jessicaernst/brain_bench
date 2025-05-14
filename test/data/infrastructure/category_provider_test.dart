@@ -4,17 +4,22 @@ import 'package:brain_bench/data/infrastructure/quiz/category_providers.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
+import 'package:brain_bench/data/repositories/user_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockQuizRepository extends Mock implements QuizMockDatabaseRepository {}
 
+class MockUserRepository extends Mock implements UserRepository {}
+
 void main() {
   late MockQuizRepository mockRepo;
+  late MockUserRepository mockUserRepo;
   late AppUser fakeUser;
 
   setUp(() {
+    mockUserRepo = MockUserRepository();
     mockRepo = MockQuizRepository();
     fakeUser = const AppUser(uid: '123', id: '123', email: 'test@example.com');
   });
@@ -59,15 +64,18 @@ void main() {
 
     when(() => mockRepo.getTopics(categoryId)).thenAnswer((_) async => topics);
     when(
-      () => mockRepo.getUser(fakeUser.uid),
+      () => mockUserRepo.getUser(fakeUser.uid),
     ).thenAnswer((_) async => userWithProgress);
-    when(() => mockRepo.updateUser(any())).thenAnswer((_) async {});
+    when(() => mockUserRepo.updateUser(any())).thenAnswer((_) async {});
 
     final container = ProviderContainer(
       overrides: [
         quizMockDatabaseRepositoryProvider.overrideWith(
           (ref) => Future.value(mockRepo),
         ),
+        userRepositoryProvider.overrideWith(
+          (ref) async => mockUserRepo,
+        ), // Add userRepositoryProvider override here
         currentUserProvider.overrideWith((ref) => Stream.value(fakeUser)),
       ],
     );
@@ -82,6 +90,6 @@ void main() {
       categoryProgress: {categoryId: expectedProgress},
     );
 
-    verify(() => mockRepo.updateUser(expectedUpdatedUser)).called(1);
+    verify(() => mockUserRepo.updateUser(expectedUpdatedUser)).called(1);
   });
 }

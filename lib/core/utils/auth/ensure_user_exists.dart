@@ -67,85 +67,85 @@ Future<bool> _ensureUserExistsIfNeededImpl(
     }
   }
 
-  // Handle provisional profile image from device contact
-  // This block will now only execute if deviceContactInfo is not null (i.e., not an Apple private relay AND contact was found)
-  if (deviceContactInfo?.imageBase64 != null) {
-    if (appUser.photoUrl == null || appUser.photoUrl!.isEmpty) {
-      _logger.info(
-        'Firebase user has no photoUrl. Attempting to use contact image for provisional display.',
-      );
-      try {
-        final imageBytes = base64Decode(deviceContactInfo!.imageBase64!);
-        final tempDir = await getTemporaryDirectory();
-        final tempFilePath =
-            '${tempDir.path}/contact_image_ensure_user_${DateTime.now().millisecondsSinceEpoch}.png';
-        final tempFile = File(tempFilePath);
-        await tempFile.writeAsBytes(imageBytes); // Use async version
-        final contactXFile = XFile(tempFile.path);
-
-        // Update the provisionalProfileImageProvider
-        read(provisionalProfileImageProvider.notifier).setImage(contactXFile);
-        _logger.info(
-          'EnsureUser: Set provisional profile image from contact: ${tempFile.path}',
-        );
-
-        // Automatically save this contact image if user has no Firebase photoUrl yet
-        // We check appUser.photoUrl here because this is the state from Firebase Auth/DB *before* any potential update below.
-        if (appUser.photoUrl == null || appUser.photoUrl!.isEmpty) {
-          _logger.info(
-            'EnsureUser: Auto-saving contact image to Firebase for user ${appUser.uid}.',
-          );
-          try {
-            // Call the new method in ProfileNotifier
-            await read(profileNotifierProvider.notifier).updateUserProfileImage(
-              newImageFile: contactXFile,
-              userId: appUser.uid,
-            );
-            _logger.info('EnsureUser: Contact image auto-save successful.');
-
-            // Trigger Snackbar display if not shown before for this user
-            final prefs = await SharedPreferences.getInstance();
-            final snackbarShownKey = 'contactImageSnackbarShown_${appUser.uid}';
-            if (!(prefs.getBool(snackbarShownKey) ?? false)) {
-              read(showContactImageAutoSaveSnackbarProvider.notifier).trigger();
-              await prefs.setBool(snackbarShownKey, true);
-              _logger.info(
-                'EnsureUser: Snackbar signal set for auto-saved contact image.',
-              );
-            }
-          } catch (saveError) {
-            _logger.severe(
-              'EnsureUser: Failed to auto-save contact image: $saveError',
-            );
-            // Non-fatal, provisional image is still set for display.
-          }
-        }
-      } catch (e, st) {
-        _logger.severe(
-          'EnsureUser: Error processing contact image for provisional display',
-          e,
-          st,
-        );
-      }
-    } else {
-      _logger.info(
-        'Firebase user already has a photoUrl. Clearing any provisional contact image.',
-      );
-      read(provisionalProfileImageProvider.notifier).clearImage();
-    }
-  }
-
   try {
-    final db = await read(quizMockDatabaseRepositoryProvider.future);
-    final existingDbUser = await db.getUser(appUser.uid);
+    final userRepository = await read(
+      userRepositoryProvider.future,
+    ); // Use the new user repository
+    final existingDbUser = await userRepository.getUser(appUser.uid);
 
     if (existingDbUser == null) {
       _logger.info(
         'User ${appUser.uid} not found in DB. Creating new entry...',
       );
 
+      // --- Handle contact image for NEW user ---
+      String? photoUrlFromAutoSave;
+      if (deviceContactInfo?.imageBase64 != null &&
+          (appUser.photoUrl == null || appUser.photoUrl!.isEmpty)) {
+        _logger.info(
+          'New user and no Firebase Auth photoUrl. Attempting to use contact image.',
+        );
+        try {
+          final imageBytes = base64Decode(deviceContactInfo!.imageBase64!);
+          final tempDir = await getTemporaryDirectory();
+          final tempFilePath =
+              '${tempDir.path}/contact_image_ensure_user_${DateTime.now().millisecondsSinceEpoch}.png';
+          final tempFile = File(tempFilePath);
+          await tempFile.writeAsBytes(imageBytes);
+          final contactXFile = XFile(tempFile.path);
+
+          read(provisionalProfileImageProvider.notifier).setImage(contactXFile);
+          _logger.info(
+            'EnsureUser: Set provisional contact image for new user: ${tempFile.path}',
+          );
+
+          _logger.info(
+            'EnsureUser: Auto-saving contact image to Firebase for new user ${appUser.uid}.',
+          );
+          // ProfileNotifier.updateUserProfileImage updates the DB directly
+          await read(profileNotifierProvider.notifier).updateUserProfileImage(
+            newImageFile: contactXFile,
+            userId: appUser.uid,
+          );
+          _logger.info(
+            'EnsureUser: Contact image auto-save successful for new user.',
+          );
+          read(provisionalProfileImageProvider.notifier).clearImage();
+
+          // Attempt to get the newly saved photoUrl
+          final userAfterAutoSave = await userRepository.getUser(appUser.uid);
+          photoUrlFromAutoSave = userAfterAutoSave?.photoUrl;
+          if (photoUrlFromAutoSave != null) {
+            _logger.info(
+              'Retrieved photoUrl after auto-save: $photoUrlFromAutoSave',
+            );
+          }
+
+          final prefs = await SharedPreferences.getInstance();
+          final snackbarShownKey = 'contactImageSnackbarShown_${appUser.uid}';
+          if (!(prefs.getBool(snackbarShownKey) ?? false)) {
+            read(showContactImageAutoSaveSnackbarProvider.notifier).trigger();
+            await prefs.setBool(snackbarShownKey, true);
+            _logger.info('Snackbar signal set for auto-saved contact image.');
+          }
+        } catch (e, st) {
+          _logger.severe(
+            'Error processing/saving contact image for new user',
+            e,
+            st,
+          );
+        }
+      } else if (appUser.photoUrl != null && appUser.photoUrl!.isNotEmpty) {
+        _logger.info(
+          'New user has Firebase Auth photoUrl. Clearing provisional image.',
+        );
+        read(provisionalProfileImageProvider.notifier).clearImage();
+      }
+      // --- End of contact image handling for new user ---
+
       String? finalDisplayName = appUser.displayName;
-      final String? finalPhotoUrl = appUser.photoUrl;
+      // Prioritize photoUrl from auto-save, then from Auth provider
+      final String? finalPhotoUrl = photoUrlFromAutoSave ?? appUser.photoUrl;
 
       if (Platform.isIOS &&
           deviceContactInfo?.name != null &&
@@ -163,12 +163,73 @@ Future<bool> _ensureUserExistsIfNeededImpl(
         categoryProgress: {},
         isTopicDone: {},
       );
-
-      await db.saveUser(newUser);
+      await userRepository.saveUser(newUser); // Use the new user repository
       _logger.info('🆕 Successfully created user ${appUser.uid} in DB.');
       return true;
     } else {
       _logger.fine('User ${appUser.uid} found in DB. Checking for updates...');
+
+      // --- Handle contact image for EXISTING user ---
+      // Only attempt to auto-save if no photoUrl in existing DB record AND no photoUrl from Auth provider
+      String? photoUrlFromAutoSaveForExistingUser;
+      if (deviceContactInfo?.imageBase64 != null) {
+        if ((existingDbUser.photoUrl == null ||
+                existingDbUser.photoUrl!.isEmpty) &&
+            (appUser.photoUrl == null || appUser.photoUrl!.isEmpty)) {
+          _logger.info(
+            'Existing user, no DB/Auth photoUrl. Attempting to use contact image.',
+          );
+          try {
+            final imageBytes = base64Decode(deviceContactInfo!.imageBase64!);
+            final tempDir = await getTemporaryDirectory();
+            final tempFilePath =
+                '${tempDir.path}/contact_image_ensure_user_${DateTime.now().millisecondsSinceEpoch}.png';
+            final tempFile = File(tempFilePath);
+            await tempFile.writeAsBytes(imageBytes);
+            final contactXFile = XFile(tempFile.path);
+
+            read(
+              provisionalProfileImageProvider.notifier,
+            ).setImage(contactXFile);
+            _logger.info(
+              'Set provisional contact image for existing user: ${tempFile.path}',
+            );
+
+            await read(profileNotifierProvider.notifier).updateUserProfileImage(
+              newImageFile: contactXFile,
+              userId: appUser.uid,
+            );
+            _logger.info(
+              'Contact image auto-save successful for existing user.',
+            );
+            read(provisionalProfileImageProvider.notifier).clearImage();
+
+            final userAfterAutoSave = await userRepository.getUser(appUser.uid);
+            photoUrlFromAutoSaveForExistingUser = userAfterAutoSave?.photoUrl;
+
+            final prefs = await SharedPreferences.getInstance();
+            final snackbarShownKey = 'contactImageSnackbarShown_${appUser.uid}';
+            if (!(prefs.getBool(snackbarShownKey) ?? false)) {
+              read(showContactImageAutoSaveSnackbarProvider.notifier).trigger();
+              await prefs.setBool(snackbarShownKey, true);
+              _logger.info(
+                'Snackbar signal set for auto-saved contact image (existing user).',
+              );
+            }
+          } catch (e, st) {
+            _logger.severe(
+              'Error processing/saving contact image for existing user',
+              e,
+              st,
+            );
+          }
+        } else {
+          read(provisionalProfileImageProvider.notifier).clearImage();
+        }
+      }
+      // --- End of contact image handling for existing user ---
+
+      // Use the user repository for updates
       final Map<String, dynamic> updates = {};
       bool needsUpdate = false;
 
@@ -184,7 +245,19 @@ Future<bool> _ensureUserExistsIfNeededImpl(
         );
       }
 
-      if (appUser.photoUrl != null &&
+      // If contact image was just auto-saved, use that URL for the update map
+      if (photoUrlFromAutoSaveForExistingUser != null &&
+          photoUrlFromAutoSaveForExistingUser.isNotEmpty) {
+        if (photoUrlFromAutoSaveForExistingUser != existingDbUser.photoUrl) {
+          updates['photoUrl'] = photoUrlFromAutoSaveForExistingUser;
+          needsUpdate = true;
+          _logger.fine(
+            'Detected photoUrl update for ${appUser.uid} from contact auto-save.',
+          );
+        }
+      } else if (appUser.photoUrl !=
+              null && // Otherwise, check photoUrl from Auth provider
+          appUser.photoUrl!.isNotEmpty && // Ensure it's not empty
           appUser.photoUrl != existingDbUser.photoUrl) {
         updates['photoUrl'] = appUser.photoUrl;
         needsUpdate = true;
@@ -212,11 +285,8 @@ Future<bool> _ensureUserExistsIfNeededImpl(
         _logger.info(
           'Updating user ${appUser.uid} in DB with changes: ${updates.keys.join(', ')}',
         );
-        final updatedUser = existingDbUser.copyWith(
-          displayName: updates['displayName'],
-          photoUrl: updates['photoUrl'],
-        );
-        await db.saveUser(updatedUser);
+        // Use the new user repository to update specific fields
+        await userRepository.updateUserFields(appUser.uid, updates);
         _logger.info('✅ Successfully updated user ${appUser.uid} in DB.');
       } else {
         _logger.fine('✅ User ${appUser.uid} exists and is up-to-date in DB.');

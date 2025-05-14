@@ -6,13 +6,13 @@ import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/models/user/user_model_state.dart';
 import 'package:brain_bench/data/repositories/auth_repository.dart';
-import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
+import 'package:brain_bench/data/repositories/user_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockQuizRepo extends Mock implements QuizMockDatabaseRepository {}
+class MockUserRepository extends Mock implements UserRepository {}
 
 class MockAuthRepository extends Mock implements AuthRepository {}
 
@@ -20,7 +20,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late ProviderContainer container;
-  late MockQuizRepo mockRepo;
+  late MockUserRepository mockUserRepo;
   late MockAuthRepository mockAuthRepo;
   late StreamController<AppUser?> authStateController;
 
@@ -52,7 +52,7 @@ void main() {
   });
 
   setUp(() {
-    mockRepo = MockQuizRepo();
+    mockUserRepo = MockUserRepository();
     mockAuthRepo = MockAuthRepository();
     authStateController = StreamController<AppUser?>();
 
@@ -69,15 +69,15 @@ void main() {
   group('currentUserModelProvider', () {
     test('returns user model from DB', () async {
       when(
-        () => mockRepo.getUser(testUser.uid),
+        () => mockUserRepo.getUser(testUser.uid),
       ).thenAnswer((_) async => testUser);
 
       container = ProviderContainer(
         overrides: [
           authRepositoryProvider.overrideWithValue(mockAuthRepo),
-          quizMockDatabaseRepositoryProvider.overrideWith(
-            (ref) async => mockRepo,
-          ),
+          userRepositoryProvider.overrideWith(
+            (ref) async => mockUserRepo,
+          ), // Override userRepositoryProvider
         ],
       );
 
@@ -106,16 +106,18 @@ void main() {
         AsyncData(UserModelState.data(testUser)),
       ]);
 
-      verify(() => mockRepo.getUser(testUser.uid)).called(1);
+      verify(
+        () => mockUserRepo.getUser(testUser.uid),
+      ).called(1); // Verify on mockUserRepo
     });
 
     test('returns null if no user is signed in', () async {
       container = ProviderContainer(
         overrides: [
           authRepositoryProvider.overrideWithValue(mockAuthRepo),
-          quizMockDatabaseRepositoryProvider.overrideWith(
-            (ref) async => mockRepo,
-          ),
+          userRepositoryProvider.overrideWith(
+            (ref) async => mockUserRepo,
+          ), // Override userRepositoryProvider
         ],
       );
 
@@ -143,7 +145,7 @@ void main() {
         const AsyncData(UserModelState.unauthenticated()),
       );
 
-      verifyNever(() => mockRepo.getUser(any()));
+      verifyNever(() => mockUserRepo.getUser(any()));
     });
   });
 }

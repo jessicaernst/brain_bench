@@ -25,7 +25,7 @@ final resultsProvider = AutoDisposeFutureProvider<List<Result>>.internal(
 // ignore: unused_element
 typedef ResultsRef = AutoDisposeFutureProviderRef<List<Result>>;
 String _$saveResultNotifierHash() =>
-    r'a2c973500d7ceaead2cf66bf3e6536a970e73f8a';
+    r'44c1161a1f153809f8424bf31de6d7b8dd207e00';
 
 /// A notifier that handles saving quiz results and marking topics as done.
 ///
