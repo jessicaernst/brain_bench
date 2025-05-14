@@ -95,16 +95,20 @@ class ProfileEditView extends HookWidget {
         placeholder:
             (context, url) => CircleAvatar(
               radius: 80,
+              backgroundColor:
+                  Colors
+                      .transparent, // Hintergrund transparent machen, damit kein Standard-Fallback durchscheint
               child:
                   defaultTargetPlatform == TargetPlatform.iOS
-                      ? const CupertinoActivityIndicator(
-                        radius: 15,
-                      ) // iOS style
-                      : const CircularProgressIndicator(), // Material style
+                      ? const CupertinoActivityIndicator(radius: 15)
+                      : const CircularProgressIndicator(),
             ),
         errorWidget: (context, url, error) {
           _logger.warning('Error loading user image in edit view: $error');
           return CircleAvatar(
+            backgroundColor:
+                Colors
+                    .transparent, // Hintergrund transparent machen, damit kein Standard-Fallback durchscheint
             radius: 80,
             backgroundImage: Assets.images.evolution4.provider(),
           );

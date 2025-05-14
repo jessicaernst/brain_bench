@@ -51,28 +51,16 @@ class ProfilePage extends HookConsumerWidget {
     ref.listen<AsyncValue<void>>(profileNotifierProvider, (previous, next) {
       next.whenOrNull(
         error: (error, stackTrace) {
-          String displayMessage;
-          // Check if the error message indicates an image upload failure specifically
-          // Wir prüfen hier auf den spezifischen Text, den wir im ProfileNotifier setzen.
-          if (error.toString().toLowerCase().contains('image upload failed') ||
-              error.toString().toLowerCase().contains(
-                'image compression failed',
-              )) {
-            displayMessage = localizations.profileUpdateSuccessButImageFailed;
-            _logger.warning(
-              'Profile data likely updated, but image processing/upload failed.',
-              error,
-              stackTrace,
-            );
-          } else {
-            displayMessage =
-                '${localizations.profileUpdateError}: ${error.toString()}';
-            _logger.warning(
-              'Profile update failed completely.',
-              error,
-              stackTrace,
-            );
-          }
+          // If profileNotifierProvider emits an error, it means the entire update operation
+          // (display name and/or photo) failed, as per ProfileNotifier's current logic.
+          final String displayMessage =
+              '${localizations.profileUpdateError}: ${error.toString()}';
+          _logger.warning(
+            'Profile update failed. Error: ${error.toString()}',
+            error,
+            stackTrace,
+          );
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(displayMessage),

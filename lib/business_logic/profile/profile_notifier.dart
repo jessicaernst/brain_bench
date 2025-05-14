@@ -9,6 +9,8 @@ import 'package:brain_bench/data/repositories/database_repository.dart';
 import 'package:brain_bench/data/repositories/storage_repository.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:logging/logging.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'profile_notifier.g.dart';
@@ -58,6 +60,8 @@ class ProfileNotifier extends _$ProfileNotifier {
       'png',
       'gif',
       'webp',
+      'heic',
+      'heif',
       'bmp',
     ];
     String fileExtension = '';
@@ -86,10 +90,47 @@ class ProfileNotifier extends _$ProfileNotifier {
   ) async {
     File imageForUpload = profileImageFile;
     File? tempCompressedFile;
+    Directory? tempDir;
     try {
-      final targetPath =
-          '${profileImageFile.parent.path}/compressed_${DateTime.now().millisecondsSinceEpoch}_${profileImageFile.path.split('/').last}';
-      _logger.fine('Attempting to compress image to: $targetPath');
+      tempDir = await getTemporaryDirectory();
+      final String originalFileNameWithoutExt = p.basenameWithoutExtension(
+        profileImageFile.path,
+      );
+      final String originalExtension =
+          p.extension(profileImageFile.path).toLowerCase();
+
+      CompressFormat targetFormat = CompressFormat.jpeg;
+      String targetFileExtension = '.jpg';
+
+      // Preserve original format if it supports transparency and is supported for output
+      if (originalExtension == '.png') {
+        targetFormat = CompressFormat.png;
+        targetFileExtension = '.png';
+      } else if (originalExtension == '.webp') {
+        targetFormat = CompressFormat.webp;
+        targetFileExtension = '.webp';
+      } else if (originalExtension == '.gif') {
+        // Compress GIF to PNG to preserve transparency, as direct GIF compression isn't typical
+        targetFormat = CompressFormat.png;
+        targetFileExtension = '.png';
+      } else if (originalExtension == '.heic' || originalExtension == '.heif') {
+        // Convert HEIC/HEIF to PNG during compression.
+        // This ensures broader compatibility for the output file and handles potential transparency,
+        // as direct HEIC output support via FlutterImageCompress might vary across platforms
+        // or lead to mis-extended files if the library silently falls back.
+        _logger.info('Input is HEIC/HEIF, will compress to PNG format.');
+        targetFormat = CompressFormat.png;
+        targetFileExtension = '.png';
+      }
+
+      final String targetFileName =
+          'compressed_${DateTime.now().millisecondsSinceEpoch}_$originalFileNameWithoutExt$targetFileExtension';
+      // If getTemporaryDirectory failed, tempDir would be null and an exception caught.
+      final String targetPath = p.join(tempDir.path, targetFileName);
+
+      _logger.fine(
+        'Attempting to compress image to: $targetPath, target format: $targetFormat',
+      );
       final XFile? compressedXFile =
           await FlutterImageCompress.compressAndGetFile(
             profileImageFile.absolute.path,
@@ -97,21 +138,45 @@ class ProfileNotifier extends _$ProfileNotifier {
             quality: 80,
             minWidth: 800,
             minHeight: 800,
+            format: targetFormat,
           );
       if (compressedXFile != null) {
         imageForUpload = File(compressedXFile.path);
         tempCompressedFile = imageForUpload;
         _logger.info(
-          'Image compressed successfully. New path: ${imageForUpload.path}, Size: ${await imageForUpload.length()} bytes',
+          'Image compressed successfully (format: $targetFormat). New path: ${imageForUpload.path}, Size: ${await imageForUpload.length()} bytes',
         );
       } else {
         _logger.warning(
           'Image compression returned null. Using original file for upload.',
         );
       }
+    } on MissingPlatformDirectoryException catch (e, stack) {
+      _logger.severe(
+        'Failed to obtain temporary directory due to a platform issue (e.g., not supported or unavailable). Using original file.',
+        e,
+        stack,
+      );
+      // tempDir would be null or its pre-await value if getTemporaryDirectory() threw.
+      // The original image is used by default as imageForUpload is initialized with it.
     } catch (e, stack) {
-      _logger.severe('Error during image compression', e, stack);
-      // Non-fatal for upload, proceed with original if compression fails, but log it.
+      // This will catch other errors, including if getTemporaryDirectory() threw
+      // an exception other than MissingPlatformDirectoryException, or if an error
+      // occurred during the compression process itself.
+      if (tempDir == null) {
+        _logger.severe(
+          'Failed to obtain temporary directory for image compression (general error). Using original file.',
+          e,
+          stack,
+        );
+      } else {
+        // This case means tempDir was obtained, but an error occurred later (e.g., during compression).
+        _logger.severe(
+          'Error during image compression (temp dir was ${tempDir.path}). Using original file.',
+          e,
+          stack,
+        );
+      }
     }
     return (
       imageForUpload: imageForUpload,
