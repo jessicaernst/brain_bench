@@ -207,7 +207,7 @@ class HomePage extends HookConsumerWidget {
                           inactiveCardBuilder:
                               (child) =>
                                   InactiveNewsCarouselCard(content: child),
-                          animationDuration: const Duration(milliseconds: 250),
+                          animationDuration: const Duration(milliseconds: 200),
                           animationCurve: Curves.easeOut,
                         )
                         : Center(
