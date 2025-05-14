@@ -19,6 +19,7 @@ class ProfileContentView extends StatelessWidget {
     required this.userImageUrl,
     required this.isSaveEnabled,
     required this.selectedImage,
+    required this.contactImageFile, // This will now be XFile?
     required this.userAsyncValue,
     required this.handleSaveChanges,
     required this.handleImageSelection,
@@ -34,6 +35,7 @@ class ProfileContentView extends StatelessWidget {
   final String? userImageUrl;
   final bool isSaveEnabled;
   final ValueNotifier<XFile?> selectedImage;
+  final XFile? contactImageFile; // Changed from ValueNotifier<XFile?>
   final AsyncValue<AppUser?> userAsyncValue;
   final VoidCallback handleSaveChanges;
   final Function(XFile)? handleImageSelection;
@@ -74,7 +76,9 @@ class ProfileContentView extends StatelessWidget {
                     isActive: isSaveEnabled, // <-- Pass calculated state
                     // Pass handleSaveChanges, button disables itself if !isActive
                     onPressed: handleSaveChanges,
-                    onImageSelected: handleImageSelection,
+                    onImageSelected:
+                        handleImageSelection, // This is Function(XFile)?
+                    contactImageFile: contactImageFile, // Pass XFile?
                     selectedImageFile: selectedImage.value,
                   )
                   : ProfileView(
@@ -84,6 +88,7 @@ class ProfileContentView extends StatelessWidget {
                     textTheme: textTheme,
                     theme: theme,
                     userImageUrl: userImageUrl,
+                    contactImageFile: contactImageFile, // Pass XFile?
                   ),
         ),
       ),

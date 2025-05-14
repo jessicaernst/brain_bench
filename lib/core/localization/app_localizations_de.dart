@@ -382,4 +382,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get profileUpdateSuccessButImageFailed => 'Profil erfolgreich aktualisiert, aber das Bild konnte nicht hochgeladen werden.';
+
+  @override
+  String get profileContactImageAutoSaved => 'Profilbild automatisch gespeichert.';
 }

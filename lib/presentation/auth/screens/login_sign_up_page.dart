@@ -4,9 +4,9 @@ import 'package:brain_bench/core/hooks/auth.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/presentation/auth/widgets/auth_background.dart';
 import 'package:brain_bench/presentation/auth/widgets/auth_content.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter/material.dart';
 
 // Main Widget: LoginSignUpPage
 class LoginSignUpPage extends HookConsumerWidget {
@@ -103,7 +103,7 @@ class LoginSignUpPage extends HookConsumerWidget {
               emailSignUpController: emailSignUpController,
               passwordSignUpController: passwordSignUpController,
               repeatPasswordSignUpController: repeatPasswordSignUpController,
-              isButtonEnabled: isButtonEnabled, // Pass the boolean value
+              isButtonEnabled: isButtonEnabled,
               slideAnimation: slideAnimation,
               fadeAnimation: fadeAnimation,
               onLoginPressed: handleLogin,

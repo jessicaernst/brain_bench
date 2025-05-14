@@ -437,4 +437,53 @@ class ProfileNotifier extends _$ProfileNotifier {
       state = AsyncError(e, stack);
     }
   }
+
+  /// Updates only the user's profile image.
+  ///
+  /// If [newImageFile] is provided, it will be compressed, uploaded,
+  /// and the user's photoUrl will be updated.
+  /// This is useful for auto-saving a provisionally displayed image (e.g., from contacts).
+  ///
+  /// Note: This method does NOT update the display name.
+  Future<void> updateUserProfileImage({
+    required XFile newImageFile,
+    required String userId,
+  }) async {
+    _logger.info('Attempting to auto-update profile image for user $userId.');
+    // We don't set state to loading here to avoid interfering with other UI states
+    // that might be watching the main profileNotifierProvider state for the full profile update.
+    // This is a background operation triggered by ensureUserExistsIfNeeded.
+    try {
+      final File imageFileToProcess = File(newImageFile.path);
+
+      final (:imageForUpload, :tempCompressedFile) = await _tryCompressImage(
+        imageFileToProcess,
+      );
+
+      final String? newImageUrl = await _uploadImageToStorageAndGetUrl(
+        userId,
+        imageForUpload,
+        ref.read(storageRepositoryProvider), // Pass the storage repository
+      );
+
+      // Only update photoUrl in the database
+      await _performDatabaseUpdate(
+        userId: userId,
+        displayName: '',
+        photoUrlToStoreInDb: newImageUrl,
+        dbRepository: await ref.read(quizMockDatabaseRepositoryProvider.future),
+      );
+
+      await _cleanupTemporaryImageFile(tempCompressedFile, imageFileToProcess);
+
+      _logger.info('Profile image auto-updated successfully for user $userId.');
+      ref.invalidate(currentUserModelProvider);
+    } catch (e, stack) {
+      _logger.severe(
+        'Error auto-updating profile image for user $userId',
+        e,
+        stack,
+      );
+    }
+  }
 }

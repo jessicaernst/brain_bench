@@ -13,13 +13,16 @@ class ContactHelper {
   static func handle(call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
       case "getUserContact":
-        getUserContact(result: result)
+        // Extract email from arguments
+        let arguments = call.arguments as? [String: Any]
+        let email = arguments?["email"] as? String
+        getUserContact(email: email, result: result)
       default:
         result(FlutterMethodNotImplemented)
     }
   }
 
-  private static func getUserContact(result: @escaping FlutterResult) {
+  private static func getUserContact(email: String?, result: @escaping FlutterResult) {
     let store = CNContactStore()
 
     // Request access to the user's contacts
@@ -32,31 +35,38 @@ class ContactHelper {
 
       // Define the contact fields to fetch: first name, last name, and profile image.
       // We are NOT fetching CNContactTypeKey anymore to avoid the potential crash.
-      let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactImageDataKey] as [CNKeyDescriptor]
+      let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactImageDataKey, CNContactEmailAddressesKey] as [CNKeyDescriptor]
       let request = CNContactFetchRequest(keysToFetch: keys)
+      
+      var foundContact: CNContact?
 
-      var foundContact: CNContact? = nil
-      var enumerationError: Error? = nil // Variable to store potential errors during enumeration
-
-      // Use do-catch to handle errors that might occur during the enumeration process itself
-      do {
-          // Iterate through contacts.
-          // ⚠️ WARNING: This logic finds the *first* contact with image data,
-          // which is NOT guaranteed to be the user's "Me" card.
-          try store.enumerateContacts(with: request) { contact, stop in
-              // Check only if image data exists.
-              // Accessing contact.contactType is avoided here to prevent the crash.
-              if contact.imageData != nil {
-                  foundContact = contact
-                  stop.pointee = true // Stop after finding the first match
+      if let userEmail = email, !userEmail.isEmpty {
+          // If email is provided, try to find a contact matching that email
+          // Note: CNContact.predicateForContacts(matchingEmailAddress:) is not directly available.
+          let trimmedUserEmail = userEmail.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+          
+          // We need to enumerate and check email addresses.
+          // Set predicate to nil to fetch all contacts, then we will filter by email manually.
+          request.predicate = nil 
+          do {
+              try store.enumerateContacts(with: request) { contact, stop in
+                  for emailEntry in contact.emailAddresses {
+                      // Check if the email entry matches the provided email
+                      let contactEmail = (emailEntry.value as String).trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+                      // Compare the trimmed email addresses
+                      if contactEmail == trimmedUserEmail {
+                          foundContact = contact
+                          stop.pointee = true 
+                          return
+                      }
+                  }
               }
+          } catch {
+              result(FlutterError(code: "ENUMERATION_ERROR", message: "Failed during contact enumeration by email", details: error.localizedDescription))
+              return
           }
-      } catch let error {
-          // Catch errors specifically from the enumerateContacts call
-          enumerationError = error
       }
 
-      // --- Process the result ---
       if let contact = foundContact {
           // If a contact with image data was found
           let name = "\(contact.givenName) \(contact.familyName)"
@@ -68,12 +78,9 @@ class ContactHelper {
               "name": name,
               "imageBase64": imageBase64
           ])
-      } else if let error = enumerationError {
-          // If an error occurred during the enumeration process
-          result(FlutterError(code: "ENUMERATION_ERROR", message: "Failed during contact enumeration", details: error.localizedDescription))
       } else {
           // If no contact with image data was found (and no error occurred)
-          result(nil) // Indicate that no suitable contact was found
+          result(nil) // Indicate that no suitable contact was found or matched
       }
     }
   }

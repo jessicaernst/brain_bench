@@ -6,7 +6,7 @@ import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.da
 import 'package:brain_bench/core/shared_widgets/cards/glass_card_view.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
-import 'package:cached_network_image/cached_network_image.dart'; // Import hinzufügen
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/material.dart';
@@ -29,6 +29,7 @@ class ProfileEditView extends HookWidget {
     required this.isActive,
     this.onImageSelected,
     this.selectedImageFile,
+    this.contactImageFile,
   });
 
   final TextEditingController displayNameController;
@@ -41,10 +42,13 @@ class ProfileEditView extends HookWidget {
   final Function(XFile)? onImageSelected;
   final XFile? selectedImageFile;
   final bool isActive;
+  final XFile? contactImageFile;
 
   @override
   Widget build(BuildContext context) {
     final imagePickerLogic = useImagePickerWrapper();
+    // State to track if loading the contact image prop failed
+    final contactImageLoadFailed = useState<bool>(false);
 
     useEffect(() {
       final selectedFile = imagePickerLogic.selectedImage.value;
@@ -62,30 +66,49 @@ class ProfileEditView extends HookWidget {
       // Listen specifically to the value from the hook's notifier
     }, [imagePickerLogic.selectedImage.value]);
 
-    // Determine which image to display based on the HOOK's state
+    // Determine which image to display with correct priority
     Widget imageDisplayWidget;
-    // Use the hook's state for the preview
-    if (imagePickerLogic.selectedImage.value != null) {
-      final fileImage = FileImage(
-        File(imagePickerLogic.selectedImage.value!.path),
-      );
+    final XFile? imagePickedInThisView = imagePickerLogic.selectedImage.value;
+    final XFile? imagePrefilledOrPreviouslySelected = selectedImageFile;
+    final String? firebaseImageUrl = userImageUrl;
+    final XFile? rawContactImageFromFileProp = contactImageFile;
+
+    if (imagePickedInThisView != null) {
       _logger.finer(
-        'Displaying locally selected image: ${imagePickerLogic.selectedImage.value!.path}',
+        'ProfileEditView: Displaying image picked in this view: ${imagePickedInThisView.path}',
       );
       imageDisplayWidget = CircleAvatar(
         radius: 80,
         backgroundColor: Colors.transparent,
-        backgroundImage: fileImage,
+        backgroundImage: FileImage(File(imagePickedInThisView.path)),
         onBackgroundImageError: (exception, stackTrace) {
-          _logger.warning('Error loading local profile image: $exception');
-          // Fallback to asset if local image fails (should be rare)
-          // In a real scenario, you might want to clear selectedImage.value here
+          _logger.warning(
+            'ProfileEditView: Error loading image picked in this view: $exception',
+          );
         },
       );
-    } else if (userImageUrl != null && userImageUrl!.isNotEmpty) {
-      _logger.finer('Displaying cached network image from URL: $userImageUrl');
+    } else if (imagePrefilledOrPreviouslySelected != null) {
+      _logger.finer(
+        'ProfileEditView: Displaying prefilled/previously selected image: ${imagePrefilledOrPreviouslySelected.path}',
+      );
+      imageDisplayWidget = CircleAvatar(
+        radius: 80,
+        backgroundColor: Colors.transparent,
+        backgroundImage: FileImage(
+          File(imagePrefilledOrPreviouslySelected.path),
+        ),
+        onBackgroundImageError: (exception, stackTrace) {
+          _logger.warning(
+            'ProfileEditView: Error loading prefilled/previously selected image: $exception',
+          );
+        },
+      );
+    } else if (firebaseImageUrl != null && firebaseImageUrl.isNotEmpty) {
+      _logger.finer(
+        'ProfileEditView: Displaying cached network image from URL: $firebaseImageUrl',
+      );
       imageDisplayWidget = CachedNetworkImage(
-        imageUrl: userImageUrl!,
+        imageUrl: firebaseImageUrl,
         imageBuilder:
             (context, imageProvider) => CircleAvatar(
               radius: 80,
@@ -95,27 +118,45 @@ class ProfileEditView extends HookWidget {
         placeholder:
             (context, url) => CircleAvatar(
               radius: 80,
-              backgroundColor:
-                  Colors
-                      .transparent, // Hintergrund transparent machen, damit kein Standard-Fallback durchscheint
+              backgroundColor: Colors.transparent,
               child:
                   defaultTargetPlatform == TargetPlatform.iOS
                       ? const CupertinoActivityIndicator(radius: 15)
                       : const CircularProgressIndicator(),
             ),
         errorWidget: (context, url, error) {
-          _logger.warning('Error loading user image in edit view: $error');
+          _logger.warning(
+            'ProfileEditView: Error loading Firebase image: $error',
+          );
           return CircleAvatar(
-            backgroundColor:
-                Colors
-                    .transparent, // Hintergrund transparent machen, damit kein Standard-Fallback durchscheint
+            backgroundColor: Colors.transparent,
             radius: 80,
             backgroundImage: Assets.images.evolution4.provider(),
           );
         },
       );
+      // Check if contact image should be displayed and if it hasn't failed loading
+    } else if (rawContactImageFromFileProp != null &&
+        !contactImageLoadFailed.value) {
+      _logger.finer(
+        'ProfileEditView: Displaying contact image from prop: ${rawContactImageFromFileProp.path}',
+      );
+      imageDisplayWidget = CircleAvatar(
+        radius: 80,
+        backgroundColor: Colors.transparent,
+        backgroundImage: FileImage(File(rawContactImageFromFileProp.path)),
+        onBackgroundImageError: (exception, stackTrace) {
+          _logger.warning(
+            'ProfileEditView: Error loading contact image from prop: $exception',
+          );
+          // Set state to indicate failure, so on next rebuild the asset is used
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            contactImageLoadFailed.value = true;
+          });
+        },
+      );
     } else {
-      _logger.finer('Displaying fallback asset image.');
+      _logger.finer('ProfileEditView: Displaying default placeholder image.');
       imageDisplayWidget = CircleAvatar(
         radius: 80,
         backgroundImage: Assets.images.evolution4.provider(),

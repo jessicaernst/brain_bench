@@ -382,4 +382,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileUpdateSuccessButImageFailed => 'Profile updated successfully, but the image upload failed.';
+
+  @override
+  String get profileContactImageAutoSaved => 'Profile image auto-saved successfully.';
 }

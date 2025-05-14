@@ -1,17 +1,21 @@
+import 'dart:io';
+
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/shared_widgets/cards/glass_card_view.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
+import 'package:brain_bench/business_logic/profile/profile_ui_state_providers.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
 
 final Logger _logger = Logger('ProfileView');
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends ConsumerWidget {
   const ProfileView({
     super.key,
     required this.userAsyncValue,
@@ -19,6 +23,7 @@ class ProfileView extends StatelessWidget {
     required this.textTheme,
     required this.theme,
     required this.userImageUrl,
+    this.contactImageFile, // Neuer Parameter
   });
 
   final AsyncValue<AppUser?> userAsyncValue;
@@ -26,9 +31,10 @@ class ProfileView extends StatelessWidget {
   final TextTheme textTheme;
   final ThemeData theme;
   final String? userImageUrl;
+  final XFile? contactImageFile; // Neues Feld
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GlassCardView(
       content: userAsyncValue.when(
         data: (user) {
@@ -40,6 +46,46 @@ class ProfileView extends StatelessWidget {
                 color: theme.colorScheme.error,
               ),
             );
+          }
+
+          ImageProvider? finalBackgroundImage;
+          Widget? avatarChild;
+
+          if (userImageUrl != null && userImageUrl!.isNotEmpty) {
+            _logger.finer('ProfileView: Using Firebase image: $userImageUrl');
+            // CachedNetworkImage will be the child.
+            // CircleAvatar's own backgroundImage can be a fallback if CNI fails AND CNI's errorWidget is SizedBox.shrink().
+            finalBackgroundImage =
+                Assets.images.evolution4.provider(); // Fallback for CNI
+            avatarChild = ClipOval(
+              child: CachedNetworkImage(
+                imageUrl: userImageUrl!,
+                fit: BoxFit.cover,
+                width: 160,
+                height: 160,
+                placeholder:
+                    (context, url) =>
+                        defaultTargetPlatform == TargetPlatform.iOS
+                            ? const CupertinoActivityIndicator(radius: 15)
+                            : const CircularProgressIndicator(),
+                errorWidget: (context, url, error) {
+                  _logger.warning(
+                    'ProfileView: Error loading Firebase image via CNI: $error. CircleAvatar will show its own backgroundImage (asset).',
+                  );
+                  return const SizedBox.shrink();
+                },
+              ),
+            );
+          } else if (contactImageFile != null) {
+            _logger.finer(
+              'ProfileView: Using contact image: ${contactImageFile!.path}',
+            );
+            finalBackgroundImage = FileImage(File(contactImageFile!.path));
+            avatarChild = null; // Using backgroundImage
+          } else {
+            _logger.finer('ProfileView: Using default placeholder asset.');
+            finalBackgroundImage = Assets.images.evolution4.provider();
+            avatarChild = null; // Using backgroundImage
           }
           // Display Username and Email
           return Column(
@@ -57,34 +103,26 @@ class ProfileView extends StatelessWidget {
                   ),
                   child: CircleAvatar(
                     radius: 80,
-                    backgroundColor: theme.colorScheme.surface.withAlpha(100),
-                    backgroundImage: Assets.images.evolution4.provider(),
-                    child:
-                        userImageUrl != null && userImageUrl!.isNotEmpty
-                            ? ClipOval(
-                              child: CachedNetworkImage(
-                                imageUrl: userImageUrl!,
-                                fit: BoxFit.cover,
-                                width: 160,
-                                height: 160,
-                                placeholder:
-                                    (context, url) =>
-                                        defaultTargetPlatform ==
-                                                TargetPlatform.iOS
-                                            ? const CupertinoActivityIndicator(
-                                              radius: 15,
-                                            )
-                                            : const CircularProgressIndicator(),
-                                errorWidget: (context, url, error) {
-                                  _logger.warning(
-                                    'Error loading user image via CachedNetworkImage: $error',
-                                  );
-                                  // Fallback to asset image in case of an error
-                                  return const SizedBox.shrink();
-                                },
-                              ),
-                            )
-                            : null, // If no userImageUrl, the backgroundImage (fallback asset) is used
+                    backgroundColor: Colors.transparent, // For glass effect
+                    backgroundImage: finalBackgroundImage,
+                    onBackgroundImageError:
+                        (finalBackgroundImage is FileImage)
+                            ? (exception, stackTrace) {
+                              _logger.warning(
+                                'ProfileView: Error loading contact image (FileImage) as backgroundImage: $exception. CircleAvatar will show transparent background.',
+                              );
+                              // Clear the provisional image so that on the next rebuild,
+                              // the logic falls back to the default asset.
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                ref
+                                    .read(
+                                      provisionalProfileImageProvider.notifier,
+                                    )
+                                    .clearImage();
+                              });
+                            }
+                            : null,
+                    child: avatarChild,
                   ),
                 ),
               ),

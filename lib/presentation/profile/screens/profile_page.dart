@@ -1,5 +1,7 @@
 import 'package:brain_bench/business_logic/profile/profile_notifier.dart';
+import 'package:brain_bench/business_logic/profile/profile_ui_state_providers.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
+import 'package:brain_bench/core/native_channels/contact_channel.dart';
 import 'package:brain_bench/core/shared_widgets/backgrounds/profile_settings_page_background.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/core/utils/profile/profile_page_utils.dart';
@@ -29,6 +31,11 @@ class ProfilePage extends HookConsumerWidget {
     final ValueNotifier<bool> isEditing = useState(false);
     final bool? previousIsEditing = usePrevious(isEditing.value);
     final ValueNotifier<XFile?> selectedImage = useState<XFile?>(null);
+    // Stores the state of selectedImage when entering edit mode
+    final ValueNotifier<XFile?> initialSelectedImageOnEdit = useState<XFile?>(
+      null,
+    );
+    // contactImageFile is now managed by provisionalProfileImageProvider
 
     final AsyncValue<UserModelState> userStateAsync = ref.watch(
       currentUserModelProvider,
@@ -72,6 +79,12 @@ class ProfilePage extends HookConsumerWidget {
         data: (_) {
           if (previous is AsyncLoading) {
             _logger.info('Profile update successful, listener triggered.');
+            // If update was successful and included an image, Firebase URL is now set.
+            // Clear the provisional image as Firebase image takes precedence.
+            if (selectedImage.value != null) {
+              // Use the clearImage method from the Notifier
+              ref.read(provisionalProfileImageProvider.notifier).clearImage();
+            }
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(localizations.profileUpdateSuccess),
@@ -85,40 +98,123 @@ class ProfilePage extends HookConsumerWidget {
       );
     });
 
-    // Effect to synchronize controllers with user data
-    useEffect(() {
-      void updateControllers(AppUser user) {
-        // Only update displayNameController if not editing or if it's empty,
-        // to preserve user's ongoing edits.
-        if (!isEditing.value || displayNameController.text.isEmpty) {
-          displayNameController.text = user.displayName ?? '';
+    // Effect to synchronize controllers with user data AND fetch contact image if needed
+    useEffect(
+      () {
+        void updateControllers(AppUser user) {
+          // Only update displayNameController if not editing or if it's empty,
+          // to preserve user's ongoing edits.
+          // Also, if displayName is empty and contactInfo has a name, prefill it.
+          if (!isEditing.value) {
+            displayNameController.text = user.displayName ?? '';
+          }
+          // Email is usually not editable by the user directly in this screen,
+          // so it can be updated more freely.
+          emailController.text = user.email;
         }
-        // Email is usually not editable by the user directly in this screen,
-        // so it can be updated more freely.
-        emailController.text = user.email;
-      }
 
-      // Listen to changes in currentUserModelProvider
-      final subscription = ref.listenManual<AsyncValue<UserModelState>>(
-        currentUserModelProvider,
-        (
-          AsyncValue<UserModelState>? previous,
-          AsyncValue<UserModelState> next,
-        ) {
-          next.whenData((state) {
-            if (state is UserModelData) updateControllers(state.user);
-          });
-        },
-      );
+        Future<void> fetchContactInfoIfNeeded(AppUser? currentUser) async {
+          if (currentUser == null) return;
 
-      // Initial sync when the widget builds or userStateAsync changes
-      userStateAsync.whenData((state) {
-        if (state is UserModelData) updateControllers(state.user);
-      });
+          final bool needsNameToPrefillOnLoad =
+              (currentUser.displayName == null ||
+                  currentUser.displayName!.isEmpty) &&
+              displayNameController.text.isEmpty; // Check controller too
 
-      // Cleanup the listener when the widget is disposed or dependencies change
-      return subscription.close;
-    }, [userStateAsync, isEditing.value]); // Dependencies for the effect
+          // Image fetching is now handled by ensureUserExistsIfNeeded.
+          // We only handle name prefill here if still needed.
+          if (needsNameToPrefillOnLoad) {
+            _logger.info(
+              'ProfilePage Effect: Needs to prefill name from contact. Name: $needsNameToPrefillOnLoad',
+            );
+            try {
+              // Consider if ContactChannel call is still needed here if ensureUserExistsIfNeeded
+              // already updates the user model with the contact name.
+              // For now, keeping it for direct controller update if that's faster.
+              final contactInfo =
+                  await ContactChannel.getUserContactFromDevice();
+              if (contactInfo != null) {
+                if (needsNameToPrefillOnLoad &&
+                    contactInfo.name != null &&
+                    contactInfo.name!.isNotEmpty) {
+                  // Only update if the controller is still empty,
+                  // to avoid overwriting user edits if they were quick.
+                  if (displayNameController.text.isEmpty) {
+                    displayNameController.text = contactInfo.name!;
+                  }
+                  _logger.info(
+                    'ProfilePage Effect: Prefilled display name from contact: ${contactInfo.name}',
+                  );
+                }
+              }
+            } catch (e, st) {
+              _logger.severe(
+                'ProfilePage Effect: Error fetching contact info',
+                e,
+                st,
+              );
+            }
+          }
+        }
+
+        // If Firebase user has a photoUrl, ensure provisional one is cleared
+        userStateAsync.whenData((state) {
+          if (state is UserModelData &&
+              state.user.photoUrl != null &&
+              state.user.photoUrl!.isNotEmpty) {
+            // Use the clearImage method from the Notifier
+            ref.read(provisionalProfileImageProvider.notifier).clearImage();
+          }
+        });
+
+        // Listen to changes in currentUserModelProvider
+        final subscription = ref.listenManual<AsyncValue<UserModelState>>(
+          currentUserModelProvider,
+          (
+            AsyncValue<UserModelState>? previous,
+            AsyncValue<UserModelState> next,
+          ) {
+            next.whenData((state) {
+              if (state is UserModelData) {
+                updateControllers(state.user);
+                // Clear provisional image if Firebase image is now available
+                if (state.user.photoUrl != null &&
+                    state.user.photoUrl!.isNotEmpty) {
+                  // Use the clearImage method from the Notifier
+                  ref
+                      .read(provisionalProfileImageProvider.notifier)
+                      .clearImage();
+                }
+                // Call fetchContactInfoIfNeeded only for potential name prefill.
+                fetchContactInfoIfNeeded(
+                  state.user,
+                ); // Image part is removed from this function.
+              }
+            });
+          },
+          fireImmediately: true, // Ensure it runs for the initial state
+        );
+
+        // Initial sync when the widget builds or userStateAsync changes
+        userStateAsync.whenData((state) {
+          if (state is UserModelData) {
+            updateControllers(state.user);
+            // fetchContactInfoIfNeeded is called by the listener now with fireImmediately
+          }
+        });
+
+        // Cleanup the listener when the widget is disposed or dependencies change
+        return subscription.close;
+      },
+      [
+        userStateAsync,
+        isEditing.value,
+        displayNameController,
+        emailController,
+        selectedImage,
+      ],
+    ); // Added dependencies
+
     // Dispose controllers when the widget is unmounted
     useEffect(
       () {
@@ -149,8 +245,16 @@ class ProfilePage extends HookConsumerWidget {
 
     final String currentDisplayName =
         useListenable(displayNameController).text.trim();
+
     final bool nameChanged = currentDisplayName != originalDisplayName;
-    final bool imageChanged = selectedImage.value != null;
+
+    // Image has changed if the current selectedImage is different from
+    // what was selected when entering edit mode (or if something is selected now and nothing was then)
+    // AND if selectedImage is not null (meaning user picked something or it was prefilled)
+    final bool imageChanged =
+        selectedImage.value != null &&
+        selectedImage.value?.path != initialSelectedImageOnEdit.value?.path;
+
     final bool hasChanges = nameChanged || imageChanged;
     final bool isSaveEnabled = hasChanges && !profileUpdateState.isLoading;
 
@@ -183,6 +287,7 @@ class ProfilePage extends HookConsumerWidget {
         currentDisplayName: currentDisplayName,
         selectedImage: selectedImage.value,
         onValidationError: () {
+          _logger.warning('Save validation failed: Display name is empty.');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(localizations.profileDisplayNameEmptyError)),
           );
@@ -192,33 +297,79 @@ class ProfilePage extends HookConsumerWidget {
 
     void toggleEditMode() {
       _logger.fine('Toggling edit mode. Current state: ${isEditing.value}');
+
       if (!isEditing.value) {
-        userStateAsync.whenData((state) {
-          if (state is UserModelData) {
-            displayNameController.text = state.user.displayName ?? '';
-          }
-        });
-        selectedImage.value = null;
+        // === ENTERING EDIT MODE ===
+        _logger.fine('Entering edit mode.');
+        // First, ensure controllers reflect the current persistent state
+        // The useEffect hook has already attempted to prefill from contacts if needed.
+        // and clear any previously selected image from a cancelled edit session.
+        final AppUser? currentUser = userStateAsync.maybeWhen(
+          data:
+              (dataState) => dataState is UserModelData ? dataState.user : null,
+          orElse: () => null,
+        );
+
+        displayNameController.text = currentUser?.displayName ?? '';
+        // If a contact image was fetched and no Firebase image exists,
+        final currentProvisionalImage = ref.read(
+          provisionalProfileImageProvider,
+        );
+        // and no image was selected by the user yet in this session,
+        // pre-fill selectedImage with the contact image for editing.
+        if (selectedImage.value == null &&
+            currentProvisionalImage != null &&
+            initialSelectedImageOnEdit.value ==
+                null && // Ensure we only prefill once per edit session start
+            (currentUser?.photoUrl == null || currentUser!.photoUrl!.isEmpty)) {
+          selectedImage.value = currentProvisionalImage;
+          _logger.info(
+            'Entering edit mode: Pre-filled selectedImage with contactImageFile.',
+          );
+        } // Otherwise, selectedImage.value remains null or what user picked.
+
+        // Store the initial state of selectedImage (could be null, or prefilled provisional)
+        // This must happen AFTER any potential prefill logic above.
+        initialSelectedImageOnEdit.value = selectedImage.value;
+        _logger.fine(
+          'Entering edit mode. initialSelectedImageOnEdit set to: ${initialSelectedImageOnEdit.value?.path ?? "null"}',
+        );
+
+        isEditing.value = true;
       } else {
-        selectedImage.value = null;
+        // === LEAVING EDIT MODE (Cancel button was effectively pressed) ===
+        _logger.fine('Leaving edit mode. Resetting changes.');
+        selectedImage.value = null; // Clear any selected image
+        // Reset display name to original from user state
         userStateAsync.whenData((state) {
+          // This ensures it uses the latest from the provider
           if (state is UserModelData) {
             displayNameController.text = state.user.displayName ?? '';
+          } else {
+            // Fallback if user data isn't available for some reason
+            displayNameController.text = originalDisplayName;
           }
         });
+        // If we were editing the contact image and cancelled, clear selectedImage
+        // so the contactImageFile (if any) is shown again via ProfilePageBody logic.
+        // If there was a Firebase image, selectedImage.value = null is correct.
+        selectedImage.value = null;
+        initialSelectedImageOnEdit.value = null; // Reset for next edit session
+        isEditing.value = false;
       }
-      isEditing.value = !isEditing.value;
     }
 
     void backAction() {
       if (isEditing.value) {
         _logger.fine('Back action in edit mode. Discarding changes.');
-        selectedImage.value = null;
         userStateAsync.whenData((state) {
           if (state is UserModelData) {
             displayNameController.text = state.user.displayName ?? '';
           }
         });
+        // Similar to cancel in toggleEditMode
+        selectedImage.value = null;
+        initialSelectedImageOnEdit.value = null; // Reset for next edit session
         isEditing.value = false;
       } else {
         _logger.fine('Back action in view mode. Popping route.');
@@ -253,7 +404,10 @@ class ProfilePage extends HookConsumerWidget {
               theme: theme,
               userImageUrl: userImageUrl,
               isSaveEnabled: isSaveEnabled,
-              selectedImage: selectedImage,
+              selectedImage: selectedImage, // This is ValueNotifier<XFile?>
+              contactImageFile: ref.watch(
+                provisionalProfileImageProvider,
+              ), // This is XFile?
               handleImageSelection: handleImageSelection,
               handleSaveChanges: handleSaveChanges,
             ),

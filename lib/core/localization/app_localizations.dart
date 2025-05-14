@@ -844,6 +844,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile updated successfully, but the image upload failed.'**
   String get profileUpdateSuccessButImageFailed;
+
+  /// Message shown when the profile image is automatically saved successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Profile image auto-saved successfully.'**
+  String get profileContactImageAutoSaved;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

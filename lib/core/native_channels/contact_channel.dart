@@ -30,16 +30,21 @@ class ContactChannel {
   /// Returns a [DeviceContactInfo] object containing the name and base64 image string
   /// if successful and contact info is available.
   /// Returns null if permission is denied, no contact is found/set up, or an error occurs.
-  static Future<DeviceContactInfo?> getUserContactFromDevice() async {
+  static Future<DeviceContactInfo?> getUserContactFromDevice({
+    String? userEmail,
+  }) async {
     try {
       _logger.info(
-        'Invoking native method "getUserContact" on channel "$_channelName".',
+        'Invoking native method "getUserContact" on channel "$_channelName" with email: ${userEmail ?? "N/A"}.',
       );
 
       // Invoke the method. Expect a Map<String, String?> or null from Swift.
       // Using Map<Object?, Object?> for broader compatibility initially.
       final result = await _channel.invokeMethod<Map<Object?, Object?>>(
         'getUserContact',
+        // Pass the email as an argument to the native method
+        // The native side (Swift) will expect a dictionary with an "email" key.
+        {'email': userEmail},
       );
 
       if (result == null) {

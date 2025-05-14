@@ -21,6 +21,7 @@ class ProfilePageBody extends HookConsumerWidget {
     required this.userImageUrl,
     required this.isSaveEnabled,
     required this.selectedImage,
+    required this.contactImageFile, // This will now be XFile? directly
     required this.handleImageSelection,
     required this.handleSaveChanges,
   });
@@ -36,6 +37,7 @@ class ProfilePageBody extends HookConsumerWidget {
   final String? userImageUrl;
   final bool isSaveEnabled;
   final ValueNotifier<XFile?> selectedImage;
+  final XFile? contactImageFile; // Changed from ValueNotifier<XFile?> to XFile?
   final void Function(XFile) handleImageSelection;
   final VoidCallback handleSaveChanges;
 
@@ -55,7 +57,8 @@ class ProfilePageBody extends HookConsumerWidget {
             userImageUrl: userImageUrl,
             isSaveEnabled: isSaveEnabled,
             selectedImage: selectedImage,
-            userAsyncValue: AsyncData(user), // Pass AsyncData directly
+            contactImageFile: contactImageFile, // Pass the XFile? directly
+            userAsyncValue: AsyncData(user),
             handleImageSelection: handleImageSelection,
             handleSaveChanges: handleSaveChanges,
           ),

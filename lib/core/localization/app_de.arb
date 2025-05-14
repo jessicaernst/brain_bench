@@ -499,5 +499,9 @@
     "profileUpdateSuccessButImageFailed": "Profil erfolgreich aktualisiert, aber das Bild konnte nicht hochgeladen werden.",
     "@profileUpdateSuccessButImageFailed": {
         "description": "Success message shown when the profile is updated but the image upload fails"
+    },
+    "profileContactImageAutoSaved": "Profilbild automatisch gespeichert.",
+    "@profileContactImageAutoSaved": {
+        "description": "Message shown when the profile image is automatically saved"
     }
 }

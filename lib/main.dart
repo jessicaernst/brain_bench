@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:auto_hyphenating_text/auto_hyphenating_text.dart';
 import 'package:brain_bench/app/app.dart';
+import 'package:brain_bench/core/utils/file_cleanup_utils.dart';
 import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
 import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
 import 'package:brain_bench/data/repositories/firebase_auth_repository_impl.dart';
-// Import all Firebase config files
 import 'package:brain_bench/services/firebase_options_dev.dart' as dev;
 import 'package:brain_bench/services/firebase_options_prod.dart' as prod;
 import 'package:brain_bench/services/firebase_options_test.dart' as test;
@@ -106,6 +106,17 @@ Future<void> main() async {
 
   // Lock orientation to portrait mode
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  // Perform cleanup of old temporary files from contact channel
+  // This runs in the background and doesn't block app start significantly
+  // We are not awaiting this, so it runs in the background.
+  cleanupOldTempFiles(prefix: 'contact_image_ensure_user_')
+      .then(
+        (_) => _log.info('Temporary contact image cleanup process initiated.'),
+      )
+      .catchError(
+        (e, s) => _log.warning('Temporary contact image cleanup failed.', e, s),
+      );
 
   // Remove splash screen after init
   FlutterNativeSplash.remove();

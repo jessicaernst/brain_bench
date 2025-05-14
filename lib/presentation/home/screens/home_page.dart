@@ -1,4 +1,5 @@
 import 'package:brain_bench/business_logic/home/home_providers.dart';
+import 'package:brain_bench/business_logic/profile/profile_ui_state_providers.dart';
 import 'package:brain_bench/core/extensions/responsive_context.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/shared_widgets/buttons/profile_button_view.dart';
@@ -62,6 +63,43 @@ class HomePage extends HookConsumerWidget {
       // Cleanup the listener
       return subscription.close;
     }, const []);
+
+    // Listener for the Snackbar-Provider to show contact image auto-save notification
+    ref.listen<bool>(showContactImageAutoSaveSnackbarProvider, (
+      bool? previous, // previous can be null on first listen
+      next,
+    ) {
+      if (next == true) {
+        // Ensure context is still valid if this runs delayed
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                localizations.profileContactImageAutoSaved,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              duration: const Duration(seconds: 4),
+              backgroundColor: BrainBenchColors.correctAnswerGlass,
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
+          );
+          // Reset the provider so the snackbar doesn't re-trigger on rebuilds
+          // Doing this in a post-frame callback is safer to avoid modifying state
+          // during a build or notification phase.
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (ref.read(showContactImageAutoSaveSnackbarProvider)) {
+              // Check if still true before resetting
+              ref
+                  .read(showContactImageAutoSaveSnackbarProvider.notifier)
+                  .reset();
+            }
+          });
+        }
+      }
+    });
 
     // Effect to listen for changes in the selected category from SharedPreferences
     List<Article> itemsForArticle;
