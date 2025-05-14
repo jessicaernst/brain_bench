@@ -163,11 +163,13 @@ class BrainBenchTheme {
       color: BrainBenchColors.flutterSky,
       circularTrackColor: BrainBenchColors.deepDive,
     ),
+
     colorScheme: const ColorScheme.dark(
       surface: BrainBenchColors.deepDive,
       secondary: BrainBenchColors.flutterSky,
       error: BrainBenchColors.falseQuestionGlass,
     ).copyWith(surface: BrainBenchColors.deepDive),
+
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: BrainBenchColors.deepDive,
       selectedItemColor: BrainBenchColors.flutterSky,

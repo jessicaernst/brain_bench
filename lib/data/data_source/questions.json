@@ -179,6 +179,66 @@
             ],
             "explanationEn": "Dart supports `for`, `while`, and `foreach` loops.",
             "explanationDe": "Dart unterstützt `for`-, `while`- und `foreach`-Schleifen."
+        },
+        {
+            "id": "q1-white-space",
+            "topicId": "1b-design-001",
+            "questionEn": "What is the primary purpose of using white space in design?",
+            "questionDe": "Was ist der Hauptzweck von Weißraum im Design?",
+            "type": "singleChoice",
+            "answerIds": [
+                "a1",
+                "a2",
+                "a3",
+                "a4"
+            ],
+            "explanationEn": "White space helps to reduce cognitive overload and improves readability by separating elements.",
+            "explanationDe": "Weißraum hilft, die kognitive Belastung zu reduzieren und verbessert die Lesbarkeit, indem Elemente voneinander getrennt werden."
+        },
+        {
+            "id": "q2-design-principles",
+            "topicId": "1b-design-001",
+            "questionEn": "Which of the following are core principles of good visual design?",
+            "questionDe": "Welche der folgenden sind grundlegende Prinzipien guten visuellen Designs?",
+            "type": "multipleChoice",
+            "answerIds": [
+                "a5",
+                "a6",
+                "a7",
+                "a8"
+            ],
+            "explanationEn": "Alignment, contrast, hierarchy, and consistency are all key to effective visual communication.",
+            "explanationDe": "Ausrichtung, Kontrast, Hierarchie und Konsistenz sind entscheidend für eine effektive visuelle Kommunikation."
+        },
+        {
+            "id": "q3-contrast",
+            "topicId": "1b-design-001",
+            "questionEn": "What does the principle of “contrast” help achieve in a design?",
+            "questionDe": "Was bewirkt das Prinzip des „Kontrasts“ im Design?",
+            "type": "singleChoice",
+            "answerIds": [
+                "a9",
+                "a10",
+                "a11",
+                "a12"
+            ],
+            "explanationEn": "Contrast guides attention and improves the structure by visually distinguishing elements.",
+            "explanationDe": "Kontrast lenkt die Aufmerksamkeit und verbessert die Struktur, indem er Elemente visuell unterscheidet."
+        },
+        {
+            "id": "q4-typography",
+            "topicId": "1b-design-001",
+            "questionEn": "Which practices contribute to better typography in UI design?",
+            "questionDe": "Welche Praktiken tragen zu besserer Typografie im UI-Design bei?",
+            "type": "multipleChoice",
+            "answerIds": [
+                "a13",
+                "a14",
+                "a15",
+                "a16"
+            ],
+            "explanationEn": "Consistent line spacing, proper hierarchy, and sufficient contrast all enhance typography.",
+            "explanationDe": "Konsistenter Zeilenabstand, klare Hierarchie und ausreichender Kontrast verbessern die Typografie."
         }
     ]
 }

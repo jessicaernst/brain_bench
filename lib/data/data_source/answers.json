@@ -605,6 +605,102 @@
             "textEn": "BigInt",
             "textDe": "BigInt",
             "isCorrect": false
+        },
+        {
+            "id": "a1",
+            "textEn": "To create visual noise",
+            "textDe": "Um visuelles Rauschen zu erzeugen",
+            "isCorrect": false
+        },
+        {
+            "id": "a2",
+            "textEn": "To fill empty space",
+            "textDe": "Um leeren Raum zu füllen",
+            "isCorrect": false
+        },
+        {
+            "id": "a3",
+            "textEn": "To separate elements and improve readability",
+            "textDe": "Um Elemente zu trennen und die Lesbarkeit zu verbessern",
+            "isCorrect": true
+        },
+        {
+            "id": "a4",
+            "textEn": "To display advertisements",
+            "textDe": "Um Werbung anzuzeigen",
+            "isCorrect": false
+        },
+        {
+            "id": "a5",
+            "textEn": "Alignment",
+            "textDe": "Ausrichtung",
+            "isCorrect": true
+        },
+        {
+            "id": "a6",
+            "textEn": "Confusion",
+            "textDe": "Verwirrung",
+            "isCorrect": false
+        },
+        {
+            "id": "a7",
+            "textEn": "Contrast",
+            "textDe": "Kontrast",
+            "isCorrect": true
+        },
+        {
+            "id": "a8",
+            "textEn": "Hierarchy",
+            "textDe": "Hierarchie",
+            "isCorrect": true
+        },
+        {
+            "id": "a9",
+            "textEn": "It hides important elements",
+            "textDe": "Es versteckt wichtige Elemente",
+            "isCorrect": false
+        },
+        {
+            "id": "a10",
+            "textEn": "It balances the layout",
+            "textDe": "Es balanciert das Layout aus",
+            "isCorrect": false
+        },
+        {
+            "id": "a11",
+            "textEn": "It enhances visual interest and clarity",
+            "textDe": "Es erhöht das visuelle Interesse und die Klarheit",
+            "isCorrect": true
+        },
+        {
+            "id": "a12",
+            "textEn": "It reduces load times",
+            "textDe": "Es reduziert Ladezeiten",
+            "isCorrect": false
+        },
+        {
+            "id": "a13",
+            "textEn": "Using many different fonts",
+            "textDe": "Verwendung vieler verschiedener Schriftarten",
+            "isCorrect": false
+        },
+        {
+            "id": "a14",
+            "textEn": "Maintaining consistent spacing",
+            "textDe": "Konsistente Abstände einhalten",
+            "isCorrect": true
+        },
+        {
+            "id": "a15",
+            "textEn": "Using clear hierarchy",
+            "textDe": "Verwendung einer klaren Hierarchie",
+            "isCorrect": true
+        },
+        {
+            "id": "a16",
+            "textEn": "Ensuring enough contrast",
+            "textDe": "Ausreichenden Kontrast sicherstellen",
+            "isCorrect": true
         }
     ]
 }
