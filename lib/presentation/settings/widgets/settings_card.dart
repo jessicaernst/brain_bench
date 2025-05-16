@@ -11,6 +11,9 @@ import 'package:logging/logging.dart';
 
 final Logger _logger = Logger('SettingsCard');
 
+/// Represents a card widget for displaying settings in the app.
+/// This widget includes options for toggling themes and selecting languages.
+/// It handles different states such as loading, error, and normal display.
 class SettingsCard extends ConsumerWidget {
   const SettingsCard({
     super.key,
@@ -78,7 +81,6 @@ class SettingsCard extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 24),
-          // --- Theme Row ---
           Row(
             children: [
               Text(
@@ -86,12 +88,10 @@ class SettingsCard extends ConsumerWidget {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const Spacer(),
-              // Show different UI based on state: Error > Busy > Switch
               if (hasThemeSaveError)
                 ErrorContentView(
-                  // Using the dedicated widget here
                   theme: theme,
-                  isBusy: isThemeBusy, // Pass busy state
+                  isBusy: isThemeBusy,
                   localizations: localizations,
                   handleRefresh: handleThemeRefresh,
                 )
@@ -118,25 +118,20 @@ class SettingsCard extends ConsumerWidget {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const Spacer(),
-              // Show different UI based on state: Error > Busy > Selection
-              if (hasLocaleSaveError) // Highest priority: Show error and refresh button
+              if (hasLocaleSaveError)
                 ErrorContentView(
-                  // Re-using the ErrorContentView
                   theme: theme,
-                  isBusy: isLocaleBusy, // Pass busy state
+                  isBusy: isLocaleBusy,
                   localizations: localizations,
-                  handleRefresh:
-                      handleLocaleRefresh, // Use locale refresh handler
+                  handleRefresh: handleLocaleRefresh,
                 )
-              else if (isLocaleBusy) // Next priority: Show loading indicator
+              else if (isLocaleBusy)
                 const SizedBox(
                   width: 20,
                   height: 20,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              else // Default: Show the language selection view
-                // Pass disabled state to LanguageSelectionView if needed
-                // Assuming LanguageSelectionView handles its own internal state
+              else
                 LanguageSelectionView(),
             ],
           ),
