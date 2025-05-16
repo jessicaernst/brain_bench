@@ -62,6 +62,36 @@ class UserMockRepositoryImpl implements UserRepository {
     }
   }
 
+  /// Retrieves all [AppUser] objects from the mock database.
+  ///
+  /// Returns:
+  ///   A [Future] that completes with a list of [AppUser] objects.
+  ///   Returns an empty list if an error occurs, the file does not exist, or is empty.
+  Future<List<AppUser>> getAllUsers() async {
+    try {
+      final file = File(userPath);
+      if (!await file.exists()) {
+        _logger.fine('User file not found at $userPath for getAllUsers.');
+        return [];
+      }
+
+      final jsonString = await file.readAsString();
+      if (jsonString.isEmpty) {
+        _logger.fine('User file is empty at $userPath for getAllUsers.');
+        return [];
+      }
+
+      final jsonMap = json.decode(jsonString);
+      final List usersData = jsonMap['users'] ?? [];
+      final userList = usersData.map((e) => AppUser.fromJson(e)).toList();
+      _logger.fine('getAllUsers: Found ${userList.length} users.');
+      return userList;
+    } catch (e, stack) {
+      _logger.severe('Error in getAllUsers: $e', e, stack);
+      return [];
+    }
+  }
+
   /// Saves an [AppUser] object to the mock database.
   ///
   /// Typically used for creating a new user entry.

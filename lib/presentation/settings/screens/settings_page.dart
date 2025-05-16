@@ -86,31 +86,21 @@ class SettingsPage extends ConsumerWidget {
         children: [
           const ProfileSettingsPageBackground(),
           SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: SettingsCard(
-                      localizations: localizations,
-                      hasThemeSaveError: hasThemeSaveError,
-                      theme: theme,
-                      isThemeBusy: isThemeBusy,
-                      isSwitchOn: isSwitchOn,
-                      iconColor: iconColor,
-                      dividerColor: dividerColor,
-                      hasLocaleSaveError: hasLocaleSaveError,
-                      isLocaleBusy: isLocaleBusy,
-                    ),
-                  ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: SettingsCard(
+                  localizations: localizations,
+                  hasThemeSaveError: hasThemeSaveError,
+                  theme: theme,
+                  isThemeBusy: isThemeBusy,
+                  isSwitchOn: isSwitchOn,
+                  iconColor: iconColor,
+                  dividerColor: dividerColor,
+                  hasLocaleSaveError: hasLocaleSaveError,
+                  isLocaleBusy: isLocaleBusy,
                 ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Firestore data upload'),
-                ),
-              ],
+              ),
             ),
           ),
         ],
