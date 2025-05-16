@@ -1,6 +1,6 @@
 import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
 import 'package:brain_bench/data/repositories/user_mock_repository_impl.dart';
-import 'package:brain_bench/data/repositories/user_repository.dart'; // Importiere das UserRepository Interface
+import 'package:brain_bench/data/repositories/user_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
