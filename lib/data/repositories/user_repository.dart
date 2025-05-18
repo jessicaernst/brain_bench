@@ -1,3 +1,4 @@
+import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 
 /// An abstract class defining the contract for a user data repository.
@@ -58,4 +59,18 @@ abstract class UserRepository {
   /// Parameters:
   ///   - [userId]: The ID of the user to delete.
   Future<void> deleteUser(String userId);
+
+  /// Marks a topic as done for a specific user and updates their progress.
+  ///
+  /// Parameters:
+  ///   - [userId]: The ID of the user.
+  ///   - [topicId]: The ID of the topic to mark as done.
+  ///   - [categoryId]: The ID of the category the topic belongs to.
+  ///   - [topicsForCategory]: List of all topics in that category to calculate progress.
+  Future<void> markTopicAsDone({
+    required String userId,
+    required String topicId,
+    required String categoryId,
+    required List<Topic> topicsForCategory,
+  });
 }

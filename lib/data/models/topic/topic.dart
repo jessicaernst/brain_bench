@@ -26,7 +26,6 @@ class Topic with _$Topic {
     required String descriptionEn,
     String? descriptionDe,
     required String categoryId,
-    @Default(0.0) double progress,
   }) = _Topic;
 
   /// Creates a [Topic] object with a new unique ID.

@@ -151,7 +151,6 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
           descriptionEn: e['descriptionEn'],
           descriptionDe: e['descriptionDe'] as String?,
           categoryId: e['categoryId'],
-          progress: (e['progress'] as num?)?.toDouble() ?? 0.0,
         );
       }).toList();
     } on FileSystemException catch (e) {
@@ -351,39 +350,6 @@ class QuizMockDatabaseRepository implements DatabaseRepository {
       _logger.severe('FormatException in saveResult: $e');
     } catch (e) {
       _logger.severe('Error saving result: $e');
-    }
-  }
-
-  /// Marks a topic as done.
-  ///
-  /// This method updates the `isDone` property of a topic in the `topics.json` file.
-  /// Note: User-specific progress (like `isTopicDone` in the user model) is handled
-  /// by the `UserRepository`. This method only concerns the topic's state in quiz data.
-  ///   - [topicId]: The ID of the topic to mark as done.
-  /// Returns:
-  ///   A [Future] that completes when the topic has been marked as done.
-  ///   Logs an error if an exception occurs.
-  @override
-  Future<void> markTopicAsDone(
-    String topicId,
-    String categoryId,
-    String userId,
-  ) async {
-    try {
-      // Step 1: Update local topics.json
-      final file = File(topicsPath);
-      final String jsonString = await file.readAsString();
-      final Map<String, dynamic> jsonMap = json.decode(jsonString);
-      final List<dynamic> jsonData = jsonMap['topics'];
-
-      final topicIndex = jsonData.indexWhere((topic) => topic['id'] == topicId);
-      if (topicIndex != -1) {
-        jsonData[topicIndex]['isDone'] = true;
-        await file.writeAsString(jsonEncode(jsonMap), flush: true);
-        _logger.info('✅ Topic $topicId marked as done in topics.json');
-      }
-    } catch (e) {
-      _logger.severe('Error in markTopicAsDone: $e');
     }
   }
 

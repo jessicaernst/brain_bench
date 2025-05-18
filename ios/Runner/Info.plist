@@ -47,31 +47,33 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
+	<!-- ✅ Google Sign-In Config -->
 	<key>CFBundleURLTypes</key>
 	<array>
-	<dict>
-		<key>CFBundleTypeRole</key>
-		<string>Editor</string>
-		<key>CFBundleURLSchemes</key>
-		<array>
-		<string>com.googleusercontent.apps.280860007604-3fmli76469mq83bkkup1a8u95hmmutcj</string>
-		</array>
-	</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.280860007604-3c8us5lra624f1pklv60hu0lt506p6hp</string>
+			</array>
+		</dict>
 	</array>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-	<string>google</string>
-	<string>com-google-gidconsent</string>
-	</array>
+
 	<key>GIDClientID</key>
 	<string>280860007604-3c8us5lra624f1pklv60hu0lt506p6hp.apps.googleusercontent.com</string>
-	<key>NSLocalNetworkUsageDescription</key>
-	<string>Required to discover devices on your local network for debugging features like Hot Reload.</string>
-	<key>NSBonjourServices</key>
+
+	<key>ReverseClientID</key>
+	<string>com.googleusercontent.apps.280860007604-3c8us5lra624f1pklv60hu0lt506p6hp</string>
+
+	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>_dartobservatory._tcp</string>
+		<string>google</string>
+		<string>com-google-gidconsent</string>
 	</array>
-	
+
+	<!-- 📸 Permissions -->
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to your camera so you can take a new profile picture.</string>
 
@@ -83,5 +85,13 @@
 
 	<key>NSContactsUsageDescription</key>
 	<string>We need access to your contacts to personalize your profile with your contact photo.</string>
+
+	<!-- 🔍 Debug / Hot Reload Support -->
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Required to discover devices on your local network for debugging features like Hot Reload.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_dartobservatory._tcp</string>
+	</array>
 </dict>
 </plist>

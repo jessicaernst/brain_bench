@@ -1,11 +1,9 @@
 import 'package:brain_bench/business_logic/quiz/quiz_result_state.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
-import 'package:brain_bench/data/infrastructure/quiz/topic_providers.dart';
 import 'package:brain_bench/data/infrastructure/results/result_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/quiz/quiz_answer.dart';
 import 'package:brain_bench/data/models/result/result.dart';
-import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -25,7 +23,6 @@ final Logger _logger = Logger('QuizResultNotifier');
 /// - Calculating the total possible points, user points, and percentage.
 /// - Determining if the quiz was passed.
 /// - Saving the quiz result to the database.
-/// - Marking a topic as done in the database.
 @riverpod
 class QuizResultNotifier extends _$QuizResultNotifier {
   /// Builds the initial state of the notifier.
@@ -178,55 +175,28 @@ class QuizResultNotifier extends _$QuizResultNotifier {
       _logger.info('✅ Quiz result saved successfully.');
     } catch (e, s) {
       _logger.severe('❌ Error saving quiz result: $e', e, s);
-      // Consider rethrowing if the caller needs to handle this failure.
-      // rethrow;
     }
   }
 
   Future<void> markTopicAsDone(
-    AppUser user, // User-Objekt als Parameter
+    AppUser user,
     String topicId,
     String categoryId,
   ) async {
     _logger.info(
-      'Attempting to mark topic $topicId as done in category $categoryId for user ${user.id}',
+      'Attempting to mark topic $topicId as done in category $categoryId via SaveResultNotifier.',
     );
 
     try {
-      final quizRepo = await ref.read(
-        quizMockDatabaseRepositoryProvider.future,
-      );
-      final userRepo = await ref.read(userRepositoryProvider.future);
-      final List<Topic> topics = await _fetchCategoryTopics(categoryId);
-
-      // Step 1: Mark topic as done in the quiz repository (if it updates topic state directly)
-      await quizRepo.markTopicAsDone(topicId, categoryId, user.uid);
-
-      // Step 2: Update user's progress
-      final updatedTopicDoneMap = _updateTopicCompletionStatus(
-        user,
-        categoryId,
-        topicId,
-      );
-      final progress = _calculateCategoryProgress(
-        topics,
-        updatedTopicDoneMap[categoryId] ?? {},
-      );
-      _logger.fine(
-        'Calculated progress for category $categoryId: ${(progress * 100).toStringAsFixed(1)}%',
-      );
-
-      final userWithProgress = user.copyWith(
-        isTopicDone: updatedTopicDoneMap,
-        categoryProgress: {...user.categoryProgress, categoryId: progress},
-      );
-      await userRepo.updateUser(userWithProgress); // Use UserRepository
+      await ref
+          .read(saveResultNotifierProvider.notifier)
+          .markTopicAsDone(
+            topicId: topicId,
+            categoryId: categoryId,
+            userId: user.uid, // Pass the userId
+          );
       ref.invalidate(currentUserModelProvider);
-
       _logger.info('✅ Topic $topicId marked as done for category $categoryId.');
-      _logger.info(
-        '✅ Progress for $categoryId: ${(progress * 100).toStringAsFixed(1)}%',
-      );
     } catch (e, s) {
       _logger.severe(
         '❌ Error in markTopicAsDone for topic $topicId, category $categoryId: $e',
@@ -238,10 +208,7 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   }
 
   /// Updates the last played category ID for the current user in the database.
-  Future<void> updateLastPlayedCategory(
-    AppUser user, // User-Objekt als Parameter
-    String categoryId,
-  ) async {
+  Future<void> updateLastPlayedCategory(AppUser user, String categoryId) async {
     _logger.info(
       'Attempting to update lastPlayedCategoryId to "$categoryId" for user "${user.id}".',
     );
@@ -267,28 +234,6 @@ class QuizResultNotifier extends _$QuizResultNotifier {
   }
 
   // --- Private Helper Functions ---
-
-  Future<List<Topic>> _fetchCategoryTopics(String categoryId) async {
-    final topics = await ref.read(topicsProvider(categoryId).future);
-    _logger.fine('Fetched ${topics.length} topics for category $categoryId.');
-    return topics;
-  }
-
-  Map<String, Map<String, bool>> _updateTopicCompletionStatus(
-    AppUser user,
-    String categoryId,
-    String topicId,
-  ) {
-    final updatedMap = Map<String, Map<String, bool>>.from(
-      user.isTopicDone.map(
-        (key, value) => MapEntry(key, Map<String, bool>.from(value)),
-      ),
-    );
-    final categoryMap = updatedMap.putIfAbsent(categoryId, () => {});
-    categoryMap[topicId] = true;
-    _logger.finer('Updated topic completion status for $categoryId - $topicId');
-    return updatedMap;
-  }
 
   List<QuizAnswer> _filterAnswersByView(
     List<QuizAnswer> answers,
@@ -328,16 +273,6 @@ class QuizResultNotifier extends _$QuizResultNotifier {
 
   bool _checkIfPassed(double percentage) {
     return percentage >= 60.0;
-  }
-
-  double _calculateCategoryProgress(
-    List<Topic> categoryTopics,
-    Map<String, bool> doneTopicsMap,
-  ) {
-    if (categoryTopics.isEmpty) return 0.0;
-    final passedTopicsCount =
-        categoryTopics.where((t) => doneTopicsMap[t.id] == true).length;
-    return passedTopicsCount / categoryTopics.length;
   }
 }
 

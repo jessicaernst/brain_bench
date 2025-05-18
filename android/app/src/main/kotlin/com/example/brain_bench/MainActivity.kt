@@ -1,4 +1,4 @@
-package com.example.brain_bench
+package de.jessicaernst.brainbench
 
 import io.flutter.embedding.android.FlutterActivity
 

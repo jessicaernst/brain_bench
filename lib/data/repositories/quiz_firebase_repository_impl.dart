@@ -103,8 +103,6 @@ class QuizFirebaseRepositoryImpl implements DatabaseRepository {
     }
     try {
       final List<Answer> allAnswers = [];
-      // Firestore 'whereIn' queries are limited to 30 elements in the array.
-      // Batch requests if answerIds list is larger than 30.
       final List<List<String>> chunks = [];
       for (var i = 0; i < answerIds.length; i += 30) {
         chunks.add(
@@ -158,22 +156,6 @@ class QuizFirebaseRepositoryImpl implements DatabaseRepository {
       );
     } catch (e, stack) {
       _logger.severe('Error in saveResult: $e', e, stack);
-    }
-  }
-
-  @override
-  Future<void> markTopicAsDone(
-    String topicId,
-    String categoryId,
-    String userId,
-  ) async {
-    // This method updates the topic's general progress.
-    // User-specific progress is typically handled by UserRepository or a dedicated user progress collection.
-    try {
-      await _topicsCollection.doc(topicId).update({'progress': 1.0});
-      _logger.info('✅ Topic $topicId marked as done (progress set to 1.0).');
-    } catch (e, stack) {
-      _logger.severe('Error in markTopicAsDone for $topicId: $e', e, stack);
     }
   }
 

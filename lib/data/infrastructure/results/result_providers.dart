@@ -38,51 +38,20 @@ class SaveResultNotifier extends _$SaveResultNotifier {
   Future<void> markTopicAsDone({
     required String topicId,
     required String categoryId,
+    required String userId, // Add userId as a parameter
   }) async {
     final quizRepo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
+    // final quizRepo = await ref.watch(databaseRepositoryProvider.future); // Use this if you switch from mock
     final userRepo = await ref.watch(userRepositoryProvider.future);
-    final state = await ref.watch(currentUserModelProvider.future);
 
-    final user = switch (state) {
-      UserModelData(:final user) => user,
-      _ => throw Exception('❌ Kein eingeloggter User in markTopicAsDone'),
-    };
-
-    // Step 1: Mark topic as done in the quiz repository
-    await quizRepo.markTopicAsDone(topicId, categoryId, user.uid);
-
-    // Step 2: Update user's progress (isTopicDone and categoryProgress)
-    // This logic was previously in QuizMockDatabaseRepositoryImpl.markTopicAsDone
-
-    // Update user.isTopicDone
-    final updatedIsTopicDone = {
-      ...user.isTopicDone,
-      categoryId: {...(user.isTopicDone[categoryId] ?? {}), topicId: true},
-    };
-
-    // Calculate new progress for the category
-    // This requires fetching topics for the category from quizRepo
+    // Fetch topics for the category to pass to the user repository
     final topicsForCategory = await quizRepo.getTopics(categoryId);
-    final passedCount =
-        topicsForCategory
-            .where((topic) => updatedIsTopicDone[categoryId]?[topic.id] == true)
-            .length;
-    final progress =
-        topicsForCategory.isEmpty
-            ? 0.0
-            : passedCount / topicsForCategory.length;
 
-    final updatedCategoryProgress = {
-      ...user.categoryProgress,
-      categoryId: progress,
-    };
-
-    // Update the user in the user repository
-    await userRepo.updateUser(
-      user.copyWith(
-        isTopicDone: updatedIsTopicDone,
-        categoryProgress: updatedCategoryProgress,
-      ),
+    await userRepo.markTopicAsDone(
+      userId: userId, // Use the passed userId
+      topicId: topicId,
+      categoryId: categoryId,
+      topicsForCategory: topicsForCategory,
     );
 
     // Invalidate currentUserModelProvider to reflect changes

@@ -27,7 +27,6 @@ mixin _$Topic {
   String get descriptionEn => throw _privateConstructorUsedError;
   String? get descriptionDe => throw _privateConstructorUsedError;
   String get categoryId => throw _privateConstructorUsedError;
-  double get progress => throw _privateConstructorUsedError;
 
   /// Serializes this Topic to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,7 +49,6 @@ abstract class $TopicCopyWith<$Res> {
     String descriptionEn,
     String? descriptionDe,
     String categoryId,
-    double progress,
   });
 }
 
@@ -75,7 +73,6 @@ class _$TopicCopyWithImpl<$Res, $Val extends Topic>
     Object? descriptionEn = null,
     Object? descriptionDe = freezed,
     Object? categoryId = null,
-    Object? progress = null,
   }) {
     return _then(
       _value.copyWith(
@@ -109,11 +106,6 @@ class _$TopicCopyWithImpl<$Res, $Val extends Topic>
                     ? _value.categoryId
                     : categoryId // ignore: cast_nullable_to_non_nullable
                         as String,
-            progress:
-                null == progress
-                    ? _value.progress
-                    : progress // ignore: cast_nullable_to_non_nullable
-                        as double,
           )
           as $Val,
     );
@@ -135,7 +127,6 @@ abstract class _$$TopicImplCopyWith<$Res> implements $TopicCopyWith<$Res> {
     String descriptionEn,
     String? descriptionDe,
     String categoryId,
-    double progress,
   });
 }
 
@@ -159,7 +150,6 @@ class __$$TopicImplCopyWithImpl<$Res>
     Object? descriptionEn = null,
     Object? descriptionDe = freezed,
     Object? categoryId = null,
-    Object? progress = null,
   }) {
     return _then(
       _$TopicImpl(
@@ -193,11 +183,6 @@ class __$$TopicImplCopyWithImpl<$Res>
                 ? _value.categoryId
                 : categoryId // ignore: cast_nullable_to_non_nullable
                     as String,
-        progress:
-            null == progress
-                ? _value.progress
-                : progress // ignore: cast_nullable_to_non_nullable
-                    as double,
       ),
     );
   }
@@ -213,7 +198,6 @@ class _$TopicImpl implements _Topic {
     required this.descriptionEn,
     this.descriptionDe,
     required this.categoryId,
-    this.progress = 0.0,
   });
 
   factory _$TopicImpl.fromJson(Map<String, dynamic> json) =>
@@ -231,13 +215,10 @@ class _$TopicImpl implements _Topic {
   final String? descriptionDe;
   @override
   final String categoryId;
-  @override
-  @JsonKey()
-  final double progress;
 
   @override
   String toString() {
-    return 'Topic(id: $id, nameEn: $nameEn, nameDe: $nameDe, descriptionEn: $descriptionEn, descriptionDe: $descriptionDe, categoryId: $categoryId, progress: $progress)';
+    return 'Topic(id: $id, nameEn: $nameEn, nameDe: $nameDe, descriptionEn: $descriptionEn, descriptionDe: $descriptionDe, categoryId: $categoryId)';
   }
 
   @override
@@ -253,9 +234,7 @@ class _$TopicImpl implements _Topic {
             (identical(other.descriptionDe, descriptionDe) ||
                 other.descriptionDe == descriptionDe) &&
             (identical(other.categoryId, categoryId) ||
-                other.categoryId == categoryId) &&
-            (identical(other.progress, progress) ||
-                other.progress == progress));
+                other.categoryId == categoryId));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -268,7 +247,6 @@ class _$TopicImpl implements _Topic {
     descriptionEn,
     descriptionDe,
     categoryId,
-    progress,
   );
 
   /// Create a copy of Topic
@@ -293,7 +271,6 @@ abstract class _Topic implements Topic {
     required final String descriptionEn,
     final String? descriptionDe,
     required final String categoryId,
-    final double progress,
   }) = _$TopicImpl;
 
   factory _Topic.fromJson(Map<String, dynamic> json) = _$TopicImpl.fromJson;
@@ -310,8 +287,6 @@ abstract class _Topic implements Topic {
   String? get descriptionDe;
   @override
   String get categoryId;
-  @override
-  double get progress;
 
   /// Create a copy of Topic
   /// with the given fields replaced by the non-null parameter values.

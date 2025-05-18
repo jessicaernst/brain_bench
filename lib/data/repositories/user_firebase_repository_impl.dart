@@ -1,3 +1,4 @@
+import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/repositories/user_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -103,6 +104,70 @@ class UserFirebaseRepositoryImpl implements UserRepository {
       );
     } catch (e, stack) {
       _logger.severe('Error updating fields for $userId: $e', e, stack);
+    }
+  }
+
+  @override
+  Future<void> markTopicAsDone({
+    required String userId,
+    required String topicId,
+    required String categoryId,
+    required List<Topic> topicsForCategory,
+  }) async {
+    _logger.info(
+      'Attempting to mark topic $topicId in category $categoryId as done for user $userId.',
+    );
+    try {
+      final userDocRef = _usersCollection.doc(userId);
+      final userSnapshot = await userDocRef.get();
+
+      if (!userSnapshot.exists) {
+        _logger.warning('User $userId not found for marking topic as done.');
+        return;
+      }
+
+      // Explicitly check the type of the data.
+      final userData = userSnapshot.data();
+      if (userData == null) {
+        _logger.warning(
+          'User data is null for user $userId after snapshot.exists check.',
+        );
+        return;
+      }
+      final AppUser user = userData;
+
+      // Update isTopicDone
+      final updatedIsTopicDone = {
+        ...user.isTopicDone,
+        categoryId: {...(user.isTopicDone[categoryId] ?? {}), topicId: true},
+      };
+
+      // Calculate new progress for the category
+      final passedCount =
+          topicsForCategory
+              .where(
+                (topic) => updatedIsTopicDone[categoryId]?[topic.id] == true,
+              )
+              .length;
+      final progress =
+          topicsForCategory.isEmpty
+              ? 0.0
+              : passedCount / topicsForCategory.length;
+
+      await userDocRef.update({
+        'isTopicDone': updatedIsTopicDone,
+        'categoryProgress.$categoryId': progress,
+      });
+      _logger.info(
+        '✅ Topic $topicId marked as done for user $userId and progress updated.',
+      );
+    } catch (e, stack) {
+      _logger.severe(
+        'Error in markTopicAsDone for user $userId, topic $topicId: $e',
+        e,
+        stack,
+      );
+      throw Exception('Failed to mark topic as done: $e');
     }
   }
 }

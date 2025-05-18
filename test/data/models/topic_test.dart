@@ -11,7 +11,6 @@ void main() {
     const testDescriptionEn = 'Introduction to Flutter widgets and concepts.';
     const testDescriptionDe = 'Einführung in Flutter Widgets und Konzepte.';
     const testCategoryId = 'cat-prog-456';
-    const testProgress = 0.75;
 
     // Instance using default factory with explicit progress
     final testTopicWithProgress = Topic(
@@ -21,7 +20,6 @@ void main() {
       descriptionEn: testDescriptionEn,
       descriptionDe: testDescriptionDe,
       categoryId: testCategoryId,
-      progress: testProgress,
     );
 
     // Instance using default factory with default progress
@@ -43,7 +41,6 @@ void main() {
       'descriptionEn': testDescriptionEn,
       'descriptionDe': testDescriptionDe,
       'categoryId': testCategoryId,
-      'progress': testProgress,
     };
 
     // JSON representation without progress (for default testing)
@@ -71,17 +68,6 @@ void main() {
         expect(testTopicWithProgress.descriptionEn, testDescriptionEn);
         expect(testTopicWithProgress.descriptionDe, testDescriptionDe);
         expect(testTopicWithProgress.categoryId, testCategoryId);
-        expect(testTopicWithProgress.progress, testProgress);
-      },
-    );
-
-    test(
-      'Default factory constructor uses default progress when not provided',
-      () {
-        // Arrange & Act: testTopicDefaultProgress is already created
-
-        // Assert
-        expect(testTopicDefaultProgress.progress, 0.0); // Verify default value
       },
     );
 
@@ -118,7 +104,6 @@ void main() {
         expect(createdTopic.descriptionEn, createDescriptionEn);
         expect(createdTopic.descriptionDe, createDescriptionDe);
         expect(createdTopic.categoryId, createCategoryId);
-        expect(createdTopic.progress, 0.0); // Verify default progress
       },
     );
 
@@ -154,11 +139,6 @@ void main() {
           testTopicDefaultProgress.descriptionDe,
         );
         expect(topicFromJson.categoryId, testTopicDefaultProgress.categoryId);
-        expect(
-          topicFromJson.progress,
-          0.0,
-        ); // Default applied during deserialization
-        // Or compare directly if the default object was created without specifying progress
         expect(topicFromJson, equals(testTopicDefaultProgress));
       },
     );
@@ -173,19 +153,6 @@ void main() {
       expect(jsonOutput, equals(testJsonWithProgress));
     });
 
-    test('toJson correctly serializes object with default progress', () {
-      // Arrange: testTopicDefaultProgress is defined above
-      // Expected JSON should include the default progress value
-      final expectedJson = Map<String, dynamic>.from(testJsonWithoutProgress);
-      expectedJson['progress'] = 0.0; // Add default progress to expected JSON
-
-      // Act
-      final jsonOutput = testTopicDefaultProgress.toJson();
-
-      // Assert
-      expect(jsonOutput, equals(expectedJson));
-    });
-
     test('Equality operator (==) works correctly for identical instances', () {
       // Arrange
       final topic1 = Topic(
@@ -195,7 +162,6 @@ void main() {
         descriptionEn: 'Desc',
         descriptionDe: 'DescDe',
         categoryId: 'cat',
-        progress: 0.5,
       );
       final topic2 = Topic(
         id: 'eq-id',
@@ -204,7 +170,6 @@ void main() {
         descriptionEn: 'Desc',
         descriptionDe: 'DescDe',
         categoryId: 'cat',
-        progress: 0.5,
       );
 
       // Act & Assert
@@ -221,14 +186,12 @@ void main() {
         descriptionEn: 'Desc1',
         descriptionDe: 'DescDe1',
         categoryId: 'cat1',
-        progress: 0.1,
       );
       final topic2 = topic1.copyWith(id: 'diff-id-2'); // Different ID
       final topic3 = topic1.copyWith(nameDe: 'NameDe2'); // Different nameDe
       final topic4 = topic1.copyWith(
         categoryId: 'cat2',
       ); // Different categoryId
-      final topic5 = topic1.copyWith(progress: 0.9); // Different progress
 
       // Act & Assert
       expect(topic1 == topic2, isFalse);
@@ -237,8 +200,6 @@ void main() {
       expect(topic1.hashCode == topic3.hashCode, isFalse);
       expect(topic1 == topic4, isFalse);
       expect(topic1.hashCode == topic4.hashCode, isFalse);
-      expect(topic1 == topic5, isFalse);
-      expect(topic1.hashCode == topic5.hashCode, isFalse);
     });
 
     test('copyWith creates a new instance with updated values', () {
@@ -255,13 +216,11 @@ void main() {
       final copiedWithCategoryId = testTopicWithProgress.copyWith(
         categoryId: 'new-cat-id',
       );
-      final copiedWithProgress = testTopicWithProgress.copyWith(progress: 1.0);
 
       // Assert
       // Check updated value and that others remain the same
       expect(copiedWithId.id, 'new-topic-id');
       expect(copiedWithId.nameEn, testTopicWithProgress.nameEn);
-      expect(copiedWithId.progress, testTopicWithProgress.progress);
 
       expect(copiedWithNameEn.nameEn, 'Advanced Flutter');
       expect(copiedWithNameEn.id, testTopicWithProgress.id);
@@ -276,13 +235,8 @@ void main() {
       expect(copiedWithCategoryId.categoryId, 'new-cat-id');
       expect(copiedWithCategoryId.id, testTopicWithProgress.id);
 
-      expect(copiedWithProgress.progress, 1.0);
-      expect(copiedWithProgress.id, testTopicWithProgress.id);
-      expect(copiedWithProgress.nameDe, testTopicWithProgress.nameDe);
-
       // Ensure original object is unchanged
       expect(testTopicWithProgress.id, testId);
-      expect(testTopicWithProgress.progress, testProgress);
     });
   });
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/repositories/user_repository.dart';
 import 'package:logging/logging.dart';
@@ -312,6 +313,101 @@ class UserMockRepositoryImpl implements UserRepository {
       );
     } catch (e, stack) {
       _logger.severe('Error updating fields for $userId: $e', e, stack);
+    }
+  }
+
+  @override
+  Future<void> markTopicAsDone({
+    required String userId,
+    required String topicId,
+    required String categoryId,
+    required List<Topic> topicsForCategory,
+  }) {
+    _logger.info(
+      'Attempting to mark topic $topicId in category $categoryId as done for user $userId (Mock).',
+    );
+    try {
+      final file = File(userPath);
+      if (!file.existsSync()) {
+        _logger.warning(
+          'User file not found at $userPath for marking topic as done.',
+        );
+        return Future.value();
+      }
+
+      final jsonString = file.readAsStringSync();
+      if (jsonString.isEmpty) {
+        _logger.warning(
+          'User file is empty at $userPath for marking topic as done.',
+        );
+        return Future.value();
+      }
+
+      final jsonMap = json.decode(jsonString) as Map<String, dynamic>;
+      final List<dynamic> usersData = jsonMap['users'] as List<dynamic>? ?? [];
+
+      final userIndex = usersData.indexWhere(
+        (u) => u is Map && u['uid'] == userId,
+      );
+
+      if (userIndex == -1) {
+        _logger.warning(
+          'User $userId not found for marking topic as done (Mock).',
+        );
+        return Future.value();
+      }
+
+      // Explicitly check the type of the data.
+      final rawUserData = usersData[userIndex];
+      if (rawUserData is! Map<String, dynamic>) {
+        _logger.severe(
+          'User data for $userId at index $userIndex is not of type Map<String, dynamic>. Actual type: ${rawUserData.runtimeType}',
+        );
+        throw Exception(
+          'User data is not of type Map<String, dynamic> in mock.',
+        );
+      }
+      // Now we are more confident to parse it.
+      final AppUser user = AppUser.fromJson(rawUserData);
+
+      // Update isTopicDone
+      final updatedIsTopicDone = {
+        ...user.isTopicDone,
+        categoryId: {...(user.isTopicDone[categoryId] ?? {}), topicId: true},
+      };
+
+      // Calculate new progress for the category
+      final passedCount =
+          topicsForCategory
+              .where(
+                (topic) => updatedIsTopicDone[categoryId]?[topic.id] == true,
+              )
+              .length;
+      final progress =
+          topicsForCategory.isEmpty
+              ? 0.0
+              : passedCount / topicsForCategory.length;
+
+      final updatedUser = user.copyWith(
+        isTopicDone: updatedIsTopicDone,
+        categoryProgress: {...user.categoryProgress, categoryId: progress},
+      );
+
+      usersData[userIndex] = updatedUser.toJson();
+      jsonMap['users'] = usersData;
+
+      file.writeAsStringSync(jsonEncode(jsonMap));
+      _logger.info(
+        '✅ Topic $topicId marked as done for user $userId and progress updated (Mock).',
+      );
+      return Future.value();
+    } catch (e, stack) {
+      _logger.severe(
+        'Error in markTopicAsDone for user $userId, topic $topicId (Mock): $e',
+        e,
+        stack,
+      );
+      throw Exception('Failed to mark topic as done in mock: $e');
     }
   }
 }
