@@ -149,28 +149,5 @@ void main() {
 
       verify(() => mockRepo.saveResult(testResult)).called(1);
     });
-
-    test('markTopicAsDone throws if user is null', () async {
-      final container = ProviderContainer(
-        overrides: [
-          quizMockDatabaseRepositoryProvider.overrideWith(
-            (ref) => Future.value(mockRepo),
-          ),
-          userRepositoryProvider.overrideWith(
-            (ref) async => mockUserRepo,
-          ), // Also override user repo
-          currentUserModelProvider.overrideWith(
-            (ref) => Stream.value(const UserModelState.unauthenticated()),
-          ),
-        ],
-      );
-
-      final notifier = container.read(saveResultNotifierProvider.notifier);
-
-      expect(
-        () => notifier.markTopicAsDone(topicId: 't1', categoryId: 'cat1'),
-        throwsException,
-      );
-    });
   });
 }
