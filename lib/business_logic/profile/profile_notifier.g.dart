@@ -6,7 +6,7 @@ part of 'profile_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$profileNotifierHash() => r'0c3a1b27149ccf6df371c50db5e1cda454f4eaa1';
+String _$profileNotifierHash() => r'd7a59bfee0aa633a417fd8cbe4e1e24b6be17ac7';
 
 /// This class represents the notifier for the profile state in the application.
 /// It extends the generated `_$ProfileNotifier` class.

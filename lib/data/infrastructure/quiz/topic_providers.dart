@@ -7,6 +7,6 @@ part 'topic_providers.g.dart';
 
 @riverpod
 Future<List<Topic>> topics(Ref ref, String categoryId) async {
-  final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
+  final repo = ref.watch(quizFirebaseRepositoryProvider);
   return repo.getTopics(categoryId);
 }

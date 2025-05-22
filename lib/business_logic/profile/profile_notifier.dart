@@ -6,7 +6,7 @@ import 'package:brain_bench/data/infrastructure/storage/storage_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/repositories/storage_repository.dart';
-import 'package:brain_bench/data/repositories/user_repository.dart'; // Import UserRepository
+import 'package:brain_bench/data/repositories/user_repository.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
@@ -284,7 +284,7 @@ class ProfileNotifier extends _$ProfileNotifier {
     required String userId,
     required String? displayName, // Allow null for displayName
     required String? photoUrlToStoreInDb,
-    required UserRepository userRepository, // Changed to UserRepository
+    required UserRepository userRepository,
   }) async {
     _logger.info(
       'Calling updateUserProfile for user $userId with name: $displayName and photoUrl: ${photoUrlToStoreInDb ?? "(no change)"}',
@@ -307,7 +307,7 @@ class ProfileNotifier extends _$ProfileNotifier {
     required String? photoUrlFromDbBeforeUpdate,
     required String userId,
     required StorageRepository storageRepository,
-    required UserRepository userRepository, // Changed to UserRepository
+    required UserRepository userRepository,
   }) async {
     if (photoUrlFromDbBeforeUpdate != null &&
         photoUrlFromDbBeforeUpdate.isNotEmpty &&
@@ -317,9 +317,7 @@ class ProfileNotifier extends _$ProfileNotifier {
       bool canProceedWithDeletionLogic = true;
 
       try {
-        latestUserDataAfterUpdate = await userRepository.getUser(
-          userId,
-        ); // Use UserRepository
+        latestUserDataAfterUpdate = await userRepository.getUser(userId);
         currentLivePhotoUrlInDb = latestUserDataAfterUpdate?.photoUrl;
         _logger.fine(
           'Pre-deletion check: Current live photoUrl in DB for user $userId is $currentLivePhotoUrlInDb',
@@ -371,7 +369,7 @@ class ProfileNotifier extends _$ProfileNotifier {
 
     try {
       final UserRepository userRepository = await ref.read(
-        userRepositoryProvider.future, // Use the new user repository provider
+        userFirebaseRepositoryProvider,
       );
       final StorageRepository storageRepository = ref.read(
         storageRepositoryProvider,
@@ -417,7 +415,7 @@ class ProfileNotifier extends _$ProfileNotifier {
         userId: userId,
         displayName: displayName,
         photoUrlToStoreInDb: finalPhotoUrlToStoreInDb,
-        userRepository: userRepository, // Pass the UserRepository
+        userRepository: userRepository,
       );
 
       ref.invalidate(currentUserModelProvider);
@@ -430,7 +428,7 @@ class ProfileNotifier extends _$ProfileNotifier {
           photoUrlFromDbBeforeUpdate: photoUrlFromDbBeforeUpdate,
           userId: userId,
           storageRepository: storageRepository,
-          userRepository: userRepository, // Pass the UserRepository
+          userRepository: userRepository,
         );
       }
 
@@ -481,9 +479,7 @@ class ProfileNotifier extends _$ProfileNotifier {
         userId: userId,
         displayName: null, // Pass null if display name should not be changed
         photoUrlToStoreInDb: newImageUrl,
-        userRepository: await ref.read(
-          userRepositoryProvider.future,
-        ), // Use UserRepository
+        userRepository: await ref.read(userFirebaseRepositoryProvider),
       );
 
       await _cleanupTemporaryImageFile(tempCompressedFile, imageFileToProcess);

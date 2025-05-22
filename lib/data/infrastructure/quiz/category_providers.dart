@@ -14,7 +14,7 @@ final Logger _logger = Logger('Categories');
 class Categories extends _$Categories {
   @override
   Future<List<Category>> build(String languageCode) async {
-    final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
+    final repo = ref.watch(quizFirebaseRepositoryProvider);
     _logger.finer('Fetching categories for language: $languageCode');
     final categories = await repo.getCategories();
     _logger.finer('Fetched ${categories.length} categories.');
@@ -25,8 +25,8 @@ class Categories extends _$Categories {
     String categoryId,
     String languageCode,
   ) async {
-    final quizRepo = await ref.read(quizMockDatabaseRepositoryProvider.future);
-    final userRepo = await ref.read(userRepositoryProvider.future);
+    final quizRepo = ref.read(quizFirebaseRepositoryProvider);
+    final userRepo = ref.read(userFirebaseRepositoryProvider);
     final AppUser? currentUserFromAuth = await ref.read(
       currentUserProvider.future,
     ); // Read current user state

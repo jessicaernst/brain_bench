@@ -6,7 +6,7 @@ part of 'user_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentUserModelHash() => r'8c06034373c082efd0d8a1fb48b72b9208ce15f7';
+String _$currentUserModelHash() => r'79e8f08b564e3aff0370d4231dd20a8da4b092fd';
 
 /// Stream that provides the current user model based on the authentication state.
 /// Retrieves the current user model as a stream of [UserModelState].

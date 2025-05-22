@@ -1,17 +1,13 @@
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/infrastructure/quiz/answer_providers.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
-// Importiere die tatsächliche Klasse/Interface, die der Provider erwartet
-import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart'; // Passe den Pfad an, falls nötig
-// ODER
-// import 'package:brain_bench/data/infrastructure/quiz/i_quiz_database_repository.dart';
+import 'package:brain_bench/data/repositories/database_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart' hide Answer;
 
 // --- Mocks ---
-class MockQuizDatabaseRepository extends Mock
-    implements QuizMockDatabaseRepository {}
+class MockDatabaseRepository extends Mock implements DatabaseRepository {}
 
 // Helper function to create mock Answer objects
 Answer _createAnswer(String id) {
@@ -24,7 +20,7 @@ Answer _createAnswer(String id) {
 }
 
 void main() {
-  late MockQuizDatabaseRepository mockRepository;
+  late MockDatabaseRepository mockRepository;
   late ProviderContainer container;
 
   // Sample data
@@ -36,12 +32,10 @@ void main() {
   ];
 
   setUp(() {
-    mockRepository = MockQuizDatabaseRepository();
+    mockRepository = MockDatabaseRepository();
     container = ProviderContainer(
       overrides: [
-        quizMockDatabaseRepositoryProvider.overrideWith(
-          (ref) => mockRepository,
-        ),
+        quizFirebaseRepositoryProvider.overrideWith((ref) => mockRepository),
       ],
     );
   });

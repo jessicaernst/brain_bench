@@ -125,10 +125,8 @@ Future<void> main() async {
   runApp(
     ProviderScope(
       overrides: [
-        // ---> 2. Override the imported provider <---
         sharedPreferencesProvider.overrideWithValue(prefs),
         firebaseEnvProvider.overrideWithValue(firebaseEnv),
-        // for using Mockrepository
         authRepositoryProvider.overrideWithValue(FirebaseAuthRepository()),
       ],
       child: const BrainBenchApp(),

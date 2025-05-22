@@ -1,15 +1,15 @@
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/infrastructure/quiz/question_providers.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
-import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
+import 'package:brain_bench/data/repositories/database_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockQuizRepo extends Mock implements QuizMockDatabaseRepository {}
+class MockDatabaseRepo extends Mock implements DatabaseRepository {}
 
 void main() {
-  late MockQuizRepo mockRepo;
+  late MockDatabaseRepo mockRepo;
   late ProviderContainer container;
 
   const topicId = 't1';
@@ -17,11 +17,11 @@ void main() {
   final question = Question(
     id: 'q1',
     topicId: topicId,
-    questionEn: 'What is Flutter?', // Assuming your model now uses questionEn
-    questionDe: 'Was ist Flutter?', // And has an optional questionDe
+    questionEn: 'What is Flutter?',
+    questionDe: 'Was ist Flutter?',
     type: QuestionType.singleChoice,
     answerIds: ['a1', 'a2', 'a3'],
-    explanationEn: 'Flutter is a UI SDK.', // Same for explanation
+    explanationEn: 'Flutter is a UI SDK.',
   );
 
   final fakeQuestions = [question];
@@ -32,13 +32,9 @@ void main() {
 
   group('questionsProvider', () {
     setUp(() {
-      mockRepo = MockQuizRepo();
+      mockRepo = MockDatabaseRepo();
       container = ProviderContainer(
-        overrides: [
-          quizMockDatabaseRepositoryProvider.overrideWith(
-            (ref) => Future.value(mockRepo),
-          ),
-        ],
+        overrides: [quizFirebaseRepositoryProvider.overrideWithValue(mockRepo)],
       );
     });
 

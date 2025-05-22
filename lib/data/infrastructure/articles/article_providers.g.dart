@@ -6,15 +6,13 @@ part of 'article_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$articleRepositoryHash() => r'75f0d829b945acfc61b99bbd163464640c62cf23';
+String _$articleRepositoryHash() => r'13682155c60783478a3b5eb7ef4dbf54d07869f0';
 
-/// Returns an instance of [ArticleRepository] using [ArticleMockRepositoryImpl] as the implementation.
-/// The [ArticleMockRepositoryImpl] is initialized with the path to the articles JSON file
-/// in the documents directory, after potentially copying it from assets.
+/// Returns an instance of [ArticleRepository] using [ArticleFirebaseRepositoryImpl].
 ///
 /// Copied from [articleRepository].
 @ProviderFor(articleRepository)
-final articleRepositoryProvider = FutureProvider<ArticleRepository>.internal(
+final articleRepositoryProvider = Provider<ArticleRepository>.internal(
   articleRepository,
   name: r'articleRepositoryProvider',
   debugGetCreateSourceHash:
@@ -27,8 +25,8 @@ final articleRepositoryProvider = FutureProvider<ArticleRepository>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef ArticleRepositoryRef = FutureProviderRef<ArticleRepository>;
-String _$articlesHash() => r'1dbcaa81633bc48ee8c33e61157a6ed2072e5d1c';
+typedef ArticleRepositoryRef = ProviderRef<ArticleRepository>;
+String _$articlesHash() => r'35d1e55adb7d60141115f251f915dfdaef7396fa';
 
 /// Retrieves a list of articles from the [ArticleRepository].
 /// Returns a [Future] that resolves to a list of [Article] objects.
@@ -47,7 +45,7 @@ final articlesProvider = AutoDisposeFutureProvider<List<Article>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ArticlesRef = AutoDisposeFutureProviderRef<List<Article>>;
-String _$articleByIdHash() => r'9c8f7ca62b1161317047ddba0946103cf91fe49e';
+String _$articleByIdHash() => r'b73825c184bdde2877229e635dfec5015361a99e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -206,7 +204,7 @@ class _ArticleByIdProviderElement
   String get id => (origin as ArticleByIdProvider).id;
 }
 
-String _$shuffledArticlesHash() => r'572727d6162b886d1761fe38b27f28e7bf832a68';
+String _$shuffledArticlesHash() => r'2ae29bea67df1f3160d65ef4e3f7cf24bc4fee67';
 
 /// Provides a shuffled list of articles.
 ///

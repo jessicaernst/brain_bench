@@ -6,7 +6,7 @@ part of 'topic_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$topicsHash() => r'71750e62a94b615c9f18bf65472c1df461fff88d';
+String _$topicsHash() => r'2810459371fd90591dee210ffd0a081619d0d684';
 
 /// Copied from Dart SDK
 class _SystemHash {

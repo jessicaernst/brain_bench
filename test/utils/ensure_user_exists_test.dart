@@ -107,9 +107,7 @@ void main() {
     test('creates user if not found in DB', () async {
       final container = ProviderContainer(
         overrides: [
-          userRepositoryProvider.overrideWith(
-            (ref) async => mockUserRepository,
-          ), // Override with the interface mock
+          userFirebaseRepositoryProvider.overrideWithValue(mockUserRepository),
           storageRepositoryProvider.overrideWith(
             (ref) => mockStorageRepository,
           ),
@@ -131,10 +129,7 @@ void main() {
     test('does nothing if user already exists and is up to date', () async {
       final container = ProviderContainer(
         overrides: [
-          // Assuming QuizMockDatabaseRepository is not directly used by ensureUserExistsIfNeeded for user ops
-          userRepositoryProvider.overrideWith(
-            (ref) async => mockUserRepository,
-          ),
+          userFirebaseRepositoryProvider.overrideWithValue(mockUserRepository),
           storageRepositoryProvider.overrideWith(
             (ref) => mockStorageRepository,
           ),
@@ -157,10 +152,7 @@ void main() {
     test('updates user if displayName changed', () async {
       final container = ProviderContainer(
         overrides: [
-          // Override userRepositoryProvider with an async function returning the mock
-          userRepositoryProvider.overrideWith(
-            (ref) async => mockUserRepository,
-          ),
+          userFirebaseRepositoryProvider.overrideWithValue(mockUserRepository),
           storageRepositoryProvider.overrideWith(
             (ref) => mockStorageRepository,
           ),
@@ -206,9 +198,8 @@ void main() {
     test('skips if passed user is null', () async {
       final container = ProviderContainer(
         overrides: [
-          userRepositoryProvider.overrideWith(
-            (ref) async => mockUserRepository,
-          ),
+          // Override userFirebaseRepositoryProvider
+          userFirebaseRepositoryProvider.overrideWithValue(mockUserRepository),
           storageRepositoryProvider.overrideWith(
             (ref) => mockStorageRepository,
           ),

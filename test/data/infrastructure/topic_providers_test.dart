@@ -1,15 +1,15 @@
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/infrastructure/quiz/topic_providers.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
-import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
+import 'package:brain_bench/data/repositories/database_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockQuizRepo extends Mock implements QuizMockDatabaseRepository {}
+class MockDatabaseRepo extends Mock implements DatabaseRepository {}
 
 void main() {
-  late MockQuizRepo mockRepo;
+  late MockDatabaseRepo mockRepo;
   late ProviderContainer container;
 
   const categoryId = 'cat1';
@@ -27,13 +27,9 @@ void main() {
 
   group('topicsProvider', () {
     setUp(() {
-      mockRepo = MockQuizRepo();
+      mockRepo = MockDatabaseRepo();
       container = ProviderContainer(
-        overrides: [
-          quizMockDatabaseRepositoryProvider.overrideWith(
-            (ref) => Future.value(mockRepo),
-          ),
-        ],
+        overrides: [quizFirebaseRepositoryProvider.overrideWithValue(mockRepo)],
       );
     });
 

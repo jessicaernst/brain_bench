@@ -27,10 +27,8 @@ class QuizStateNotifier extends _$QuizStateNotifier {
     List<String> answerIds,
     String questionId,
   ) async {
-    // Caller should have set isLoadingAnswers = true
-    final repositoryRead = ref.read(quizMockDatabaseRepositoryProvider.future);
     try {
-      final repository = await repositoryRead;
+      final repository = ref.read(quizFirebaseRepositoryProvider);
       _logger.fine(
         'Fetching answers for question ID: $questionId with IDs: $answerIds',
       );

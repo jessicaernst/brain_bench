@@ -75,9 +75,8 @@ void main() {
       container = ProviderContainer(
         overrides: [
           authRepositoryProvider.overrideWithValue(mockAuthRepo),
-          userRepositoryProvider.overrideWith(
-            (ref) async => mockUserRepo,
-          ), // Override userRepositoryProvider
+          // Override the userFirebaseRepositoryProvider as it's used by currentUserModelProvider
+          userFirebaseRepositoryProvider.overrideWithValue(mockUserRepo),
         ],
       );
 
@@ -115,9 +114,8 @@ void main() {
       container = ProviderContainer(
         overrides: [
           authRepositoryProvider.overrideWithValue(mockAuthRepo),
-          userRepositoryProvider.overrideWith(
-            (ref) async => mockUserRepo,
-          ), // Override userRepositoryProvider
+          // Override the userFirebaseRepositoryProvider
+          userFirebaseRepositoryProvider.overrideWithValue(mockUserRepo),
         ],
       );
 

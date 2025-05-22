@@ -10,7 +10,7 @@ Logger _logger = Logger('AnswerProviders');
 
 @riverpod
 Future<List<Answer>> answers(Ref ref, List<String> answerIds) async {
-  final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
+  final repo = ref.watch(quizFirebaseRepositoryProvider);
   final result = await repo.getAnswers(answerIds);
 
   _logger.info('answersProvider liefert: ${result.length} Antworten');

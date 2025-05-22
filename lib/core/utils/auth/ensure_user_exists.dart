@@ -69,9 +69,7 @@ Future<bool> _ensureUserExistsIfNeededImpl(
 
   // Use the user repository
   try {
-    final userRepository = await read(
-      userRepositoryProvider.future,
-    ); // Use the new user repository
+    final userRepository = read(userFirebaseRepositoryProvider);
     final existingDbUser = await userRepository.getUser(appUser.uid);
 
     if (existingDbUser == null) {

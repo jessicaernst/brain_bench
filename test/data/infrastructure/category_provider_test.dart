@@ -3,24 +3,24 @@ import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/infrastructure/quiz/category_providers.dart';
 import 'package:brain_bench/data/models/topic/topic.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
-import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
+import 'package:brain_bench/data/repositories/database_repository.dart';
 import 'package:brain_bench/data/repositories/user_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockQuizRepository extends Mock implements QuizMockDatabaseRepository {}
+class MockDatabaseRepository extends Mock implements DatabaseRepository {}
 
 class MockUserRepository extends Mock implements UserRepository {}
 
 void main() {
-  late MockQuizRepository mockRepo;
+  late MockDatabaseRepository mockDatabaseRepo;
   late MockUserRepository mockUserRepo;
   late AppUser fakeUser;
 
   setUp(() {
     mockUserRepo = MockUserRepository();
-    mockRepo = MockQuizRepository();
+    mockDatabaseRepo = MockDatabaseRepository();
     fakeUser = const AppUser(uid: '123', id: '123', email: 'test@example.com');
   });
 
@@ -62,7 +62,9 @@ void main() {
       },
     );
 
-    when(() => mockRepo.getTopics(categoryId)).thenAnswer((_) async => topics);
+    when(
+      () => mockDatabaseRepo.getTopics(categoryId),
+    ).thenAnswer((_) async => topics);
     when(
       () => mockUserRepo.getUser(fakeUser.uid),
     ).thenAnswer((_) async => userWithProgress);
@@ -70,12 +72,9 @@ void main() {
 
     final container = ProviderContainer(
       overrides: [
-        quizMockDatabaseRepositoryProvider.overrideWith(
-          (ref) => Future.value(mockRepo),
-        ),
-        userRepositoryProvider.overrideWith(
-          (ref) async => mockUserRepo,
-        ), // Add userRepositoryProvider override here
+        // Override the actual providers used by Categories notifier
+        quizFirebaseRepositoryProvider.overrideWithValue(mockDatabaseRepo),
+        userFirebaseRepositoryProvider.overrideWithValue(mockUserRepo),
         currentUserProvider.overrideWith((ref) => Stream.value(fakeUser)),
       ],
     );

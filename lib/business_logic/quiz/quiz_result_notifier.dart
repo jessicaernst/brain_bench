@@ -213,9 +213,8 @@ class QuizResultNotifier extends _$QuizResultNotifier {
       'Attempting to update lastPlayedCategoryId to "$categoryId" for user "${user.id}".',
     );
     try {
-      final userRepo = await ref.read(userRepositoryProvider.future);
+      final userRepo = ref.read(userFirebaseRepositoryProvider);
       await userRepo.updateUser(
-        // Use UserRepository
         user.copyWith(lastPlayedCategoryId: categoryId),
       );
       ref.invalidate(currentUserModelProvider);

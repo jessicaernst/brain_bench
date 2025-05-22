@@ -11,7 +11,7 @@ part 'result_providers.g.dart';
 @riverpod
 @riverpod
 Future<List<Result>> results(Ref ref) async {
-  final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
+  final repo = ref.watch(quizFirebaseRepositoryProvider);
   final state = await ref.watch(currentUserModelProvider.future);
 
   final user = switch (state) {
@@ -30,7 +30,7 @@ class SaveResultNotifier extends _$SaveResultNotifier {
 
   /// Saves a [Result] object to the database.
   Future<void> saveResult(Result result) async {
-    final repo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
+    final repo = ref.watch(quizFirebaseRepositoryProvider);
     await repo.saveResult(result);
   }
 
@@ -40,9 +40,8 @@ class SaveResultNotifier extends _$SaveResultNotifier {
     required String categoryId,
     required String userId, // Add userId as a parameter
   }) async {
-    final quizRepo = await ref.watch(quizMockDatabaseRepositoryProvider.future);
-    // final quizRepo = await ref.watch(databaseRepositoryProvider.future); // Use this if you switch from mock
-    final userRepo = await ref.watch(userRepositoryProvider.future);
+    final quizRepo = ref.watch(quizFirebaseRepositoryProvider);
+    final userRepo = ref.watch(userFirebaseRepositoryProvider);
 
     // Fetch topics for the category to pass to the user repository
     final topicsForCategory = await quizRepo.getTopics(categoryId);

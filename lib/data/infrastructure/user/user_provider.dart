@@ -36,7 +36,7 @@ Stream<UserModelState> currentUserModel(Ref ref) {
       return;
     }
 
-    final userRepo = await ref.watch(userRepositoryProvider.future);
+    final userRepo = ref.watch(userFirebaseRepositoryProvider);
 
     try {
       yield const UserModelState.loading();

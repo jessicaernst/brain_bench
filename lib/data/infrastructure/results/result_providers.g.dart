@@ -6,7 +6,7 @@ part of 'result_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$resultsHash() => r'21ae89ed08657c3ca9653a7df69da59a2189a21d';
+String _$resultsHash() => r'763d03d54933fa248610287f486316b43b63f938';
 
 /// Provides a list of [Result] objects for the currently logged-in user.
 ///
@@ -25,7 +25,7 @@ final resultsProvider = AutoDisposeFutureProvider<List<Result>>.internal(
 // ignore: unused_element
 typedef ResultsRef = AutoDisposeFutureProviderRef<List<Result>>;
 String _$saveResultNotifierHash() =>
-    r'1dbf8d3b0e477fb80cdd6a660c60293d454a7a01';
+    r'faf94553389080ca407987d495215dba5036cf55';
 
 /// A notifier that handles saving quiz results and marking topics as done.
 ///

@@ -23,7 +23,6 @@ class FirebaseStorageRepositoryImpl implements StorageRepository {
   Future<String> uploadProfileImage(String userId, File imageFile) async {
     try {
       // Define a unique path for the image in Firebase Storage.
-      // Example: 'profile_images/USER_ID/TIMESTAMP_FILENAME.jpg'
       final String fileName =
           'profile_images/$userId/${DateTime.now().millisecondsSinceEpoch}_${imageFile.path.split('/').last}';
       _logger.info(
@@ -44,7 +43,6 @@ class FirebaseStorageRepositoryImpl implements StorageRepository {
         e,
         stackTrace,
       );
-      // Re-throw the exception to be handled by the caller (e.g., ProfileNotifier)
       rethrow;
     }
   }

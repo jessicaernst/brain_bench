@@ -19,7 +19,7 @@ import 'package:brain_bench/business_logic/quiz/quiz_state_notifier.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/models/quiz/answer.dart';
 import 'package:brain_bench/data/models/quiz/question.dart';
-import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
+import 'package:brain_bench/data/repositories/database_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart' hide Answer;
@@ -27,8 +27,7 @@ import 'package:mocktail/mocktail.dart' hide Answer;
 // --- Mocks ---
 
 // Mock for the Repository dependency
-class MockQuizMockDatabaseRepository extends Mock
-    implements QuizMockDatabaseRepository {}
+class MockDatabaseRepository extends Mock implements DatabaseRepository {}
 
 // --- FAKE Implementation for AnswersNotifier ---
 // Accepts optional initial state via constructor
@@ -168,7 +167,7 @@ final mockAnswersQ2 = [mockAnswer3, mockAnswer4];
 
 void main() {
   // Declare mock repository needed across tests/setup
-  late MockQuizMockDatabaseRepository mockRepository;
+  late MockDatabaseRepository mockRepository;
   // No global fake instance needed anymore
 
   setUpAll(() {
@@ -182,14 +181,12 @@ void main() {
     List<Override> overrides = const [],
   }) {
     // Create fresh mock repository for each test run
-    mockRepository = MockQuizMockDatabaseRepository();
+    mockRepository = MockDatabaseRepository();
 
     // Define the default overrides used in most tests
     final defaultOverrides = [
       // Override the repository provider
-      quizMockDatabaseRepositoryProvider.overrideWith(
-        (ref) => Future.value(mockRepository),
-      ),
+      quizFirebaseRepositoryProvider.overrideWith((ref) => mockRepository),
       // Default override for the answers notifier (creates fake with empty initial state)
       answersNotifierProvider.overrideWith(() => FakeAnswersNotifier()),
     ];

@@ -6,21 +6,22 @@ import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/result/result.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/models/user/user_model_state.dart';
-import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
+import 'package:brain_bench/data/repositories/database_repository.dart';
 import 'package:brain_bench/data/repositories/user_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockQuizRepo extends Mock implements QuizMockDatabaseRepository {}
+class MockDatabaseRepo extends Mock implements DatabaseRepository {}
 
 class MockUserRepository extends Mock implements UserRepository {}
 
 void main() {
   // Declare variables at the top level of main so they are accessible
   // in setUpAll, tearDownAll, and individual tests.
-  late MockQuizRepo mockRepo;
+  late MockDatabaseRepo mockRepo;
+  // ignore: unused_local_variable
   late MockUserRepository mockUserRepo;
   late MethodChannel channelPathProvider;
 
@@ -85,7 +86,7 @@ void main() {
   });
 
   setUp(() {
-    mockRepo = MockQuizRepo();
+    mockRepo = MockDatabaseRepo();
     mockUserRepo = MockUserRepository();
   });
 
@@ -97,9 +98,7 @@ void main() {
 
       final container = ProviderContainer(
         overrides: [
-          quizMockDatabaseRepositoryProvider.overrideWith(
-            (ref) => Future.value(mockRepo),
-          ),
+          quizFirebaseRepositoryProvider.overrideWithValue(mockRepo),
           currentUserModelProvider.overrideWith(
             (ref) => Stream.value(UserModelState.data(testUser)),
           ),
@@ -115,9 +114,7 @@ void main() {
     test('throws exception if no user is logged in', () async {
       final container = ProviderContainer(
         overrides: [
-          quizMockDatabaseRepositoryProvider.overrideWith(
-            (ref) => Future.value(mockRepo),
-          ),
+          quizFirebaseRepositoryProvider.overrideWithValue(mockRepo),
           currentUserModelProvider.overrideWith(
             (ref) => Stream.value(const UserModelState.unauthenticated()),
           ),
@@ -134,9 +131,7 @@ void main() {
 
       final container = ProviderContainer(
         overrides: [
-          quizMockDatabaseRepositoryProvider.overrideWith(
-            (ref) => Future.value(mockRepo),
-          ),
+          quizFirebaseRepositoryProvider.overrideWithValue(mockRepo),
           currentUserModelProvider.overrideWith(
             (ref) => Stream.value(UserModelState.data(testUser)),
           ),

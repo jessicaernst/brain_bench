@@ -1,35 +1,30 @@
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
-import 'package:brain_bench/data/repositories/quiz_mock_database_repository_impl.dart';
+import 'package:brain_bench/data/repositories/database_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockQuizRepo extends Mock implements QuizMockDatabaseRepository {}
+class MockDatabaseRepo extends Mock implements DatabaseRepository {}
 
 void main() {
   late ProviderContainer container;
-  late MockQuizRepo mockRepo;
+  late MockDatabaseRepo mockRepo;
 
   setUp(() {
-    mockRepo = MockQuizRepo();
+    mockRepo = MockDatabaseRepo();
   });
 
   test(
-    'quizMockDatabaseRepositoryProvider returns overridden repository',
+    'quizFirebaseRepositoryProvider returns overridden repository',
     () async {
       // Arrange: override the provider with a mock implementation
       container = ProviderContainer(
-        overrides: [
-          quizMockDatabaseRepositoryProvider.overrideWith(
-            (ref) async => mockRepo,
-          ),
-        ],
+        overrides: [quizFirebaseRepositoryProvider.overrideWithValue(mockRepo)],
       );
 
       // Act: read the provider
-      final result = await container.read(
-        quizMockDatabaseRepositoryProvider.future,
-      );
+      // Da der Provider synchron ist, kein .future und kein await nötig
+      final result = container.read(quizFirebaseRepositoryProvider);
 
       // Assert: it should return the mocked instance
       expect(result, mockRepo);

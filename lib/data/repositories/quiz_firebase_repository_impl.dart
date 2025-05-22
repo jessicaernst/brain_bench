@@ -60,7 +60,8 @@ class QuizFirebaseRepositoryImpl implements DatabaseRepository {
       return categories;
     } catch (e, stack) {
       _logger.severe('Error in getCategories: $e', e, stack);
-      return [];
+      // Rethrow the exception to allow the caller to handle it.
+      rethrow;
     }
   }
 
@@ -76,7 +77,8 @@ class QuizFirebaseRepositoryImpl implements DatabaseRepository {
       return topics;
     } catch (e, stack) {
       _logger.severe('Error in getTopics for $categoryId: $e', e, stack);
-      return [];
+      // Rethrow the exception.
+      rethrow;
     }
   }
 
@@ -92,7 +94,8 @@ class QuizFirebaseRepositoryImpl implements DatabaseRepository {
       return questions;
     } catch (e, stack) {
       _logger.severe('Error in getQuestions for $topicId: $e', e, stack);
-      return [];
+      // Rethrow the exception.
+      rethrow;
     }
   }
 
@@ -128,7 +131,8 @@ class QuizFirebaseRepositoryImpl implements DatabaseRepository {
       return allAnswers;
     } catch (e, stack) {
       _logger.severe('Error in getAnswers: $e', e, stack);
-      return [];
+      // Rethrow the exception.
+      rethrow;
     }
   }
 
@@ -142,7 +146,8 @@ class QuizFirebaseRepositoryImpl implements DatabaseRepository {
       return results;
     } catch (e, stack) {
       _logger.severe('Error in getResults for $userId: $e', e, stack);
-      return [];
+      // Rethrow the exception.
+      rethrow;
     }
   }
 
@@ -156,6 +161,8 @@ class QuizFirebaseRepositoryImpl implements DatabaseRepository {
       );
     } catch (e, stack) {
       _logger.severe('Error in saveResult: $e', e, stack);
+      // Rethrow the exception.
+      rethrow;
     }
   }
 
@@ -170,6 +177,8 @@ class QuizFirebaseRepositoryImpl implements DatabaseRepository {
         e,
         stack,
       );
+      // Rethrow the exception.
+      rethrow;
     }
   }
 }
