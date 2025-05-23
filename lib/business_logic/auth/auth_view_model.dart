@@ -1,5 +1,5 @@
 import 'package:brain_bench/business_logic/auth/ensure_user_exists_provider.dart';
-import 'package:brain_bench/business_logic/profile/profile_ui_state_providers.dart'; // For provisionalProfileImageProvider
+import 'package:brain_bench/business_logic/profile/profile_ui_state_providers.dart';
 import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:logging/logging.dart';

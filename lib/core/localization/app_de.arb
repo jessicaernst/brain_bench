@@ -503,5 +503,19 @@
     "profileContactImageAutoSaved": "Profilbild automatisch gespeichert.",
     "@profileContactImageAutoSaved": {
         "description": "Message shown when the profile image is automatically saved"
+    },
+    "authErrorGeneric": "Authentifizierung fehlgeschlagen: {errorDetails}",
+    "@authErrorGeneric": {
+        "description": "Generic error message during authentication, with details.",
+        "placeholders": {
+            "errorDetails": {
+                "type": "String",
+                "example": "Ungültige Anmeldeinformationen"
+            }
+        }
+    },
+    "authLoadingText": "Einen Moment bitte...",
+    "@authLoadingText": {
+        "description": "Text displayed while authentication processes are running."
     }
 }

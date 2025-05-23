@@ -41,6 +41,9 @@ class LoginSignUpPage extends HookConsumerWidget {
 
     // Access the AuthViewModel Notifier
     final authNotifier = ref.read(authViewModelProvider.notifier);
+    // Watch the AuthViewModel state for loading and error states
+    final authState = ref.watch(authViewModelProvider);
+    final bool isLoading = authState.isLoading;
 
     void handleLogin() {
       if (!isButtonEnabled) return;
@@ -61,14 +64,14 @@ class LoginSignUpPage extends HookConsumerWidget {
     void switchToSignUp() {
       emailController.clear();
       passwordController.clear();
-      isLogin.value = false; // Hook will react to this change
+      isLogin.value = false;
     }
 
     void switchToLogin() {
       emailSignUpController.clear();
       passwordSignUpController.clear();
       repeatPasswordSignUpController.clear();
-      isLogin.value = true; // Hook will react to this change
+      isLogin.value = true;
     }
 
     void handlePasswordReset() {
@@ -84,6 +87,21 @@ class LoginSignUpPage extends HookConsumerWidget {
     void handleGoogleLogin() => authNotifier.signInWithGoogle();
     void handleAppleLogin() => authNotifier.signInWithApple();
 
+    // Listen for errors from AuthViewModel to show a SnackBar
+    ref.listen<AsyncValue<void>>(authViewModelProvider, (_, state) {
+      if (state is AsyncError) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                localizations.authErrorGeneric(state.error.toString()),
+              ),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        }
+      }
+    });
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Stack(
@@ -110,6 +128,45 @@ class LoginSignUpPage extends HookConsumerWidget {
               onAppleLoginPressed: handleAppleLogin,
             ),
           ),
+          // Modal Loading Indicator
+          if (isLoading)
+            Positioned.fill(
+              child: Container(
+                color: Colors.black.withAlpha(
+                  (0.5 * 255).toInt(),
+                ), // Semi-transparent overlay
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 30,
+                      vertical: 20,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withAlpha((0.1 * 255).toInt()),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const CircularProgressIndicator(),
+                        const SizedBox(height: 20),
+                        Text(
+                          localizations.authLoadingText,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );

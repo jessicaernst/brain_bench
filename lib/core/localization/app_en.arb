@@ -503,5 +503,19 @@
     "profileContactImageAutoSaved": "Profile image auto-saved successfully.",
     "@profileContactImageAutoSaved": {
         "description": "Message shown when the profile image is automatically saved successfully"
+    },
+    "authErrorGeneric": "Authentication failed: {errorDetails}",
+    "@authErrorGeneric": {
+        "description": "Generic error message during authentication, with details.",
+        "placeholders": {
+            "errorDetails": {
+                "type": "String",
+                "example": "Invalid credentials"
+            }
+        }
+    },
+    "authLoadingText": "Loading...",
+    "@authLoadingText": {
+        "description": "Generic loading message shown in a SnackBar for authentication-related operations."
     }
 }

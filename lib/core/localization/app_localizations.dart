@@ -850,6 +850,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile image auto-saved successfully.'**
   String get profileContactImageAutoSaved;
+
+  /// Generic error message during authentication, with details.
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication failed: {errorDetails}'**
+  String authErrorGeneric(String errorDetails);
+
+  /// Generic loading message shown in a SnackBar for authentication-related operations.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get authLoadingText;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

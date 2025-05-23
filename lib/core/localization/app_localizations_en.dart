@@ -385,4 +385,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileContactImageAutoSaved => 'Profile image auto-saved successfully.';
+
+  @override
+  String authErrorGeneric(String errorDetails) {
+    return 'Authentication failed: $errorDetails';
+  }
+
+  @override
+  String get authLoadingText => 'Loading...';
 }
