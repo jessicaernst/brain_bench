@@ -23,12 +23,10 @@ final _logger = Logger('ActualCategoryUtils');
 Category _createMinimalWelcomeCategory(AppLocalizations localizations) {
   return Category(
     id: 'welcome',
-    nameEn: localizations.pickerOptionAutomatic, // English name
-    nameDe: localizations.pickerOptionAutomatic, // German name
-    descriptionEn:
-        localizations.pickerOptionAutomaticDescription, // English description
-    descriptionDe:
-        localizations.pickerOptionAutomaticDescription, // German description
+    nameEn: localizations.pickerOptionAutomatic,
+    nameDe: localizations.pickerOptionAutomatic,
+    descriptionEn: localizations.pickerOptionAutomaticDescription,
+    descriptionDe: localizations.pickerOptionAutomaticDescription,
     subtitleEn: 'Your starting point & quiz guide',
     subtitleDe: 'Dein Startpunkt & Quiz-Leitfaden',
   );

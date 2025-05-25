@@ -7,6 +7,7 @@ import 'package:brain_bench/data/infrastructure/quiz/category_providers.dart';
 import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/category/category.dart';
+import 'package:brain_bench/data/models/category/category_extensions.dart';
 import 'package:brain_bench/data/models/home/displayed_category_info.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/models/user/user_model_state.dart';
@@ -109,18 +110,32 @@ class ActualCategoryView extends HookConsumerWidget {
     );
 
     // Set the local selected category based on the hook's result
-    useEffect(() {
-      if (initialCategoryFromHook != null) {
-        // Update the local state only if the ID has changed
-        if (localSelectedCategory.value?.id != initialCategoryFromHook.id) {
-          _logger.finer(
-            'View: Aktualisiere localSelectedCategory.value vom Hook: ${initialCategoryFromHook.id}',
-          );
-          localSelectedCategory.value = initialCategoryFromHook;
+    useEffect(
+      () {
+        if (initialCategoryFromHook != null) {
+          // Update the local state only if the ID has changed
+          if (localSelectedCategory.value?.id != initialCategoryFromHook.id) {
+            _logger.finer(
+              'View: Aktualisiere localSelectedCategory.value vom Hook: ${initialCategoryFromHook.id}',
+              'Name: ${initialCategoryFromHook.localizedName(languageCode)}',
+            );
+            localSelectedCategory.value = initialCategoryFromHook;
+            // Update the selected category in the provider if it has changed
+            if (ref.read(selectedHomeCategoryProvider) !=
+                initialCategoryFromHook.id) {
+              ref
+                  .read(selectedHomeCategoryProvider.notifier)
+                  .update(initialCategoryFromHook.id);
+              _logger.info(
+                'View: selectedHomeCategoryProvider aktualisiert auf ID: ${initialCategoryFromHook.id}',
+              );
+            }
+          }
         }
-      }
-      return null;
-    }, [initialCategoryFromHook]);
+        return null;
+      },
+      [initialCategoryFromHook, ref, languageCode],
+    ); // languageCode hinzugefügt, da im Logger verwendet
 
     _logger.finest(
       'Building ActualCategoryView with selected category: ${localSelectedCategory.value?.id ?? "none"}',

@@ -1,6 +1,10 @@
+import 'package:brain_bench/business_logic/auth/current_user_provider.dart';
 import 'package:brain_bench/business_logic/auth/ensure_user_exists_provider.dart';
+import 'package:brain_bench/business_logic/home/home_providers.dart';
 import 'package:brain_bench/business_logic/profile/profile_ui_state_providers.dart';
 import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
+import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
+import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -27,7 +31,7 @@ class AuthViewModel extends _$AuthViewModel {
       if (appUser != null) {
         // Use the provider to get the function
         final ensureUserFunc = ref.read(ensureUserExistsProvider);
-        await ensureUserFunc(ref.read, appUser); // Pass ref.read as the Reader
+        await ensureUserFunc(ref.read, appUser);
         _logger.info('Auth operation successful for user: ${appUser.uid}');
         state = const AsyncData(null); // Reset state on success
       } else {
@@ -93,11 +97,30 @@ class AuthViewModel extends _$AuthViewModel {
     state = const AsyncLoading();
     try {
       final repo = ref.read(authRepositoryProvider);
-      await repo.signOut();
-      // Clear the provisional profile image on logout
-      ref.read(provisionalProfileImageProvider.notifier).clearImage();
+      final settingsRepo = ref.read(settingsRepositoryProvider);
+
+      // 1. Clear local preferences that should not apply to the next user
+      await settingsRepo.clearLastSelectedCategoryId();
       _logger.info(
-        'User signed out successfully and provisional image cleared.',
+        'Cleared last selected category ID from SharedPreferences on logout.',
+      );
+
+      // 2. Firebase sign out
+      await repo.signOut();
+
+      // 3. Reset relevant Riverpod states
+      // Directly set the state to null for a Notifier
+      ref.read(selectedHomeCategoryProvider.notifier).state = null;
+      _logger.info('Reset selectedHomeCategoryProvider to null on logout.');
+
+      ref.read(provisionalProfileImageProvider.notifier).clearImage();
+
+      // 4. Invalidate user-specific providers to force a reload
+      ref.invalidate(currentUserProvider);
+      ref.invalidate(currentUserModelProvider);
+
+      _logger.info(
+        'User signed out successfully. Local states and user providers reset/invalidated.',
       );
       state = const AsyncData(null);
     } catch (e, st) {
