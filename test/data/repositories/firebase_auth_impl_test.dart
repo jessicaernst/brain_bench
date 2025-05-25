@@ -1,7 +1,10 @@
+// ignore_for_file: subtype_of_sealed_class
+
 import 'dart:async';
 
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/repositories/firebase_auth_repository_impl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as fs;
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -12,6 +15,21 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 // Mock for Firebase Authentication core functionalities
 class MockFirebaseAuth extends Mock implements fb.FirebaseAuth {}
+
+// Mock for Firebase Firestore
+class MockFirebaseFirestore extends Mock implements fs.FirebaseFirestore {}
+
+// Mock for Firestore CollectionReference
+class MockCollectionReference<T extends Object?> extends Mock
+    implements fs.CollectionReference<T> {}
+
+// Mock for Firestore DocumentReference
+class MockDocumentReference<T extends Object?> extends Mock
+    implements fs.DocumentReference<T> {}
+
+// Mock for Firestore DocumentSnapshot
+class MockDocumentSnapshot<T extends Object?> extends Mock
+    implements fs.DocumentSnapshot<T> {}
 
 // Mock for Firebase User object
 class MockUser extends Mock implements fb.User {}
@@ -46,6 +64,7 @@ void main() {
   // --- Test Variables ---
   late FirebaseAuthRepository repository;
   late MockFirebaseAuth mockAuth;
+  late MockFirebaseFirestore mockFirestore;
   late MockUser mockUser;
   late MockUserCredential mockCredential;
 
@@ -55,6 +74,9 @@ void main() {
   const String tPassword = 'password';
   const String tDisplayName = 'Test User';
   const String tPhotoUrl = 'http://photo.url';
+
+  // Define testException here
+  final testException = Exception('Test Exception');
 
   // --- Global Setup ---
   setUpAll(() {
@@ -68,6 +90,7 @@ void main() {
   setUp(() {
     // Create fresh mock instances for each test
     mockAuth = MockFirebaseAuth();
+    mockFirestore = MockFirebaseFirestore();
     mockUser = MockUser();
     mockCredential = MockUserCredential();
 
@@ -87,7 +110,10 @@ void main() {
     ).thenAnswer((_) => Stream.value(null));
 
     // Create the repository instance, injecting the mock FirebaseAuth
-    repository = FirebaseAuthRepository(auth: mockAuth);
+    repository = FirebaseAuthRepository(
+      auth: mockAuth,
+      firestore: mockFirestore,
+    );
   });
 
   // --- Test Groups ---
@@ -97,6 +123,7 @@ void main() {
       'authStateChanges should emit null when Firebase auth state changes to null',
       () {
         // Arrange
+        // No Firestore interaction expected if firebaseUser is null
         when(
           () => mockAuth.authStateChanges(),
         ).thenAnswer((_) => Stream.value(null));
@@ -114,10 +141,26 @@ void main() {
       'authStateChanges should emit AppUser when Firebase auth state changes to a valid user',
       () {
         // Arrange
+        final mockDocRef = MockDocumentReference<Map<String, dynamic>>();
+        final mockCollectionRef =
+            MockCollectionReference<Map<String, dynamic>>();
+        final mockSnapshot = MockDocumentSnapshot<Map<String, dynamic>>();
+
+        when(
+          () => mockFirestore.collection('users'),
+        ).thenReturn(mockCollectionRef);
+        when(() => mockCollectionRef.doc(tUserId)).thenReturn(mockDocRef);
+        when(
+          () => mockDocRef.snapshots(),
+        ).thenAnswer((_) => Stream.value(mockSnapshot));
+        when(
+          () => mockSnapshot.data(),
+        ).thenReturn({'themeMode': 'dark', 'language': 'en'});
+        when(() => mockSnapshot.exists).thenReturn(true);
+
         when(
           () => mockAuth.authStateChanges(),
         ).thenAnswer((_) => Stream.value(mockUser));
-
         // Act
         final stream = repository.authStateChanges();
 
@@ -129,7 +172,9 @@ void main() {
                 .having((u) => u.uid, 'uid', tUserId)
                 .having((u) => u.email, 'email', tEmail)
                 .having((u) => u.displayName, 'displayName', tDisplayName)
-                .having((u) => u.photoUrl, 'photoUrl', tPhotoUrl),
+                .having((u) => u.photoUrl, 'photoUrl', tPhotoUrl)
+                .having((u) => u.themeMode, 'themeMode', 'dark')
+                .having((u) => u.language, 'language', 'en'),
           ),
         );
         verify(() => mockAuth.authStateChanges()).called(1);
@@ -140,6 +185,22 @@ void main() {
       'authStateChanges should emit AppUser with null details if Firebase user has null details',
       () {
         // Arrange
+        final mockDocRef = MockDocumentReference<Map<String, dynamic>>();
+        final mockCollectionRef =
+            MockCollectionReference<Map<String, dynamic>>();
+        final mockSnapshot = MockDocumentSnapshot<Map<String, dynamic>>();
+
+        when(
+          () => mockFirestore.collection('users'),
+        ).thenReturn(mockCollectionRef);
+        when(() => mockCollectionRef.doc(tUserId)).thenReturn(mockDocRef);
+        when(
+          () => mockDocRef.snapshots(),
+        ).thenAnswer((_) => Stream.value(mockSnapshot));
+        // Firestore data might be missing or have defaults
+        when(() => mockSnapshot.data()).thenReturn(null);
+        when(() => mockSnapshot.exists).thenReturn(false);
+
         when(() => mockUser.email).thenReturn(null);
         when(() => mockUser.displayName).thenReturn(null);
         when(() => mockUser.photoURL).thenReturn(null);
@@ -158,7 +219,9 @@ void main() {
                 .having((u) => u.uid, 'uid', tUserId)
                 .having((u) => u.email, 'email', '')
                 .having((u) => u.displayName, 'displayName', isNull)
-                .having((u) => u.photoUrl, 'photoUrl', isNull),
+                .having((u) => u.photoUrl, 'photoUrl', isNull)
+                .having((u) => u.themeMode, 'themeMode', 'system') // Default
+                .having((u) => u.language, 'language', 'en'), // Default
           ),
         );
         verify(() => mockAuth.authStateChanges()).called(1);
@@ -169,6 +232,19 @@ void main() {
   group('Email/Password Authentication', () {
     test('signInWithEmail returns AppUser on success', () async {
       // Arrange
+      final mockDocRef = MockDocumentReference<Map<String, dynamic>>();
+      final mockCollectionRef = MockCollectionReference<Map<String, dynamic>>();
+      final mockSnapshot = MockDocumentSnapshot<Map<String, dynamic>>();
+
+      when(
+        () => mockFirestore.collection('users'),
+      ).thenReturn(mockCollectionRef);
+      when(() => mockCollectionRef.doc(tUserId)).thenReturn(mockDocRef);
+      when(() => mockDocRef.get()).thenAnswer((_) async => mockSnapshot);
+      when(
+        () => mockSnapshot.data(),
+      ).thenReturn({'themeMode': 'light', 'language': 'de'});
+
       when(
         () => mockAuth.signInWithEmailAndPassword(
           email: tEmail,
@@ -183,6 +259,8 @@ void main() {
       expect(result, isA<AppUser>());
       expect(result.email, tEmail);
       expect(result.uid, tUserId);
+      expect(result.themeMode, 'light');
+      expect(result.language, 'de');
       verify(
         () => mockAuth.signInWithEmailAndPassword(
           email: tEmail,
@@ -195,6 +273,10 @@ void main() {
       'signInWithEmail throws specific Exception on FirebaseAuthException',
       () async {
         // Arrange
+        // No Firestore interaction expected if auth fails first
+        // However, if _fetchFirestoreUserProfile were called before rethrow,
+        // you might need to mock its failure or success path.
+        // For now, assume auth exception happens before Firestore fetch.
         final exception = fb.FirebaseAuthException(code: 'user-not-found');
         when(
           () => mockAuth.signInWithEmailAndPassword(
@@ -242,6 +324,19 @@ void main() {
 
     test('signUpWithEmail returns AppUser on success', () async {
       // Arrange
+      final mockDocRef = MockDocumentReference<Map<String, dynamic>>();
+      final mockCollectionRef = MockCollectionReference<Map<String, dynamic>>();
+      final mockSnapshot = MockDocumentSnapshot<Map<String, dynamic>>();
+
+      when(
+        () => mockFirestore.collection('users'),
+      ).thenReturn(mockCollectionRef);
+      when(() => mockCollectionRef.doc(tUserId)).thenReturn(mockDocRef);
+      // For signUp, the document might not exist yet, so _fetchFirestoreUserProfile might return null data
+      when(() => mockDocRef.get()).thenAnswer((_) async => mockSnapshot);
+      when(
+        () => mockSnapshot.data(),
+      ).thenReturn(null); // Simulate no existing profile
       when(
         () => mockAuth.createUserWithEmailAndPassword(
           email: tEmail,
@@ -256,6 +351,8 @@ void main() {
       expect(result, isA<AppUser>());
       expect(result.email, tEmail);
       expect(result.uid, tUserId);
+      expect(result.themeMode, 'system'); // Default
+      expect(result.language, 'en'); // Default
       verify(
         () => mockAuth.createUserWithEmailAndPassword(
           email: tEmail,
@@ -415,23 +512,41 @@ void main() {
       'signInWithGoogle returns AppUser on successful Firebase credential sign in',
       () async {
         // Arrange: Assume Google Sign In was successful and Firebase accepts the credential.
+        final mockDocRef = MockDocumentReference<Map<String, dynamic>>();
+        final mockCollectionRef =
+            MockCollectionReference<Map<String, dynamic>>();
+        final mockSnapshot = MockDocumentSnapshot<Map<String, dynamic>>();
+
+        when(
+          () => mockFirestore.collection('users'),
+        ).thenReturn(mockCollectionRef);
+        when(() => mockCollectionRef.doc(tUserId)).thenReturn(mockDocRef);
+        when(() => mockDocRef.get()).thenAnswer((_) async => mockSnapshot);
+        when(
+          () => mockSnapshot.data(),
+        ).thenReturn({'themeMode': 'googleTheme', 'language': 'fr'});
+
         when(
           () => mockAuth.signInWithCredential(any()),
         ).thenAnswer((_) async => mockCredential);
 
-        // Act & Assert for the Firebase exception path (easier to test without full Google mock)
-        final exception = fb.FirebaseAuthException(code: 'ERROR');
-        when(() => mockAuth.signInWithCredential(any())).thenThrow(exception);
+        // Act
+        // final result = await repository.signInWithGoogle(); // This line is hard to test
+
+        // Assert
+        // expect(result.themeMode, 'googleTheme'); // This line is hard to test
+
+        // Test the exception path as it's easier without full GoogleSignIn mock
+        // Use the globally defined testException or define a local one
+        when(
+          () => mockAuth.signInWithCredential(any()),
+        ).thenThrow(testException);
         expect(
           () => repository.signInWithGoogle(),
           throwsA(isA<Exception>()),
           skip:
               'Skipping success check as mocking static GoogleSignIn().signIn() is complex.',
         );
-
-        // Verification for the exception path
-        // We cannot easily verify GoogleSignIn().signIn() was called.
-        // We can't easily verify signInWithCredential without complex mocking of GoogleSignIn().signIn() result.
       },
     );
 
@@ -493,13 +608,32 @@ void main() {
       'signInWithApple returns AppUser on successful Firebase credential sign in',
       () async {
         // Arrange: Assume platform check passes, Apple Sign In succeeds, and Firebase accepts credential.
+        final mockDocRef = MockDocumentReference<Map<String, dynamic>>();
+        final mockCollectionRef =
+            MockCollectionReference<Map<String, dynamic>>();
+        final mockSnapshot = MockDocumentSnapshot<Map<String, dynamic>>();
+
+        when(
+          () => mockFirestore.collection('users'),
+        ).thenReturn(mockCollectionRef);
+        when(() => mockCollectionRef.doc(tUserId)).thenReturn(mockDocRef);
+        when(() => mockDocRef.get()).thenAnswer((_) async => mockSnapshot);
+        when(
+          () => mockSnapshot.data(),
+        ).thenReturn({'themeMode': 'appleTheme', 'language': 'es'});
+
         when(
           () => mockAuth.signInWithCredential(any()),
         ).thenAnswer((_) async => mockCredential);
 
-        // Act & Assert for the Firebase exception path (easier to test)
-        final exception = fb.FirebaseAuthException(code: 'ERROR');
-        when(() => mockAuth.signInWithCredential(any())).thenThrow(exception);
+        // Act
+        // final result = await repository.signInWithApple(); // Hard to test
+        // Assert
+        // expect(result.themeMode, 'appleTheme'); // Hard to test
+        // Use the globally defined testException or define a local one
+        when(
+          () => mockAuth.signInWithCredential(any()),
+        ).thenThrow(testException);
         expect(
           () => repository.signInWithApple(),
           throwsA(isA<Exception>()),

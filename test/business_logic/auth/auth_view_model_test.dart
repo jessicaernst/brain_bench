@@ -1,6 +1,7 @@
 import 'package:brain_bench/business_logic/auth/auth_view_model.dart';
 import 'package:brain_bench/business_logic/auth/ensure_user_exists_provider.dart';
 import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
+import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:brain_bench/data/repositories/auth_repository.dart';
 import 'package:flutter/material.dart';
@@ -13,15 +14,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
 
+class MockSharedPreferences extends Mock implements SharedPreferences {}
+
 void main() {
   // Initialize the Flutter binding for unit tests that use platform channels or services
   TestWidgetsFlutterBinding.ensureInitialized();
-  // Mock SharedPreferences for testing
-  SharedPreferences.setMockInitialValues({});
 
   late MockAuthRepository mockAuthRepository;
   // Mock function for ensureUserExistsIfNeeded
   late EnsureUserExistsFn mockEnsureUserExistsFn;
+  late MockSharedPreferences mockSharedPreferences;
 
   // Test data
   final testUser = AppUser(
@@ -35,6 +37,11 @@ void main() {
   const testPassword = 'password';
   final testException = Exception('Test Exception');
 
+  setUp(() {
+    // It's good practice to reset mocks before each test
+    mockSharedPreferences = MockSharedPreferences();
+  });
+
   group('AuthViewModel Tests', () {
     // --- Initial State Test ---
     test('initial state is AsyncData(null)', () {
@@ -47,6 +54,8 @@ void main() {
         overrides: [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
           ensureUserExistsProvider.overrideWithValue(mockEnsureUserExistsFn),
+          // Override SharedPreferences for any provider that might need it.
+          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
         ],
       );
       addTearDown(container.dispose);
@@ -71,6 +80,7 @@ void main() {
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
           ensureUserExistsProvider.overrideWithValue(mockEnsureUserExistsFn),
+          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
         ];
 
         final states = <AsyncValue<void>>[];
@@ -122,6 +132,7 @@ void main() {
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
         ];
 
         final states = <AsyncValue<void>>[];
@@ -181,6 +192,7 @@ void main() {
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
           ensureUserExistsProvider.overrideWithValue(mockEnsureUserExistsFn),
+          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
         ];
         final states = <AsyncValue<void>>[];
 
@@ -228,6 +240,7 @@ void main() {
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
         ];
         final states = <AsyncValue<void>>[];
 
@@ -287,6 +300,7 @@ void main() {
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
           ensureUserExistsProvider.overrideWithValue(mockEnsureUserExistsFn),
+          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
         ];
         final states = <AsyncValue<void>>[];
 
@@ -333,6 +347,7 @@ void main() {
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
         ];
         final states = <AsyncValue<void>>[];
 
@@ -389,6 +404,7 @@ void main() {
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
           ensureUserExistsProvider.overrideWithValue(mockEnsureUserExistsFn),
+          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
         ];
         final states = <AsyncValue<void>>[];
 
@@ -434,6 +450,7 @@ void main() {
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
         ];
         final states = <AsyncValue<void>>[];
 
@@ -488,6 +505,7 @@ void main() {
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
         ];
         final states = <AsyncValue<void>>[];
 
@@ -537,6 +555,7 @@ void main() {
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
         ];
         final states = <AsyncValue<void>>[];
 
@@ -586,9 +605,19 @@ void main() {
         // Arrange
         mockAuthRepository = MockAuthRepository();
         when(() => mockAuthRepository.signOut()).thenAnswer((_) async {});
+        // Mock the SharedPreferences calls that happen during signOut
+        when(
+          () => mockSharedPreferences.remove(any()),
+        ).thenAnswer((_) async => true);
+        when(() => mockSharedPreferences.clear()).thenAnswer((_) async => true);
 
+        // After signOut, authStateChanges will be called (likely emitting null)
+        when(
+          () => mockAuthRepository.authStateChanges(),
+        ).thenAnswer((_) => Stream.value(null));
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
         ];
         final states = <AsyncValue<void>>[];
 
@@ -622,6 +651,11 @@ void main() {
           const AsyncData<void>(null), // ViewModel resets state here
         ]);
         verify(() => mockAuthRepository.signOut()).called(1);
+        // Verify that authStateChanges was called due to provider invalidation and re-evaluation.
+        // It might be called multiple times depending on provider interactions.
+        verify(
+          () => mockAuthRepository.authStateChanges(),
+        ).called(greaterThanOrEqualTo(1));
         verifyNoMoreInteractions(mockAuthRepository);
       });
 
@@ -629,9 +663,18 @@ void main() {
         // Arrange
         mockAuthRepository = MockAuthRepository();
         when(() => mockAuthRepository.signOut()).thenThrow(testException);
+        // Mock the SharedPreferences calls that happen during signOut, even in failure cases
+        // if they are attempted before the exception from authRepository.signOut() is thrown
+        when(
+          () => mockSharedPreferences.remove(any()),
+        ).thenAnswer((_) async => true);
 
         final overrides = [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          // Crucial override for the failing test:
+          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
+          // If SettingsRepository is used directly and not via a provider that depends on sharedPreferencesProvider,
+          // you might need to mock and override settingsRepositoryProvider as well.
         ];
         final states = <AsyncValue<void>>[];
 
@@ -669,6 +712,7 @@ void main() {
           ),
         ]);
         verify(() => mockAuthRepository.signOut()).called(1);
+
         verifyNoMoreInteractions(mockAuthRepository);
       });
     });
@@ -683,6 +727,7 @@ void main() {
         overrides: [
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
           ensureUserExistsProvider.overrideWithValue(mockEnsureUserExistsFn),
+          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
         ],
       );
       addTearDown(container.dispose);
