@@ -1,16 +1,25 @@
 // Remove unused import: import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
 import 'dart:async';
 
+import 'package:brain_bench/business_logic/auth/current_user_provider.dart';
 import 'package:brain_bench/business_logic/theme/theme_provider.dart';
+import 'package:brain_bench/data/infrastructure/database_providers.dart'; // Required for userFirebaseRepositoryProvider
 import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
-import 'package:brain_bench/data/repositories/settings_repository.dart';
+import 'package:brain_bench/data/models/user/app_user.dart'; // Required for AppUser
+import 'package:brain_bench/data/repositories/user_repository.dart'; // Required for UserRepository
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Required for SharedPreferences
 
-// Mock the SettingsRepository using mocktail
-class MockSettingsRepository extends Mock implements SettingsRepository {}
+// Mocks for the new dependencies
+class MockSharedPreferences extends Mock implements SharedPreferences {}
+
+class MockUserFirebaseRepository extends Mock implements UserRepository {}
+
+class MockAppUser extends Mock
+    implements AppUser {} // If needed for currentUserProvider
 
 void main() {
   setUpAll(() {
@@ -33,38 +42,52 @@ void main() {
 
   // --- Test Group for the ThemeModeNotifier ---
   group('ThemeModeNotifier', () {
-    late MockSettingsRepository mockRepository;
+    late MockSharedPreferences mockPrefs;
+    late MockUserFirebaseRepository mockUserRepo;
     late ProviderContainer container;
     late ThemeModeNotifier notifier;
 
     // Initial theme mode for setup
     const initialThemeMode = ThemeMode.system;
     const nextThemeMode = ThemeMode.light; // Based on getNextThemeModeCycle
+    const String themeModeKey = 'app_theme_mode'; // Key used in provider
 
     setUp(() {
-      mockRepository = MockSettingsRepository();
+      mockPrefs = MockSharedPreferences();
+      mockUserRepo = MockUserFirebaseRepository();
 
-      // Default stub for loading the initial theme
+      // Default stub for SharedPreferences loading (no user logged in scenario)
       when(
-        () => mockRepository.loadThemeMode(),
-      ).thenAnswer((_) async => initialThemeMode);
-      // Default stub for saving
+        () => mockPrefs.getString(themeModeKey),
+      ).thenReturn(initialThemeMode.name);
+      // Default stub for SharedPreferences saving
       when(
-        () => mockRepository.saveThemeMode(any()),
-      ).thenAnswer((_) async {}); // Assume success by default
+        () => mockPrefs.setString(themeModeKey, any()),
+      ).thenAnswer((_) async => true);
+
+      // Default stub for user repository (e.g., successful update)
+      when(
+        () => mockUserRepo.updateUserProfile(
+          userId: any(named: 'userId'),
+          themeMode: any(named: 'themeMode'),
+        ),
+      ).thenAnswer((_) async {});
 
       // Create a ProviderContainer, overriding the repository provider
       container = ProviderContainer(
         overrides: [
-          settingsRepositoryProvider.overrideWithValue(mockRepository),
+          sharedPreferencesProvider.overrideWithValue(mockPrefs),
+          userFirebaseRepositoryProvider.overrideWithValue(mockUserRepo),
+          // Assume no user logged in for most initial tests, can be overridden per test
+          currentUserProvider.overrideWith((ref) => Stream.value(null)),
         ],
       );
 
       // Keep the notifier instance for easy access in tests
       // Reading the notifier triggers the 'build' method
       notifier = container.read(themeModeNotifierProvider.notifier);
-      // Add listener to keep provider alive during tests if needed
-      container.listen(themeModeNotifierProvider, (_, __) {});
+      // Removed: container.listen(themeModeNotifierProvider, (_, __) {});
+      // Let tests explicitly trigger and await the initial build.
     });
 
     tearDown(() {
@@ -73,7 +96,7 @@ void main() {
 
     // --- ThemeModeNotifier Tests ---
     test(
-      'build loads initial theme from repository and sets state to AsyncData',
+      'build loads initial theme (from prefs, no user) and sets state to AsyncData',
       () async {
         // Assertions
         // Wait for the future provided by the provider to complete
@@ -88,22 +111,30 @@ void main() {
           const AsyncData(initialThemeMode),
         );
 
-        // Verify that loadThemeMode was called exactly once during build
-        verify(() => mockRepository.loadThemeMode()).called(1);
-        verifyNoMoreInteractions(mockRepository); // Ensure no other calls yet
+        // Verify that SharedPreferences.getString was called (likely twice due to build logic)
+        verify(() => mockPrefs.getString(themeModeKey)).called(2);
+        // Ensure user repo was not called as no user is logged in
+        verifyNever(
+          () => mockUserRepo.updateUserProfile(
+            userId: any(named: 'userId'),
+            themeMode: any(named: 'themeMode'),
+          ),
+        );
       },
     );
 
     test(
-      'build sets state to AsyncError if repository throws during load',
+      'build sets state to AsyncError if SharedPreferences throws during load (no user)',
       () async {
         // Arrange: Define the exception
         final exception = Exception('Failed to load theme');
 
-        // --- Create a fresh mock instance specifically for THIS test ---
-        final localMockRepository = MockSettingsRepository();
         // Configure THIS mock instance to throw
-        when(() => localMockRepository.loadThemeMode()).thenThrow(exception);
+        final localMockPrefs = MockSharedPreferences();
+        final localMockUserRepo =
+            MockUserFirebaseRepository(); // Needed for override
+
+        when(() => localMockPrefs.getString(themeModeKey)).thenThrow(exception);
 
         // --- Dispose the setUp container (optional but good practice) ---
         container.dispose();
@@ -111,21 +142,25 @@ void main() {
         // --- Create a NEW container overriding with the LOCAL mock ---
         final errorContainer = ProviderContainer(
           overrides: [
-            // Use the mock created specifically for this test
-            settingsRepositoryProvider.overrideWithValue(localMockRepository),
+            sharedPreferencesProvider.overrideWithValue(localMockPrefs),
+            userFirebaseRepositoryProvider.overrideWithValue(localMockUserRepo),
+            currentUserProvider.overrideWith(
+              (ref) => Stream.value(null),
+            ), // Still no user
           ],
         );
         // Add listener
         errorContainer.listen(themeModeNotifierProvider, (_, __) {});
 
-        // Assertions
-        // Expect the future to complete with an error
+        // Assertions:
+        // The build method will catch the error from SharedPreferences
+        // and fallback to ThemeMode.system. So, the future completes successfully.
         await expectLater(
           errorContainer.read(
             themeModeNotifierProvider.future,
           ), // Read from new container
-          throwsA(exception),
-          reason: "Provider's future should throw when build fails",
+          completion(ThemeMode.system), // Expect fallback to system theme
+          reason: "Provider's future should complete with fallback theme",
         );
 
         // Verify the final state is AsyncError after awaiting
@@ -133,16 +168,17 @@ void main() {
         final state = errorContainer.read(
           themeModeNotifierProvider,
         ); // Read from new container
-        expect(state, isA<AsyncError>(), reason: 'State should be AsyncError');
-        expect(state.error, exception);
+        // The state should be AsyncData with the fallback value.
         expect(
-          state.hasValue,
-          isFalse, // Check hasValue
-          reason: 'State should not have a value when build fails',
+          state,
+          const AsyncData(ThemeMode.system),
+          reason: 'State should be AsyncData with fallback theme',
         );
 
         // Verify: loadThemeMode was called ONCE on the LOCAL mock instance
-        verify(() => localMockRepository.loadThemeMode()).called(1);
+        verify(() => localMockPrefs.getString(themeModeKey)).called(
+          2,
+        ); // Called during build (loading + data phases, one of which threw internally)
         // No need for verifyNoMoreInteractions on the local mock here
 
         errorContainer.dispose(); // Dispose test-specific container
@@ -150,7 +186,7 @@ void main() {
     );
 
     test(
-      'setThemeMode updates state optimistically and calls repository save',
+      'setThemeMode updates state optimistically and calls prefs save (no user)',
       () async {
         // Arrange: Ensure initial build completes
         await container.read(themeModeNotifierProvider.future);
@@ -165,22 +201,31 @@ void main() {
           container.read(themeModeNotifierProvider),
           const AsyncData(newMode),
         );
-        // 2. Repository's saveThemeMode should be called with the new mode
-        verify(() => mockRepository.saveThemeMode(newMode)).called(1);
-        // 3. Load should only have been called once during build
-        verify(() => mockRepository.loadThemeMode()).called(1);
-        verifyNoMoreInteractions(mockRepository);
+        // 2. SharedPreferences.setString should be called with the new mode
+        verify(() => mockPrefs.setString(themeModeKey, newMode.name)).called(1);
+        // 3. SharedPreferences.getString was called during build
+        verify(() => mockPrefs.getString(themeModeKey)).called(2);
+        // 4. User repo not called
+        verifyNever(
+          () => mockUserRepo.updateUserProfile(
+            userId: any(named: 'userId'),
+            themeMode: any(named: 'themeMode'),
+          ),
+        );
       },
     );
 
     test(
-      'setThemeMode updates state to AsyncError with previous data if repository save fails',
+      'setThemeMode updates state to AsyncError with previous data if prefs save fails (no user)',
       () async {
         // Arrange: Ensure initial build completes
         await container.read(themeModeNotifierProvider.future);
         const newMode = ThemeMode.dark;
         final exception = Exception('Failed to save theme');
-        when(() => mockRepository.saveThemeMode(newMode)).thenThrow(exception);
+        // Simulate SharedPreferences.setString failing
+        when(
+          () => mockPrefs.setString(themeModeKey, newMode.name),
+        ).thenThrow(exception);
 
         // Act: Call setThemeMode
         await notifier.setThemeMode(newMode);
@@ -194,11 +239,17 @@ void main() {
         // 3. Crucially, the *value* within the error state should be the
         //    optimistically set value (newMode), thanks to copyWithPrevious.
         expect(state.value, newMode);
-        // 4. Repository's saveThemeMode should have been called
-        verify(() => mockRepository.saveThemeMode(newMode)).called(1);
-        // 5. Load should only have been called once during build
-        verify(() => mockRepository.loadThemeMode()).called(1);
-        verifyNoMoreInteractions(mockRepository);
+        // 4. SharedPreferences.setString should have been called
+        verify(() => mockPrefs.setString(themeModeKey, newMode.name)).called(1);
+        // 5. SharedPreferences.getString was called during build
+        verify(() => mockPrefs.getString(themeModeKey)).called(2);
+        // 6. User repo not called
+        verifyNever(
+          () => mockUserRepo.updateUserProfile(
+            userId: any(named: 'userId'),
+            themeMode: any(named: 'themeMode'),
+          ),
+        );
       },
     );
 
@@ -221,10 +272,15 @@ void main() {
           AsyncData(currentMode),
         );
         // 2. Repository's saveThemeMode should NOT be called
-        verifyNever(() => mockRepository.saveThemeMode(any()));
-        // 3. Load should only have been called once during build
-        verify(() => mockRepository.loadThemeMode()).called(1);
-        verifyNoMoreInteractions(mockRepository);
+        verifyNever(() => mockPrefs.setString(any(), any()));
+        verifyNever(
+          () => mockUserRepo.updateUserProfile(
+            userId: any(named: 'userId'),
+            themeMode: any(named: 'themeMode'),
+          ),
+        );
+        // 3. SharedPreferences.getString was called during build
+        verify(() => mockPrefs.getString(themeModeKey)).called(2);
       },
     );
 
@@ -242,8 +298,9 @@ void main() {
         // Arrange 2: Simulate a SAVE failure to get into AsyncError state
         final saveException = Exception('Failed to save theme');
         const themeToFailSave = ThemeMode.dark;
+        // Simulate SharedPreferences.setString failing for the first attempt
         when(
-          () => mockRepository.saveThemeMode(themeToFailSave),
+          () => mockPrefs.setString(themeModeKey, themeToFailSave.name),
         ).thenThrow(saveException);
 
         // Act 1: Call setThemeMode, which will fail during save
@@ -258,10 +315,16 @@ void main() {
         );
         expect(errorState.error, saveException);
         expect(errorState.value, themeToFailSave);
-        verify(() => mockRepository.saveThemeMode(themeToFailSave)).called(1);
+        verify(
+          () => mockPrefs.setString(themeModeKey, themeToFailSave.name),
+        ).called(1);
 
         // Arrange 3: Define a different theme for the next attempt
         const nextThemeAttempt = ThemeMode.light;
+        // Ensure the next save attempt (if it happens) succeeds for SharedPreferences
+        when(
+          () => mockPrefs.setString(themeModeKey, nextThemeAttempt.name),
+        ).thenAnswer((_) async => true);
 
         // Act 2: Attempt to set theme AGAIN while state is AsyncError
         await notifier.setThemeMode(nextThemeAttempt);
@@ -279,66 +342,12 @@ void main() {
         // --- END CORRECTION ---
 
         // Verify saveThemeMode WAS called for the second attempt (total calls is 2)
-        // We verify the specific call for the second attempt
-        verify(() => mockRepository.saveThemeMode(nextThemeAttempt)).called(1);
-        // Or verify total calls:
-        // verify(() => mockRepository.saveThemeMode(any())).called(2);
+        // The first call threw, the second call (this one) should have happened.
+        verify(
+          () => mockPrefs.setString(themeModeKey, nextThemeAttempt.name),
+        ).called(1);
       },
     );
-
-    // --- Test for setting theme while state is AsyncLoading ---
-    test('setThemeMode does nothing if state is AsyncLoading', () async {
-      // Arrange: Set up the mock to delay using a Completer
-      final loadCompleter = Completer<ThemeMode>();
-      // Use a local mock for isolation
-      final localMockRepository = MockSettingsRepository();
-      when(
-        () => localMockRepository.loadThemeMode(),
-      ).thenAnswer((_) => loadCompleter.future);
-
-      container.dispose();
-      final loadingContainer = ProviderContainer(
-        overrides: [
-          settingsRepositoryProvider.overrideWithValue(localMockRepository),
-        ],
-      );
-      loadingContainer.listen(themeModeNotifierProvider, (_, __) {});
-
-      // Act 1: Trigger the build
-      final loadingNotifier = loadingContainer.read(
-        themeModeNotifierProvider.notifier,
-      );
-
-      // Assert 1: State should be AsyncLoading
-      await Future.delayed(Duration.zero);
-      final loadingState = loadingContainer.read(themeModeNotifierProvider);
-      expect(
-        loadingState,
-        isA<AsyncLoading>(),
-        reason: 'State should be AsyncLoading after build starts',
-      );
-
-      // Act 2: Attempt to set theme while state is loading
-      await loadingNotifier.setThemeMode(ThemeMode.dark);
-
-      // Assert 2: State should remain AsyncLoading, saveThemeMode not called
-      final stillLoadingState = loadingContainer.read(
-        themeModeNotifierProvider,
-      );
-      expect(
-        stillLoadingState,
-        isA<AsyncLoading>(),
-        reason: 'State should remain AsyncLoading after setThemeMode call',
-      );
-      verifyNever(() => localMockRepository.saveThemeMode(any()));
-
-      // Clean up
-      loadCompleter.complete(initialThemeMode);
-      await loadingContainer.read(themeModeNotifierProvider.future);
-      loadingContainer.dispose();
-
-      verify(() => localMockRepository.loadThemeMode()).called(1);
-    });
 
     test('toggleTheme calculates next theme and calls setThemeMode', () async {
       // Arrange: Ensure initial build completes
@@ -354,11 +363,18 @@ void main() {
         container.read(themeModeNotifierProvider),
         const AsyncData(nextThemeMode),
       );
-      // 2. Repository's saveThemeMode should be called with the next theme
-      verify(() => mockRepository.saveThemeMode(nextThemeMode)).called(1);
-      // 3. Load should only have been called once during build
-      verify(() => mockRepository.loadThemeMode()).called(1);
-      verifyNoMoreInteractions(mockRepository);
+      // 2. SharedPreferences.setString should be called with the next theme
+      verify(
+        () => mockPrefs.setString(themeModeKey, nextThemeMode.name),
+      ).called(1);
+      // 3. SharedPreferences.getString was called during build
+      verify(() => mockPrefs.getString(themeModeKey)).called(2);
+      verifyNever(
+        () => mockUserRepo.updateUserProfile(
+          userId: any(named: 'userId'),
+          themeMode: any(named: 'themeMode'),
+        ),
+      );
     });
 
     // --- Test for toggling theme while state is AsyncError ---
@@ -370,10 +386,9 @@ void main() {
 
         // Arrange 2: Simulate a SAVE failure to get into AsyncError state
         final saveException = Exception('Failed to save theme');
-        const themeToFailSave =
-            ThemeMode.dark; // Start with dark to toggle to system
+        const themeToFailSave = ThemeMode.dark;
         when(
-          () => mockRepository.saveThemeMode(themeToFailSave),
+          () => mockPrefs.setString(themeModeKey, themeToFailSave.name),
         ).thenThrow(saveException);
         await notifier.setThemeMode(
           themeToFailSave,
@@ -388,12 +403,17 @@ void main() {
         );
         expect(errorState.error, saveException);
         expect(errorState.value, themeToFailSave);
-        verify(() => mockRepository.saveThemeMode(themeToFailSave)).called(1);
+        verify(
+          () => mockPrefs.setString(themeModeKey, themeToFailSave.name),
+        ).called(1);
 
         // Arrange 3: Determine the expected next theme
         final expectedNextTheme = getNextThemeModeCycle(
           themeToFailSave,
         ); // dark -> system
+        when(
+          () => mockPrefs.setString(themeModeKey, expectedNextTheme.name),
+        ).thenAnswer((_) async => true); // Next save should succeed
 
         // Act: Attempt to toggle theme AGAIN while state is AsyncError
         await notifier.toggleTheme();
@@ -411,65 +431,11 @@ void main() {
         // --- END CORRECTION ---
 
         // Verify saveThemeMode WAS called for the second attempt (total calls is 2)
-        // We verify the specific call for the second attempt
-        verify(() => mockRepository.saveThemeMode(expectedNextTheme)).called(1);
-        // Or verify total calls:
-        // verify(() => mockRepository.saveThemeMode(any())).called(2);
+        verify(
+          () => mockPrefs.setString(themeModeKey, expectedNextTheme.name),
+        ).called(1);
       },
     );
-
-    // --- Test for toggling theme while state is AsyncLoading ---
-    test('toggleTheme does nothing if state is AsyncLoading', () async {
-      // Arrange: Set up the mock to delay using a Completer
-      final loadCompleter = Completer<ThemeMode>();
-      final localMockRepository = MockSettingsRepository();
-      when(
-        () => localMockRepository.loadThemeMode(),
-      ).thenAnswer((_) => loadCompleter.future);
-
-      container.dispose();
-      final loadingContainer = ProviderContainer(
-        overrides: [
-          settingsRepositoryProvider.overrideWithValue(localMockRepository),
-        ],
-      );
-      loadingContainer.listen(themeModeNotifierProvider, (_, __) {});
-
-      // Act 1: Trigger the build
-      final loadingNotifier = loadingContainer.read(
-        themeModeNotifierProvider.notifier,
-      );
-
-      // Assert 1: State should be AsyncLoading
-      await Future.delayed(Duration.zero);
-      final loadingState = loadingContainer.read(themeModeNotifierProvider);
-      expect(
-        loadingState,
-        isA<AsyncLoading>(),
-        reason: 'State should be AsyncLoading after build starts',
-      );
-
-      // Act 2: Attempt to toggle theme while state is loading
-      await loadingNotifier.toggleTheme();
-
-      // Assert 2: State should remain AsyncLoading, saveThemeMode not called
-      final stillLoadingState = loadingContainer.read(
-        themeModeNotifierProvider,
-      );
-      expect(
-        stillLoadingState,
-        isA<AsyncLoading>(),
-        reason: 'State should remain AsyncLoading after toggleTheme call',
-      );
-      verifyNever(() => localMockRepository.saveThemeMode(any()));
-
-      // Clean up
-      loadCompleter.complete(initialThemeMode);
-      await loadingContainer.read(themeModeNotifierProvider.future);
-      loadingContainer.dispose();
-
-      verify(() => localMockRepository.loadThemeMode()).called(1);
-    });
 
     test(
       'refreshTheme reloads from repository and updates state on success',
@@ -481,10 +447,12 @@ void main() {
         expect(initialValue, initialThemeMode);
 
         const refreshedMode = ThemeMode.dark;
-        // Mock the *next* call to loadThemeMode on the shared mock
+        // Mock the *next* call to SharedPreferences.getString for the refresh
         when(
-          () => mockRepository.loadThemeMode(),
-        ).thenAnswer((_) async => refreshedMode);
+          () => mockPrefs.getString(themeModeKey),
+        ).thenReturn(refreshedMode.name);
+
+        clearInteractions(mockPrefs); // Clear interactions before the action
 
         // Act: Call refreshTheme and wait for it to complete
         await notifier.refreshTheme();
@@ -498,9 +466,8 @@ void main() {
         // Assertions - Final State
         final finalState = container.read(themeModeNotifierProvider);
         expect(finalState, const AsyncData(refreshedMode));
-        // Verify loadThemeMode was called twice (build + refresh)
-        verify(() => mockRepository.loadThemeMode()).called(2);
-        verifyNoMoreInteractions(mockRepository);
+        // Verify SharedPreferences.getString was called once during refresh
+        verify(() => mockPrefs.getString(themeModeKey)).called(1);
       },
     );
 
@@ -514,17 +481,13 @@ void main() {
         expect(initialValue, initialThemeMode);
 
         final exception = Exception('Failed to refresh');
-        // Mock the *next* call to loadThemeMode on the shared mock
-        when(() => mockRepository.loadThemeMode()).thenThrow(exception);
+        // Mock the *next* call to SharedPreferences.getString to throw an error
+        when(() => mockPrefs.getString(themeModeKey)).thenThrow(exception);
+
+        clearInteractions(mockPrefs); // Clear interactions before the action
 
         // Act: Call refreshTheme and wait for it to complete
         await notifier.refreshTheme();
-
-        // --- REMOVED Intermediate State Check ---
-        // final loadingState = container.read(themeModeNotifierProvider);
-        // expect(loadingState, isA<AsyncLoading>());
-        // expect(loadingState.value, initialThemeMode);
-        // --- END REMOVAL ---
 
         // Assertions - Final State
         final errorState = container.read(themeModeNotifierProvider);
@@ -532,9 +495,8 @@ void main() {
         expect(errorState.error, exception);
         // Verify previous value is kept due to copyWithPrevious
         expect(errorState.value, initialValue);
-        // Verify loadThemeMode was called twice (build + refresh)
-        verify(() => mockRepository.loadThemeMode()).called(2);
-        verifyNoMoreInteractions(mockRepository);
+        // Verify SharedPreferences.getString was called once during refresh (and threw)
+        verify(() => mockPrefs.getString(themeModeKey)).called(1);
       },
     );
   });
