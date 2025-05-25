@@ -52,6 +52,8 @@ abstract class UserRepository {
     required String userId,
     String? displayName,
     String? photoUrl,
+    String? language,
+    String? themeMode,
   });
 
   /// Deletes an [AppUser] object for a given user ID.

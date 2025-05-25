@@ -63,6 +63,8 @@ class UserFirebaseRepositoryImpl implements UserRepository {
     required String userId,
     String? displayName,
     String? photoUrl,
+    String? language,
+    String? themeMode,
   }) async {
     try {
       final Map<String, dynamic> dataToUpdate = {};
@@ -70,15 +72,21 @@ class UserFirebaseRepositoryImpl implements UserRepository {
       // For photoUrl, Firebase typically uses null to remove a field or an empty string.
       // Here, we only update if a non-null value is provided.
       if (photoUrl != null) dataToUpdate['photoUrl'] = photoUrl;
+      if (language != null) dataToUpdate['language'] = language;
+      if (themeMode != null) dataToUpdate['themeMode'] = themeMode;
 
       if (dataToUpdate.isNotEmpty) {
         await _usersCollection.doc(userId).update(dataToUpdate);
-        _logger.info('✅ Profile updated for user $userId.');
+        _logger.info(
+          '✅ Profile updated for user $userId with data: ${dataToUpdate.keys.join(', ')}.',
+        );
       } else {
         _logger.info('No profile data to update for user $userId.');
       }
     } catch (e, stack) {
       _logger.severe('Error updating profile for $userId: $e', e, stack);
+      // Consider rethrowing the error if the caller needs to handle it
+      // throw;
     }
   }
 

@@ -1,10 +1,15 @@
-import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart'; // Assuming this is needed indirectly by repository
-import 'package:brain_bench/data/repositories/settings_repository.dart';
+import 'package:brain_bench/business_logic/auth/current_user_provider.dart';
+import 'package:brain_bench/data/infrastructure/database_providers.dart';
+import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
+import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'theme_provider.g.dart';
+
+const String _themeModeKey = 'app_theme_mode';
 
 final _logger = Logger('ThemeModeNotifier');
 
@@ -24,40 +29,91 @@ ThemeMode getNextThemeModeCycle(ThemeMode currentMode) {
 
 @riverpod
 class ThemeModeNotifier extends _$ThemeModeNotifier {
-  late final SettingsRepository _repository;
+  // Access SharedPreferences via a getter to ensure it's read once per provider instance
+  // and to avoid LateInitializationError if build is called multiple times.
+  SharedPreferences get _prefs => ref.read(sharedPreferencesProvider);
 
   @override
   Future<ThemeMode> build() async {
-    // Keeps the state alive after the last listener unsubscribes.
-    // Suitable for global settings like locale.
     ref.keepAlive();
+    _logger.info('ThemeModeNotifier: build initiated.');
 
-    // Use ref.watch here if you want the provider to rebuild if the
-    // repository provider itself changes (less common). Use ref.read
-    // if you only need the instance once during initialization.
-    // Given it's unlikely the repository provider changes, read is fine.
-    _repository = ref.read(settingsRepositoryProvider);
-    _logger.info('Loading initial ThemeMode from repository...');
-    try {
-      final initialMode = await _repository.loadThemeMode();
-      _logger.info('Initial ThemeMode loaded: $initialMode');
-      return initialMode;
-    } catch (e, stackTrace) {
-      _logger.severe('Failed to load initial ThemeMode', e, stackTrace);
-      // Propagate the error to the initial state
-      rethrow;
-    }
+    // Watch for changes in the current user's authentication state and data.
+    final AsyncValue<AppUser?> authUserAsyncValue = ref.watch(
+      currentUserProvider,
+    );
+
+    return authUserAsyncValue.when(
+      data: (AppUser? currentUser) async {
+        if (currentUser != null) {
+          // User is logged in, prioritize their theme setting from Firestore.
+          // Do NOT write to SharedPreferences here; only read from AppUser.
+          _logger.fine(
+            'ThemeModeNotifier: User available. Loading themeMode from AppUser: ${currentUser.themeMode}',
+          );
+          final String themeModeStringFromUser = currentUser.themeMode;
+          _logger.info(
+            'ThemeModeNotifier: Initial ThemeMode determined from AppUser: $themeModeStringFromUser',
+          );
+          return _stringToThemeMode(themeModeStringFromUser);
+        } else {
+          // No authenticated user, fall back to SharedPreferences.
+          _logger.fine(
+            'ThemeModeNotifier: No authenticated user. Falling back to SharedPreferences.',
+          );
+          return _loadThemeModeFromPrefsWithFallback();
+        }
+      },
+      loading: () async {
+        // User state is loading, fall back to SharedPreferences for now.
+        _logger.fine(
+          'ThemeModeNotifier: currentUserProvider is loading. Falling back to SharedPreferences.',
+        );
+        return _loadThemeModeFromPrefsWithFallback();
+      },
+      error: (err, stack) async {
+        // Error fetching user, fall back to SharedPreferences.
+        _logger.severe(
+          'ThemeModeNotifier: Error in currentUserProvider. Falling back to SharedPreferences.',
+          err,
+          stack,
+        );
+        return _loadThemeModeFromPrefsWithFallback();
+      },
+    );
   }
 
-  // Removed the private _getNextThemeMode method
+  Future<ThemeMode> _loadThemeModeFromPrefsWithFallback() async {
+    try {
+      final themeString = _prefs.getString(_themeModeKey);
+      if (themeString != null) {
+        final loadedMode = _stringToThemeMode(themeString);
+        _logger.info(
+          'ThemeModeNotifier: ThemeMode loaded from SharedPreferences: $loadedMode',
+        );
+        return loadedMode;
+      }
+    } catch (e, stackTrace) {
+      _logger.severe(
+        'ThemeModeNotifier: Error loading themeMode from SharedPreferences',
+        e,
+        stackTrace,
+      );
+    }
+    const fallbackMode = ThemeMode.system;
+    _logger.info(
+      'ThemeModeNotifier: No SharedPreferences data for theme. Falling back to default: $fallbackMode',
+    );
+    return fallbackMode;
+  }
 
   /// Attempts to save the theme mode to the repository and updates the state
   /// to reflect success or failure (with error propagation).
-  Future<void> _persistThemeMode(ThemeMode mode) async {
+  Future<void> _persistThemeMode(ThemeMode mode, String themeModeString) async {
     try {
-      await _repository.saveThemeMode(mode);
-      _logger.info('ThemeMode $mode saved successfully.');
-      // On success, the state is already optimistically set, so no change needed here.
+      // 1. Save locally to SharedPreferences immediately
+      await _prefs.setString(_themeModeKey, themeModeString);
+      _logger.info('ThemeMode $mode saved to SharedPreferences.');
     } catch (e, stackTrace) {
       _logger.severe('Failed to save ThemeMode $mode', e, stackTrace);
       // Update state to error, preserving the optimistic value set before calling this.
@@ -80,8 +136,35 @@ class ThemeModeNotifier extends _$ThemeModeNotifier {
       _logger.info('Setting ThemeMode from ${state.value} to $mode');
       // Optimistic UI update: Change the state immediately
       state = AsyncData(mode);
-      // Attempt to persist the change and handle potential errors
-      await _persistThemeMode(mode);
+      final String themeModeString = _themeModeToString(mode);
+
+      try {
+        // Persist locally
+        await _persistThemeMode(mode, themeModeString);
+
+        // Attempt to save to Firestore if user is logged in
+        final AppUser? currentUser = ref.read(currentUserProvider).valueOrNull;
+        if (currentUser != null) {
+          _logger.fine(
+            'User found. Attempting to save themeMode to Firestore for user ${currentUser.uid}.',
+          );
+          // Correctly await the repository instance if it's an async provider
+          final userRepository = ref.read(userFirebaseRepositoryProvider);
+          await userRepository.updateUserProfile(
+            userId: currentUser.uid,
+            themeMode: themeModeString,
+          );
+          ref.invalidate(currentUserProvider);
+          _logger.info(
+            'ThemeMode $themeModeString saved to Firestore for user ${currentUser.uid}.',
+          );
+        } else {
+          _logger.fine('No user logged in. ThemeMode saved locally only.');
+        }
+      } catch (e, stackTrace) {
+        _logger.severe('Failed to fully save ThemeMode $mode', e, stackTrace);
+        state = AsyncError<ThemeMode>(e, stackTrace).copyWithPrevious(state);
+      }
     }
     // Guard Clause 2: Handle case where state is not ready (loading/initial error)
     else if (!state.hasValue) {
@@ -120,7 +203,28 @@ class ThemeModeNotifier extends _$ThemeModeNotifier {
     // Set state to loading, but keep previous data if available for smoother UI
     state = const AsyncLoading<ThemeMode>().copyWithPrevious(state);
     try {
-      final refreshedMode = await _repository.loadThemeMode();
+      // The logic here mirrors the build() method for loading.
+      final AppUser? currentUser = ref.read(currentUserProvider).valueOrNull;
+      ThemeMode refreshedMode;
+
+      if (currentUser != null) {
+        _logger.fine(
+          'User found during refresh. Loading themeMode from AppUser: ${currentUser.themeMode}',
+        );
+        final String themeModeStringFromUser = currentUser.themeMode;
+        // Do NOT write to SharedPreferences here during a refresh load from AppUser.
+        refreshedMode = _stringToThemeMode(themeModeStringFromUser);
+      } else {
+        _logger.fine(
+          'No user during refresh. Loading themeMode from SharedPreferences.',
+        );
+        final themeString = _prefs.getString(_themeModeKey);
+        if (themeString != null) {
+          refreshedMode = _stringToThemeMode(themeString);
+        } else {
+          refreshedMode = ThemeMode.system; // Fallback
+        }
+      }
       _logger.info('ThemeMode refreshed successfully: $refreshedMode');
       state = AsyncData(refreshedMode);
     } catch (e, stackTrace) {
@@ -129,4 +233,10 @@ class ThemeModeNotifier extends _$ThemeModeNotifier {
       state = AsyncError<ThemeMode>(e, stackTrace).copyWithPrevious(state);
     }
   }
+
+  // Helper methods for conversion
+  ThemeMode _stringToThemeMode(String themeString) => ThemeMode.values
+      .firstWhere((e) => e.name == themeString, orElse: () => ThemeMode.system);
+
+  String _themeModeToString(ThemeMode themeMode) => themeMode.name;
 }
