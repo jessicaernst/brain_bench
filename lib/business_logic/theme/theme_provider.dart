@@ -49,7 +49,7 @@ class ThemeModeNotifier extends _$ThemeModeNotifier {
           // User is logged in, prioritize their theme setting from Firestore.
           // Do NOT write to SharedPreferences here; only read from AppUser.
           _logger.fine(
-            'ThemeModeNotifier: User available. Loading themeMode from AppUser: ${currentUser.themeMode}',
+            'ThemeModeNotifier.build: User available. AppUser.themeMode: ${currentUser.themeMode}, current provider state.value: ${state.valueOrNull}',
           );
           final String themeModeStringFromUser = currentUser.themeMode;
           _logger.info(
@@ -148,11 +148,17 @@ class ThemeModeNotifier extends _$ThemeModeNotifier {
           _logger.fine(
             'User found. Attempting to save themeMode to Firestore for user ${currentUser.uid}.',
           );
+          _logger.info(
+            'Attempting to save themeMode: $themeModeString to Firestore for user ${currentUser.uid}',
+          );
           // Correctly await the repository instance if it's an async provider
           final userRepository = ref.read(userFirebaseRepositoryProvider);
           await userRepository.updateUserProfile(
             userId: currentUser.uid,
             themeMode: themeModeString,
+          );
+          _logger.info(
+            'Firestore update call completed for themeMode: $themeModeString, user: ${currentUser.uid}. Invalidating currentUserProvider.',
           );
           ref.invalidate(currentUserProvider);
           _logger.info(

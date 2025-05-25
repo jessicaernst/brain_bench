@@ -85,8 +85,6 @@ class UserFirebaseRepositoryImpl implements UserRepository {
       }
     } catch (e, stack) {
       _logger.severe('Error updating profile for $userId: $e', e, stack);
-      // Consider rethrowing the error if the caller needs to handle it
-      // throw;
     }
   }
 

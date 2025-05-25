@@ -43,7 +43,7 @@ class SettingsCard extends ConsumerWidget {
     // --- Theme Change Handler ---
     void handleThemeChange(bool newValue) async {
       if (isThemeBusy || hasThemeSaveError) {
-        return; // Don't change if busy or in error state
+        return;
       }
       _logger.info('Theme mode toggled via Switch: $newValue');
       await ref
@@ -53,7 +53,7 @@ class SettingsCard extends ConsumerWidget {
 
     // --- Theme Refresh Handler (for error recovery) ---
     void handleThemeRefresh() async {
-      if (isThemeBusy) return; // Don't refresh if already busy
+      if (isThemeBusy) return;
       _logger.info('Attempting to refresh theme due to previous error...');
       await ref.read(themeModeNotifierProvider.notifier).refreshTheme();
       if (context.mounted) {
@@ -65,7 +65,7 @@ class SettingsCard extends ConsumerWidget {
 
     // --- Locale Refresh Handler (for error recovery) ---
     void handleLocaleRefresh() async {
-      if (isLocaleBusy) return; // Don't refresh if already busy
+      if (isLocaleBusy) return;
       _logger.info('Attempting to refresh locale due to previous error...');
       await ref.read(localeNotifierProvider.notifier).refreshLocale();
       if (context.mounted) {
