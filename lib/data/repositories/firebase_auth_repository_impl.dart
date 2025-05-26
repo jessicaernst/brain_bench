@@ -358,12 +358,27 @@ class FirebaseAuthRepository implements AuthRepository {
             // Log how many documents will be deleted
             'Deleting ${resultsSnapshot.docs.length} result document(s) for user $userId.',
           );
-          // Use Firestore Batch Write for efficient deletion of multiple documents
-          final WriteBatch batch = _firestore.batch();
-          for (final doc in resultsSnapshot.docs) {
-            batch.delete(doc.reference);
+
+          // Firestore batch writes have a limit (e.g., 500 operations).
+          // Process deletions in chunks if necessary.
+          const batchLimit = 499; // Keep it slightly below 500 for safety
+          for (int i = 0; i < resultsSnapshot.docs.length; i += batchLimit) {
+            final WriteBatch batch = _firestore.batch();
+            final end =
+                (i + batchLimit < resultsSnapshot.docs.length)
+                    ? i + batchLimit
+                    : resultsSnapshot.docs.length;
+
+            for (int j = i; j < end; j++) {
+              batch.delete(resultsSnapshot.docs[j].reference);
+            }
+
+            _logger.info(
+              'Committing batch to delete results from index $i to ${end - 1} for user $userId.',
+            );
+            await batch.commit();
           }
-          await batch.commit();
+
           _logger.info('All result documents for user $userId deleted.');
         } else {
           _logger.info('No result documents found for user $userId.');
