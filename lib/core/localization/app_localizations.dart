@@ -862,6 +862,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loading...'**
   String get authLoadingText;
+
+  /// Title of the dialog for deleting the user account
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get profileDeleteAccountTitle;
+
+  /// Content of the dialog for deleting the user account
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete your account? This action cannot be undone.'**
+  String get profileDeleteAccountContent;
+
+  /// Label for the button to confirm account deletion
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get confirmDeleteAccount;
+
+  /// Label for the button to cancel account deletion
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancelDeleteAccount;
+
+  /// Message shown when the user account is successfully deleted
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been successfully deleted.'**
+  String get profileDeleteAccountSuccess;
+
+  /// Error message shown when account deletion fails, with details.
+  ///
+  /// In en, this message translates to:
+  /// **'Error deleting your account: {errorDetails}'**
+  String profileDeleteAccountError(String errorDetails);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

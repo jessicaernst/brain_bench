@@ -393,4 +393,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authLoadingText => 'Loading...';
+
+  @override
+  String get profileDeleteAccountTitle => 'Delete Account';
+
+  @override
+  String get profileDeleteAccountContent => 'Are you sure you want to delete your account? This action cannot be undone.';
+
+  @override
+  String get confirmDeleteAccount => 'Delete Account';
+
+  @override
+  String get cancelDeleteAccount => 'Cancel';
+
+  @override
+  String get profileDeleteAccountSuccess => 'Your account has been successfully deleted.';
+
+  @override
+  String profileDeleteAccountError(String errorDetails) {
+    return 'Error deleting your account: $errorDetails';
+  }
 }

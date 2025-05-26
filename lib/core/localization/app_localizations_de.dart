@@ -393,4 +393,24 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get authLoadingText => 'Einen Moment bitte...';
+
+  @override
+  String get profileDeleteAccountTitle => 'Konto löschen';
+
+  @override
+  String get profileDeleteAccountContent => 'Bist du sicher, dass du dein Konto löschen möchtest? Dies kann nicht rückgängig gemacht werden.';
+
+  @override
+  String get confirmDeleteAccount => 'Konto löschen';
+
+  @override
+  String get cancelDeleteAccount => 'Abbrechen';
+
+  @override
+  String get profileDeleteAccountSuccess => 'Konto erfolgreich gelöscht.';
+
+  @override
+  String profileDeleteAccountError(String errorDetails) {
+    return 'Fehler beim Löschen des Kontos: $errorDetails';
+  }
 }

@@ -6,6 +6,7 @@ import 'package:brain_bench/core/shared_widgets/buttons/light_dark_switch_btn.da
 import 'package:brain_bench/core/shared_widgets/cards/glass_card_view.dart';
 import 'package:brain_bench/core/styles/colors.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
+import 'package:brain_bench/presentation/profile/widgets/delete_account_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
@@ -243,6 +244,8 @@ class ProfileEditView extends HookWidget {
                 floatingLabelAlignment: FloatingLabelAlignment.center,
               ),
             ),
+            const SizedBox(height: 8),
+            DeleteAccountButton(),
             const SizedBox(height: 48),
             // Action Button (Save)
             LightDarkSwitchBtn(

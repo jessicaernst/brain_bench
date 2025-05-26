@@ -19,7 +19,7 @@ class ProfileContentView extends StatelessWidget {
     required this.userImageUrl,
     required this.isSaveEnabled,
     required this.selectedImage,
-    required this.contactImageFile, // This will now be XFile?
+    required this.contactImageFile,
     required this.userAsyncValue,
     required this.handleSaveChanges,
     required this.handleImageSelection,
@@ -35,7 +35,7 @@ class ProfileContentView extends StatelessWidget {
   final String? userImageUrl;
   final bool isSaveEnabled;
   final ValueNotifier<XFile?> selectedImage;
-  final XFile? contactImageFile; // Changed from ValueNotifier<XFile?>
+  final XFile? contactImageFile;
   final AsyncValue<AppUser?> userAsyncValue;
   final VoidCallback handleSaveChanges;
   final Function(XFile)? handleImageSelection;
@@ -73,12 +73,10 @@ class ProfileContentView extends StatelessWidget {
                     theme: theme,
                     userImageUrl: userImageUrl,
                     // Pass isSaveEnabled to control the button state
-                    isActive: isSaveEnabled, // <-- Pass calculated state
-                    // Pass handleSaveChanges, button disables itself if !isActive
+                    isActive: isSaveEnabled,
                     onPressed: handleSaveChanges,
-                    onImageSelected:
-                        handleImageSelection, // This is Function(XFile)?
-                    contactImageFile: contactImageFile, // Pass XFile?
+                    onImageSelected: handleImageSelection,
+                    contactImageFile: contactImageFile,
                     selectedImageFile: selectedImage.value,
                   )
                   : ProfileView(
@@ -88,7 +86,7 @@ class ProfileContentView extends StatelessWidget {
                     textTheme: textTheme,
                     theme: theme,
                     userImageUrl: userImageUrl,
-                    contactImageFile: contactImageFile, // Pass XFile?
+                    contactImageFile: contactImageFile,
                   ),
         ),
       ),

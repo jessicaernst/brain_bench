@@ -517,5 +517,35 @@
     "authLoadingText": "Einen Moment bitte...",
     "@authLoadingText": {
         "description": "Text displayed while authentication processes are running."
+    },
+    "profileDeleteAccountTitle": "Konto löschen",
+    "@profileDeleteAccountTitle": {
+        "description": "Title for the account deletion confirmation dialog."
+    },
+    "profileDeleteAccountContent": "Bist du sicher, dass du dein Konto löschen möchtest? Dies kann nicht rückgängig gemacht werden.",
+    "@profileDeleteAccountContent": {
+        "description": "Content for the account deletion confirmation dialog."
+    },
+    "confirmDeleteAccount": "Konto löschen",
+    "@confirmDeleteAccount": {
+        "description": "Label for the button to confirm account deletion."
+    },
+    "cancelDeleteAccount": "Abbrechen",
+    "@cancelDeleteAccount": {
+        "description": "Label for the button to cancel account deletion."
+    },
+    "profileDeleteAccountSuccess": "Konto erfolgreich gelöscht.",
+    "@profileDeleteAccountSuccess": {
+        "description": "Message shown when the account is successfully deleted."
+    },
+    "profileDeleteAccountError": "Fehler beim Löschen des Kontos: {errorDetails}",
+    "@profileDeleteAccountError": {
+        "description": "Error message shown when account deletion fails, with details.",
+        "placeholders": {
+            "errorDetails": {
+                "type": "String",
+                "example": "Unbekannter Fehler"
+            }
+        }
     }
 }

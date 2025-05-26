@@ -517,5 +517,35 @@
     "authLoadingText": "Loading...",
     "@authLoadingText": {
         "description": "Generic loading message shown in a SnackBar for authentication-related operations."
+    },
+    "profileDeleteAccountTitle": "Delete Account",
+    "@profileDeleteAccountTitle": {
+        "description": "Title of the dialog for deleting the user account"
+    },
+    "profileDeleteAccountContent": "Are you sure you want to delete your account? This action cannot be undone.",
+    "@profileDeleteAccountContent": {
+        "description": "Content of the dialog for deleting the user account"
+    },
+    "confirmDeleteAccount": "Delete Account",
+    "@confirmDeleteAccount": {
+        "description": "Label for the button to confirm account deletion"
+    },
+    "cancelDeleteAccount": "Cancel",
+    "@cancelDeleteAccount": {
+        "description": "Label for the button to cancel account deletion"
+    },
+    "profileDeleteAccountSuccess": "Your account has been successfully deleted.",
+    "@profileDeleteAccountSuccess": {
+        "description": "Message shown when the user account is successfully deleted"
+    },
+    "profileDeleteAccountError": "Error deleting your account: {errorDetails}",
+    "@profileDeleteAccountError": {
+        "description": "Error message shown when account deletion fails, with details.",
+        "placeholders": {
+            "errorDetails": {
+                "type": "String",
+                "example": "Unknown error occurred"
+            }
+        }
     }
 }

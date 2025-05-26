@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:brain_bench/business_logic/auth/current_user_provider.dart';
+import 'package:brain_bench/data/infrastructure/auth/auth_repository.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/infrastructure/storage/storage_providers.dart';
 import 'package:brain_bench/data/infrastructure/user/user_provider.dart';
@@ -503,6 +504,43 @@ class ProfileNotifier extends _$ProfileNotifier {
         e,
         stack,
       );
+    }
+  }
+
+  /// Attempts to delete the current user's account.
+  ///
+  /// Sets the notifier state to [AsyncLoading] while the operation is in progress.
+  /// If successful, sets the state to [AsyncData] (with null value) and returns `true`.
+  /// If an error occurs, sets the state to [AsyncError] and returns `false`.
+  /// The UI should listen to the notifier's state for detailed error information
+  /// and react to the boolean return value for immediate success/failure feedback.
+  Future<bool> deleteUserAccount() async {
+    _logger.info('Attempting to delete user account...');
+    state = const AsyncLoading();
+    try {
+      final authRepository = ref.read(authRepositoryProvider);
+      await authRepository.deleteAccount();
+      _logger.info(
+        'User account deletion initiated successfully via repository.',
+      );
+
+      if (!state.isLoading && state is! AsyncData) {
+        state = const AsyncData(null);
+      } else {
+        _logger.warning(
+          'deleteUserAccount(): Skipping redundant state assignment.',
+        );
+      }
+
+      return true;
+    } catch (e, s) {
+      _logger.severe('Failed to delete user account', e, s);
+      // If the state is already loading or has an error, we don't overwrite it.
+      if (!state.isLoading && state is! AsyncError) {
+        state = AsyncError(e, s);
+      }
+
+      return false;
     }
   }
 }
