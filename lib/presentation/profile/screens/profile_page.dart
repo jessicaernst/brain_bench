@@ -35,7 +35,6 @@ class ProfilePage extends HookConsumerWidget {
     final ValueNotifier<XFile?> initialSelectedImageOnEdit = useState<XFile?>(
       null,
     );
-    // contactImageFile is now managed by provisionalProfileImageProvider
 
     final AsyncValue<UserModelState> userStateAsync = ref.watch(
       currentUserModelProvider,
