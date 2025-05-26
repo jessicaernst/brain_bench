@@ -8,4 +8,5 @@ abstract class AuthRepository {
   Future<AppUser> signInWithApple();
   Future<void> sendPasswordResetEmail(String email);
   Future<void> signOut();
+  Future<void> deleteAccount();
 }

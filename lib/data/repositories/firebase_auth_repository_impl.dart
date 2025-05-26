@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:firebase_storage/firebase_storage.dart' as fb_storage;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -285,6 +286,120 @@ class FirebaseAuthRepository implements AuthRepository {
     } catch (e) {
       _logger.severe('Unsupported Error during Apple Sign-In: $e');
       throw Exception('Ein unerwarteter Fehler ist aufgetreten.');
+    }
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    final fb.User? firebaseUser = _auth.currentUser;
+
+    if (firebaseUser == null) {
+      _logger.warning('No user signed in to delete the account.');
+      throw Exception('No user signed in.');
+    }
+
+    final String userId = firebaseUser.uid;
+    _logger.info('Starting account deletion process for user: $userId');
+
+    try {
+      // 1. Fetch Firestore user document to get photoUrl
+      // and then delete it.
+      String? photoUrlToDelete;
+      try {
+        final userDoc = _firestore.collection('users').doc(userId);
+        final docSnapshot = await userDoc.get();
+        if (docSnapshot.exists && docSnapshot.data() != null) {
+          photoUrlToDelete = docSnapshot.data()!['photoUrl'] as String?;
+        }
+        await userDoc
+            .delete(); // Delete the user document from 'users' collection
+        _logger.info('Firestore document for user $userId deleted.');
+      } catch (e, s) {
+        _logger.severe(
+          'Error deleting Firestore document for user $userId. Proceeding with other steps.',
+          e,
+          s,
+        );
+        // Continue anyway to try to delete the Auth user.
+      }
+
+      // 2. Delete profile picture from Firebase Storage, if present
+      if (photoUrlToDelete != null && photoUrlToDelete.isNotEmpty) {
+        try {
+          // Attempt to delete the profile image from Firebase Storage
+          final fb_storage.Reference photoRef = fb_storage
+              .FirebaseStorage
+              .instance
+              .refFromURL(photoUrlToDelete);
+          await photoRef.delete();
+          _logger.info(
+            'Profile picture for user $userId deleted from Storage: $photoUrlToDelete',
+          );
+        } catch (e, s) {
+          _logger.severe(
+            'Error deleting profile picture from Storage for user $userId ($photoUrlToDelete). Proceeding.',
+            e, // Log the error
+            s, // Log the stack trace
+          );
+        }
+      }
+
+      // 3. Delete associated quiz results
+      // Assumption: The collection is named 'results' and documents have a 'userId' field.
+      try {
+        final resultsQuery = _firestore
+            .collection('results')
+            .where('userId', isEqualTo: userId);
+        final resultsSnapshot = await resultsQuery.get();
+
+        if (resultsSnapshot.docs.isNotEmpty) {
+          // Check if there are any results to delete
+          _logger.info(
+            // Log how many documents will be deleted
+            'Deleting ${resultsSnapshot.docs.length} result document(s) for user $userId.',
+          );
+          // Use Firestore Batch Write for efficient deletion of multiple documents
+          final WriteBatch batch = _firestore.batch();
+          for (final doc in resultsSnapshot.docs) {
+            batch.delete(doc.reference);
+          }
+          await batch.commit();
+          _logger.info('All result documents for user $userId deleted.');
+        } else {
+          _logger.info('No result documents found for user $userId.');
+        }
+      } catch (e, s) {
+        _logger.severe(
+          'Error deleting result documents for user $userId. Proceeding.',
+          e,
+          s,
+        );
+      }
+
+      // 4. Delete Firebase Auth user
+      await firebaseUser.delete();
+      _logger.info('Firebase Auth user $userId successfully deleted.');
+    } on fb.FirebaseAuthException catch (e, s) {
+      _logger.severe(
+        'FirebaseAuthException during account deletion for user $userId: ${e.code}',
+        e,
+        s,
+      );
+      if (e.code == 'requires-recent-login') {
+        throw Exception(
+          'This operation requires a recent sign-in. Please sign in again and retry.',
+        );
+      }
+      throw Exception('Error deleting account: ${e.message}');
+    } catch (e, s) {
+      _logger.severe(
+        'Unexpected error during account deletion for user $userId.',
+        e,
+        s,
+      );
+      throw Exception(
+        'An unexpected error occurred while deleting the account.',
+      );
     }
   }
 }
