@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:brain_bench/business_logic/auth/current_user_provider.dart';
@@ -28,9 +29,7 @@ final _logger = Logger('ProfileNotifier');
 @riverpod
 class ProfileNotifier extends _$ProfileNotifier {
   @override
-  FutureOr<void> build() {
-    return null;
-  }
+  FutureOr<void> build() {}
 
   /// Fetches and validates the current user's ID.
   /// Sets the state to error and returns null if the user ID is not available.
@@ -282,7 +281,7 @@ class ProfileNotifier extends _$ProfileNotifier {
   /// Returns the photo URL that was in the database before this update.
   Future<String?> _performDatabaseUpdate({
     required String userId,
-    required String? displayName, // Allow null for displayName
+    required String? displayName,
     required String? photoUrlToStoreInDb,
     required UserRepository userRepository,
   }) async {
@@ -376,11 +375,8 @@ class ProfileNotifier extends _$ProfileNotifier {
       );
 
       final String? userId = _getUserIdAndSetErrorStateIfAbsent();
-      if (userId == null) {
-        return;
-      }
+      if (userId == null) return;
 
-      // Fetch current user data to get photoUrl before update for deletion logic
       final AppUser? userBeforeUpdate = await userRepository.getUser(userId);
       final String? photoUrlFromDbBeforeUpdate = userBeforeUpdate?.photoUrl;
 
@@ -396,10 +392,11 @@ class ProfileNotifier extends _$ProfileNotifier {
           storageRepository: storageRepository,
         );
         newUploadedPhotoUrl = imageResult.uploadedPhotoUrl;
-        _logger.fine(
-          'Image processing result for user $userId: newUploadedPhotoUrl=$newUploadedPhotoUrl, error=${imageResult.error}',
-        );
         imageProcessingError = imageResult.error;
+
+        _logger.fine(
+          'Image processing result for user $userId: newUploadedPhotoUrl=$newUploadedPhotoUrl, error=$imageProcessingError',
+        );
 
         if (imageProcessingError != null) {
           state = AsyncError(
@@ -408,6 +405,7 @@ class ProfileNotifier extends _$ProfileNotifier {
           );
           return;
         }
+
         finalPhotoUrlToStoreInDb = newUploadedPhotoUrl;
       }
 
@@ -421,28 +419,41 @@ class ProfileNotifier extends _$ProfileNotifier {
       ref.invalidate(currentUserModelProvider);
       _logger.fine('Invalidated currentUserModelProvider.');
 
-      // Delete old image only if a new one was successfully processed and uploaded
       if (newUploadedPhotoUrl != null && imageProcessingError == null) {
-        await _attemptOldImageDeletion(
-          newUploadedPhotoUrl: newUploadedPhotoUrl,
-          photoUrlFromDbBeforeUpdate: photoUrlFromDbBeforeUpdate,
-          userId: userId,
-          storageRepository: storageRepository,
-          userRepository: userRepository,
+        unawaited(
+          _attemptOldImageDeletion(
+            newUploadedPhotoUrl: newUploadedPhotoUrl,
+            photoUrlFromDbBeforeUpdate: photoUrlFromDbBeforeUpdate,
+            userId: userId,
+            storageRepository: storageRepository,
+            userRepository: userRepository,
+          ),
         );
       }
 
-      state = const AsyncData(null);
-      _logger.info('Profile update process completed successfully.');
+      if (!state.isLoading && state is! AsyncData) {
+        state = const AsyncData(null);
+        _logger.info(
+          'ProfileNotifier: Set state to AsyncData for user $userId. Returning cleanly.',
+        );
+      } else {
+        _logger.warning(
+          'State was already completed. Skipping redundant state set.',
+        );
+      }
     } catch (e, stack) {
       final userIdForLog =
           ref.read(currentUserProvider).valueOrNull?.uid ?? 'unknown';
       _logger.severe(
-        'Failed to update profile for user $userIdForLog',
+        'ProfileNotifier: CAUGHT ERROR in updateProfile for user $userIdForLog. Error: $e. State upon entering catch: $state',
         e,
         stack,
       );
-      state = AsyncError(e, stack);
+
+      if (state is! AsyncError) {
+        state = AsyncError(e, stack);
+      }
+      return Future.error(e, stack);
     }
   }
 
