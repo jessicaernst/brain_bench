@@ -547,5 +547,9 @@
                 "example": "Unknown error occurred"
             }
         }
+    },
+    "carouselArticleTitle": "articles",
+    "@carouselArticleTitle": {
+        "description": "The title of the carousel article"
     }
 }

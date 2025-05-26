@@ -898,6 +898,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error deleting your account: {errorDetails}'**
   String profileDeleteAccountError(String errorDetails);
+
+  /// The title of the carousel article
+  ///
+  /// In en, this message translates to:
+  /// **'articles'**
+  String get carouselArticleTitle;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

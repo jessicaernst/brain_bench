@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:brain_bench/business_logic/locale/locale_provider.dart';
 import 'package:brain_bench/business_logic/theme/theme_provider.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
@@ -55,6 +56,7 @@ class BrainBenchApp extends ConsumerWidget {
       data: (currentLocale) {
         return MaterialApp.router(
           title: 'Brain Bench',
+          debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,

@@ -174,7 +174,7 @@ class HomePage extends HookConsumerWidget {
                   vertical: isSmallScreenValue ? 16 : 32,
                 ),
                 child: Text(
-                  'articles',
+                  localizations.carouselArticleTitle,
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,

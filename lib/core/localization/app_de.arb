@@ -547,5 +547,9 @@
                 "example": "Unbekannter Fehler"
             }
         }
+    },
+    "carouselArticleTitle": "artikel",
+    "@carouselArticleTitle": {
+        "description": "Title for the carousel displaying articles."
     }
 }

@@ -413,4 +413,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String profileDeleteAccountError(String errorDetails) {
     return 'Fehler beim Löschen des Kontos: $errorDetails';
   }
+
+  @override
+  String get carouselArticleTitle => 'artikel';
 }
