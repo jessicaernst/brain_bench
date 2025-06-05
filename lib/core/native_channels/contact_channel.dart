@@ -67,7 +67,7 @@ class ContactChannel {
       _logger.info('"getUserContact" successful. Result: $contactInfo');
       return contactInfo;
     } on PlatformException catch (e) {
-      // Handle errors sent from the native side (e.g., permission denied).
+      // Handle errors sent from the native side
       _logger.severe(
         'PlatformException while calling "getUserContact": ${e.code} - ${e.message}',
         e,
@@ -76,7 +76,6 @@ class ContactChannel {
         _logger.warning(
           'Contact permission was denied by the user (reported by native code).',
         );
-        // You might want to inform the user here or guide them to settings.
       } else if (e.code == 'PERMISSION_ERROR') {
         _logger.warning(
           'Error during contact permission request (reported by native code).',
@@ -88,7 +87,6 @@ class ContactChannel {
       }
       return null; // Return null on known errors or permission denial.
     } catch (e, st) {
-      // Catch any other unexpected errors during the channel communication.
       _logger.severe('Unexpected error calling "getUserContact": $e', e, st);
       return null;
     }
