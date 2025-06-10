@@ -416,4 +416,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get carouselArticleTitle => 'articles';
+
+  @override
+  String get imageLoadingError => 'Error loading image.';
 }

@@ -39,13 +39,19 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
 
   Future<void> _handleEndQuiz() async {
     _logger.info('End Quiz button pressed');
+    // Store notifier and localizations at the beginning
+    // as they don't depend on async operations and are safe if widget is initially mounted.
     final notifier = ref.read(quizResultNotifierProvider.notifier);
+    // context access for localizations should be guarded if used after an await
+    // but here it's at the start, so it's fine if the widget is mounted.
+    if (!mounted) return;
     final localizations = AppLocalizations.of(context)!;
 
     // Fetch the current user state
     final userState = await ref.read(
       currentUserModelProvider.future,
     ); // Use read for one-time fetch in async callback
+    if (!mounted) return; // Check mounted after first await
 
     // Use pattern matching to handle the user state
     final AppUser? userData = switch (userState) {
@@ -75,13 +81,15 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
       return;
     }
 
+    // At this point, userData is not null and widget was mounted after fetching user.
     _logger.info('✅ User ist eingeloggt (UID: ${userData.uid}).');
 
     await notifier.saveQuizResult(
       widget.categoryId,
       widget.topicId,
       userData.uid,
-    );
+    ); // Await operation
+    if (!mounted) return; // Check mounted after saving quiz result
     _logger.info(
       'Quiz result saved for category: ${widget.categoryId}, topic: ${widget.topicId}',
     );
@@ -89,6 +97,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
     try {
       await notifier.updateLastPlayedCategory(userData, widget.categoryId);
     } catch (e, stack) {
+      // No mounted check before logger, as logger itself is safe.
       _logger.severe(
         'Failed to update last played category for user ${userData.uid}: $e',
         e,
@@ -101,6 +110,7 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
             action: SnackBarAction(
               label: localizations.quizResultsRetryButton,
               onPressed: () async {
+                if (!mounted) return; // Check before retry async
                 try {
                   // Korrekter Aufruf auch hier
                   await notifier.updateLastPlayedCategory(
@@ -139,33 +149,56 @@ class _QuizResultPageState extends ConsumerState<QuizResultPage> {
         );
       }
     }
+
+    // Save to SharedPreferences
     try {
+      if (!mounted) {
+        return;
+      }
       final settingsRepo = ref.read(settingsRepositoryProvider);
-      await settingsRepo.saveLastSelectedCategoryId(widget.categoryId);
+      await settingsRepo.saveLastSelectedCategoryId(
+        widget.categoryId,
+      ); // Await operation
+      if (!mounted) return; // Check after saving to SharedPreferences
       ref.invalidate(lastSelectedCategoryIdFromPrefsProvider);
       _logger.info(
         'Last played category ID ${widget.categoryId} also saved to SharedPreferences.',
       );
     } catch (e) {
+      // Logger is safe, no mounted check needed for it.
       _logger.warning(
         'Failed to save last played category ID to SharedPreferences: $e',
       );
     }
 
+    // Mark topic as done
+    // notifier.isQuizPassed() is safe as notifier was obtained when widget was mounted.
     if (notifier.isQuizPassed()) {
       await notifier.markTopicAsDone(
-        userData,
+        userData, // userData was captured when widget was mounted.
         widget.topicId,
         widget.categoryId,
-      );
+      ); // Await operation
+      if (!mounted) return; // Check after marking topic as done
       _logger.info('✅ Fortschritt & Topic als "done" gespeichert.');
+    }
+
+    // Final resets and navigation
+    if (!mounted) {
+      // Logger is safe.
+      _logger.warning(
+        'QuizResultPage unmounted before final resets and navigation.',
+      );
+      return;
     }
 
     ref.read(quizAnswersNotifierProvider.notifier).reset();
     ref.read(quizStateNotifierProvider.notifier).resetQuiz();
-    notifier.toggleView(SelectedView.none);
+    notifier.toggleView(SelectedView.none); // notifier instance is safe
 
-    if (mounted) {
+    // context.mounted is implicitly true here due to the `if (!mounted) return;` above.
+    // However, explicit check for context is good practice before navigation.
+    if (context.mounted) {
       context.goNamed(
         AppRouteNames.topics,
         pathParameters: {'categoryId': widget.categoryId},

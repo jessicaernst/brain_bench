@@ -55,6 +55,23 @@ class ArticleDetailPage extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      if (article.imageUrl.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.network(
+                              article.imageUrl,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Center(
+                                  child: Text(localizations.imageLoadingError),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
                       Html(
                         data: article.localizedHtmlContent(languageCode),
                         style: {
@@ -65,6 +82,10 @@ class ArticleDetailPage extends ConsumerWidget {
                                 Theme.of(
                                   context,
                                 ).textTheme.headlineLarge?.color,
+                          ),
+                          'img': Style(
+                            width: Width(100, Unit.percent),
+                            margin: Margins.symmetric(vertical: 16),
                           ),
                           'body': Style(
                             fontSize: FontSize(16),

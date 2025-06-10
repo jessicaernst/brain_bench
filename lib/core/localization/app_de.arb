@@ -551,5 +551,9 @@
     "carouselArticleTitle": "artikel",
     "@carouselArticleTitle": {
         "description": "Title for the carousel displaying articles."
+    },
+    "imageLoadingError": "Fehler beim Laden des Bildes.",
+    "@imageLoadingError": {
+        "description": "Error message shown when an image fails to load."
     }
 }

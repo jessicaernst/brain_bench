@@ -904,6 +904,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'articles'**
   String get carouselArticleTitle;
+
+  /// Error message shown when loading an image fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading image.'**
+  String get imageLoadingError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
