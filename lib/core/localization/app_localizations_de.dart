@@ -60,13 +60,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get authPasswordEmptyError => 'Das Passwort darf nicht leer sein.';
 
   @override
-  String get authPasswordNotMatchError => 'Die Passwörter stimmen nicht überein.';
+  String get authPasswordNotMatchError =>
+      'Die Passwörter stimmen nicht überein.';
 
   @override
-  String get authPasswordResetEmailPrompt => 'Bitte gib zuerst deine E-Mail-Adresse ein.';
+  String get authPasswordResetEmailPrompt =>
+      'Bitte gib zuerst deine E-Mail-Adresse ein.';
 
   @override
-  String get authPasswordShortError => 'Das Passwort muss mindestens 6 Zeichen lang sein.';
+  String get authPasswordShortError =>
+      'Das Passwort muss mindestens 6 Zeichen lang sein.';
 
   @override
   String get authPwdForgottenBtnLbl => 'Hier zurücksetzen';
@@ -99,10 +102,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get bottomNavigationResults => 'Ergebnisse';
 
   @override
-  String get homeActualCategoryDescriptionPrompt => 'Wähle eine Kategorie, um Details anzuzeigen.';
+  String get homeActualCategoryDescriptionPrompt =>
+      'Wähle eine Kategorie, um Details anzuzeigen.';
 
   @override
-  String get homeActualCategoryErrorLoading => 'Fehler beim Laden der Kategorien:';
+  String get homeActualCategoryErrorLoading =>
+      'Fehler beim Laden der Kategorien:';
 
   @override
   String get homeActualCategoryNoCategories => 'Keine Kategorien verfügbar.';
@@ -114,10 +119,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pickerOptionAutomatic => 'Willkommen';
 
   @override
-  String get pickerOptionAutomaticDescription => 'Die App wählt nach jedem Quiz automatisch eine neue Kategorie für dich aus.';
+  String get pickerOptionAutomaticDescription =>
+      'Die App wählt nach jedem Quiz automatisch eine neue Kategorie für dich aus.';
 
   @override
-  String get categoryDetailsErrorLoading => 'Fehler beim Laden der Kategorie-Details:';
+  String get categoryDetailsErrorLoading =>
+      'Fehler beim Laden der Kategorie-Details:';
 
   @override
   String get categoryDetailsTitle => 'Kategorie';
@@ -150,7 +157,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get feedbackBSheetCorrectAnswers => 'Korrekte Antworten:';
 
   @override
-  String get feedbackBSheetMissedCorrectAnswers => 'Verpasste korrekte Antworten:';
+  String get feedbackBSheetMissedCorrectAnswers =>
+      'Verpasste korrekte Antworten:';
 
   @override
   String get feedbackBSheetWrongAnswers => 'Falsche Antworten:';
@@ -168,7 +176,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get quizCompletedMsg => '🎉 Quiz abgeschlossen';
 
   @override
-  String get quizNoQuestionsAvailable => 'Für dieses Thema sind noch keine Fragen verfügbar.';
+  String get quizNoQuestionsAvailable =>
+      'Für dieses Thema sind noch keine Fragen verfügbar.';
 
   @override
   String get startQuizBtnLbl => 'Quiz starten';
@@ -198,19 +207,24 @@ class AppLocalizationsDe extends AppLocalizations {
   String get quizResultsRetryButton => 'Erneut versuchen';
 
   @override
-  String get quizResultsSaveLastCategoryError => 'Konnte die zuletzt gespielte Kategorie nicht speichern.';
+  String get quizResultsSaveLastCategoryError =>
+      'Konnte die zuletzt gespielte Kategorie nicht speichern.';
 
   @override
-  String get quizResultsSaveLastCategoryRetryFailed => 'Speichern der letzten Kategorie ist fehlgeschlagen. Bitte später erneut versuchen.';
+  String get quizResultsSaveLastCategoryRetryFailed =>
+      'Speichern der letzten Kategorie ist fehlgeschlagen. Bitte später erneut versuchen.';
 
   @override
-  String get quizResultsSaveLastCategorySuccess => 'Letzte Kategorie erfolgreich gespeichert.';
+  String get quizResultsSaveLastCategorySuccess =>
+      'Letzte Kategorie erfolgreich gespeichert.';
 
   @override
-  String get quizResultsUserNotAvailable => 'Benutzerdaten nicht verfügbar. Bitte versuche es später erneut.';
+  String get quizResultsUserNotAvailable =>
+      'Benutzerdaten nicht verfügbar. Bitte versuche es später erneut.';
 
   @override
-  String get quizToggleExplanation => 'Hier kannst du zwischen deinen richtigen und falschen Antworten filtern. Tippe dafür auf die Daumen!';
+  String get quizToggleExplanation =>
+      'Hier kannst du zwischen deinen richtigen und falschen Antworten filtern. Tippe dafür auf die Daumen!';
 
   @override
   String get profileAppBarTitle => 'Profil';
@@ -219,7 +233,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get profileChangePictureTooltip => 'Profilbild ändern';
 
   @override
-  String get profileDisplayNameEmptyError => 'Der Benutzername darf nicht leer sein.';
+  String get profileDisplayNameEmptyError =>
+      'Der Benutzername darf nicht leer sein.';
 
   @override
   String get profileDisplayNameLabel => 'Benutzername';
@@ -309,7 +324,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get errorGeneric => 'Ein unerwarteter Fehler ist aufgetreten.';
 
   @override
-  String get errorNavigationFailed => 'Navigation fehlgeschlagen. Bitte versuche es erneut.';
+  String get errorNavigationFailed =>
+      'Navigation fehlgeschlagen. Bitte versuche es erneut.';
 
   @override
   String get errorNoCategorySelected => 'Kategorie nicht ausgewählt';
@@ -327,7 +343,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get notFoundHeading => '404 - Seite nicht gefunden';
 
   @override
-  String get quizErrorLoadingNextQuestion => 'Fehler beim Laden der nächsten Frage.';
+  String get quizErrorLoadingNextQuestion =>
+      'Fehler beim Laden der nächsten Frage.';
 
   @override
   String get quizErrorLoadingQuestions => 'Fehler beim Laden der Fragen:';
@@ -336,16 +353,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get quizErrorNoQuestions => 'Keine Fragen für dieses Thema gefunden.';
 
   @override
-  String get genericErrorMessage => 'Etwas ist schiefgelaufen. Bitte versuche es später erneut.';
+  String get genericErrorMessage =>
+      'Etwas ist schiefgelaufen. Bitte versuche es später erneut.';
 
   @override
   String get permissionRequiredTitle => 'Berechtigung erforderlich';
 
   @override
-  String get permissionPhotosPermanentlyDenied => 'Um Fotos auszuwählen, aktiviere bitte den Fotozugriff für Brain Bench in den Geräteeinstellungen.';
+  String get permissionPhotosPermanentlyDenied =>
+      'Um Fotos auszuwählen, aktiviere bitte den Fotozugriff für Brain Bench in den Geräteeinstellungen.';
 
   @override
-  String get permissionCameraPermanentlyDenied => 'Um Fotos aufzunehmen, aktiviere bitte den Kamerazugriff für Brain Bench in den Geräteeinstellungen.';
+  String get permissionCameraPermanentlyDenied =>
+      'Um Fotos aufzunehmen, aktiviere bitte den Kamerazugriff für Brain Bench in den Geräteeinstellungen.';
 
   @override
   String get permissionPhotosDenied => 'Fotozugriff verweigert.';
@@ -378,13 +398,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get noArticlesAvailable => 'Keine Artikel verfügbar.';
 
   @override
-  String get profileInvalidImageFormat => 'Ungültiges Bildformat. Bitte wähle ein anderes Bild.';
+  String get profileInvalidImageFormat =>
+      'Ungültiges Bildformat. Bitte wähle ein anderes Bild.';
 
   @override
-  String get profileUpdateSuccessButImageFailed => 'Profil erfolgreich aktualisiert, aber das Bild konnte nicht hochgeladen werden.';
+  String get profileUpdateSuccessButImageFailed =>
+      'Profil erfolgreich aktualisiert, aber das Bild konnte nicht hochgeladen werden.';
 
   @override
-  String get profileContactImageAutoSaved => 'Profilbild automatisch gespeichert.';
+  String get profileContactImageAutoSaved =>
+      'Profilbild automatisch gespeichert.';
 
   @override
   String authErrorGeneric(String errorDetails) {
@@ -398,7 +421,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get profileDeleteAccountTitle => 'Konto löschen';
 
   @override
-  String get profileDeleteAccountContent => 'Bist du sicher, dass du dein Konto löschen möchtest? Dies kann nicht rückgängig gemacht werden.';
+  String get profileDeleteAccountContent =>
+      'Bist du sicher, dass du dein Konto löschen möchtest? Dies kann nicht rückgängig gemacht werden.';
 
   @override
   String get confirmDeleteAccount => 'Konto löschen';

@@ -36,7 +36,7 @@ class LightDarkModeSwitch extends StatelessWidget {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: BrainBenchColors.flutterSky,
+            activeThumbColor: BrainBenchColors.flutterSky,
             inactiveTrackColor: BrainBenchColors.deepDive.withAlpha(
               (0.3 * 255).toInt(),
             ),
