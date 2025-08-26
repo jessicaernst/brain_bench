@@ -1,7 +1,8 @@
 // import 'package:brain_bench/core/styles/colors.dart'; // Nicht mehr hier benötigt
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show defaultTargetPlatform;
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, TargetPlatform;
 
 class CloseNavAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CloseNavAppBar({

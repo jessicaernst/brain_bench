@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:brain_bench/core/hooks/shared/image_picker_result.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
+import 'package:brain_bench/core/utils/platform_utils.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +66,7 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
                 children: <Widget>[
                   ListTile(
                     leading: Icon(
-                      Platform.isIOS
+                      P.isIOS
                           ? CupertinoIcons.photo_fill_on_rectangle_fill
                           : Icons.photo_library,
                       color:
@@ -85,9 +84,7 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
                   ),
                   ListTile(
                     leading: Icon(
-                      Platform.isIOS
-                          ? CupertinoIcons.camera_fill
-                          : Icons.camera_alt,
+                      P.isIOS ? CupertinoIcons.camera_fill : Icons.camera_alt,
                       color:
                           isDarkMode
                               ? BrainBenchColors.cloudCanvas
@@ -121,8 +118,8 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
     if (source == ImageSource.camera) {
       permission = Permission.camera;
     } else {
-      if (Platform.isAndroid && (await _getAndroidSdkVersion() ?? 0) >= 33 ||
-          Platform.isIOS) {
+      if (P.isAndroid && (await _getAndroidSdkVersion() ?? 0) >= 33 ||
+          P.isIOS) {
         permission = Permission.photos;
       } else {
         permission = Permission.storage;
@@ -139,7 +136,7 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
       _logger.info('Permission status after request: $status');
     }
 
-    if (Platform.isIOS && permission == Permission.photos && status.isLimited) {
+    if (P.isIOS && permission == Permission.photos && status.isLimited) {
       _logger.info('iOS limited photo access granted');
       if (!context.mounted) {
         _logger.warning(
@@ -230,7 +227,7 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
 /// Retrieves the Android SDK version if the current platform is Android.
 /// Returns `null` if the current platform is not Android.
 Future<int?> _getAndroidSdkVersion() async {
-  if (Platform.isAndroid) {
+  if (P.isAndroid) {
     final androidInfo = await DeviceInfoPlugin().androidInfo;
     return androidInfo.version.sdkInt;
   }

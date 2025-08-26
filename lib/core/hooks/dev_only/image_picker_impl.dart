@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:brain_bench/core/hooks/shared/image_picker_result.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/colors.dart';
+import 'package:brain_bench/core/utils/platform_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -48,7 +47,7 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
                 children: <Widget>[
                   ListTile(
                     leading: Icon(
-                      Platform.isIOS
+                      P.isIOS
                           ? CupertinoIcons.photo_fill_on_rectangle_fill
                           : Icons.photo_library,
                       color:
@@ -66,9 +65,7 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
                   ),
                   ListTile(
                     leading: Icon(
-                      Platform.isIOS
-                          ? CupertinoIcons.camera_fill
-                          : Icons.camera_alt,
+                      P.isIOS ? CupertinoIcons.camera_fill : Icons.camera_alt,
                       color:
                           isDarkMode
                               ? BrainBenchColors.cloudCanvas

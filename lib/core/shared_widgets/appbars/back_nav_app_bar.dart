@@ -1,6 +1,7 @@
 import 'package:brain_bench/core/shared_widgets/buttons/profile_button_view.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart' show defaultTargetPlatform;
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, TargetPlatform;
 import 'package:flutter/material.dart';
 
 /// A custom app bar with a back navigation button and a title.

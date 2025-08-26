@@ -1,9 +1,8 @@
-import 'dart:io' show Platform;
-
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/shared_widgets/pickers/cupertino_picker_content.dart';
 import 'package:brain_bench/core/shared_widgets/pickers/material_list_picker.dart';
 import 'package:brain_bench/core/styles/colors.dart';
+import 'package:brain_bench/core/utils/platform_utils.dart';
 import 'package:brain_bench/data/infrastructure/settings/shared_prefs_provider.dart';
 import 'package:brain_bench/data/models/category/category.dart';
 import 'package:brain_bench/data/models/category/category_extensions.dart';
@@ -173,7 +172,7 @@ void showActualCategoryPicker({
   final Color pickerDoneButtonColor =
       isDarkMode ? BrainBenchColors.flutterSky : BrainBenchColors.blueprintBlue;
 
-  if (Platform.isIOS) {
+  if (P.isIOS) {
     showCupertinoModalPopup<void>(
       context: context,
       builder:

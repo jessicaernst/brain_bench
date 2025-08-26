@@ -1,9 +1,9 @@
-import 'dart:io';
-
+import 'package:brain_bench/core/utils/platform_utils.dart';
 import 'package:brain_bench/data/models/user/app_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:firebase_storage/firebase_storage.dart' as fb_storage;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -217,39 +217,52 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   Future<AppUser> signInWithGoogle() async {
     try {
-      final googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) {
-        throw Exception('Google Sign-In abgebrochen');
+      if (kIsWeb) {
+        final provider =
+            fb.GoogleAuthProvider()
+              ..addScope('email')
+              ..setCustomParameters({'prompt': 'select_account'});
+
+        fb.UserCredential cred;
+        try {
+          cred = await _auth.signInWithPopup(provider);
+        } on fb.FirebaseAuthException {
+          // Fallback (Popup blockiert, z.B. Safari)
+          await _auth.signInWithRedirect(provider);
+          cred = await _auth.getRedirectResult();
+        }
+
+        final fb.User firebaseUser = cred.user!;
+        final profileData = await _fetchFirestoreUserProfile(firebaseUser.uid);
+        return _mapUserFromFirebaseAndFirestore(firebaseUser, profileData);
+      } else {
+        final googleUser = await GoogleSignIn().signIn();
+        if (googleUser == null) {
+          throw Exception('Google Sign-In abgebrochen');
+        }
+        final googleAuth = await googleUser.authentication;
+        final credential = fb.GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+        final userCredential = await _auth.signInWithCredential(credential);
+        final fb.User firebaseUser = userCredential.user!;
+        final profileData = await _fetchFirestoreUserProfile(firebaseUser.uid);
+        return _mapUserFromFirebaseAndFirestore(firebaseUser, profileData);
       }
-
-      final googleAuth = await googleUser.authentication;
-
-      final credential = fb.GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      final userCredential = await _auth.signInWithCredential(credential);
-      final fb.User firebaseUser = userCredential.user!;
-      final Map<String, dynamic>? profileData =
-          await _fetchFirestoreUserProfile(firebaseUser.uid);
-      return _mapUserFromFirebaseAndFirestore(firebaseUser, profileData);
     } on fb.FirebaseAuthException catch (e) {
       _logger.severe('Firebase Auth Exception: ${e.code} - ${e.message}');
       throw Exception('Fehler beim Anmelden mit Google: ${e.message}');
-    } on Exception catch (e) {
+    } catch (e) {
       _logger.severe('Google Sign-In error: $e');
       throw Exception('Fehler beim Anmelden mit Google: $e');
-    } catch (e) {
-      _logger.severe('Unexpected error during Google sign-in: $e');
-      throw Exception('Ein unerwarteter Fehler ist aufgetreten.');
     }
   }
 
   @override
   Future<AppUser> signInWithApple() async {
     try {
-      if (!Platform.isIOS && !Platform.isMacOS) {
+      if (!P.isIOS && !P.isMacOS) {
         throw UnsupportedError(
           'Apple Sign-In ist nur auf iOS/macOS verfügbar.',
         );

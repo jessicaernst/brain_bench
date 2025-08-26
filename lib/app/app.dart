@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:brain_bench/business_logic/locale/locale_provider.dart';
 import 'package:brain_bench/business_logic/theme/theme_provider.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/styles/theme_data.dart';
+import 'package:brain_bench/core/utils/platform_utils.dart';
 import 'package:brain_bench/navigation/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -39,7 +38,7 @@ class BrainBenchApp extends ConsumerWidget {
 
     final isAppEffectivelyDark = effectiveBrightness == Brightness.dark;
 
-    if (Platform.isAndroid) {
+    if (P.isAndroid) {
       SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,

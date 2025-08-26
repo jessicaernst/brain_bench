@@ -1,15 +1,15 @@
 import 'dart:convert';
-import 'dart:io' show File, Platform;
+import 'dart:typed_data';
 
 import 'package:brain_bench/business_logic/profile/profile_notifier.dart';
 import 'package:brain_bench/business_logic/profile/profile_ui_state_providers.dart';
 import 'package:brain_bench/core/native_channels/contact_channel.dart';
+import 'package:brain_bench/core/utils/platform_utils.dart';
 import 'package:brain_bench/data/infrastructure/database_providers.dart';
 import 'package:brain_bench/data/models/user/app_user.dart' as model;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final _logger = Logger('EnsureUser');
@@ -20,7 +20,6 @@ Future<bool> _ensureUserExistsIfNeededImpl(
   Reader read,
   model.AppUser? appUser,
 ) async {
-  // Return bool
   if (appUser == null) {
     _logger.warning(
       'ensureUserExistsIfNeeded called with null appUser. Skipping.',
@@ -29,45 +28,30 @@ Future<bool> _ensureUserExistsIfNeededImpl(
   }
 
   DeviceContactInfo? deviceContactInfo;
-  if (Platform.isIOS) {
-    // Check if the email is an Apple private relay address
+  if (P.isIOS) {
     final bool isApplePrivateRelay = appUser.email.endsWith(
       '@privaterelay.appleid.com',
     );
 
-    if (isApplePrivateRelay) {
-      _logger.info(
-        'User is using an Apple private relay email. Skipping device contact fetch for image/name prefill.',
-      );
-      // deviceContactInfo remains null, so no contact image/name will be used from device.
-    } else {
-      _logger.info(
-        'Platform is iOS. Attempting to fetch device contact info by email: ${appUser.email}',
-      );
+    if (!isApplePrivateRelay) {
+      _logger.info('iOS: fetching device contact for ${appUser.email}');
       try {
         deviceContactInfo = await ContactChannel.getUserContactFromDevice(
           userEmail: appUser.email,
         );
         if (deviceContactInfo != null) {
-          _logger.info(
-            'Successfully fetched device contact info: $deviceContactInfo',
-          );
-        } else {
-          _logger.info(
-            'No device contact info found for email ${appUser.email}, or permission denied.',
-          );
+          _logger.info('Fetched device contact info: $deviceContactInfo');
         }
       } catch (e, st) {
-        _logger.warning(
-          'Error fetching device contact info by email ${appUser.email}: $e',
-          e,
-          st,
-        );
+        _logger.warning('Error fetching device contact: $e', e, st);
       }
+    } else {
+      _logger.info(
+        'Apple private relay email detected; skipping device contact fetch.',
+      );
     }
   }
 
-  // Use the user repository
   try {
     final userRepository = read(userFirebaseRepositoryProvider);
     final existingDbUser = await userRepository.getUser(appUser.uid);
@@ -77,22 +61,19 @@ Future<bool> _ensureUserExistsIfNeededImpl(
         'User ${appUser.uid} not found in DB. Creating new entry...',
       );
 
-      // Initialize finalDisplayName and finalPhotoUrl before potentially using them
       String? finalDisplayName = appUser.displayName;
       final String? finalPhotoUrl = appUser.photoUrl;
 
-      // Determine finalDisplayName, potentially using contact name as fallback
-      if (Platform.isIOS &&
+      if (P.isIOS &&
           deviceContactInfo?.name != null &&
           deviceContactInfo!.name!.isNotEmpty &&
           (finalDisplayName == null || finalDisplayName.isEmpty)) {
         finalDisplayName = deviceContactInfo.name;
         _logger.info(
-          'Using device contact name "$finalDisplayName" for new user ${appUser.uid} as auth provider name was missing.',
+          'Using device contact name "$finalDisplayName" for new user ${appUser.uid}.',
         );
       }
 
-      // Create the initial user object (without contact image URL yet, if auto-save happens later)
       final newUser = appUser.copyWith(
         displayName: finalDisplayName,
         photoUrl: finalPhotoUrl,
@@ -100,37 +81,33 @@ Future<bool> _ensureUserExistsIfNeededImpl(
         isTopicDone: {},
       );
 
-      // Save the initial user entry to the database
       await userRepository.saveUser(newUser);
-      _logger.info(
-        '🆕 Successfully created initial user ${appUser.uid} in DB.',
-      );
+      _logger.info('Created initial user ${appUser.uid} in DB.');
 
-      // --- Now handle contact image for NEW user if found ---
+      // contact image for NEW user
       if (deviceContactInfo?.imageBase64 != null &&
           (appUser.photoUrl == null || appUser.photoUrl!.isEmpty)) {
-        _logger.info(
-          'New user created. Attempting to process and save contact image.',
-        );
+        _logger.info('Processing contact image for new user.');
         try {
-          final imageBytes = base64Decode(deviceContactInfo!.imageBase64!);
-          final tempDir = await getTemporaryDirectory();
-          final tempFilePath =
-              '${tempDir.path}/contact_image_ensure_user_${DateTime.now().millisecondsSinceEpoch}.png';
-          final tempFile = File(tempFilePath);
-          await tempFile.writeAsBytes(imageBytes);
-          final contactXFile = XFile(tempFile.path);
+          final Uint8List imageBytes = base64Decode(
+            deviceContactInfo!.imageBase64!,
+          );
+
+          // ✅ web-safe: create an XFile from bytes (no File/IO)
+          final contactXFile = XFile.fromData(
+            imageBytes,
+            name: 'contact_image_${DateTime.now().millisecondsSinceEpoch}.png',
+            mimeType: 'image/png',
+          );
 
           read(provisionalProfileImageProvider.notifier).setImage(contactXFile);
-          _logger.info(
-            'EnsureUser: Set provisional profile image from contact: ${tempFile.path}',
-          );
+          _logger.info('Set provisional profile image from contact (bytes).');
 
           await read(profileNotifierProvider.notifier).updateUserProfileImage(
             newImageFile: contactXFile,
             userId: appUser.uid,
           );
-          _logger.info('EnsureUser: Contact image auto-save successful.');
+          _logger.info('Contact image auto-save successful.');
           read(provisionalProfileImageProvider.notifier).clearImage();
 
           final prefs = await SharedPreferences.getInstance();
@@ -148,38 +125,45 @@ Future<bool> _ensureUserExistsIfNeededImpl(
           );
         }
       } else if (appUser.photoUrl != null && appUser.photoUrl!.isNotEmpty) {
-        // User has Auth photoUrl, no contact image needed
         _logger.info(
-          'New user has Firebase Auth photoUrl. Clearing any provisional image.',
+          'New user has Auth photoUrl. Clearing any provisional image.',
         );
         read(provisionalProfileImageProvider.notifier).clearImage();
       }
 
-      return true; // User was created
+      return true;
     } else {
       _logger.fine('User ${appUser.uid} found in DB. Checking for updates...');
-      // --- Handle contact image for EXISTING user ---
+
+      // contact image for EXISTING user
       if (deviceContactInfo?.imageBase64 != null) {
-        if ((existingDbUser.photoUrl == null ||
-                existingDbUser.photoUrl!.isEmpty) &&
-            (appUser.photoUrl == null || appUser.photoUrl!.isEmpty)) {
+        final bool hasDbPhoto =
+            (existingDbUser.photoUrl != null &&
+                existingDbUser.photoUrl!.isNotEmpty);
+        final bool hasAuthPhoto =
+            (appUser.photoUrl != null && appUser.photoUrl!.isNotEmpty);
+
+        if (!hasDbPhoto && !hasAuthPhoto) {
           _logger.info(
-            'Existing user, no DB/Auth photoUrl. Attempting to use contact image.',
+            'Existing user without photo; attempting contact image.',
           );
           try {
-            final imageBytes = base64Decode(deviceContactInfo!.imageBase64!);
-            final tempDir = await getTemporaryDirectory();
-            final tempFilePath =
-                '${tempDir.path}/contact_image_ensure_user_${DateTime.now().millisecondsSinceEpoch}.png';
-            final tempFile = File(tempFilePath);
-            await tempFile.writeAsBytes(imageBytes);
-            final contactXFile = XFile(tempFile.path);
+            final Uint8List imageBytes = base64Decode(
+              deviceContactInfo!.imageBase64!,
+            );
+
+            final contactXFile = XFile.fromData(
+              imageBytes,
+              name:
+                  'contact_image_${DateTime.now().millisecondsSinceEpoch}.png',
+              mimeType: 'image/png',
+            );
 
             read(
               provisionalProfileImageProvider.notifier,
             ).setImage(contactXFile);
             _logger.info(
-              'Set provisional contact image for existing user: ${tempFile.path}',
+              'Set provisional contact image for existing user (bytes).',
             );
 
             await read(profileNotifierProvider.notifier).updateUserProfileImage(
@@ -211,9 +195,7 @@ Future<bool> _ensureUserExistsIfNeededImpl(
           read(provisionalProfileImageProvider.notifier).clearImage();
         }
       }
-      // --- End of contact image handling for existing user ---
 
-      // Use the user repository for updates
       final Map<String, dynamic> updates = {};
       bool needsUpdate = false;
 
@@ -222,51 +204,39 @@ Future<bool> _ensureUserExistsIfNeededImpl(
           appUser.displayName != existingDbUser.displayName) {
         updates['displayName'] = appUser.displayName;
         needsUpdate = true;
-        // If display name from auth provider is now set, clear provisional image if it was based on contact name
-        // This specific logic might be too complex here, better to rely on photoUrl check above.
-        _logger.fine(
-          'Detected displayName update for ${appUser.uid} from Auth Provider.',
-        );
+        _logger.fine('Detected displayName update for ${appUser.uid}.');
       }
 
-      // Check photoUrl from Auth provider for updates
-      // Auto-saved photoUrl is handled by ProfileNotifier updating the DB directly.
-      // We only need to check if the Auth provider photoUrl has changed.
-      if (appUser.photoUrl !=
-              null && // Otherwise, check photoUrl from Auth provider
-          appUser.photoUrl!.isNotEmpty && // Ensure it's not empty
+      if (appUser.photoUrl != null &&
+          appUser.photoUrl!.isNotEmpty &&
           appUser.photoUrl != existingDbUser.photoUrl) {
         updates['photoUrl'] = appUser.photoUrl;
         needsUpdate = true;
-        // If photoUrl from auth provider is now set, clear provisional image
         read(provisionalProfileImageProvider.notifier).clearImage();
-        _logger.fine(
-          'Detected photoUrl update for ${appUser.uid} from Auth Provider.',
-        );
+        _logger.fine('Detected photoUrl update for ${appUser.uid}.');
       }
 
       final currentDisplayName =
           updates['displayName'] ?? existingDbUser.displayName;
-      if (Platform.isIOS &&
+      if (P.isIOS &&
           deviceContactInfo?.name != null &&
           deviceContactInfo!.name!.isNotEmpty &&
           (currentDisplayName == null || currentDisplayName.isEmpty)) {
         updates['displayName'] = deviceContactInfo.name;
         needsUpdate = true;
         _logger.info(
-          'Updating displayName for ${appUser.uid} using device contact name "${deviceContactInfo.name}" as current name was missing.',
+          'Updating displayName for ${appUser.uid} from device contact name.',
         );
       }
 
       if (needsUpdate) {
         _logger.info(
-          'Updating user ${appUser.uid} in DB with changes: ${updates.keys.join(', ')}',
+          'Updating user ${appUser.uid} in DB with: ${updates.keys.join(', ')}',
         );
-        // Use the new user repository to update specific fields
         await userRepository.updateUserFields(appUser.uid, updates);
-        _logger.info('✅ Successfully updated user ${appUser.uid} in DB.');
+        _logger.info('Updated user ${appUser.uid} in DB.');
       } else {
-        _logger.fine('✅ User ${appUser.uid} exists and is up-to-date in DB.');
+        _logger.fine('User ${appUser.uid} is up-to-date.');
       }
       return false;
     }
@@ -280,15 +250,10 @@ Future<bool> _ensureUserExistsIfNeededImpl(
   }
 }
 
-/// Ensures that the user exists in the local database and attempts to prefill
-/// profile information (name, image) from device contacts if applicable.
-/// This function is intended to be called after user authentication.
 Future<bool> ensureUserExistsIfNeeded(
   Reader read,
   model.AppUser? appUser,
 ) async {
-  // Initialize SharedPreferences default value for the key if it doesn't exist
-  // This helps ensure .getBool never returns null without a default when checked later.
   final prefs = await SharedPreferences.getInstance();
   final snackbarShownKey = 'contactImageSnackbarShown_${appUser?.uid}';
   if (prefs.getBool(snackbarShownKey) == null) {

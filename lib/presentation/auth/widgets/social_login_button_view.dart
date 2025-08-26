@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:brain_bench/core/utils/platform_utils.dart';
 import 'package:brain_bench/gen/assets.gen.dart';
 import 'package:brain_bench/presentation/auth/widgets/social_image_button.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +26,7 @@ class SocialLoginButtonView extends StatelessWidget {
           imagePath: Assets.socialLogins.googleLogo.path,
           onPressed: onGoogleLoginPressed,
         ),
-        if (Platform.isIOS)
+        if (P.isIOS)
           SocialImageButton(
             imagePath:
                 isDarkMode

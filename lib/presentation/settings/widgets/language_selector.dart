@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:brain_bench/business_logic/locale/locale_provider.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/shared_widgets/pickers/cupertino_picker_content.dart';
 import 'package:brain_bench/core/shared_widgets/pickers/material_list_picker.dart';
 import 'package:brain_bench/core/styles/colors.dart';
+import 'package:brain_bench/core/utils/platform_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,7 +59,7 @@ class LanguageSelector extends ConsumerWidget {
 
     /// Shows the language picker.
     void showPicker() {
-      if (Platform.isIOS || Platform.isMacOS) {
+      if (P.isIOS || P.isMacOS) {
         showCupertinoModalPopup(
           context: context,
           builder:
