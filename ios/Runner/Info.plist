@@ -53,19 +53,13 @@
             <key>CFBundleURLSchemes</key>
             <array>
                 <!-- REVERSED_CLIENT_ID -->
-                <string>com.googleusercontent.apps.280860007604-3c8us5lra624f1pklv60hu0lt506p6hp</string>
+                <string>com.googleusercontent.apps.280860007604-3fmli76469mq83bkkup1a8u95hmmutcj</string>
             </array>
         </dict>
     </array>
 
     <key>CFBundleIdentifier</key>
     <string>de.jessicaernst.brainBench</string>
-
-	<key>GIDClientID</key>
-	<string>280860007604-3c8us5lra624f1pklv60hu0lt506p6hp.apps.googleusercontent.com</string>
-
-	<key>ReverseClientID</key>
-	<string>com.googleusercontent.apps.280860007604-3c8us5lra624f1pklv60hu0lt506p6hp</string>
 
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
