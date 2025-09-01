@@ -10,72 +10,50 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logging/logging.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-final _logger = Logger('useImagePickerWithPermissions');
+final _logger = Logger('useImagePickerImplProd');
 
-/// Custom hook for picking an image with permissions.
-///
-/// This hook provides a function, `pickImageInternal`, that allows the user to pick an image from the gallery or capture a new image using the camera.
-/// It handles the necessary permissions and displays a UI for selecting the image source.
-///
-/// Example usage:
-/// ```dart
-/// ImagePickerResult useImagePickerWithPermissions() {
-///   // ...
-/// }
-/// ```
-///
-/// Returns:
-/// - An [ImagePickerResult] object that contains the selected image file.
-///
-/// Throws:
-/// - [PermissionDeniedException] if the user denies the required permissions.
-/// - [PermissionPermanentlyDeniedException] if the user permanently denies the required permissions.
-/// - [PermissionRestrictedException] if the user restricts the required permissions.
-/// - [PermissionLimitedException] if the user grants limited permissions.
-/// - [PermissionGrantedException] if the user grants the required permissions.
-ImagePickerResult useImagePickerWrapperInternal(bool _) {
+/// Runtime-flag decides: bypass permissions on web/simulator/emulator,
+/// otherwise do proper permission handling on real devices.
+ImagePickerResult useImagePickerWrapperInternal(bool isSimOrWeb) {
   final selectedImageState = useState<XFile?>(null);
   final picker = useMemoized(() => ImagePicker());
 
   Future<void> pickImageInternal([BuildContext? context]) async {
     if (context == null) {
-      _logger.warning(
-        'Context is null – required for picker UI and permissions.',
-      );
+      _logger.warning('Context is null – required for picker UI.');
       return;
     }
-
-    final localizations = AppLocalizations.of(context);
-    if (localizations == null) {
+    final l10n = AppLocalizations.of(context);
+    if (l10n == null) {
       _logger.warning('AppLocalizations not found in context.');
       return;
     }
 
+    // Source selection (gallery / camera)
     ImageSource? source;
-
     try {
       source = await showModalBottomSheet<ImageSource>(
         context: context,
-        builder: (BuildContext sheetContext) {
+        builder: (sheetContext) {
           final theme = Theme.of(sheetContext);
-          final isDarkMode = theme.brightness == Brightness.dark;
+          final isDark = theme.brightness == Brightness.dark;
           return SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16),
               child: Wrap(
-                children: <Widget>[
+                children: [
                   ListTile(
                     leading: Icon(
                       P.isIOS
                           ? CupertinoIcons.photo_fill_on_rectangle_fill
                           : Icons.photo_library,
                       color:
-                          isDarkMode
+                          isDark
                               ? BrainBenchColors.cloudCanvas
                               : BrainBenchColors.deepDive,
                     ),
                     title: Text(
-                      localizations.profilePickFromGallery,
+                      l10n.profilePickFromGallery,
                       style: theme.textTheme.bodyLarge,
                     ),
                     onTap:
@@ -86,12 +64,12 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
                     leading: Icon(
                       P.isIOS ? CupertinoIcons.camera_fill : Icons.camera_alt,
                       color:
-                          isDarkMode
+                          isDark
                               ? BrainBenchColors.cloudCanvas
                               : BrainBenchColors.deepDive,
                     ),
                     title: Text(
-                      localizations.profilePickFromCamera,
+                      l10n.profilePickFromCamera,
                       style: theme.textTheme.bodyLarge,
                     ),
                     onTap:
@@ -113,21 +91,42 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
       return;
     }
 
-    PermissionStatus status;
+    // --- BYPASS on web/simulator/emulator ---------------------------------
+    if (isSimOrWeb) {
+      try {
+        final XFile? file = await picker.pickImage(
+          source: source,
+          imageQuality: 80,
+          maxWidth: 1024,
+        );
+        selectedImageState.value = file;
+      } catch (e, s) {
+        _logger.severe('Error picking image (sim/web)', e, s);
+        if (context.mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(l10n.profileImagePickerError)));
+        }
+      }
+      return;
+    }
+
+    // --- REAL DEVICES: permission handling --------------------------------
     Permission permission;
     if (source == ImageSource.camera) {
       permission = Permission.camera;
     } else {
-      if (P.isAndroid && (await _getAndroidSdkVersion() ?? 0) >= 33 ||
-          P.isIOS) {
-        permission = Permission.photos;
+      final sdk = await _getAndroidSdkVersion() ?? 0;
+      // Parentheses fixed: (Android && sdk>=33) || iOS
+      if ((P.isAndroid && sdk >= 33) || P.isIOS) {
+        permission = Permission.photos; // READ_MEDIA_IMAGES (A13+) / iOS Photos
       } else {
-        permission = Permission.storage;
+        permission = Permission.storage; // Android <= 12
       }
     }
 
     _logger.fine('Checking permission: $permission');
-    status = await permission.status;
+    var status = await permission.status;
     _logger.fine('Initial permission status: $status');
 
     if (status.isDenied) {
@@ -136,84 +135,66 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
       _logger.info('Permission status after request: $status');
     }
 
-    if (P.isIOS && permission == Permission.photos && status.isLimited) {
-      _logger.info('iOS limited photo access granted');
-      if (!context.mounted) {
-        _logger.warning(
-          'Context not mounted before prompting for full photo access.',
-        );
-        return;
-      }
-      final upgraded = await _promptForFullPhotoAccess(context);
-      if (!upgraded) {
-        _logger.warning('User did not upgrade photo permission to full access');
-        return;
-      }
-    }
-
-    if (status.isGranted || status.isLimited) {
-      _logger.info('Permission granted. Launching picker...');
-      try {
-        final XFile? pickedFile = await picker.pickImage(
-          source: source,
-          imageQuality: 80,
-          maxWidth: 1024,
-        );
-        if (pickedFile != null) {
-          _logger.info('Image selected: ${pickedFile.path}');
-          selectedImageState.value = pickedFile;
-        } else {
-          _logger.info('Image selection cancelled.');
+    // iOS: "Limited" is OK for picking – do not force upgrade
+    final allowed = status.isGranted || status.isLimited;
+    if (!allowed) {
+      if (status.isPermanentlyDenied || status.isRestricted) {
+        if (context.mounted) {
+          await showDialog(
+            context: context,
+            builder:
+                (ctx) => AlertDialog(
+                  title: Text(l10n.permissionRequiredTitle),
+                  content: Text(
+                    permission == Permission.camera
+                        ? l10n.permissionCameraPermanentlyDenied
+                        : l10n.permissionPhotosPermanentlyDenied,
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(ctx).pop(),
+                      child: Text(l10n.cancel),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        openAppSettings();
+                        Navigator.of(ctx).pop();
+                      },
+                      child: Text(l10n.openSettings),
+                    ),
+                  ],
+                ),
+          );
         }
-      } catch (e, s) {
-        _logger.severe('Error picking image', e, s);
+      } else {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(localizations.profileImagePickerError)),
+            SnackBar(
+              content: Text(
+                permission == Permission.camera
+                    ? l10n.permissionCameraDenied
+                    : l10n.permissionPhotosDenied,
+              ),
+            ),
           );
         }
       }
-    } else if (status.isPermanentlyDenied || status.isRestricted) {
-      _logger.warning('Permission $permission permanently denied.');
+      return;
+    }
+
+    try {
+      final XFile? file = await picker.pickImage(
+        source: source,
+        imageQuality: 80,
+        maxWidth: 1024,
+      );
+      selectedImageState.value = file;
+    } catch (e, s) {
+      _logger.severe('Error picking image (device)', e, s);
       if (context.mounted) {
-        showDialog(
-          context: context,
-          builder:
-              (ctx) => AlertDialog(
-                title: Text(localizations.permissionRequiredTitle),
-                content: Text(
-                  source == ImageSource.camera
-                      ? localizations.permissionCameraPermanentlyDenied
-                      : localizations.permissionPhotosPermanentlyDenied,
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text(localizations.cancel),
-                    onPressed: () => Navigator.of(ctx).pop(),
-                  ),
-                  TextButton(
-                    child: Text(localizations.openSettings),
-                    onPressed: () {
-                      openAppSettings();
-                      Navigator.of(ctx).pop();
-                    },
-                  ),
-                ],
-              ),
-        );
-      }
-    } else {
-      _logger.warning('Permission $permission denied.');
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              source == ImageSource.camera
-                  ? localizations.permissionCameraDenied
-                  : localizations.permissionPhotosDenied,
-            ),
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.profileImagePickerError)));
       }
     }
   }
@@ -224,41 +205,8 @@ ImagePickerResult useImagePickerWrapperInternal(bool _) {
   );
 }
 
-/// Retrieves the Android SDK version if the current platform is Android.
-/// Returns `null` if the current platform is not Android.
 Future<int?> _getAndroidSdkVersion() async {
-  if (P.isAndroid) {
-    final androidInfo = await DeviceInfoPlugin().androidInfo;
-    return androidInfo.version.sdkInt;
-  }
-  return null;
-}
-
-/// Prompts the user to grant full photo access.
-/// Returns a [Future] that resolves to a [bool] indicating whether the user granted full photo access or not.
-Future<bool> _promptForFullPhotoAccess(BuildContext context) async {
-  return await showDialog<bool>(
-        context: context,
-        builder:
-            (ctx) => AlertDialog(
-              title: const Text('Full Access Required'),
-              content: const Text(
-                'To select all photos, please allow full photo access in Settings.',
-              ),
-              actions: [
-                TextButton(
-                  child: const Text('Cancel'),
-                  onPressed: () => Navigator.of(ctx).pop(false),
-                ),
-                TextButton(
-                  child: const Text('Open Settings'),
-                  onPressed: () {
-                    openAppSettings();
-                    Navigator.of(ctx).pop(true);
-                  },
-                ),
-              ],
-            ),
-      ) ??
-      false;
+  if (!P.isAndroid) return null;
+  final info = await DeviceInfoPlugin().androidInfo;
+  return info.version.sdkInt;
 }

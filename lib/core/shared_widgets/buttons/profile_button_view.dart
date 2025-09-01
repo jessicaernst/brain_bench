@@ -29,7 +29,6 @@ final class ProfileButtonView extends ConsumerWidget {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
 
     final userState = ref.watch(currentUserModelProvider);
-    final XFile? provisionalImage = ref.watch(provisionalProfileImageProvider);
 
     final String? userImageUrl = switch (userState) {
       AsyncData(value: UserModelData(:final user)) => user.photoUrl,
@@ -130,7 +129,8 @@ final class ProfileButtonView extends ConsumerWidget {
     ImageProvider? displayImageProvider;
     Widget? avatarChild;
 
-    // case 1: user photo URL -> keep CNI as child, asset as fallback background
+    // Case 1: Firebase photoUrl → render CachedNetworkImage inside the avatar,
+    // with an asset fallback as background.
     if (userImageUrl != null && userImageUrl.isNotEmpty) {
       _logger.finer('ProfileButtonView: Using Firebase image: $userImageUrl');
       avatarChild = ClipOval(
@@ -159,33 +159,46 @@ final class ProfileButtonView extends ConsumerWidget {
       );
     }
 
-    // case 2: provisional XFile -> MemoryImage as backgroundImage (web-safe)
-    if (provisionalImage != null) {
+    // Case 2: provisional contact image → use cached bytes provider (web-safe MemoryImage).
+    final XFile? provisionalFile = ref.watch(
+      provisionalProfileImageFileProvider,
+    );
+    if (provisionalFile != null) {
       _logger.finer(
-        'ProfileButtonView: Using provisional contact image: ${provisionalImage.path}',
+        'ProfileButtonView: Using provisional contact image: ${provisionalFile.path}',
       );
-      return FutureBuilder<Uint8List>(
-        future: provisionalImage.readAsBytes(),
-        builder: (context, snap) {
-          ImageProvider bg = Assets.images.evolution4.provider();
-
-          if (snap.connectionState == ConnectionState.done && snap.hasData) {
-            bg = MemoryImage(snap.data!);
-          } else if (snap.hasError) {
-            _logger.warning(
-              'ProfileButtonView: Error reading provisional XFile bytes. Clearing provisional image.',
-            );
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              ref.read(provisionalProfileImageProvider.notifier).clearImage();
-            });
-          }
-
+      final asyncBytes = ref.watch(provisionalProfileImageBytesProvider);
+      return asyncBytes.when(
+        data: (Uint8List? bytes) {
+          final ImageProvider bg =
+              (bytes != null && bytes.isNotEmpty)
+                  ? MemoryImage(bytes)
+                  : Assets.images.evolution4.provider();
           return buildMenu(backgroundImage: bg, avatarChild: null);
+        },
+        loading:
+            () => buildMenu(
+              backgroundImage: Assets.images.evolution4.provider(),
+              avatarChild: null,
+            ),
+        error: (_, __) {
+          // On read error, clear the invalid provisional to avoid repeated attempts,
+          // then fall back to the asset.
+          _logger.warning(
+            'ProfileButtonView: Error reading provisional image bytes. Clearing provisional image.',
+          );
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            ref.read(provisionalProfileImageProvider.notifier).clearImage();
+          });
+          return buildMenu(
+            backgroundImage: Assets.images.evolution4.provider(),
+            avatarChild: null,
+          );
         },
       );
     }
 
-    // case 3: fallback asset
+    // Case 3: fallback asset
     displayImageProvider = Assets.images.evolution4.provider();
     avatarChild = null;
     return buildMenu(
