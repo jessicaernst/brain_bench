@@ -26,7 +26,6 @@ enum FirebaseEnvironment { dev, test, prod }
 // Provide the current environment based on --dart-define or build mode
 final firebaseEnvProvider = Provider<FirebaseEnvironment>((ref) {
   const env = String.fromEnvironment('FIREBASE_ENV');
-
   return switch (env) {
     'prod' => FirebaseEnvironment.prod,
     'test' => FirebaseEnvironment.test,
@@ -38,98 +37,139 @@ final firebaseEnvProvider = Provider<FirebaseEnvironment>((ref) {
 final _log = LoggingService('BrainBenchMain');
 
 Future<void> main() async {
-  // Initialize logging
-  _log.init();
+  // Everything (bindings + runApp) must execute in the SAME zone.
+  runZonedGuarded(
+    () async {
+      // Init logging as early as possible (inside the zone)
+      _log.init();
 
-  // Ensure Flutter bindings are ready
-  final WidgetsBinding widgetsBinding =
-      WidgetsFlutterBinding.ensureInitialized();
+      // Ensure Flutter bindings are ready (inside this zone!)
+      final WidgetsBinding widgetsBinding =
+          WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hyphenation
-  try {
-    _log.info('Initializing Hyphenation...');
-    await initHyphenation();
-    _log.info('Hyphenation initialized successfully.');
-  } catch (e, s) {
-    _log.severe('Failed to initialize Hyphenation', e, s);
-  }
+      // Keep native splash until initialization completes
+      FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  // Keep splash screen until initialization completes
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+      // Determine current environment from build flag or fallback to mode
+      const env = String.fromEnvironment('FIREBASE_ENV');
+      final firebaseEnv = switch (env) {
+        'prod' => FirebaseEnvironment.prod,
+        'test' => FirebaseEnvironment.test,
+        'dev' => FirebaseEnvironment.dev,
+        _ => kReleaseMode ? FirebaseEnvironment.prod : FirebaseEnvironment.dev,
+      };
 
-  // Determine current environment from build flag or fallback to mode
-  const env = String.fromEnvironment('FIREBASE_ENV');
-  final firebaseEnv = switch (env) {
-    'prod' => FirebaseEnvironment.prod,
-    'test' => FirebaseEnvironment.test,
-    'dev' => FirebaseEnvironment.dev,
-    _ => kReleaseMode ? FirebaseEnvironment.prod : FirebaseEnvironment.dev,
-  };
+      // Select Firebase config based on current environment
+      final firebaseOptions = switch (firebaseEnv) {
+        FirebaseEnvironment.prod => prod.DefaultFirebaseOptions.currentPlatform,
+        FirebaseEnvironment.test => test.DefaultFirebaseOptions.currentPlatform,
+        FirebaseEnvironment.dev => dev.DefaultFirebaseOptions.currentPlatform,
+      };
 
-  // Select Firebase config based on current environment
-  final firebaseOptions = switch (firebaseEnv) {
-    FirebaseEnvironment.prod => prod.DefaultFirebaseOptions.currentPlatform,
-    FirebaseEnvironment.test => test.DefaultFirebaseOptions.currentPlatform,
-    FirebaseEnvironment.dev => dev.DefaultFirebaseOptions.currentPlatform,
-  };
+      // Initialize hyphenation dictionary
+      try {
+        _log.info('Initializing Hyphenation...');
+        await initHyphenation();
+        _log.info('Hyphenation initialized successfully.');
+      } catch (e, s) {
+        _log.severe('Failed to initialize Hyphenation', e, s);
+      }
 
-  // Initialize Shared Prefs
-  _log.info('Initializing SharedPreferences...');
-  final prefs = await SharedPreferences.getInstance();
-  _log.info('SharedPreferences initialized.');
+      // Initialize SharedPreferences
+      _log.info('Initializing SharedPreferences...');
+      final prefs = await SharedPreferences.getInstance();
+      _log.info('SharedPreferences initialized.');
 
-  // Initialize Firebase safely (prevent duplicate-app error on hot restart)
-  try {
-    await Firebase.initializeApp(options: firebaseOptions);
-  } on FirebaseException catch (e) {
-    if (e.code != 'duplicate-app') rethrow;
-  }
+      // Initialize Firebase (guard duplicate-app on hot restart)
+      try {
+        await Firebase.initializeApp(options: firebaseOptions);
+      } on FirebaseException catch (e) {
+        if (e.code != 'duplicate-app') rethrow;
+      }
 
-  // Initialize Rive
-  try {
-    _log.info('Initializing Rive runtime...');
-    await RiveFile.initialize();
-    _log.info('✅ Rive runtime initialized successfully.');
-  } catch (e, s) {
-    _log.severe('❌ Error initializing Rive runtime.', e, s);
-    rethrow;
-  }
+      // Enable Crashlytics collection also in dev/debug
+      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
 
-  // Initialize Crashlytics
-  FlutterError.onError = (errorDetails) {
-    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  };
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
-
-  // Lock orientation to portrait mode
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-  // Perform cleanup of old temporary files from contact channel
-  // This runs in the background and doesn't block app start significantly
-  // We are not awaiting this, so it runs in the background.
-  cleanupOldTempFiles(prefix: 'contact_image_ensure_user_')
-      .then(
-        (_) => _log.info('Temporary contact image cleanup process initiated.'),
-      )
-      .catchError(
-        (e, s) => _log.warning('Temporary contact image cleanup failed.', e, s),
+      // Useful diagnostic context
+      await FirebaseCrashlytics.instance.setUserIdentifier('env:$firebaseEnv');
+      await FirebaseCrashlytics.instance.setCustomKey(
+        'build_mode',
+        kReleaseMode ? 'release' : (kProfileMode ? 'profile' : 'debug'),
       );
 
-  // Remove splash screen after init
-  FlutterNativeSplash.remove();
+      // Wire Crashlytics for Flutter framework errors (fatal)
+      FlutterError.onError = (details) {
+        FirebaseCrashlytics.instance.recordFlutterFatalError(details);
+      };
 
-  // Launch app with selected environment injected via provider
-  runApp(
-    ProviderScope(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(prefs),
-        firebaseEnvProvider.overrideWithValue(firebaseEnv),
-        authRepositoryProvider.overrideWithValue(FirebaseAuthRepository()),
-      ],
-      child: const BrainBenchApp(),
-    ),
+      // Wire Crashlytics for platform/async errors (fatal)
+      PlatformDispatcher.instance.onError = (error, stack) {
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+        return true; // prevent double-reporting
+      };
+
+      // Lock orientation to portrait mode
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+      ]);
+
+      // Initialize Rive runtime
+      try {
+        _log.info('Initializing Rive runtime...');
+        await RiveFile.initialize();
+        _log.info('✅ Rive runtime initialized successfully.');
+      } catch (e, s) {
+        _log.severe('❌ Error initializing Rive runtime.', e, s);
+        rethrow;
+      }
+
+      // Fire-and-forget cleanup of old temporary files
+      unawaited(
+        cleanupOldTempFiles(prefix: 'contact_image_ensure_user_')
+            .then(
+              (_) => _log.info(
+                'Temporary contact image cleanup process initiated.',
+              ),
+            )
+            .catchError(
+              (e, s) =>
+                  _log.warning('Temporary contact image cleanup failed.', e, s),
+            ),
+      );
+
+      // Launch app with selected environment injected via provider
+      runApp(
+        ProviderScope(
+          overrides: [
+            sharedPreferencesProvider.overrideWithValue(prefs),
+            firebaseEnvProvider.overrideWithValue(firebaseEnv),
+            authRepositoryProvider.overrideWithValue(FirebaseAuthRepository()),
+          ],
+          child: const BrainBenchApp(),
+        ),
+      );
+
+      // Remove splash after first frame to avoid flicker
+      bool splashRemoved = false;
+      void removeSplash() {
+        if (!splashRemoved) {
+          FlutterNativeSplash.remove();
+          splashRemoved = true;
+        }
+      }
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        removeSplash();
+      });
+
+      // Fallback: Remove splash after 3 seconds in case of error before first frame
+      Future.delayed(const Duration(seconds: 3), () {
+        removeSplash();
+      });
+    },
+    (error, stack) {
+      // Catch any uncaught async errors as fatal
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    },
   );
 }

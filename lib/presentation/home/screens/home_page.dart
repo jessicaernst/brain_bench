@@ -1,6 +1,7 @@
 import 'package:brain_bench/business_logic/home/home_providers.dart';
 import 'package:brain_bench/business_logic/profile/profile_ui_state_providers.dart';
 import 'package:brain_bench/core/extensions/responsive_context.dart';
+import 'package:brain_bench/core/hooks/shared/crashlytics_test_btn.dart';
 import 'package:brain_bench/core/localization/app_localizations.dart';
 import 'package:brain_bench/core/shared_widgets/buttons/profile_button_view.dart';
 import 'package:brain_bench/core/styles/colors.dart';
@@ -167,6 +168,10 @@ class HomePage extends HookConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
+              CrashlyticsTestBtn(),
+              const SizedBox(height: 16),
+              CrashlyticsFatalBtn(),
+              const SizedBox(height: 32),
               ActualCategoryView(isDarkMode: isDarkMode),
               Padding(
                 padding: EdgeInsets.symmetric(
